@@ -10,7 +10,7 @@
     <script>
         // Ensure the library is properly accessed
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('dev-diary.md')
+            fetch('dev-journal.md')
                 .then(response => response.text())
                 .then(markdown => {
                     const parsedHTML = marked.parse(markdown); // Use .parse in the latest API
