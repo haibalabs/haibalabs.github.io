@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Haiba Labs Dev Diary</title>
+    <title>Haiba Labs/Dev Journal</title>
 </head>
 <body>
-    <p><a href="dev-diary.md">Developer Diary</a></p>
+    <div id="markdown-content"></div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        fetch('dev-diary.md')
+            .then(response => response.text())
+            .then(markdown => {
+                document.getElementById('markdown-content').innerHTML = marked(markdown);
+            });
+    </script>
 </body>
 </html>
