@@ -26,7 +26,7 @@
     <div class="stackedit__html">
       <h1 id="the-captains-log">The Captains Log</h1>
 <h2 id="day-0---111624">Day 0 - 11/16/24</h2>
-<p>Starting a log for a wild journey.</p>
+<p>Starting a log for a wild journey. Stay tuned.</p>
 
     </div>
   </div>
