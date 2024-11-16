@@ -5,13 +5,21 @@
 </head>
 <body>
     <div id="markdown-content"></div>
+    <!-- Include Marked.js -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
-        fetch('dev-diary.md')
-            .then(response => response.text())
-            .then(markdown => {
-                document.getElementById('markdown-content').innerHTML = marked(markdown);
-            });
+        // Ensure the library is properly accessed
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('dev-diary.md')
+                .then(response => response.text())
+                .then(markdown => {
+                    const parsedHTML = marked.parse(markdown); // Use .parse in the latest API
+                    document.getElementById('markdown-content').innerHTML = parsedHTML;
+                })
+                .catch(error => {
+                    console.error('Error loading markdown:', error);
+                });
+        });
     </script>
 </body>
 </html>
