@@ -34,9 +34,15 @@ Here’s what happened:</p>
 </li>
 <li class="task-list-item">
 <p><input type="checkbox" class="task-list-item-checkbox" disabled=""> Further development on the ‘vector lab’ side project (more on that later). At the moment building up a complex math expressions parser that supports: scalar ops, vector ops, and member access. The testing includes these kinds of expressions:</p>
-<p>a = (1, 2); b = (3, 4); a.x * b.y + a.y * b.x --&gt; 10<br>
-a * b * (-2) --&gt; (-3, -16)<br>
-v1 = (1,1); v2 = (2,2); v1 . v2 --&gt; 4</p>
+</li>
+<li>
+<p>a = (1, 2); b = (3, 4); a.x * b.y + a.y * b.x --&gt; 10</p>
+</li>
+<li>
+<p>a * b * (-2) --&gt; (-3, -16)</p>
+</li>
+<li>
+<p>v1 = (1,1); v2 = (2,2); v1 . v2 --&gt; 4</p>
 </li>
 </ul>
 <p>Why? It’ll make sense later.</p>
