@@ -1,44 +1,14 @@
-<!DOCTYPE html>
-<html>
+# The Captains Log
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>dev-journal</title>
-  <link rel="stylesheet" href="https://stackedit.io/style.css" />
-</head>
+## Day 0 - Sat 11/16/24
+Starting a log for a wild journey. Stay tuned.
+Here's what happened:
 
-<body class="stackedit">
-  <div class="stackedit__left">
-    <div class="stackedit__toc">
-      
-<ul>
-<li><a href="#the-captains-log">The Captains Log</a>
-<ul>
-<li><a href="#day-0---sat-111624">Day 0 - Sat 11/16/24</a></li>
-</ul>
-</li>
-</ul>
+[ ] Started this dev log, published through github and edited as an .md file in stackedit.io
+[ ] Further development on the 'vector lab' side project (more on that later). At the moment building up a complex math expressions parser that supports: scalar ops, vector ops, and member access. The testing includes these kinds of expressions:
 
-    </div>
-  </div>
-  <div class="stackedit__right">
-    <div class="stackedit__html">
-      <h1 id="the-captains-log">The Captains Log</h1>
-<h2 id="day-0---sat-111624">Day 0 - Sat 11/16/24</h2>
-<p>Starting a log for a wild journey. Stay tuned.<br>
-Here’s what happened:</p>
-<p>[ ] Started this dev log, published through github and edited as an .md file in <a href="http://stackedit.io">stackedit.io</a><br>
-[ ] Further development on the ‘vector lab’ side project (more on that later). At the moment building up a complex math expressions parser that supports: scalar ops, vector ops, and member access. The testing includes these kinds of expressions:</p>
-<ul>
-<li>a = (1, 2); b = (3, 4); a.x * b.y + a.y * b.x --&gt; 10</li>
-<li>a * b * (-2) --&gt; (-3, -16)</li>
-<li>v1 = (1,1); v2 = (2,2); v1 . v2 --&gt; 4</li>
-</ul>
-<p>Why? It’ll make sense later.</p>
+ - a = (1, 2); b = (3, 4); a.x * b.y + a.y * b.x --> 10    
+ - a * b * (-2) --> (-3, -16)    
+ - v1 = (1,1); v2 = (2,2); v1 . v2 --> 4
 
-    </div>
-  </div>
-</body>
-
-</html>
+Why? It'll make sense later.
