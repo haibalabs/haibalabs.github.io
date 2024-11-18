@@ -2,6 +2,47 @@
 <html>
 <head>
     <title>Haiba Labs/Dev Journal</title>
+    <style>
+        body {
+            font-family: math;
+            margin: 20px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #606060;
+            font-weight: normal;
+        }
+        ul {
+            list-style-type: square; /* Custom list style */
+            padding-left: 20px;
+        }
+        ol {
+            list-style-type: upper-roman; /* Ordered list style */
+            padding-left: 20px;
+        }
+        li::marker {
+            content: ''; /* Ensures no marker is displayed */
+        }
+        blockquote {
+            font-style: italic;
+            color: #555;
+            border-left: 4px solid #ccc;
+            padding-left: 10px;
+            margin-left: 0;
+            background: #f9f9f9;
+        }
+        code {
+            font-family: 'Courier New', monospace;
+            background: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background: #f1f1f1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            overflow: auto;
+        }
+    </style>
 </head>
 <body>
     <div id="markdown-content"></div>
