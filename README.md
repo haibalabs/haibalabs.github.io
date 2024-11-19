@@ -1,2 +1,2 @@
 # haibalabs.github.io
-GitHub Pages site
+This is haiba labs external documentation repo.
