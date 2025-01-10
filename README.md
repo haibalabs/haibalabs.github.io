@@ -1,2 +1,2 @@
 # haibalabs.github.io
-This is haiba labs external documentation repo.
+This is haiba labs external experimentation repo.

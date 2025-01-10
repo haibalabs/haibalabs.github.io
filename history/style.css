@@ -1,0 +1,441 @@
+/* General Styling */
+body {
+/*    font-family: Arial, sans-serif;*/
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Section */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #f4f4f4;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.header h1 {
+    text-align: center;
+    font-size: 44px;
+    font-weight: 600;
+    margin-block-start: 0.3em;
+    margin-block-end: 0.3em;
+    font-family: 'EB Garamond', serif;
+    letter-spacing: 0.3px;
+    color: #2c1810;
+}
+
+/* Sticky Footer Setup */
+.page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+.content-wrap {
+    padding-bottom: 60px; /* Height of the footer */
+}
+
+/* Footer Styles */
+.site-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    background: rgba(244, 244, 244, 0.95);
+    padding: 0.4rem 1rem; /* Added horizontal padding */
+    border-top: 1px solid #e0e0e0;
+    backdrop-filter: blur(5px);
+    z-index: 95;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    font-size: small;
+    
+    /* Add flexbox layout */
+    display: flex;
+    justify-content: space-between; /* Spreads items to edges */
+    align-items: center; /* Vertically centers items */
+}
+
+/* Style the copyright div */
+.site-footer .copyright {
+    text-align: left;
+}
+
+/* Style the event count */
+.site-footer .event-count {
+    text-align: right;
+    white-space: nowrap; /* Prevents wrapping on narrow screens */
+    padding-right: 2rem;
+}
+
+/* Filters Section */
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0.1rem;
+}
+
+.filters button {
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #e0e0e0;
+    background: #ccc; /* Default background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+}
+
+.filters button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.filters button:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Pressed shadow */
+    transform: translateY(1px); /* Simulate press-down effect */
+}
+
+.filters button.active {
+    border: 2px solid white; /* Highlight selected filter */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Make the active button pop */
+    transform: translateY(-1px); /* Subtle lift for the active button */
+}
+
+.filters button:active::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    to {
+        transform: translate(-50%, -50%) scale(4);
+        opacity: 0;
+    }
+}
+
+/* Controls Row Styling */
+.controls-row {
+    display: grid;
+    grid-template-columns: 1fr auto; /* Search takes remaining space, navigation fixed */
+    gap: 4rem;
+    padding: 0.5rem 2rem;
+    max-width: 1200px;
+    width: 95%;
+    margin: 0 auto;
+    align-items: center;
+}
+
+/* Search Box */
+.search-box {
+    width: 100%;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.7rem 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 9999px; /* Full round */
+    font-size: 0.95rem;
+    background-color: #f8f8f8;
+    transition: all 0.2s ease;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #2196F3;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+/* Date Navigation */
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.date-navigation input {
+    width: 160px;
+    padding: 0.7rem 1.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 9999px;
+    font-size: 0.95rem;
+    text-align: center;
+    background-color: #f8f8f8;
+    transition: all 0.2s ease;
+}
+
+.date-navigation input:focus {
+    outline: none;
+    border-color: #2196F3;
+    background-color: white;
+    box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+}
+
+.nav-button {
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 9999px;
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+    background-color: #e5e5e5;
+    transform: translateY(-1px);
+}
+
+.timeline-wrapper {
+    padding-top: var(--header-height, 0px); /* Fallback to 0 if variable not set */
+}
+
+/* Timeline Section */
+.timeline {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    max-width: 600px;
+    margin: auto;
+}
+
+.event {
+    background: #fff; /* White card background */
+    border-radius: 8px; /* Rounded corners */
+    padding: 1rem; /* Spacing inside the card */
+    margin: 0.5rem 0; /* Spacing between cards */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for elevation */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+}
+
+/* Hover Effect */
+.event:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+    transform: translateY(-2px); /* Slightly lift the card */
+}
+
+/* Event Header */
+.event-header {
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #2c1810;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.3px;
+}
+
+/* Event Time */
+.event-time {
+    font-size: 0.9em;
+    margin-bottom: 0.5rem;
+    display: flex;           /* Use flexbox for layout */
+    align-items: baseline;   /* Align items on their text baseline */
+    gap: 1rem;              /* Space between date and location */
+    flex-wrap: wrap;        /* Allow wrapping on narrow screens */
+}
+
+/* Date styling */
+.event-date {
+    color: #666;
+    font-weight: 500;
+}
+
+/* Clickable location styling */
+.event-location.clickable {
+    color: #2196F3;         /* Material Design blue */
+    cursor: pointer;
+    display: inline-flex;   /* Inline flex for emoji alignment */
+    align-items: center;    /* Center align emoji with text */
+    gap: 0.25rem;          /* Space between emoji and text */
+    padding: 2px 6px;      /* Padding for larger click target */
+    margin: -2px -6px;     /* Offset padding to maintain layout */
+    border-radius: 4px;    /* Rounded corners */
+    transition: all 0.2s ease; /* Smooth transition for all changes */
+}
+
+/* Hover effects */
+.event-location.clickable:hover {
+    color: #1976D2;         /* Darker blue on hover */
+    background: rgba(33, 150, 243, 0.1); /* Light blue background */
+}
+
+/* Event Description */
+.event-description {
+    font-size: 1.05em;
+    line-height: 1.5;
+    color: #433630;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: 0.2px;
+}
+
+/* Confidence Styling */
+.event[data-confidence="high"] {
+    border-left: 5px solid #4CAF50;  /* Green */
+}
+
+.event[data-confidence="medium"] {
+    border-left: 5px solid #FFA726;  /* Orange */
+}
+
+.event[data-confidence="low"] {
+    border-left: 5px solid #EF5350;  /* Red */
+    background: #fafafa;  /* Slightly different background */
+}
+
+/* Confidence Badge */
+.confidence-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    font-weight: 400;
+    margin-left: 8px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Only style for uncertain (medium) confidence */
+.confidence-uncertain {
+    background-color: rgba(121, 85, 72, 0.6);  /* Faded dark red/brown */
+    font-style: italic;
+}
+
+/* Confidence Toggle */
+.confidence-toggle {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Switch styling */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+/* Hide low confidence events when toggle is off */
+body.hide-low-confidence .event[data-confidence="low"] {
+    display: none;
+}
+
+.highlight {
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(33, 150, 243, 0.5);
+    border-radius: 8px;
+    background-color: rgba(33, 150, 243, 0.1);
+}
+
+/* Map Panel Styles */
+.map-panel {
+    position: fixed;
+    top: var(--header-height, 0px);
+    right: -750px; /* Start hidden */
+    width: 750px;
+    height: calc(100vh - var(--header-height, 0px));
+    background: white;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    z-index: 90;
+}
+
+.map-panel.open {
+    right: 0;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+.toggle-map-btn {
+    position: absolute;
+    left: -40px;
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.toggle-map-btn:hover {
+    background: #f5f5f5;
+}
+
+/* Adjust timeline when map is open */
+.timeline-wrapper.map-open {
+    padding-right: 750px;
+}
+
+.timeline-wrapper.map-open .timeline {
+    margin: auto;  /* Keep timeline centered in remaining space */
+}
