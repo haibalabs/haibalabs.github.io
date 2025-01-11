@@ -1,4 +1,4 @@
-import { parseTimeToSortableValue, formatHistoricalDate } from './date-handlers.js';
+import { parseTimeToSortableValue, formatHistoricalDate, extractYear } from './date-handlers.js';
 import { initMap, showLocationOnMap } from './map-utils.js';
 
 // Define prominent labels and their associated colors
@@ -149,8 +149,9 @@ function jumpToDate(targetYear) {
         setTimeout(() => targetEvent.classList.remove('highlight'), 2000);
         
         // Show feedback using the actual date from the event
-        const foundYear = extractYear(targetEvent.querySelector('.event-time').textContent);
-        dateInput.value = `${targetYear} (showing ${foundYear > 0 ? foundYear + ' AD' : Math.abs(foundYear) + ' BCE'})`;
+        const foundYear = extractYear(parseFloat(targetEvent.getAttribute('data-sortable-time')));
+//        dateInput.value = `${targetYear} (showing ${foundYear > 0 ? foundYear + ' AD' : Math.abs(foundYear) + ' BCE'})`;
+        dateInput.value = `${targetYear}`;
     } else {
         // Handle case where no later events exist
         const lastEvent = events[events.length - 1];
@@ -163,8 +164,9 @@ function jumpToDate(targetYear) {
                 behavior: 'smooth'
             });
 
-            const lastYear = extractYear(lastEvent.querySelector('.event-time').textContent);
-            dateInput.value = `${targetYear} (no later events, showing ${lastYear > 0 ? lastYear + ' AD' : Math.abs(lastYear) + ' BCE'})`;
+            const lastYear = extractYear(parseFloat(lastEvent.getAttribute('data-sortable-time')));
+//            dateInput.value = `${targetYear} (no later events, showing ${lastYear > 0 ? lastYear + ' AD' : Math.abs(lastYear) + ' BCE'})`;
+            dateInput.value = `${targetYear}`;
         }
     }
 }

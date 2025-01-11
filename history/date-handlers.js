@@ -461,6 +461,63 @@ function extractRangeOrDayRange(inputText) {
   }
 
 /**
+ * Extracts the year from a sortable time value
+ * @param {number} sortableTime - The sortable time value (year + month/12 + day/366)
+ * @returns {number} - The extracted year
+ */
+export function extractYear(sortableTime) {
+    // If input is a date string, try to get its sortable value first
+    if (typeof sortableTime === 'string') {
+        sortableTime = parseTimeToSortableValue(sortableTime);
+    }
+
+    // Convert to number if it's a string
+    sortableTime = Number(sortableTime);
+    
+    // Handle invalid input
+    if (isNaN(sortableTime)) {
+        console.warn('Invalid sortable time value:', sortableTime);
+        return 0;
+    }
+
+    // The year is the integer part of the sortable time
+    // Use Math.floor to handle negative years correctly
+    return Math.floor(sortableTime);
+}
+
+/**
+ * Extract full date components from sortable time
+ * @param {number} sortableTime - The sortable time value
+ * @returns {{year: number, month: number, day: number}} - Date components
+ */
+export function extractDateComponents(sortableTime) {
+    // Convert to number if it's a string
+    sortableTime = Number(sortableTime);
+    
+    // Handle invalid input
+    if (isNaN(sortableTime)) {
+        console.warn('Invalid sortable time value:', sortableTime);
+        return { year: 0, month: 1, day: 1 };
+    }
+
+    // Extract year (integer part)
+    const year = Math.floor(sortableTime);
+    
+    // Get decimal part
+    const decimal = sortableTime - year;
+    
+    // Extract month (first decimal part * 12)
+    const monthDecimal = decimal * 12;
+    const month = Math.floor(monthDecimal) + 1;
+    
+    // Extract day (remaining decimal * 366)
+    const dayDecimal = (monthDecimal - Math.floor(monthDecimal)) * 366;
+    const day = Math.floor(dayDecimal) + 1;
+    
+    return { year, month, day };
+}  
+
+/**
  * Format a historical date string for display
  * @param {string} date - Date string to format
  * @returns {string} - Formatted date string
