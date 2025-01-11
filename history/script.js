@@ -1,3 +1,13 @@
+/**
+ * Version number follows semantic versioning (MAJOR.MINOR.PATCH)
+ * Update policy:
+ * - MAJOR: Breaking changes (incompatible data structure changes, API changes)
+ * - MINOR: New features (backwards-compatible additions)
+ * - PATCH: Bug fixes and minor improvements (backwards-compatible)
+ * @type {string}
+ */
+const VERSION = '0.2.2';
+
 import { parseTimeToSortableValue, formatHistoricalDate, extractYear } from './date-handlers.js';
 import { initMap, showLocationOnMap } from './map-utils.js';
 
@@ -184,6 +194,9 @@ updateTimelineSpacing();
 
 // Update on window resize
 window.addEventListener('resize', updateTimelineSpacing);
+
+// Display version number
+document.getElementById('versionNumber').textContent = VERSION;
 
 // Get the file name from the URL (e.g., ?file=custom_events.json)
 const params = new URLSearchParams(window.location.search);

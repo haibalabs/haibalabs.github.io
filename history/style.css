@@ -74,6 +74,11 @@ body {
     padding-right: 2rem;
 }
 
+.site-footer .version {
+    font-size: 0.8em;
+    color: #666;
+}
+
 /* Filters Section */
 .filters {
     display: flex;
