@@ -1,3 +1,5 @@
+import { parseTimeToSortableValue, formatHistoricalDate } from './date-handlers.js';
+
 // Define prominent labels and their associated colors
 const prominentLabels = [
     { name: "all", color: "gray" },
@@ -12,132 +14,6 @@ const prominentLabels = [
 
 // Global variable to store total count of high/medium confidence events
 let totalHighMediumCount = 0;
-
-/**
- * Formats a historical date with BCE/CE support into "DD Month YYYY" format.
- * Handles removing time components and leading zeroes in years.
- * @param {string} date - The raw ISO 8601 date string.
- * @returns {string} - Formatted date in "DD Month YYYY" or "Unknown Date".
- */
-function formatHistoricalDate(date) {
-    if (!date) return "Unknown Date";
-
-    // Already formatted dates
-    if (date.includes('billion years ago') || 
-        date.includes('million years ago') ||
-        date.includes('BCE') ||
-        date.includes('AD') ||
-        date.includes('CE')) {
-        return date;
-    }
-
-    // If it's just a year (e.g., "1498")
-    if (/^\d+$/.test(date)) {
-        return date;
-    }
-
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-
-    // Handle dates with month and day
-    // Example: "1534-10-17"
-    try {
-        const [year, month, day] = date.split("-");
-        if (year && month && day) {
-            const formattedYear = parseInt(year, 10);
-            const formattedMonth = months[parseInt(month, 10) - 1];
-            const formattedDay = parseInt(day, 10);
-            return `${formattedDay} ${formattedMonth} ${formattedYear}`;
-        }
-        // If we just have a year and month
-        if (year && month) {
-            const formattedYear = parseInt(year, 10);
-            const formattedMonth = months[parseInt(month, 10) - 1];
-            return `${formattedMonth} ${formattedYear}`;
-        }
-        // If we just have a year
-        if (year) {
-            return year;
-        }
-    } catch (error) {
-        console.error('Date parsing error:', error);
-        return date;  // Return the original date if parsing fails
-    }
-
-    return date;  // Return the original if no other format matches
-}
-
-/**
- * Parse the event time to a sortable numeric value.
- * - Billion/million years ago converted to large negative numbers
- * - BCE/BC years converted to negative numbers
- * - CE/AD years converted to positive numbers
- * - Handles approximate dates with "c." prefix
- * - Handles dates with locations (e.g., "1969 - Jerusalem")
- * - Year ranges use the starting year
- * @param {string} time - The time string (e.g., "c. 1 BC", "13.8 billion years ago", "1969 - Jerusalem")
- * @returns {number} - The numeric representation of the year for sorting
- */
-function parseTimeToSortableValue(time) {
-    if (!time) return 0;
-    
-    // Convert the time to a string for safety
-    time = String(time).toLowerCase();
-
-    // is it a simple year number
-    let targetYear = parseInt(time);
-    
-    if (!isNaN(targetYear)) {
-        return targetYear;
-    }
-    
-    // Handle full dates (e.g., "September 3, 1967", "March 4, 1961")
-    try {
-        const date = new Date(time.split('-')[0].trim());  // Split off any location part
-        if (!isNaN(date.getTime())) {
-            return date.getFullYear() + (date.getMonth() / 12) + (date.getDate() / 365);
-        }
-    } catch (e) {
-        console.log('Date parsing error:', e);
-    }
-    
-    // Handle "billion years ago" format
-    if (time.includes('billion years ago')) {
-        const billion = parseFloat(time.match(/\d+\.?\d*/)[0]);
-        return -1 * billion * 1000000000;
-    }
-    
-    // Handle "million years ago" format
-    if (time.includes('million years ago')) {
-        const million = parseFloat(time.match(/\d+\.?\d*/)[0]);
-        return -1 * million * 1000000;
-    }
-    
-    // Remove any "c." or "circa" prefixes
-    time = time.replace(/^c\.\s+/, '').replace(/^circa\s+/, '');
-    
-    // Handle BC/BCE dates
-    if (time.includes('bc') || time.includes('bce')) {
-        let year = parseInt(time.match(/\d+/)[0]);
-        return -1 * year;
-    }
-    
-    // Handle AD/CE dates
-    if (time.includes('ad') || time.includes('ce')) {
-        let year = parseInt(time.match(/\d+/)[0]);
-        return year;
-    }
-    
-    // If it's just a year (e.g., "1969"), parse it directly
-    const yearMatch = time.match(/\d+/);
-    if (yearMatch) {
-        return parseInt(yearMatch[0]);
-    }
-    
-    return 0;
-}
 
 /**
  * Sort events by time and return a sorted index + time array.
@@ -316,18 +192,7 @@ map.setMaxBounds([
 
 // Create a cache for geocoding results
 const geocodeCache = new Map();
-/*
-// Add tile layer with caching
-const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    subdomains: ['a', 'b', 'c'],
-    maxZoom: 5,
-    minZoom: 3,
-    noWrap: true,           // Prevent tile wrapping around the world
-    bounds: map.getBounds(), // Only load tiles within bounds
-    updateWhenIdle: true,    // Update tiles only when panning ends
-}).addTo(map);
-*/
+
 // Create primary and fallback tile layers
 const primaryTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors',
@@ -461,26 +326,6 @@ async function showLocationsOnMap(eventData) {
     }
 }
 
-// Update click handler in your event creation code
-function addLocationClickHandler(eventDiv, eventData) {
-    const timeDiv = eventDiv.querySelector('.event-time');
-    const locationText = formatLocations(eventData.locations);
-    
-    if (locationText) {
-        const dateText = formatHistoricalDate(eventData.enhanced_time);
-        timeDiv.innerHTML = `
-            <span class="event-date">${dateText}</span>
-            ${locationText ? `<span class="event-location clickable">📍 ${locationText}</span>` : ''}
-        `;
-        
-        const locationSpan = timeDiv.querySelector('.event-location');
-        locationSpan.addEventListener('click', (e) => {
-            e.stopPropagation();
-            showLocationsOnMap(eventData);
-        });
-    }
-}
-
 function updateTimelineSpacing() {
     const header = document.querySelector('.header');
     const headerHeight = header.offsetHeight;
@@ -559,9 +404,6 @@ fetch(dataFile)
                     return;
                 }
 
-                const formattedDate = formatHistoricalDate(event.enhanced_time);
-                const formattedLocations = formatLocations(event.locations);
-
                 const eventDiv = document.createElement('div');
                 eventDiv.className = 'event';
                 eventDiv.setAttribute('data-confidence', event.confidence || 'medium');
@@ -579,17 +421,30 @@ fetch(dataFile)
                     `<span class="confidence-badge confidence-uncertain">uncertain</span>` : 
                     '';
 
+                const formattedDate = formatHistoricalDate(event.enhanced_time);
                 eventDiv.innerHTML = `
                     <div class="event-header">
                         ${event.name}
                         ${confidenceBadge}
                     </div>
-                    <div class="event-time"></div>
+                    <div class="event-time">
+                        <span class="event-date">${formattedDate}</span>
+                    </div>
                     <div class="event-description">${event.enhanced_description || event.description}</div>
                 `;
-
+            
                 // Add location click handler
-                addLocationClickHandler(eventDiv, event);
+                const locationText = formatLocations(event.locations);
+                if (locationText) {
+                    const timeDiv = eventDiv.querySelector('.event-time');
+                    timeDiv.innerHTML += `<span class="event-location clickable">📍 ${locationText}</span>`;
+                    
+                    const locationSpan = timeDiv.querySelector('.event-location');
+                    locationSpan.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showLocationsOnMap(event);
+                    });
+                }
 
                 timelineContainer.appendChild(eventDiv);
             });
