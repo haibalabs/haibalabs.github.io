@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Simple OSM Test</title>
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+  />
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+    #map {
+      height: 80vh;
+      width: 100%;
+    }
+    #controls {
+      padding: 1em;
+    }
+    #locationInput {
+      width: 300px;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <input type="text" id="locationInput" placeholder="Enter location" />
+    <button id="searchBtn">Search</button>
+  </div>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script
+    src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+  ></script>
+
+  <!-- Your map utilities -->
+  <script type="module" src="map-utils.js"></script>
+
+  <script type="module">
+    import { initMap, showLocationOnMap } from './map-utils.js';
+
+    // Initialize the map
+    const { map, markersLayer, geocodeCache } = initMap();
+
+    // Set up the search button
+    const searchBtn = document.getElementById('searchBtn');
+    const locationInput = document.getElementById('locationInput');
+    searchBtn.addEventListener('click', () => {
+      const locationName = locationInput.value.trim();
+      if (locationName) {
+        showLocationOnMap(locationName, map, markersLayer, geocodeCache);
+      }
+    });
+  </script>
+</body>
+</html>

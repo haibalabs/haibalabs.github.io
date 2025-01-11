@@ -1,4 +1,5 @@
 import { parseTimeToSortableValue, formatHistoricalDate } from './date-handlers.js';
+import { initMap, showLocationOnMap } from './map-utils.js';
 
 // Define prominent labels and their associated colors
 const prominentLabels = [
@@ -168,163 +169,7 @@ function jumpToDate(targetYear) {
     }
 }
 
-// Initialize map with restricted zoom and interaction
-let map = L.map('map', {
-    minZoom: 1,
-    maxZoom: 6,
-    zoomControl: false,      // Disable zoom controls
-    dragging: false,         // Disable panning
-    touchZoom: false,        // Disable touch zoom
-    doubleClickZoom: false,  // Disable double click zoom
-    scrollWheelZoom: false,  // Disable scroll zoom
-    boxZoom: false,          // Disable box zoom
-    keyboard: false,         // Disable keyboard navigation
-    tap: false              // Disable mobile taps
-}).setView([20, 0], 3);     // Center on world view
-
-let markersLayer = L.layerGroup().addTo(map);  // Layer for markers
-
-// Set bounds to prevent unnecessary tile loading
-map.setMaxBounds([
-    [-90, -180], // Southwest
-    [90, 180]    // Northeast
-]);
-
-// Create a cache for geocoding results
-const geocodeCache = new Map();
-
-// Create primary and fallback tile layers
-const primaryTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    subdomains: ['a', 'b', 'c'],
-    maxZoom: 6,
-    minZoom: 1,
-    noWrap: true,
-    bounds: map.getBounds(),
-    updateWhenIdle: true
-});
-
-const fallbackTileLayer = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 6,
-    minZoom: 1,
-    noWrap: true,
-    bounds: map.getBounds(),
-    updateWhenIdle: true
-});
-
-// Start with primary layer
-primaryTileLayer.addTo(map);
-
-// Add error handling
-primaryTileLayer.on('tileerror', function(e) {
-    console.log('Primary tile server error, switching to fallback');
-    map.removeLayer(primaryTileLayer);
-    fallbackTileLayer.addTo(map);
-});
-
-fallbackTileLayer.on('tileerror', function(e) {
-    console.log('Fallback tile server error');
-});
-
-// Handle layer loading timeout
-let tileTimeout = setTimeout(() => {
-    if (!primaryTileLayer.isLoading()) return;
-    console.log('Tile loading timeout, switching to fallback');
-    map.removeLayer(primaryTileLayer);
-    fallbackTileLayer.addTo(map);
-}, 5000); // 5 second timeout
-
-primaryTileLayer.on('load', function() {
-    clearTimeout(tileTimeout);
-});
-
-// Modified geocoding function with caching and rate limiting
-async function getCoordinates(locationName) {
-    // Check cache first
-    if (geocodeCache.has(locationName)) {
-        return geocodeCache.get(locationName);
-    }
-
-    // Rate limiting
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    try {
-        const params = new URLSearchParams({
-            format: 'json',
-            q: locationName,
-            addressdetails: 1,
-            namedetails: 1,
-            featuretype: 'city',
-            'accept-language': 'en',
-            limit: 5  // Get a few results to find the best one
-        });
-
-        const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?${params.toString()}`
-        );
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data && data.length > 0) {
-            // Sort by importance (higher is better) and pick the most important one
-            const bestMatch = data.sort((a, b) => b.importance - a.importance)[0];
-            
-            const coords = [parseFloat(bestMatch.lat), parseFloat(bestMatch.lon)];
-            geocodeCache.set(locationName, coords);
-            return coords;
-        }
-        return null;
-    } catch (error) {
-        console.error('Geocoding error:', error);
-        return null;
-    }
-}
-
-// Modified function to handle location clicks
-async function showLocationsOnMap(eventData) {
-    const mapPanel = document.getElementById('map-panel');
-    if (!mapPanel.classList.contains('open')) {
-        mapPanel.classList.add('open');
-        document.querySelector('.timeline-wrapper').classList.add('map-open');
-        map.invalidateSize();
-    }
-
-    markersLayer.clearLayers();
-    const bounds = [];
-    const locationsProcessed = new Set(); // Track unique locations
-
-    for (const location of eventData.locations) {
-        // Skip if we've already processed this location
-        if (locationsProcessed.has(location)) continue;
-        locationsProcessed.add(location);
-
-        const coords = await getCoordinates(location);
-        if (coords) {
-            const marker = L.marker(coords)
-                .bindPopup(`${eventData.name}<br>${location}`);
-            markersLayer.addLayer(marker);
-            bounds.push(coords);
-        }
-    }
-
-    // Fit map to show all markers with some padding
-    if (bounds.length === 1) {
-        // Single location - zoom closer
-        map.setView(bounds[0], 6);  // Use zoom level 6 for single cities
-    } else if (bounds.length > 1) {
-        // Multiple locations - fit all markers
-        map.fitBounds(bounds, { 
-            padding: [50, 50],
-            maxZoom: 8,
-            minZoom: 4
-        });
-    }
-}
+const { map, markersLayer, geocodeCache } = initMap();
 
 function updateTimelineSpacing() {
     const header = document.querySelector('.header');
@@ -442,7 +287,12 @@ fetch(dataFile)
                     const locationSpan = timeDiv.querySelector('.event-location');
                     locationSpan.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        showLocationsOnMap(event);
+                        const mapPanel = document.getElementById('map-panel');
+                        if (!mapPanel.classList.contains('open')) {
+                            mapPanel.classList.add('open');
+                            document.querySelector('.timeline-wrapper').classList.add('map-open');
+                        }
+                        showLocationOnMap(locationText, map, markersLayer, geocodeCache);
                     });
                 }
 
@@ -476,11 +326,6 @@ fetch(dataFile)
 
         // Initialize navigation
         setupNavigation();
-
-        // Add confidence toggle functionality - disabled for now
-        // document.getElementById('confidenceToggle').addEventListener('change', function(e) {
-        //     document.body.classList.toggle('hide-low-confidence', !e.target.checked);
-        // });
 
         // Update spacing after rendering
         updateTimelineSpacing();
