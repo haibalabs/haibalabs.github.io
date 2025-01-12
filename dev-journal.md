@@ -4,7 +4,9 @@
 We did a quick estimate for how many events we should be able to handle to cover a decent amount of history. Answer: 80M events. At 1k Maximum per event, we're below 100GB.
 
 - Fixed mapping issues so it's functionally working.
-- Added a test harness for openstreetmap 
+- Added a test harness for openstreetmap.
+- Added a version number and fixed jump-to-date functionality.
+- Update data processing scripts to generate better location info, date info, and wikipedia links.
 
 ### Day 2. Fri 01/10/25
 Today we focused on supporting a variety of "DATE" formats for the events we collected so far, so the timeline is as correct as possible.

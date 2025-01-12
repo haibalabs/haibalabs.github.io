@@ -102,7 +102,13 @@ function dateToSortValue(year, month, day) {
     cleaned = cleaned.replace(/\bapproximate\b/gi, '');
     cleaned = cleaned.replace(/\bapprox\.?/gi, '');
     cleaned = cleaned.replace(/\bdate\s+in\b/gi, '');
-    cleaned = cleaned.replace(/^c\.\s+/, '').replace(/^circa\s+/, '');
+
+ //   cleaned = cleaned.replace(/^c\.\s+/, '').replace(/^circa\s+/, '');
+    cleaned = cleaned.replace(/^c\.\s*(\d{4}|\d{3}|\d{2}|\d{1})/, (match, year) => {
+                    // Keep the year as-is to preserve zero padding
+                    return year;
+                }).replace(/^circa\s+/, '');
+
     cleaned = cleaned.replace(/\b(around|in|between|by|before|after)\b\s*/gi, '');
 
     // unify dash

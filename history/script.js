@@ -9,7 +9,7 @@
 const VERSION = '0.2.2';
 
 import { parseTimeToSortableValue, formatHistoricalDate, extractYear } from './date-handlers.js';
-import { initMap, showLocationOnMap } from './map-utils.js';
+import { initMap, showLocationOnMap, getCoordinates } from './map-utils.js';
 
 // Define prominent labels and their associated colors
 const prominentLabels = [
@@ -25,6 +25,19 @@ const prominentLabels = [
 
 // Global variable to store total count of high/medium confidence events
 let totalHighMediumCount = 0;
+
+// Add toast function
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    // Remove the toast after animation
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
 
 /**
  * Sort events by time and return a sorted index + time array.
@@ -42,14 +55,89 @@ function sortEventsByTime(events) {
     return sortedIndices;
 }
 
-/**
+/** OLD CODE
  * Joins the list of locations into a single string.
  * @param {Array} locations - List of locations.
  * @returns {string} - Comma-separated locations or an empty string.
- */
 function formatLocations(locations) {
     if (!locations || locations.length === 0) return "";
     return locations.join(", ");
+}
+ */
+
+/**
+ * Format locations for display, handling both old and new format
+ * @param {Array} locations - Array of locations (either strings or objects)
+ * @returns {string} - Formatted location string
+ */
+function formatLocations(locations) {
+    if (!locations || locations.length === 0) return "";
+    
+    // Handle new format (array of location objects)
+    if (typeof locations[0] === 'object') {
+        return locations.map(loc => {
+            // Use the full name if available, otherwise build from components
+            if (loc.name) {
+                return loc.name;
+            }
+            // Build from components if name is not available
+            const parts = [];
+            if (loc.city && loc.city !== "Unknown") parts.push(loc.city);
+            if (loc.region && loc.region !== "Unknown") parts.push(loc.region);
+            if (loc.country && loc.country !== "Unknown") parts.push(loc.country);
+            return parts.join(", ");
+        }).join("; ");
+    }
+    
+    // Handle old format (array of strings)
+    return locations.join(", ");
+}
+
+/**
+ * Get location for map display, including full hierarchy for better geocoding
+ * @param {Array} locations - Array of locations (either strings or objects)
+ * @returns {string} - Location string for geocoding
+ */
+function getMapLocation(locations) {
+    if (!locations || locations.length === 0) return null;
+    
+    // Handle new format
+    if (typeof locations[0] === 'object') {
+        const firstLoc = locations[0];
+        // Always try to include full hierarchy for better geocoding
+        const parts = [];
+        
+        if (firstLoc.city && firstLoc.city !== "Unknown") {
+            if (firstLoc.region && firstLoc.region !== "Unknown" && 
+                firstLoc.country && firstLoc.country !== "Unknown") {
+                // Full hierarchy available
+                return `${firstLoc.city}, ${firstLoc.region}, ${firstLoc.country}`;
+            }
+            // Partial hierarchy
+            if (firstLoc.country && firstLoc.country !== "Unknown") {
+                return `${firstLoc.city}, ${firstLoc.country}`;
+            }
+            // Just city
+            return firstLoc.city;
+        }
+        
+        // If no city, try region + country
+        if (firstLoc.region && firstLoc.region !== "Unknown" &&
+            firstLoc.country && firstLoc.country !== "Unknown") {
+            return `${firstLoc.region}, ${firstLoc.country}`;
+        }
+        
+        // Fallback to country
+        if (firstLoc.country && firstLoc.country !== "Unknown") {
+            return firstLoc.country;
+        }
+        
+        // Last resort: use name field if everything else is unknown
+        return firstLoc.name || null;
+    }
+    
+    // Handle old format
+    return locations[0] ? `${locations[0]}` : null;
 }
 
 function setupNavigation() {
@@ -101,6 +189,46 @@ function setupNavigation() {
             });
         }
     });
+}
+
+async function handleLocationClick(locationSpan, event, mapLocation) {
+    try {
+        const mapPanel = document.getElementById('map-panel');
+        
+        // First ensure map panel is open
+        if (!mapPanel.classList.contains('open')) {
+            mapPanel.classList.add('open');
+            document.querySelector('.timeline-wrapper').classList.add('map-open');
+            // Wait for panel animation to complete
+            await new Promise(resolve => setTimeout(resolve, 300));
+        }
+
+        const coords = await getCoordinates(mapLocation, geocodeCache);
+        if (!coords) {
+            // Create toast inside map panel
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = `Location not found: ${mapLocation}`;
+            mapPanel.appendChild(toast);
+            
+            // Remove the toast after animation
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+
+            locationSpan.classList.remove('clickable');
+            locationSpan.classList.add('disabled');
+            locationSpan.style.cursor = 'not-allowed';
+            // Remove click event listener
+            locationSpan.replaceWith(locationSpan.cloneNode(true));
+        } else {
+            await showLocationOnMap(mapLocation, map, markersLayer, geocodeCache);
+        }
+    } catch (error) {
+        console.error('Error handling location:', error);
+    }
 }
 
 function updateEventCounts() {
@@ -295,19 +423,18 @@ fetch(dataFile)
             
                 // Add location click handler
                 const locationText = formatLocations(event.locations);
+
                 if (locationText) {
                     const timeDiv = eventDiv.querySelector('.event-time');
-                    timeDiv.innerHTML += `<span class="event-location clickable">📍 ${locationText}</span>`;
+                    timeDiv.innerHTML += `<span class="event-location clickable">⌖ ${locationText}</span>`;
                     
                     const locationSpan = timeDiv.querySelector('.event-location');
-                    locationSpan.addEventListener('click', (e) => {
+                    locationSpan.addEventListener('click', async (e) => {
                         e.stopPropagation();
-                        const mapPanel = document.getElementById('map-panel');
-                        if (!mapPanel.classList.contains('open')) {
-                            mapPanel.classList.add('open');
-                            document.querySelector('.timeline-wrapper').classList.add('map-open');
+                        const mapLocation = getMapLocation(event.locations);
+                        if (mapLocation) {
+                            await handleLocationClick(locationSpan, event, mapLocation);
                         }
-                        showLocationOnMap(locationText, map, markersLayer, geocodeCache);
                     });
                 }
 

@@ -58,36 +58,40 @@ export function initMap() {
 export async function getCoordinates(locationName, geocodeCache) {
   // Return from cache if available
   if (geocodeCache.has(locationName)) {
-    return geocodeCache.get(locationName);
+      return geocodeCache.get(locationName);
   }
 
-  // Rate limiting: wait a bit (1s) before calling the API
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // If location is marked as unknown in cache
+  if (geocodeCache.has(`unknown:${locationName}`)) {
+      return null;
+  }
 
   try {
-    const params = new URLSearchParams({
-      format: 'json',
-      q: locationName,
-      limit: 5,
-      'accept-language': 'en'
-    });
-    const response = await fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    if (data && data.length > 0) {
-      // Sort by importance
-      data.sort((a, b) => b.importance - a.importance);
-      const best = data[0];
-      const coords = [parseFloat(best.lat), parseFloat(best.lon)];
-      geocodeCache.set(locationName, coords);
-      return coords;
-    }
-    return null;
+      const params = new URLSearchParams({
+          format: 'json',
+          q: locationName,
+          limit: 5,
+          'accept-language': 'en'
+      });
+      const response = await fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`);
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      if (data && data.length > 0) {
+          // Sort by importance
+          data.sort((a, b) => b.importance - a.importance);
+          const best = data[0];
+          const coords = [parseFloat(best.lat), parseFloat(best.lon)];
+          geocodeCache.set(locationName, coords);
+          return coords;
+      }
+      // Cache unknown locations to prevent repeated lookups
+      geocodeCache.set(`unknown:${locationName}`, null);
+      return null;
   } catch (error) {
-    console.error('Geocoding error:', error);
-    return null;
+      console.error('Geocoding error:', error);
+      return null;
   }
 }
 
