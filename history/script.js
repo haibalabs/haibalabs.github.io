@@ -55,16 +55,6 @@ function sortEventsByTime(events) {
     return sortedIndices;
 }
 
-/** OLD CODE
- * Joins the list of locations into a single string.
- * @param {Array} locations - List of locations.
- * @returns {string} - Comma-separated locations or an empty string.
-function formatLocations(locations) {
-    if (!locations || locations.length === 0) return "";
-    return locations.join(", ");
-}
- */
-
 /**
  * Format locations for display, handling both old and new format
  * @param {Array} locations - Array of locations (either strings or objects)
@@ -191,27 +181,52 @@ function setupNavigation() {
     });
 }
 
+function handleInfoClick(url) {
+    const infoPanel = document.getElementById('info-panel');
+    const infoFrame = document.getElementById('info-frame');
+    const mapPanel = document.getElementById('map-panel');
+    const timelineWrapper = document.querySelector('.timeline-wrapper');
+    
+    // Load the URL
+    infoFrame.src = url;
+    
+    // Open info panel if not already open
+    if (!infoPanel.classList.contains('open')) {
+        infoPanel.classList.add('open');
+        timelineWrapper.classList.add('panel-open');
+    }
+    
+    // Manage panel layering
+    infoPanel.classList.add('top-panel');
+    mapPanel.classList.remove('top-panel');
+}
+
 async function handleLocationClick(locationSpan, event, mapLocation) {
     try {
         const mapPanel = document.getElementById('map-panel');
+        const infoPanel = document.getElementById('info-panel');
+        const timelineWrapper = document.querySelector('.timeline-wrapper');
         
         // First ensure map panel is open
         if (!mapPanel.classList.contains('open')) {
             mapPanel.classList.add('open');
-            document.querySelector('.timeline-wrapper').classList.add('map-open');
+            timelineWrapper.classList.add('panel-open');
             // Wait for panel animation to complete
             await new Promise(resolve => setTimeout(resolve, 300));
         }
+        
+        // Manage panel layering
+        mapPanel.classList.add('top-panel');
+        infoPanel.classList.remove('top-panel');
 
         const coords = await getCoordinates(mapLocation, geocodeCache);
         if (!coords) {
-            // Create toast inside map panel
+            // Toast handling...
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.textContent = `Location not found: ${mapLocation}`;
             mapPanel.appendChild(toast);
             
-            // Remove the toast after animation
             setTimeout(() => {
                 if (toast.parentNode) {
                     toast.remove();
@@ -221,7 +236,6 @@ async function handleLocationClick(locationSpan, event, mapLocation) {
             locationSpan.classList.remove('clickable');
             locationSpan.classList.add('disabled');
             locationSpan.style.cursor = 'not-allowed';
-            // Remove click event listener
             locationSpan.replaceWith(locationSpan.cloneNode(true));
         } else {
             await showLocationOnMap(mapLocation, map, markersLayer, geocodeCache);
@@ -426,17 +440,35 @@ fetch(dataFile)
 
                 if (locationText) {
                     const timeDiv = eventDiv.querySelector('.event-time');
-                    timeDiv.innerHTML += `<span class="event-location clickable">⌖ ${locationText}</span>`;
-                    
-                    const locationSpan = timeDiv.querySelector('.event-location');
+                    const locationSpan = document.createElement('span');
+                    locationSpan.className = 'event-location clickable';
+                    locationSpan.innerHTML = `⌖ ${locationText}`;
+
                     locationSpan.addEventListener('click', async (e) => {
                         e.stopPropagation();
                         const mapLocation = getMapLocation(event.locations);
                         if (mapLocation) {
+                            console.log('Map location:', mapLocation); // Debug log
                             await handleLocationClick(locationSpan, event, mapLocation);
                         }
                     });
+
+                    timeDiv.appendChild(locationSpan);
                 }
+
+                // Add Wikipedia link if available
+                if (event.wikipedia_url) {
+                    const timeDiv = eventDiv.querySelector('.event-time');
+                    const wikiSpan = document.createElement('span');
+                    wikiSpan.className = 'wiki-link';
+                    wikiSpan.textContent = '📜';
+                    wikiSpan.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        handleInfoClick(event.wikipedia_url);
+                    });
+
+                    timeDiv.appendChild(wikiSpan);
+                }        
 
                 timelineContainer.appendChild(eventDiv);
             });
@@ -445,22 +477,113 @@ fetch(dataFile)
             updateEventCounts();
         }
 
-        // Update map panel toggle to handle the timeline wrapper class
+        // Update map panel toggle
         document.getElementById('toggle-map').addEventListener('click', () => {
             const mapPanel = document.getElementById('map-panel');
+            const infoPanel = document.getElementById('info-panel');
             const timelineWrapper = document.querySelector('.timeline-wrapper');
             const isOpen = mapPanel.classList.contains('open');
+            const isTop = mapPanel.classList.contains('top-panel');
             
-            if (isOpen) {
+            if (isOpen && isTop) {
+                // Close only if it's on top
                 mapPanel.classList.remove('open');
-                timelineWrapper.classList.remove('map-open');
+                mapPanel.classList.remove('top-panel');
+                if (!infoPanel.classList.contains('open')) {
+                    timelineWrapper.classList.remove('panel-open');
+                }
+            } else if (isOpen && !isTop) {
+                // Bring to top if it's open but not on top
+                mapPanel.classList.add('top-panel');
+                infoPanel.classList.remove('top-panel');
             } else {
+                // Open if it's closed
                 mapPanel.classList.add('open');
-                timelineWrapper.classList.add('map-open');
+                mapPanel.classList.add('top-panel');
+                infoPanel.classList.remove('top-panel');
+                timelineWrapper.classList.add('panel-open');
             }
             
-            map.invalidateSize(); // Refresh map size after panel toggle
+            map.invalidateSize();
         });
+
+        // Update info panel toggle
+        document.getElementById('toggle-info').addEventListener('click', () => {
+            const infoPanel = document.getElementById('info-panel');
+            const mapPanel = document.getElementById('map-panel');
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+            const isOpen = infoPanel.classList.contains('open');
+            const isTop = infoPanel.classList.contains('top-panel');
+            
+            if (isOpen && isTop) {
+                // Close only if it's on top
+                infoPanel.classList.remove('open');
+                infoPanel.classList.remove('top-panel');
+                if (!mapPanel.classList.contains('open')) {
+                    timelineWrapper.classList.remove('panel-open');
+                }
+            } else if (isOpen && !isTop) {
+                // Bring to top if it's open but not on top
+                infoPanel.classList.add('top-panel');
+                mapPanel.classList.remove('top-panel');
+            } else {
+                // Open if it's closed
+                infoPanel.classList.add('open');
+                infoPanel.classList.add('top-panel');
+                mapPanel.classList.remove('top-panel');
+                timelineWrapper.classList.add('panel-open');
+                
+                // Show help text if iframe is empty
+                const infoFrame = document.getElementById('info-frame');
+                if (!infoFrame.src) {
+                    showInfoPanelHelp();
+                }
+            }
+        });
+
+        // Add this new function to show help text in the info panel
+        function showInfoPanelHelp() {
+            const infoFrame = document.getElementById('info-frame');
+            const helpHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body {
+                            font-family: 'Roboto', Arial, sans-serif;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            margin: 0;
+                            background-color: #f8f8f8;
+                            color: #666;
+                        }
+                        .help-message {
+                            text-align: center;
+                            padding: 2rem;
+                            font-size: 1.2rem;
+                            line-height: 1.6;
+                            max-width: 80%;
+                        }
+                        .scroll-icon {
+                            font-size: 2rem;
+                            margin: 1rem 0;
+                            display: block;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="help-message">
+                        <span class="scroll-icon">📜</span>
+                        <p>Click on an event's scroll icon to view additional historical information.</p>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            infoFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(helpHtml);
+        }
 
         // Initialize
         renderFilters();

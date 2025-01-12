@@ -436,13 +436,12 @@ body.hide-low-confidence .event[data-confidence="low"] {
     background: #f5f5f5;
 }
 
-/* Adjust timeline when map is open */
-.timeline-wrapper.map-open {
-    padding-right: 750px;
+.timeline-wrapper.panel-open .timeline {
+    margin: auto;  /* Keep timeline centered in remaining space */
 }
 
-.timeline-wrapper.map-open .timeline {
-    margin: auto;  /* Keep timeline centered in remaining space */
+.timeline-wrapper.panel-open {
+    padding-right: 750px;
 }
 
 /* Toast notification */
@@ -472,3 +471,74 @@ body.hide-low-confidence .event[data-confidence="low"] {
     cursor: not-allowed;
     opacity: 0.7;
 }
+
+/* Info Panel Styles */
+.info-panel {
+    position: fixed;
+    top: var(--header-height, 0px);
+    right: -750px; /* Start hidden */
+    width: 750px;
+    height: calc(100vh - var(--header-height, 0px));
+    background: white;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    z-index: 89; /* Default lower than map-panel */
+}
+
+.info-panel.open {
+    right: 0;
+}
+
+.info-panel.top-panel {
+    z-index: 91; /* Higher than map-panel when active */
+}
+
+.map-panel.top-panel {
+    z-index: 91; /* Higher than info-panel when active */
+}
+
+.info-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.toggle-info-btn {
+    position: absolute;
+    left: -40px;
+    top: 70px; /* Position below map toggle */
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.toggle-info-btn:hover {
+    background: #f5f5f5;
+}
+
+/* Wikipedia link style */
+.wiki-link {
+    color: #666;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 2px 6px;
+    margin: -2px -6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.wiki-link:hover {
+    color: #333;
+    background: rgba(0, 0, 0, 0.05);
+}
+
