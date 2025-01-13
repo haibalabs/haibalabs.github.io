@@ -181,26 +181,6 @@ function setupNavigation() {
     });
 }
 
-function handleInfoClick(url) {
-    const infoPanel = document.getElementById('info-panel');
-    const infoFrame = document.getElementById('info-frame');
-    const mapPanel = document.getElementById('map-panel');
-    const timelineWrapper = document.querySelector('.timeline-wrapper');
-    
-    // Load the URL
-    infoFrame.src = url;
-    
-    // Open info panel if not already open
-    if (!infoPanel.classList.contains('open')) {
-        infoPanel.classList.add('open');
-        timelineWrapper.classList.add('panel-open');
-    }
-    
-    // Manage panel layering
-    infoPanel.classList.add('top-panel');
-    mapPanel.classList.remove('top-panel');
-}
-
 async function handleLocationClick(locationSpan, event, mapLocation) {
     try {
         const mapPanel = document.getElementById('map-panel');
@@ -321,6 +301,271 @@ function jumpToDate(targetYear) {
             dateInput.value = `${targetYear}`;
         }
     }
+}
+
+async function loadWikipediaContent(title) {
+    const api = 'https://en.wikipedia.org/w/api.php';
+    const params = new URLSearchParams({
+        action: 'parse',  // Use parse instead of query
+        page: decodeURIComponent(title),
+        format: 'json',
+        prop: 'text|sections',  // Get both text and section structure
+        redirects: 1,
+        origin: '*'
+    });
+
+    const response = await fetch(`${api}?${params}`);
+    const data = await response.json();
+    
+    // The content will be in data.parse.text['*']
+    let content = data.parse.text['*'];
+    
+    // Replace relative image URLs with absolute ones
+    content = content.replace(/src="\/\//g, 'src="https://');
+    content = content.replace(/srcset="\/\//g, 'srcset="https://');
+    
+    // Replace any src="/..." that doesn't start with a second slash
+    content = content.replace(/src="\/(?!\/)/g, 'src="https://en.wikipedia.org/');
+    content = content.replace(/srcset="\/(?!\/)/g, 'srcset="https://en.wikipedia.org/');
+
+    // Handle wiki-relative URLs
+    content = content.replace(/href="\/wiki\//g, 'href="https://wikipedia.org/wiki/');
+
+    return {
+        title: data.parse.title,
+        content: content,
+        sections: data.parse.sections
+    };
+}
+
+async function handleInfoClick(url) {
+    // Extract the title from Wikipedia URL
+    const title = url.split('/wiki/')[1];
+    console.log('Wikipedia title:', title);  // Debug title
+    
+    const infoPanel = document.getElementById('info-panel');
+    const infoFrame = document.getElementById('info-frame');
+    const mapPanel = document.getElementById('map-panel');
+    const timelineWrapper = document.querySelector('.timeline-wrapper');
+    
+    try {
+        // Fetch content while showing loading state
+        showInfoPanelLoading();
+        const content = await loadWikipediaContent(title);
+        console.log('Processed content:', content);  // Debug processed content
+        
+        // Create clean HTML with just the content we want
+        const cleanContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {
+                    font-family: 'Roboto', Arial, sans-serif;
+                    line-height: 1.6;
+                    padding: 2rem;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    color: #333;
+                }
+                h1 { 
+                    font-family: 'EB Garamond', serif;
+                    color: #2c1810;
+                    margin-bottom: 1rem;
+                    font-size: 2em;
+                }
+                h2, h3, h4 {
+                    font-family: 'EB Garamond', serif;
+                    color: #433630;
+                    margin-top: 1.5rem;
+                    margin-bottom: 1rem;
+                }
+                .mw-parser-output > p {
+                    margin: 1em 0;
+                }
+                /* Hide edit links and other wiki UI elements */
+                .mw-editsection,
+                .navigation-not-searchable,
+                .metadata,
+                .reference,
+                .reflist,
+                .navbox {
+                    display: none;
+                }
+                /* Style lists */
+                .mw-parser-output ul {
+                    list-style-type: disc;
+                    margin: 1em 0;
+                    padding-left: 2em;
+                }
+                .mw-parser-output li {
+                    margin: 0.5em 0;
+                }
+                /* Indent subsections */
+                .mw-parser-output h3 {
+                    margin-left: 1em;
+                }
+                .mw-parser-output h4 {
+                    margin-left: 2em;
+                }
+                .wiki-link {
+                    color: #2196F3;
+                    text-decoration: none;
+                    display: inline-block;
+                    margin-top: 2rem;
+                    padding: 0.5rem 1rem;
+                    border: 1px solid #2196F3;
+                    border-radius: 4px;
+                    transition: all 0.2s ease;
+                }
+                .wiki-link:hover {
+                    background: #2196F3;
+                    color: white;
+                }
+            /* Additional style to ensure images display properly */
+            .mw-parser-output img {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 1em auto;
+            }
+
+            /* hide any other Wikipedia UI elements we don't want */
+            .nomobile,
+            .side-box,
+            .infobox,
+            .gallery,
+            .stack.mw-stack.stack-clear-right,
+            .mw-stack,
+            .sidebar-pretitle,
+            .metadata,
+            .navbox,
+            .shortdescription,
+            .mw-editsection,
+            .reference,
+            .reflist,
+            .refbegin,
+            .navigation-not-searchable {
+                display: none !important;
+            }
+            /* Hide specific sections including their headers and content */
+            h2#Notes,
+            h2#References,
+            h2#See_also,
+            h2#External_links,
+            h2#Sources,
+            h3#Citations,
+            h3#Further_reading,
+            #Notes ~ *,
+            #References ~ *,
+            #See_also ~ *,
+            #External_links ~ *,
+            #Sources ~ * {
+                display: none !important;
+            }
+
+            /* Also hide the heading spans */
+            h2[id^="Notes"],
+            h2[id^="References"],
+            h2[id^="See_also"],
+            h2[id^="External_links"],
+            h3[id^="Citations"],
+            h3[id^="Further_reading"],
+            h2[id^="Sources"] {
+                display: none !important;
+            }
+            </style>
+        </head>
+        <body>
+            <h1>${content.title}</h1>
+            <div class="mw-parser-output">
+                ${content.content}
+            </div>
+            <a class="wiki-link" href="${url}" target="_blank">
+                View on Wikipedia ↗
+            </a>
+        </body>
+        </html>
+    `;
+
+    //    infoFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(cleanContent);
+        infoFrame.srcdoc = cleanContent;
+    } catch (error) {
+        console.error('Error loading Wikipedia content:', error);
+        // Show error state
+        showInfoPanelError();
+    }
+    
+    // Handle panel display
+    if (!infoPanel.classList.contains('open')) {
+        infoPanel.classList.add('open');
+        timelineWrapper.classList.add('panel-open');
+    }
+    infoPanel.classList.add('top-panel');
+    mapPanel.classList.remove('top-panel');
+}
+
+function showInfoPanelLoading() {
+    const infoFrame = document.getElementById('info-frame');
+    const loadingHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    font-family: 'Roboto', Arial, sans-serif;
+                }
+                .loader {
+                    border: 3px solid #f3f3f3;
+                    border-radius: 50%;
+                    border-top: 3px solid #2196F3;
+                    width: 40px;
+                    height: 40px;
+                    animation: spin 1s linear infinite;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="loader"></div>
+        </body>
+        </html>
+    `;
+    infoFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(loadingHtml);
+}
+
+function showInfoPanelError() {
+    const infoFrame = document.getElementById('info-frame');
+    const errorHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    font-family: 'Roboto', Arial, sans-serif;
+                    color: #d32f2f;
+                }
+            </style>
+        </head>
+        <body>
+            <div>Error loading content. Please try again later.</div>
+        </body>
+        </html>
+    `;
+    infoFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(errorHtml);
 }
 
 const { map, markersLayer, geocodeCache } = initMap();
@@ -575,8 +820,7 @@ fetch(dataFile)
                 </head>
                 <body>
                     <div class="help-message">
-                        <span class="scroll-icon">📜</span>
-                        <p>Click on an event's scroll icon to view additional historical information.</p>
+                        <p>Click on an event's scroll 📜 to view additional information.</p>
                     </div>
                 </body>
                 </html>

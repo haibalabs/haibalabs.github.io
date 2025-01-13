@@ -1,8 +1,10 @@
 ## History Timeline - Dev Diary
 
 ### Day 4. Sun 01/12/25
+Today the focus was on adding an info panel, and massaging the wikipedia api to get enough but minimal info displayed.
 
 - Added a "more info" panel where we display the page of the url attached to an element.
+- Processed 17th and 18th century starter events
 
 ### Day 3. Sat 01/11/25
 We did a quick estimate for how many events we should be able to handle to cover a decent amount of history. Answer: 80M events. At 1k Maximum per event, we're below 100GB.
