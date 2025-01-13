@@ -1,4 +1,17 @@
-## History Timeline - Dev Diary
+# [History Timeline](https://haibalabs.github.io/history) - Dev Diary
+
+### The Project
+
+**“What Happened Was…”**
+
+A dynamic exploration of everything that’s ever happened since the dawn of humanity; an interactive timeline with a fresh perspective on history designed to inform and spark conversations. 
+
+Casual learners, students, or professors, will discover events across eras, locations, and interests, contribute their knowledge, and engage in conversations about the events that shaped our history. 
+
+The mother of all feeds will make history accessible, immersive, and fun to everyone.
+
+---
+### The Journey
 
 ### Day 4. Sun 01/12/25
 Today the focus was on adding an info panel, and massaging the wikipedia api to get enough but minimal info displayed.
@@ -21,8 +34,6 @@ In details:
 - A much more complex date parsing routines handling a variety of expressions of days, months, years, seasons, and approximate dates of all sorts.
 - A test harness for date parsing both for display and sorting and .
 - Out of 8226, we fixed by hand 6 event dates. For some the format is not supported yet, for most the data was not complete.
-
-Here's the public timeline: [Link Text](https://haibalabs.github.io/history)
 
 ### Day 1. Thu 01/09/25
 Today we started an experimental experience based on one premise:
