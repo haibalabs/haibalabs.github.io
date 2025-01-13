@@ -116,3 +116,60 @@ export async function showLocationOnMap(locationName, map, markersLayer, geocode
   // Zoom in on this location. Adjust zoom level to your liking.
   map.setView(coords, 6);
 }
+
+export function formatLocations(locations) {
+  if (!locations || locations.length === 0) return "";
+  
+  // Handle new format (array of location objects)
+  if (typeof locations[0] === 'object') {
+      return locations.map(loc => {
+          // Use the full name if available, otherwise build from components
+          if (loc.name) {
+              return loc.name;
+          }
+          // Build from components if name is not available
+          const parts = [];
+          if (loc.city && loc.city !== "Unknown") parts.push(loc.city);
+          if (loc.region && loc.region !== "Unknown") parts.push(loc.region);
+          if (loc.country && loc.country !== "Unknown") parts.push(loc.country);
+          return parts.join(", ");
+      }).join("; ");
+  }
+  
+  // Handle old format (array of strings)
+  return locations.join(", ");
+}
+
+export function getMapLocation(locations) {
+  if (!locations || locations.length === 0) return null;
+  
+  // Handle new format
+  if (typeof locations[0] === 'object') {
+      const firstLoc = locations[0];
+      
+      if (firstLoc.city && firstLoc.city !== "Unknown") {
+          if (firstLoc.region && firstLoc.region !== "Unknown" && 
+              firstLoc.country && firstLoc.country !== "Unknown") {
+              return `${firstLoc.city}, ${firstLoc.region}, ${firstLoc.country}`;
+          }
+          if (firstLoc.country && firstLoc.country !== "Unknown") {
+              return `${firstLoc.city}, ${firstLoc.country}`;
+          }
+          return firstLoc.city;
+      }
+      
+      if (firstLoc.region && firstLoc.region !== "Unknown" &&
+          firstLoc.country && firstLoc.country !== "Unknown") {
+          return `${firstLoc.region}, ${firstLoc.country}`;
+      }
+      
+      if (firstLoc.country && firstLoc.country !== "Unknown") {
+          return firstLoc.country;
+      }
+      
+      return firstLoc.name || null;
+  }
+  
+  // Handle old format
+  return locations[0] ? `${locations[0]}` : null;
+}
