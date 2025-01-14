@@ -48,9 +48,13 @@ export class EventManager {
             .filter(event => {
                 const matchesFilter = !filter || filter === 'all' || 
                     (event.categories && event.categories.includes(filter));
-                const matchesSearch = !searchTerm || 
-                    event.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase());
+                
+                const matchesSearch = !searchTerm || (
+                    (event.name && event.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                    (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                    (event.enhanced_description && event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase()))
+                );
+                
                 return matchesFilter && matchesSearch;
             });
     }
