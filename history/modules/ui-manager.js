@@ -7,9 +7,28 @@ export class UIManager {
     constructor(eventManager, panelManager) {
         this.eventManager = eventManager;
         this.panelManager = panelManager;
-        this.timelineContainer = document.getElementById('timeline');
         this.filtersContainer = document.querySelector('.filters');
-        
+
+        // initial filtering state
+        this.currentFilter = null;
+        this.currentSearch = '';
+        this.filteredCount = 0;
+
+        this.timelineContainer = document.getElementById('timeline-wrapper');
+        this.timelineContainer.addEventListener('scroll', () => this.handleScroll());
+
+        // Add virtual scrolling properties
+        this.buffer = 5;       // Number of items to render above/below viewport
+
+        this.resetWindow();
+
+        // Add height tracking
+        this.eventHeights = new Map(); // Cache for measured heights
+        this.totalHeight = 0; // Total scrollable height
+
+        // Add position tracking
+        this.positions = new Map(); // Store cumulative positions
+                
         // Initial spacing update
         this.updateTimelineSpacing();
         
@@ -18,6 +37,155 @@ export class UIManager {
 
         // Setup navigation controls
         this.setupNavigation();        
+
+        // Add resize handler with debounce
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                this.needsFullMeasure = true; // Force remeasure
+                this.renderEvents(); // Re-render with new measurements
+            }, 150); // Debounce resize events
+        });
+    }
+
+    resetWindow() {
+        this.startIndex = 0;
+        this.endIndex = 0;
+        this.lastScrollPosition = 0;
+        this.needsFullMeasure = true;
+    }
+
+    handleScroll() {
+        const scrollTop = this.timelineContainer.scrollTop;
+        const viewportHeight = this.timelineContainer.clientHeight;
+        const scrollThreshold = viewportHeight * 0.2; // Update when scrolled 20% of viewport
+        
+        if (Math.abs(scrollTop - this.lastScrollPosition) > scrollThreshold) {
+            this.lastScrollPosition = scrollTop;
+            this.updateVisibleRange();
+        }
+    }
+
+    handleNoResults(contentContainer, placeholder) {
+        const noResultsDiv = document.createElement('div');
+        noResultsDiv.className = 'no-results';
+        noResultsDiv.innerHTML = `
+            <div class="empty-message">
+                <span class="empty-emoji">😕</span>
+                <p>No events match the search or filtering criteria</p>
+            </div>
+        `;
+        contentContainer.appendChild(noResultsDiv);
+        placeholder.style.height = '0px';
+    }
+
+    performInitialMeasurement(filteredEvents, contentContainer) {
+        // Render all events first without positioning
+        filteredEvents.forEach(event => {
+            const eventDiv = this.renderEvent(event);
+            contentContainer.appendChild(eventDiv);
+        });
+
+        // Schedule measurement and re-render for next frame
+        requestAnimationFrame(() => {
+            // Measure actual rendered heights
+            const renderedEvents = contentContainer.querySelectorAll('.event');
+            renderedEvents.forEach((div, index) => {
+                const height = div.getBoundingClientRect().height;
+                const event = filteredEvents[index];
+                this.eventHeights.set(event.name, height);
+            });
+
+            this.needsFullMeasure = false;
+            this.calculatePositions(filteredEvents);
+
+            this.updateVisibleRange();  // This will calculate correct range
+
+            // Re-render with correct measurements
+            this.renderEvents();
+        });
+    }
+
+    renderEvents() {
+        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        this.filteredCount = filteredEvents.length;
+
+        const contentContainer = document.getElementById('timeline-content');
+        const placeholder = document.getElementById('timeline-placeholder');
+    
+        // Clear current content
+        contentContainer.innerHTML = '';
+    
+        // no-results handling
+        if (filteredEvents.length === 0) {
+            this.handleNoResults(contentContainer, placeholder);
+            return;
+        }
+    
+        // Schedule measurement and re-render
+        if (this.needsFullMeasure) {
+            this.performInitialMeasurement(filteredEvents, contentContainer);
+            return;
+        }
+    
+        // Normal render with positions
+        this.calculatePositions(filteredEvents);
+        placeholder.style.height = `${this.totalHeight}px`;
+    
+        for (let i = this.startIndex; i < this.endIndex; i++) {
+            if (i >= filteredEvents.length) break;
+            
+            const event = filteredEvents[i];
+            const sortableTime = parseTimeToSortableValue(event.enhanced_time);
+            const eventDiv = this.renderEvent(event, sortableTime);
+            
+            eventDiv.style.position = 'absolute';
+            eventDiv.style.top = `${this.positions.get(i)}px`;
+            
+            contentContainer.appendChild(eventDiv);
+        }
+    
+        this.updateEventCounts();
+        this.updateTimelineSpacing();
+    }
+
+    calculatePositions(events) {    
+        let currentPosition = 0;
+        this.positions.clear();
+
+        events.forEach((event, index) => {
+            this.positions.set(index, currentPosition);
+            const height = this.eventHeights.get(event.name);
+            const totalSpacing = height + 16;
+            
+            currentPosition += totalSpacing;
+        });
+
+        this.totalHeight = currentPosition;
+    }
+
+    updateVisibleRange() {
+        const scrollTop = this.timelineContainer.scrollTop;
+        const viewportHeight = this.timelineContainer.clientHeight;
+        const bufferHeight = viewportHeight * 0.5; // 50% of viewport as buffer
+        
+        // Find visible range using pre-calculated positions
+        let startIndex = 0;
+        while (startIndex < this.positions.size && 
+            this.positions.get(startIndex) < scrollTop - bufferHeight) {
+            startIndex++;
+        }
+
+        let endIndex = startIndex;
+        while (endIndex < this.positions.size && 
+            this.positions.get(endIndex) < scrollTop + viewportHeight + bufferHeight) {
+            endIndex++;
+        }
+
+        this.startIndex = Math.max(0, startIndex - 1);
+        this.endIndex = Math.min(this.positions.size, endIndex + 1);
+        this.renderEvents();
     }
 
     updateTimelineSpacing() {
@@ -56,33 +224,7 @@ export class UIManager {
 
         return eventDiv;
     }
-
-    renderEvents(filter = null, searchTerm = '') {
-        this.timelineContainer.innerHTML = '';
-        const filteredEvents = this.eventManager.getFilteredEvents(filter, searchTerm);
-        
-        if (filteredEvents.length === 0) {
-            const noResultsDiv = document.createElement('div');
-            noResultsDiv.className = 'no-results';
-            noResultsDiv.innerHTML = `
-                <div class="empty-message">
-                    <span class="empty-emoji">😕</span>
-                    <p>No events match the search or filtering criteria</p>
-                </div>
-            `;
-            this.timelineContainer.appendChild(noResultsDiv);
-        } else {
-            filteredEvents.forEach(event => {
-                const sortableTime = parseTimeToSortableValue(event.enhanced_time);
-                const eventDiv = this.renderEvent(event, sortableTime);
-                this.timelineContainer.appendChild(eventDiv);
-            });
-        }
-    
-        this.updateEventCounts();
-        this.updateTimelineSpacing();
-    }
-    
+   
     getPrimaryLabel(event) {
         return PROMINENT_LABELS.find(label => 
             event.categories && event.categories.includes(label.name)
@@ -156,7 +298,9 @@ export class UIManager {
                 document.querySelectorAll('.filters button').forEach(btn => 
                     btn.classList.remove('active'));
                 button.classList.add('active');
-                this.renderEvents(label.name === 'all' ? null : label.name);
+                this.currentFilter = label.name === 'all' ? null : label.name;
+                this.resetWindow();
+                this.renderEvents();
             });
 
             this.filtersContainer.appendChild(button);
@@ -164,16 +308,8 @@ export class UIManager {
     }
 
     updateEventCounts() {
-        const visibleCount = document.querySelectorAll(
-            '.event:not([style*="display: none"]):is([data-confidence="high"], [data-confidence="medium"])'
-        ).length;
-        
-        const totalCount = document.querySelectorAll(
-            '.event:is([data-confidence="high"], [data-confidence="medium"])'
-        ).length;
-        
-        document.getElementById('visibleCount').textContent = visibleCount;
-        document.getElementById('totalCount').textContent = totalCount;
+        document.getElementById('visibleCount').textContent = this.filteredCount;
+        document.getElementById('totalCount').textContent = this.eventManager.getHighMediumCount();    
     }
     
     setupNavigation() {
@@ -183,8 +319,9 @@ export class UIManager {
         searchInput.addEventListener('input', (e) => {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
-                const searchTerm = e.target.value.toLowerCase();
-                this.renderEvents(null, searchTerm);
+                this.currentSearch = e.target.value.toLowerCase();
+                this.resetWindow();
+                this.renderEvents();
             }, 300);
         });
 
@@ -209,36 +346,79 @@ export class UIManager {
         }
 
         const targetTime = parseTimeToSortableValue(targetYear.toString());
-        const events = Array.from(document.querySelectorAll('.event'));
-        const targetEvent = events.find(event => 
-            parseFloat(event.getAttribute('data-sortable-time')) >= targetTime
+        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        
+        // Find the target index in our data rather than DOM
+        const targetIndex = filteredEvents.findIndex(event => 
+            parseTimeToSortableValue(event.enhanced_time) >= targetTime
         );
 
-        if (targetEvent) {
-            this.scrollToEvent(targetEvent);
-            this.highlightEvent(targetEvent);
+        if (targetIndex !== -1) {
+            // Update window to include target event
+            this.startIndex = Math.max(0, targetIndex - 1);
+            this.endIndex = this.startIndex + 3; // Show a few events
+            this.lastScrollPosition = this.positions.get(targetIndex) || 0;
+            
+            // Render the new window
+            this.renderEvents();
+            
+            // Scroll to the position
+            this.timelineContainer.scrollTo({
+                top: this.lastScrollPosition,
+                behavior: 'smooth'
+            });
+
             document.getElementById('dateInput').value = `${targetYear}`;
         } else {
             // If no later events exist, jump to last event
-            const lastEvent = events[events.length - 1];
-            if (lastEvent) {
-                this.scrollToEvent(lastEvent);
+            const lastIndex = filteredEvents.length - 1;
+            if (lastIndex >= 0) {
+                this.startIndex = Math.max(0, lastIndex - 2);
+                this.endIndex = lastIndex + 1;
+                this.lastScrollPosition = this.positions.get(lastIndex) || 0;
+                this.needsFullMeasure = true; 
+                this.renderEvents();
+                
+                this.timelineContainer.scrollTo({
+                    top: this.lastScrollPosition,
+                    behavior: 'smooth'
+                });
+                
                 document.getElementById('dateInput').value = `${targetYear}`;
             }
         }
     }
 
     jumpToStart() {
-        const firstEvent = document.querySelector('.event');
-        if (firstEvent) {
-            this.scrollToEvent(firstEvent);
+        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        if (filteredEvents.length > 0) {
+            this.startIndex = 0;
+            this.endIndex = 3; // Show first few events
+            this.lastScrollPosition = 0;
+            this.needsFullMeasure = true; 
+            this.renderEvents();
+            
+            this.timelineContainer.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         }
     }
 
     jumpToEnd() {
-        const lastEvent = document.querySelector('.event:last-child');
-        if (lastEvent) {
-            this.scrollToEvent(lastEvent);
+        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        if (filteredEvents.length > 0) {
+            const lastIndex = filteredEvents.length - 1;
+            this.startIndex = Math.max(0, lastIndex - 2);
+            this.endIndex = lastIndex + 1;
+            this.lastScrollPosition = this.positions.get(lastIndex) || 0;
+            this.needsFullMeasure = true; 
+            this.renderEvents();
+            
+            this.timelineContainer.scrollTo({
+                top: this.lastScrollPosition,
+                behavior: 'smooth'
+            });
         }
     }
 

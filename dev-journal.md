@@ -13,6 +13,12 @@ The mother of all feeds will make history accessible, immersive, and fun to ever
 ---
 ### The Journey
 
+### Day 7. Wed 01/15/25
+In the last 3 days we've been focused on implementation and code organisation.
+
+- Implemented virtual infinit scrolling so we can handle thousands of events with minimal HTML overhead.
+- Refactored various modules out of the big spaghetti we had before.
+
 ### Day 4. Sun 01/12/25
 Today the focus was on adding an info panel, and massaging the wikipedia api to get enough but minimal info displayed.
 

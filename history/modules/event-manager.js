@@ -46,6 +46,9 @@ export class EventManager {
         return this.sortedIndices
             .map(({ index }) => this.events[index])
             .filter(event => {
+                // Only include high and medium confidence events
+                const hasAcceptableConfidence = event.confidence !== 'low';
+    
                 const matchesFilter = !filter || filter === 'all' || 
                     (event.categories && event.categories.includes(filter));
                 
@@ -55,9 +58,9 @@ export class EventManager {
                     (event.enhanced_description && event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase()))
                 );
                 
-                return matchesFilter && matchesSearch;
+                return hasAcceptableConfidence && matchesFilter && matchesSearch;
             });
-    }
+    }    
 
     getHighMediumCount() {
         return this.events.filter(e => e.confidence !== 'low').length;

@@ -12,7 +12,10 @@ async function initializeApp() {
     document.getElementById('versionNumber').textContent = VERSION;
     
     const eventManager = new EventManager();
-    const panelManager = new PanelManager(map, markersLayer, geocodeCache);
+    const panelManager = new PanelManager(map, markersLayer, geocodeCache, () => {
+        uiManager.needsFullMeasure = true; // Force remeasure since width changed
+        uiManager.renderEvents();
+    });
     const uiManager = new UIManager(eventManager, panelManager);
     
     // Get data file from URL params
@@ -23,6 +26,8 @@ async function initializeApp() {
         document.body.classList.add('hide-low-confidence');
         await eventManager.loadEvents(dataFile);
         uiManager.renderFilters();
+
+        // Calculate initial visible range and render
         uiManager.renderEvents();
     } catch (error) {
         console.error('Failed to initialize app:', error);

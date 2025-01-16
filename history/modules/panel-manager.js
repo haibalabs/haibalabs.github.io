@@ -2,10 +2,11 @@
 import { getCoordinates, showLocationOnMap } from './map-utils.js';
 
 export class PanelManager {
-    constructor(map, markersLayer, geocodeCache) {
+    constructor(map, markersLayer, geocodeCache, onPanelStateChange) {
         this.map = map;
         this.markersLayer = markersLayer;
         this.geocodeCache = geocodeCache;
+        this.onPanelStateChange = onPanelStateChange;
         
         this.mapPanel = document.getElementById('map-panel');
         this.infoPanel = document.getElementById('info-panel');
@@ -57,6 +58,7 @@ export class PanelManager {
         this.mapPanel.classList.remove('top-panel');
         if (!this.infoPanel.classList.contains('open')) {
             this.timelineWrapper.classList.remove('panel-open');
+            this.onPanelStateChange?.(); // Trigger re-render when all panels close
         }
     }
 
@@ -65,6 +67,7 @@ export class PanelManager {
         this.infoPanel.classList.remove('top-panel');
         if (!this.mapPanel.classList.contains('open')) {
             this.timelineWrapper.classList.remove('panel-open');
+            this.onPanelStateChange?.(); // Trigger re-render when all panels close
         }
     }
 
@@ -73,6 +76,7 @@ export class PanelManager {
         this.mapPanel.classList.add('top-panel');
         this.infoPanel.classList.remove('top-panel');
         this.timelineWrapper.classList.add('panel-open');
+        this.onPanelStateChange?.(); // Trigger re-render when panel opens
     }
 
     openInfoPanel() {
@@ -80,6 +84,7 @@ export class PanelManager {
         this.infoPanel.classList.add('top-panel');
         this.mapPanel.classList.remove('top-panel');
         this.timelineWrapper.classList.add('panel-open');
+        this.onPanelStateChange?.(); // Trigger re-render when panel opens
     }
 
     bringMapToFront() {
