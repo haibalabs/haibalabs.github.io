@@ -6,7 +6,7 @@
 }
 
 body {
-    font-family: 'Roboto', Arial, sans-serif;
+/*    font-family: 'Roboto', Arial, sans-serif;*/
     margin: 0;
     padding: 0;
 }
@@ -32,7 +32,7 @@ body {
     font-weight: 600;
     margin-block-start: 0.3em;
     margin-block-end: 0.3em;
-    font-family: 'EB Garamond', serif;
+/*    font-family: 'EB Garamond', serif;*/
     letter-spacing: 0.3px;
     color: #2c1810;
 }
@@ -65,7 +65,6 @@ body {
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
     font-size: 10px;
     
-    /* Add flexbox layout */
     display: flex;
     justify-content: space-between; /* Spreads items to edges */
     align-items: center; /* Vertically centers items */
@@ -276,7 +275,7 @@ body {
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: #2c1810;
-    font-family: 'Cormorant Garamond', serif;
+/*    font-family: 'Cormorant Garamond', serif;*/
     letter-spacing: 0.3px;
 }
 
@@ -320,24 +319,9 @@ body {
     font-size: 1.05em;
     line-height: 1.5;
     color: #433630;
-    font-family: 'Cormorant Garamond', serif;
+/*    font-family: 'Cormorant Garamond', serif; */
     letter-spacing: 0.2px;
 }
-
-/* Confidence Styling 
-.event[data-confidence="high"] {
-    border-left: 5px solid #4CAF50; 
-}
-
-.event[data-confidence="medium"] {
-    border-left: 5px solid #FFA726;
-}
-
-.event[data-confidence="low"] {
-    border-left: 5px solid #EF5350; 
-    background: #fafafa; 
-}
-*/
 
 /* Confidence Badge */
 .confidence-badge {
