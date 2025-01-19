@@ -1,17 +1,13 @@
-# [History Timeline](https://haibalabs.github.io/history) - Dev Diary
+## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
-### The Project
+### Day 9. Fri 01/17/25
+We're getting close to 50K events!
 
-**“What Happened Was…”**
-
-A dynamic exploration of everything that’s ever happened since the dawn of humanity; an interactive timeline with a fresh perspective on history designed to inform and spark conversations. 
-
-Casual learners, students, or professors, will discover events across eras, locations, and interests, contribute their knowledge, and engage in conversations about the events that shaped our history. 
-
-The mother of all feeds will make history accessible, immersive, and fun to everyone.
-
----
-### The Journey
+The last couple days we've been mainly working on data cleanup scripts, and finding more automatic ways to detect and resolve data issues:
+- Using a strict json schema for OpenAI event queries.
+- Scripts to verify suitable locations using openstreetmap API and OpenAI APIT (still WIP).
+- Scripts to comb through the events and find faulty entries.
+- Performance issues more visible now with this many events. 
 
 ### Day 7. Wed 01/15/25
 In the last 3 days we've been focused on implementation and code organisation.

@@ -2,7 +2,7 @@
 <html>
 <head>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"> 
-    <title>Haiba Labs/Dev Journal</title>
+    <title>Haiba Labs Experiments</title>
     <style>
         body {
             font-family: 'Open Sans', sans-serif;
@@ -106,37 +106,17 @@
     </style>
 </head>
 <body>
-    <div id="toc">
-        <h3>A Thousand Miles</h3>
-        <div id="toc-list"></div>
-    </div>
     <div id="markdown-content"></div>
-    <!-- Include Marked.js -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Fetch and render Markdown content
-            fetch('dev-journal.md')
+            fetch('experiments.md')
                 .then(response => response.text())
                 .then(markdown => {
                     const parsedHTML = marked.parse(markdown);
                     const contentDiv = document.getElementById('markdown-content');
                     contentDiv.innerHTML = parsedHTML;
-
-                    // Generate Table of Contents
-                    const tocList = document.getElementById('toc-list');
-                    const headings = contentDiv.querySelectorAll('h3');
-                    headings.forEach((heading, index) => {
-                        // Add IDs to headings for navigation
-                        const id = `heading-${index}`;
-                        heading.id = id;
-
-                        // Create TOC link
-                        const link = document.createElement('a');
-                        link.href = `#${id}`;
-                        link.textContent = heading.textContent;
-                        tocList.appendChild(link);
-                    });
                 })
                 .catch(error => {
                     console.error('Error loading markdown:', error);

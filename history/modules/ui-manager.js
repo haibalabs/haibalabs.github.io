@@ -157,7 +157,7 @@ export class UIManager {
         events.forEach((event, index) => {
             this.positions.set(index, currentPosition);
             const height = this.eventHeights.get(event.name);
-            const totalSpacing = height + 16;
+            const totalSpacing = height;
             
             currentPosition += totalSpacing;
         });
@@ -213,7 +213,7 @@ export class UIManager {
 
         const primaryLabel = this.getPrimaryLabel(event);
         const eventColor = primaryLabel ? primaryLabel.color : '#ccc';
-        eventDiv.style.borderLeft = `5px solid ${eventColor}`;
+        eventDiv.style.borderLeft = `1px solid ${eventColor}`;
 
         const confidenceBadge = this.getConfidenceBadge(event);
         const formattedDate = formatHistoricalDate(event.enhanced_time);

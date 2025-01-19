@@ -256,10 +256,10 @@ body {
     position: absolute; /* Each event needs absolute positioning */
     width: calc(100% - 2rem);
     background: #ffffff; /* White card background */
-    border-radius: 4px;
+    /*border-radius: 4px;*/
     padding: 1rem; /* Spacing inside the card */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-    transition: box-shadow 0.3s ease, transform 0.3s ease; 
+    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+ /*   transition: box-shadow 0.3s ease, transform 0.3s ease; */
     box-sizing: border-box;
     border: 0.5px solid #bfbfbf;  /* Add this line for a subtle border */
 }
@@ -324,23 +324,24 @@ body {
     letter-spacing: 0.2px;
 }
 
-/* Confidence Styling */
+/* Confidence Styling 
 .event[data-confidence="high"] {
-    border-left: 5px solid #4CAF50;  /* Green */
+    border-left: 5px solid #4CAF50; 
 }
 
 .event[data-confidence="medium"] {
-    border-left: 5px solid #FFA726;  /* Orange */
+    border-left: 5px solid #FFA726;
 }
 
 .event[data-confidence="low"] {
-    border-left: 5px solid #EF5350;  /* Red */
-    background: #fafafa;  /* Slightly different background */
+    border-left: 5px solid #EF5350; 
+    background: #fafafa; 
 }
+*/
 
 /* Confidence Badge */
 .confidence-badge {
-    display: inline-block;
+    display: none;/*inline-block;*/
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.75em;
