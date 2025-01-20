@@ -13,8 +13,7 @@ async function initializeApp() {
     
     const eventManager = new EventManager();
     const panelManager = new PanelManager(map, markersLayer, geocodeCache, () => {
-        uiManager.needsFullMeasure = true; // Force remeasure since width changed
-        uiManager.renderEvents();
+        uiManager.resetWindow();
     });
     const uiManager = new UIManager(eventManager, panelManager);
     
@@ -28,7 +27,7 @@ async function initializeApp() {
         uiManager.renderFilters();
 
         // Calculate initial visible range and render
-        uiManager.renderEvents();
+        uiManager.resetWindow();
     } catch (error) {
         console.error('Failed to initialize app:', error);
     }

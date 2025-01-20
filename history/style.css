@@ -32,8 +32,7 @@ body {
     font-weight: 600;
     margin-block-start: 0.3em;
     margin-block-end: 0.3em;
-/*    font-family: 'EB Garamond', serif;*/
-    letter-spacing: 0.3px;
+    font-family: 'EB Garamond', serif;
     color: #2c1810;
 }
 
@@ -255,12 +254,9 @@ body {
     position: absolute; /* Each event needs absolute positioning */
     width: calc(100% - 2rem);
     background: #ffffff; /* White card background */
-    /*border-radius: 4px;*/
     padding: 1rem; /* Spacing inside the card */
-    /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
- /*   transition: box-shadow 0.3s ease, transform 0.3s ease; */
     box-sizing: border-box;
-    border: 0.5px solid #bfbfbf;  /* Add this line for a subtle border */
+    border: 0.5px solid #bfbfbf;
 }
 
 /* Hover Effect */
@@ -275,8 +271,6 @@ body {
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: #2c1810;
-/*    font-family: 'Cormorant Garamond', serif;*/
-    letter-spacing: 0.3px;
 }
 
 /* Event Time */
@@ -319,8 +313,6 @@ body {
     font-size: 1.05em;
     line-height: 1.5;
     color: #433630;
-/*    font-family: 'Cormorant Garamond', serif; */
-    letter-spacing: 0.2px;
 }
 
 /* Confidence Badge */

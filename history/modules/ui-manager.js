@@ -16,18 +16,31 @@ export class UIManager {
 
         this.timelineContainer = document.getElementById('timeline-wrapper');
         this.timelineContainer.addEventListener('scroll', () => this.handleScroll());
+        this.timelineContainer.addEventListener('scrollend', () => this.handleScrollEnd());
 
         // Add virtual scrolling properties
         this.buffer = 5;       // Number of items to render above/below viewport
+
+        this.heightEstimateParams = {
+            baseHeight: 50,  // Initial guess
+            lineHeight: 24,  // Initial guess
+            avgCharWidth: 20, // Initial guess
+            totalHorizontalPadding: 40 // Initial guess
+        };
+
+        // Add position tracking
+        this.positions = new Map(); // Store cumulative positions
 
         this.resetWindow();
 
         // Add height tracking
         this.eventHeights = new Map(); // Cache for measured heights
         this.totalHeight = 0; // Total scrollable height
+        this.measuredHeightsSum = 0;
+        this.measuredHeightsCount = 0;
+        this.defaultEventHeight = 173;
 
-        // Add position tracking
-        this.positions = new Map(); // Store cumulative positions
+        this.scrollTarget = null; // { index: number, position: number }
                 
         // Initial spacing update
         this.updateTimelineSpacing();
@@ -43,17 +56,119 @@ export class UIManager {
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
-                this.needsFullMeasure = true; // Force remeasure
                 this.renderEvents(); // Re-render with new measurements
             }, 150); // Debounce resize events
         });
+    }
+
+    calibrateEstimates() {
+        const renderedEvents = document.querySelectorAll('.event');
+        if (renderedEvents.length === 0) return;
+        
+        // Measure a sample event
+        const sampleEvent = renderedEvents[0];
+        const eventStyle = window.getComputedStyle(sampleEvent);
+        const description = sampleEvent.querySelector('.event-description');
+        const descStyle = window.getComputedStyle(description);
+
+        const eventVerticalSpace = parseInt(eventStyle.paddingTop) + 
+                                    parseInt(eventStyle.paddingBottom) +
+                                    parseInt(eventStyle.marginTop) +
+                                    parseInt(eventStyle.marginBottom);
+
+        const totalHorizontalPadding = parseInt(eventStyle.paddingLeft) + 
+                                     parseInt(eventStyle.paddingRight);
+
+        const header = sampleEvent.querySelector('.event-header');
+        const headerStyle = window.getComputedStyle(header);
+        // Header padding/margin
+        const headerSpace = parseInt(headerStyle.paddingTop) + 
+                        parseInt(headerStyle.paddingBottom) +
+                        parseInt(headerStyle.marginTop) + 
+                        parseInt(headerStyle.marginBottom);
+
+        const timeRow = sampleEvent.querySelector('.event-time');
+        const timeStyle = window.getComputedStyle(timeRow);
+
+        // Time row padding/margin
+        const timeSpace = parseInt(timeStyle.paddingTop) + 
+                        parseInt(timeStyle.paddingBottom) +
+                        parseInt(timeStyle.marginTop) + 
+                        parseInt(timeStyle.marginBottom);        
+                      
+        const descriptionPadding = parseInt(descStyle.paddingTop) + 
+                            parseInt(descStyle.paddingBottom) +
+                            parseInt(descStyle.marginTop) + 
+                            parseInt(descStyle.marginBottom);
+
+        // Calculate base height including all spacings
+        const baseHeight = header.offsetHeight + timeRow.offsetHeight + 
+                        headerSpace + timeSpace + eventVerticalSpace + descriptionPadding;
+
+        // Calculate line height from description
+        const lineHeight = parseInt(descStyle.lineHeight);
+
+        const measurer = document.createElement('div');
+        measurer.style.position = 'absolute';
+        measurer.style.visibility = 'hidden';
+        measurer.style.font = descStyle.font;  // Copy the exact font style
+        measurer.style.fontSize = descStyle.fontSize;
+        measurer.style.lineHeight = descStyle.lineHeight;
+        measurer.style.whiteSpace = 'nowrap';  // Allow wrapping like real content
+        const sampleText = "The quick brown fox jumps over the lazy dog. We measure text width with 123 numbers & special chars to get better estimates.";
+        measurer.textContent = sampleText;
+        document.body.appendChild(measurer);
+    
+        // Get the actual width per character
+        const avgCharWidth = measurer.offsetWidth / sampleText.length;
+        document.body.removeChild(measurer);
+
+        this.heightEstimateParams = {
+            baseHeight,
+            lineHeight,
+            avgCharWidth,
+            totalHorizontalPadding
+        };
+    }
+
+    estimateEventHeight(event) {
+        const timelinePlaceholder = document.getElementById('timeline-placeholder');
+        const containerWidth = timelinePlaceholder.clientWidth;
+
+        const { baseHeight, lineHeight, avgCharWidth, totalHorizontalPadding } = this.heightEstimateParams;
+        const description = event.enhanced_description || event.description;
+        const charsPerLine = Math.floor((containerWidth - totalHorizontalPadding) / avgCharWidth);
+        const estimatedLines = Math.min(5, Math.ceil(description.length / charsPerLine));
+        return baseHeight + (estimatedLines * lineHeight);
+    }
+
+    precalculatePositions(filteredEvents) {
+        if (!this.heightEstimateParams.calibrated) {
+            // Can't precalculate without calibration
+            return;
+        }
+    
+        let currentPosition = 0;
+        filteredEvents.forEach((event, index) => {
+            const estimatedHeight = this.estimateEventHeight(event);
+            this.positions.set(index, currentPosition);
+            currentPosition += estimatedHeight;
+        });
+    
+        // Set initial total height
+        const placeholder = document.getElementById('timeline-placeholder');
+        placeholder.style.height = `${currentPosition}px`;
+        this.totalHeight = currentPosition;
     }
 
     resetWindow() {
         this.startIndex = 0;
         this.endIndex = 0;
         this.lastScrollPosition = 0;
-        this.needsFullMeasure = true;
+        this.positions.clear();
+        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        this.updatePositionsTable(filteredEvents);
+        this.updateVisibleRange();
     }
 
     handleScroll() {
@@ -63,7 +178,31 @@ export class UIManager {
         
         if (Math.abs(scrollTop - this.lastScrollPosition) > scrollThreshold) {
             this.lastScrollPosition = scrollTop;
-            this.updateVisibleRange();
+            this.updateVisibleRange();            
+        }
+    }
+
+    // Check if we were trying to reach a specific target
+    handleScrollEnd() {
+        if (!this.scrollTarget) return;
+    
+        const viewportHeight = this.timelineContainer.clientHeight;
+        const scrollTop = this.timelineContainer.scrollTop;
+        const targetIndex = this.scrollTarget.index;
+    
+        // Check if target is within current visible range
+        if (targetIndex >= this.startIndex && targetIndex < this.endIndex) {
+            // Target is visible, clear the target
+            this.scrollTarget = null;
+        } else {
+            // Target not visible, scroll more
+            const targetPosition = this.positions.get(targetIndex);
+            if (targetPosition && targetPosition > scrollTop) {
+                this.timelineContainer.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
         }
     }
 
@@ -80,112 +219,182 @@ export class UIManager {
         placeholder.style.height = '0px';
     }
 
-    performInitialMeasurement(filteredEvents, contentContainer) {
-        // Render all events first without positioning
-        filteredEvents.forEach(event => {
-            const eventDiv = this.renderEvent(event);
-            contentContainer.appendChild(eventDiv);
-        });
-
-        // Schedule measurement and re-render for next frame
-        requestAnimationFrame(() => {
-            // Measure actual rendered heights
-            const renderedEvents = contentContainer.querySelectorAll('.event');
-            renderedEvents.forEach((div, index) => {
-                const height = div.getBoundingClientRect().height;
-                const event = filteredEvents[index];
-                this.eventHeights.set(event.name, height);
-            });
-
-            this.needsFullMeasure = false;
-            this.calculatePositions(filteredEvents);
-
-            this.updateVisibleRange();  // This will calculate correct range
-
-            // Re-render with correct measurements
-            this.renderEvents();
-        });
+    getEventHeight(event) {
+        // Real height (measured)
+        const realHeight = this.eventHeights.get(event.name);
+        if (realHeight) return realHeight;
+    
+        // Estimated height (if calibrated)
+        if (this.heightEstimateParams.calibrated) {
+            return this.estimateEventHeight(event);
+        }
+    
+        // Average height (fallback)
+        return this.defaultEventHeight;
     }
 
-    renderEvents() {
+    updatePositionsTable(filteredEvents) {
+        let currentPosition = 0;
+        filteredEvents.forEach((event, index) => {
+            this.positions.set(index, currentPosition);
+            currentPosition += this.getEventHeight(event);
+        });
+        
+        // Update total height too
+        this.totalHeight = currentPosition;
+        const placeholder = document.getElementById('timeline-placeholder');
+        placeholder.style.height = `${currentPosition}px`;
+    }
+
+    updateVisibleRange() {
+        const scrollTop = this.timelineContainer.scrollTop;
+        const viewportHeight = this.timelineContainer.clientHeight;
+        const bufferHeight = viewportHeight * 0.5;
+    
+        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        if (filteredEvents.length === 0) {
+            this.startIndex = 0;
+            this.endIndex = 0;
+            this.renderEvents();
+            return;
+        }
+        
+        // Estimate indices based on default height
+        let currentHeight = 0;
+        let startIndex = 0;
+        
+        // Find approximate start index
+        while (startIndex < filteredEvents.length && currentHeight < scrollTop - bufferHeight) {
+            currentHeight += this.getEventHeight(filteredEvents[startIndex]);
+            startIndex++;
+        }
+        
+        // Ensure start index is valid
+        startIndex = Math.max(0, Math.min(startIndex, filteredEvents.length - 1));
+        
+        // Find approximate end index
+        let endIndex = startIndex;
+        while (endIndex < filteredEvents.length && 
+               currentHeight < scrollTop + viewportHeight + bufferHeight) {
+            currentHeight += this.getEventHeight(filteredEvents[endIndex]);
+            endIndex++;
+        }
+    
+        // Add buffer and ensure bounds
+        startIndex = Math.max(0, startIndex - 2);
+        endIndex = Math.min(filteredEvents.length, endIndex + 2);
+    
+        // Ensure we show at least one item
+        if (endIndex <= startIndex) {
+            endIndex = Math.min(startIndex + 1, filteredEvents.length);
+        }
+    
+        const needToRender = this.startIndex !== startIndex || this.endIndex !== endIndex;
+    
+        this.startIndex = startIndex;
+        this.endIndex = endIndex;
+        
+        if (needToRender) {
+            this.renderEvents();
+        }
+    }
+
+    renderEvents(onMeasurementsComplete) {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         this.filteredCount = filteredEvents.length;
-
+    
         const contentContainer = document.getElementById('timeline-content');
         const placeholder = document.getElementById('timeline-placeholder');
     
         // Clear current content
         contentContainer.innerHTML = '';
     
-        // no-results handling
+        // Handle no results case
         if (filteredEvents.length === 0) {
             this.handleNoResults(contentContainer, placeholder);
             return;
         }
     
-        // Schedule measurement and re-render
-        if (this.needsFullMeasure) {
-            this.performInitialMeasurement(filteredEvents, contentContainer);
-            return;
-        }
-    
-        // Normal render with positions
-        this.calculatePositions(filteredEvents);
-        placeholder.style.height = `${this.totalHeight}px`;
-    
+        // First pass: render elements with estimated or cached heights
+        let currentPosition = this.positions.get(this.startIndex) || (this.startIndex * this.defaultEventHeight);
         for (let i = this.startIndex; i < this.endIndex; i++) {
             if (i >= filteredEvents.length) break;
             
             const event = filteredEvents[i];
-            const sortableTime = parseTimeToSortableValue(event.enhanced_time);
-            const eventDiv = this.renderEvent(event, sortableTime);
+            const eventDiv = this.renderEvent(event);
             
             eventDiv.style.position = 'absolute';
-            eventDiv.style.top = `${this.positions.get(i)}px`;
+            eventDiv.style.top = `${currentPosition}px`;
             
             contentContainer.appendChild(eventDiv);
+            
+            // Use cached height or default for initial positioning
+            currentPosition += this.getEventHeight(event);
         }
     
-        this.updateEventCounts();
-        this.updateTimelineSpacing();
-    }
-
-    calculatePositions(events) {    
-        let currentPosition = 0;
-        this.positions.clear();
-
-        events.forEach((event, index) => {
-            this.positions.set(index, currentPosition);
-            const height = this.eventHeights.get(event.name);
-            const totalSpacing = height;
-            
-            currentPosition += totalSpacing;
+        // Set initial total height estimate
+        let totalEstimatedHeight = 0;
+        filteredEvents.forEach(event => {
+            totalEstimatedHeight += this.getEventHeight(event);
         });
+        placeholder.style.height = `${totalEstimatedHeight}px`;
+    
+        // Second pass: measure actual heights and reposition
+        requestAnimationFrame(() => {
+            this.measuredHeightsSum = this.measuredHeightsSum || 0;
+            this.measuredHeightsCount = this.measuredHeightsCount || 0;
+    
+            let needsRepositioning = false;
+            let newPosition = this.positions.get(this.startIndex) || (this.startIndex * this.defaultEventHeight);
 
-        this.totalHeight = currentPosition;
-    }
+            if (!this.heightEstimateParams.calibrated) {
+                this.calibrateEstimates();
+                this.heightEstimateParams.calibrated = true;
+            }
+            
+            // Measure and cache actual heights
+            const renderedEvents = contentContainer.querySelectorAll('.event');
+            renderedEvents.forEach((div, index) => {
+                const event = filteredEvents[this.startIndex + index];
+                const actualHeight = div.getBoundingClientRect().height;
+                const cachedHeight = this.eventHeights.get(event.name);
+               
+                if (actualHeight !== cachedHeight) {
+                    this.eventHeights.set(event.name, actualHeight);
+                    // Update running average
+                    if (!cachedHeight) { // Only for new measurements
+                        this.measuredHeightsSum += actualHeight;
+                        this.measuredHeightsCount++;
+                        // Update default height after we have enough samples
+                        if (this.measuredHeightsCount > 3) {
+                            const newAverage = Math.round(this.measuredHeightsSum / this.measuredHeightsCount);
+                            if (this.defaultEventHeight !== newAverage) {
+                                // console.log('New average height:', newAverage, 'from', this.measuredHeightsCount, 'samples');
+                                this.defaultEventHeight = newAverage;
+                            }
+                        }
+                    }
+                    needsRepositioning = true;
+                }
+                
+                // Update position
+                div.style.top = `${newPosition}px`;
+                this.positions.set(this.startIndex + index, newPosition);
+                newPosition += actualHeight;
+            });
+    
+            // If any heights changed, recalculate total height
+            if (needsRepositioning) {
+                this.updatePositionsTable(filteredEvents);
+            }
+    
+            this.updateEventCounts();
+            this.updateTimelineSpacing();
 
-    updateVisibleRange() {
-        const scrollTop = this.timelineContainer.scrollTop;
-        const viewportHeight = this.timelineContainer.clientHeight;
-        const bufferHeight = viewportHeight * 0.5; // 50% of viewport as buffer
-        
-        // Find visible range using pre-calculated positions
-        let startIndex = 0;
-        while (startIndex < this.positions.size && 
-            this.positions.get(startIndex) < scrollTop - bufferHeight) {
-            startIndex++;
-        }
-
-        let endIndex = startIndex;
-        while (endIndex < this.positions.size && 
-            this.positions.get(endIndex) < scrollTop + viewportHeight + bufferHeight) {
-            endIndex++;
-        }
-
-        this.startIndex = Math.max(0, startIndex - 1);
-        this.endIndex = Math.min(this.positions.size, endIndex + 1);
-        this.renderEvents();
+            if (onMeasurementsComplete) {
+                onMeasurementsComplete();
+            }
+        });
     }
 
     updateTimelineSpacing() {
@@ -213,7 +422,7 @@ export class UIManager {
 
         const primaryLabel = this.getPrimaryLabel(event);
         const eventColor = primaryLabel ? primaryLabel.color : '#ccc';
-        eventDiv.style.borderLeft = `1px solid ${eventColor}`;
+        eventDiv.style.borderLeft = `2px solid ${eventColor}`;
 
         const confidenceBadge = this.getConfidenceBadge(event);
         const formattedDate = formatHistoricalDate(event.enhanced_time);
@@ -305,6 +514,9 @@ export class UIManager {
 
             this.filtersContainer.appendChild(button);
         });
+
+        const initialEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        this.updatePositionsTable(initialEvents);
     }
 
     updateEventCounts() {
@@ -357,10 +569,7 @@ export class UIManager {
             // Update window to include target event
             this.startIndex = Math.max(0, targetIndex - 1);
             this.endIndex = this.startIndex + 3; // Show a few events
-            this.lastScrollPosition = this.positions.get(targetIndex) || 0;
-            
-            // Render the new window
-            this.renderEvents();
+            this.lastScrollPosition = this.positions.get(targetIndex) || targetIndex * this.defaultEventHeight;
             
             // Scroll to the position
             this.timelineContainer.scrollTo({
@@ -375,9 +584,7 @@ export class UIManager {
             if (lastIndex >= 0) {
                 this.startIndex = Math.max(0, lastIndex - 2);
                 this.endIndex = lastIndex + 1;
-                this.lastScrollPosition = this.positions.get(lastIndex) || 0;
-                this.needsFullMeasure = true; 
-                this.renderEvents();
+                this.lastScrollPosition = this.positions.get(lastIndex) || filteredEvents.length * this.defaultEventHeight;
                 
                 this.timelineContainer.scrollTo({
                     top: this.lastScrollPosition,
@@ -392,12 +599,6 @@ export class UIManager {
     jumpToStart() {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         if (filteredEvents.length > 0) {
-            this.startIndex = 0;
-            this.endIndex = 3; // Show first few events
-            this.lastScrollPosition = 0;
-            this.needsFullMeasure = true; 
-            this.renderEvents();
-            
             this.timelineContainer.scrollTo({
                 top: 0,
                 behavior: 'smooth'
@@ -409,14 +610,11 @@ export class UIManager {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         if (filteredEvents.length > 0) {
             const lastIndex = filteredEvents.length - 1;
-            this.startIndex = Math.max(0, lastIndex - 2);
-            this.endIndex = lastIndex + 1;
-            this.lastScrollPosition = this.positions.get(lastIndex) || 0;
-            this.needsFullMeasure = true; 
-            this.renderEvents();
-            
+            this.scrollTarget = { index: lastIndex };
+    
+            const estimatedTotalHeight = filteredEvents.length * this.defaultEventHeight;
             this.timelineContainer.scrollTo({
-                top: this.lastScrollPosition,
+                top: estimatedTotalHeight,
                 behavior: 'smooth'
             });
         }
