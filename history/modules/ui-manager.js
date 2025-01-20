@@ -557,12 +557,12 @@ export class UIManager {
             return;
         }
 
-        const targetTime = parseTimeToSortableValue(targetYear.toString());
+        const targetTime = parseTimeToSortableValue(targetYear.toString()).sortableValue;
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         
         // Find the target index in our data rather than DOM
         const targetIndex = filteredEvents.findIndex(event => 
-            parseTimeToSortableValue(event.enhanced_time) >= targetTime
+            parseTimeToSortableValue(event.enhanced_time).sortableValue >= targetTime
         );
 
         if (targetIndex !== -1) {

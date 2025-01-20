@@ -37,7 +37,7 @@ export class EventManager {
         this.sortedIndices = this.events
             .map((event, index) => ({
                 index,
-                time: parseTimeToSortableValue(event.enhanced_time)
+                time: parseTimeToSortableValue(event.enhanced_time).sortableValue
             }))
             .sort((a, b) => a.time - b.time);
     }

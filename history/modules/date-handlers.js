@@ -4,86 +4,94 @@
 //  1) Helper: Convert date to sort value
 //  ===============================
 function dateToSortValue(year, month, day) {
-    // Adjust month/day to numeric if missing
-    year = parseInt(year) || 0;
-    month = parseInt(month) || 1;
-    day = parseInt(day) || 1;
-    return year + (month / 12) + (day / 366);
-  }
+  // Adjust month/day to numeric if missing
+  year = parseInt(year) || 0;
+  month = parseInt(month) || 1;
+  day = parseInt(day) || 1;
+  return year + (month / 12) + (day / 366);
+}
+
+function parseYear(yearStr) {
+  // Handle negative years
+  const isNegative = yearStr.startsWith('-');
+  // Remove leading zeros but keep last zero if it's a zero year
+  const cleanYear = yearStr.replace(/^-?0+(?=\d)/, isNegative ? '-' : '');
+  return parseInt(cleanYear) || 0;
+}
   
-   // ===============================
-   // 2) Helper: Map “early/mid/late” to approximate day or month
-   // ===============================
-   // Example logic (feel free to adjust):
-   //   - Early month => day = 1
-   //   - Mid month   => day = 15
-   //   - Late month  => day = 25
-   //   - Early spring => month = 3, day = 21
-   //   - Late spring => month = 5, day = 1
-   // This is subjective—decide on your own rules.
-   
-   function adjustForApproxWords(dateObj) {
-    const { approxModifier, season } = dateObj;
+  // ===============================
+  // 2) Helper: Map “early/mid/late” to approximate day or month
+  // ===============================
+  // Example logic (feel free to adjust):
+  //   - Early month => day = 1
+  //   - Mid month   => day = 15
+  //   - Late month  => day = 25
+  //   - Early spring => month = 3, day = 21
+  //   - Late spring => month = 5, day = 1
+  // This is subjective—decide on your own rules.
   
-    // 1) If there's a season, do your existing season-based logic
-    if (season) {
-      // Simple default seasons
-      const seasonBase = {
-        winter: 1,   // January
-        spring: 4,   // April
-        summer: 7,   // July
-        autumn: 10,  // October
-        fall: 10
-      };
-      dateObj.month = seasonBase[season.toLowerCase()] || 1;
-  
-      // If it’s "early/mid/late spring", you might shift from April to March/May/June, etc.
-      if (approxModifier === 'early') {
-        if (dateObj.month === 4) dateObj.month = 3; // "early spring" => March
-        dateObj.day = 1;
-      } else if (approxModifier === 'mid') {
-        if (dateObj.month === 4) dateObj.month = 5; // "mid spring" => May
-        dateObj.day = 1;
-      } else if (approxModifier === 'late') {
-        if (dateObj.month === 4) dateObj.month = 6; // "late spring" => June
-        dateObj.day = 1;
-      }
-  
-      return dateObj;
+  function adjustForApproxWords(dateObj) {
+  const { approxModifier, season } = dateObj;
+
+  // 1) If there's a season, do your existing season-based logic
+  if (season) {
+    // Simple default seasons
+    const seasonBase = {
+      winter: 1,   // January
+      spring: 4,   // April
+      summer: 7,   // July
+      autumn: 10,  // October
+      fall: 10
+    };
+    dateObj.month = seasonBase[season.toLowerCase()] || 1;
+
+    // If it’s "early/mid/late spring", you might shift from April to March/May/June, etc.
+    if (approxModifier === 'early') {
+      if (dateObj.month === 4) dateObj.month = 3; // "early spring" => March
+      dateObj.day = 1;
+    } else if (approxModifier === 'mid') {
+      if (dateObj.month === 4) dateObj.month = 5; // "mid spring" => May
+      dateObj.day = 1;
+    } else if (approxModifier === 'late') {
+      if (dateObj.month === 4) dateObj.month = 6; // "late spring" => June
+      dateObj.day = 1;
     }
-  
-    // 2) If no season, check whether month is specified (i.e., not 1 from a default fallback)
-    //    We'll decide "month=1" means no user-specified month, unless you set month=1 intentionally.
-    const hasSpecifiedMonth = (dateObj.month !== 1 || dateObj.originalMonthParsed);
-  
-    if (hasSpecifiedMonth) {
-      // We have a month but not necessarily a day (or day=1 from default).
-      // So "early" => day=1, "mid" => day=15, "late" => day=28 (or 25; up to you).
-      if (approxModifier === 'early') {
-        dateObj.day = 1;
-      } else if (approxModifier === 'mid') {
-        dateObj.day = 15;
-      } else if (approxModifier === 'late') {
-        // 28 is safer if you’re worried about February
-        dateObj.day = 28;
-      }
-    } else {
-      // 3) No season, no month => it's just a year
-      // "early" => January 1, "mid" => June 1, "late" => December 1
-      if (approxModifier === 'early') {
-        dateObj.month = 1;
-        dateObj.day = 1;
-      } else if (approxModifier === 'mid') {
-        dateObj.month = 6;
-        dateObj.day = 1;
-      } else if (approxModifier === 'late') {
-        dateObj.month = 12;
-        dateObj.day = 1;
-      }
-    }
-  
+
     return dateObj;
-  }  
+  }
+
+  // 2) If no season, check whether month is specified (i.e., not 1 from a default fallback)
+  //    We'll decide "month=1" means no user-specified month, unless you set month=1 intentionally.
+  const hasSpecifiedMonth = (dateObj.month !== 1 || dateObj.originalMonthParsed);
+
+  if (hasSpecifiedMonth) {
+    // We have a month but not necessarily a day (or day=1 from default).
+    // So "early" => day=1, "mid" => day=15, "late" => day=28 (or 25; up to you).
+    if (approxModifier === 'early') {
+      dateObj.day = 1;
+    } else if (approxModifier === 'mid') {
+      dateObj.day = 15;
+    } else if (approxModifier === 'late') {
+      // 28 is safer if you’re worried about February
+      dateObj.day = 28;
+    }
+  } else {
+    // 3) No season, no month => it's just a year
+    // "early" => January 1, "mid" => June 1, "late" => December 1
+    if (approxModifier === 'early') {
+      dateObj.month = 1;
+      dateObj.day = 1;
+    } else if (approxModifier === 'mid') {
+      dateObj.month = 6;
+      dateObj.day = 1;
+    } else if (approxModifier === 'late') {
+      dateObj.month = 12;
+      dateObj.day = 1;
+    }
+  }
+
+  return dateObj;
+}  
   
     // ===============================
     // 3) Stage One: Preprocess and standardize string
@@ -95,6 +103,10 @@ function dateToSortValue(year, month, day) {
   function preprocessTimeString(time) {
   
     let cleaned = time.toLowerCase().trim();
+
+    // Remove leading zeros from any number, keeping at least one digit
+    cleaned = cleaned.replace(/\b0+(\d+)/g, '$1');
+
     cleaned = cleaned.replace(/[\(\)"]/g, '');
     cleaned = cleaned.replace(/\bapproximate\s+date\s+in\b/gi, '');
     cleaned = cleaned.replace(/\bapproximate\s+date\:?/gi, '');
@@ -159,10 +171,17 @@ function dateToSortValue(year, month, day) {
    // - For “Jan 100 – Feb 101” or “100-101” etc., parse the left side.
    // - For day ranges “July 25-27, 677,” parse the earliest day (25).
 function extractRangeOrDayRange(inputText) {
+    let isBC = false;
+    if (inputText.match(/\s*(bc|bce)\b/i)) {
+        isBC = true;
+        inputText = inputText.replace(/\s*(bc|bce)\b/i, '').trim();
+    }
+
     // 1) If it matches a full ISO date
     if (/^\d{1,4}-\d{1,2}-\d{1,2}$/.test(inputText)) {
       return {
         isRange: false,
+        isBC: isBC,
         rangeStart: inputText,
         rangeEnd: ''
       };
@@ -181,6 +200,7 @@ function extractRangeOrDayRange(inputText) {
         const rightPart = `${match[2]} century`;  // => "9th century"
         return {
         isRange: true,
+        isBC: isBC,
         rangeStart: leftPart,
         rangeEnd: rightPart
         };
@@ -196,6 +216,7 @@ function extractRangeOrDayRange(inputText) {
       const reconstructed = `${monthName} ${earliestDay}${optionalYear}`;
       return {
         isRange: false,
+        isBC: isBC,
         rangeStart: reconstructed.trim(),
         rangeEnd: ''
       };
@@ -211,7 +232,7 @@ function extractRangeOrDayRange(inputText) {
       rangeSeparatorRegex = /^(.*?)[–—-](.*?)$/; 
       const match = inputText.match(rangeSeparatorRegex);
       if (!match) {
-        return { isRange: false, rangeStart: inputText, rangeEnd: '' };
+        return { isRange: false, isBC: isBC,rangeStart: inputText, rangeEnd: '' };
       }
       leftPart  = match[1].trim();
       rightPart = match[2].trim();
@@ -246,6 +267,7 @@ function extractRangeOrDayRange(inputText) {
   
     return {
       isRange: true,
+      isBC: isBC,
       rangeStart: leftPart,
       rangeEnd: rightPart
     };
@@ -257,14 +279,16 @@ function extractRangeOrDayRange(inputText) {
    * ===============================
    * - Based on your existing single-date code plus expansions for BC/BCE, AD/CE, centuries, decades, seasons, etc.
    */
-  function parseSingleDate(dateStr, approxModifier, originalDate) {
+  function parseSingleDate(dateStr, approxModifier, originalDate, isBC) {
     const months = [
       'january','february','march','april','may','june',
       'july','august','september','october','november','december'
     ];
   
     // We'll store intermediate info in an object for further manipulation
-    let parsed = { year: 0, month: 1, day: 1, season: null, approxModifier };
+    let parsed = { year: 0, month: 1, day: 1, season: null, approxModifier,
+      originalMonthParsed: false, originalDayParsed: false
+     };
   
     // Detect if it’s something like “winter”, “spring”, etc.
     const seasons = { winter:1, spring:4, summer:7, autumn:10, fall:10 };
@@ -276,13 +300,13 @@ function extractRangeOrDayRange(inputText) {
         break;
       }
     }
-  
-    // 1) BC / BCE
-    if (/\b(\d+)\s*(bc|bce)\b/i.test(dateStr)) {
-      const bcYear = dateStr.match(/\d+/)[0];
-      parsed.year = -parseInt(bcYear);
-      return adjustForApproxWords(parsed);
-    }
+
+    // // 1) BC / BCE
+    // let isBC = false;
+    // if (dateStr.match(/\s*(bc|bce)\b/i)) {
+    //     isBC = true;
+    //     dateStr = dateStr.replace(/\s*(bc|bce)\b/i, '').trim();
+    // }
 
     // e.g., "July 7, 756 AD" or "july 7, 756 ce"
     let monthDayYearAD = dateStr.match(
@@ -292,12 +316,12 @@ function extractRangeOrDayRange(inputText) {
         const [, monthName, dayStr, yearStr] = monthDayYearAD;
         const mIdx = months.indexOf(monthName.toLowerCase());
         if (mIdx >= 0) {
-        parsed.year = parseInt(yearStr);
-        parsed.month = mIdx + 1;
-        parsed.day = parseInt(dayStr);
-        // “AD” or “CE” means a positive year (which we already do).
-        // If you had “BC” or “BCE,” you’d set it negative.
-        return adjustForApproxWords(parsed);
+          parsed.year = parseInt(yearStr);
+          parsed.month = mIdx + 1;
+          parsed.day = parseInt(dayStr);
+          // “AD” or “CE” means a positive year (which we already do).
+          // If you had “BC” or “BCE,” you’d set it negative.
+          return adjustForApproxWords(parsed);
         }
     }
     
@@ -319,6 +343,9 @@ function extractRangeOrDayRange(inputText) {
     let decadeMatch = dateStr.match(/(\d{1,4})s\b/);
     if (decadeMatch) {
       parsed.year = parseInt(decadeMatch[1]);
+      if (isBC) {
+        parsed.year = -Math.abs(parsed.year);
+      }
       return adjustForApproxWords(parsed);
     }
   
@@ -330,6 +357,9 @@ function extractRangeOrDayRange(inputText) {
       // 2nd century => 100–199 => pick 100
       // 8th century => 700
       parsed.year = (c - 1) * 100;
+      if (isBC) {
+        parsed.year = -Math.abs(parsed.year);
+      }
       return adjustForApproxWords(parsed);
     }
   
@@ -344,11 +374,17 @@ function extractRangeOrDayRange(inputText) {
     }
   
     // 6) ISO “YYYY-MM-DD”
-    let isoMatch = dateStr.match(/^(\d{1,4})-(\d{1,2})-(\d{1,2})$/);
+  //  let isoMatch = dateStr.match(/^(\d{1,4})-(\d{1,2})-(\d{1,2})$/);
+    let isoMatch = dateStr.match(/^(-?\d+)-(\d{1,2})-(\d{1,2})$/);
     if (isoMatch) {
       parsed.year = parseInt(isoMatch[1]);
       parsed.month = parseInt(isoMatch[2]);
       parsed.day = parseInt(isoMatch[3]);
+      parsed.originalMonthParsed = true;
+      parsed.originalDayParsed = true;
+      if (isBC) {
+        parsed.year = -Math.abs(parsed.year);
+      }
       return adjustForApproxWords(parsed);
     }
   
@@ -357,6 +393,10 @@ function extractRangeOrDayRange(inputText) {
     if (yearMonthMatch) {
       parsed.year = parseInt(yearMonthMatch[1]);
       parsed.month = parseInt(yearMonthMatch[2]);
+      parsed.originalMonthParsed = true;
+      if (isBC) {
+        parsed.year = -Math.abs(parsed.year);
+      }
       return adjustForApproxWords(parsed);
     }
   
@@ -367,6 +407,10 @@ function extractRangeOrDayRange(inputText) {
       if (mIdx >= 0) {
         parsed.year = parseInt(monthYearMatch[2]);
         parsed.month = mIdx + 1;
+        parsed.originalMonthParsed = true;
+        if (isBC) {
+          parsed.year = -Math.abs(parsed.year);
+        }
         return adjustForApproxWords(parsed);
       }
     }
@@ -379,6 +423,11 @@ function extractRangeOrDayRange(inputText) {
         parsed.year = parseInt(monthDayYear[3]);
         parsed.month = mIdx + 1;
         parsed.day = parseInt(monthDayYear[2]);
+        parsed.originalMonthParsed = true;
+        parsed.originalDayParsed = true;
+        if (isBC) {
+          parsed.year = -Math.abs(parsed.year);
+        }
         return adjustForApproxWords(parsed);
       }
     }
@@ -392,6 +441,11 @@ function extractRangeOrDayRange(inputText) {
         parsed.year = parseInt(dayMonthYear[3]);
         parsed.month = mIdx + 1;
         parsed.day = parseInt(dayMonthYear[1]);
+        parsed.originalMonthParsed = true;
+        parsed.originalDayParsed = true;
+        if (isBC) {
+          parsed.year = -Math.abs(parsed.year);
+        }
         return adjustForApproxWords(parsed);
       }
     }
@@ -404,6 +458,10 @@ function extractRangeOrDayRange(inputText) {
       if (m1 >= 0 && m2 >= 0) {
         parsed.year = parseInt(monthSlashMonth[3]);
         parsed.month = Math.min(m1, m2) + 1;
+        parsed.originalMonthParsed = true;
+        if (isBC) {
+          parsed.year = -Math.abs(parsed.year);
+        }
         return adjustForApproxWords(parsed);
       }
     }
@@ -412,6 +470,9 @@ function extractRangeOrDayRange(inputText) {
     let yearOnlyMatch = dateStr.match(/^(\d{1,4})$/);
     if (yearOnlyMatch) {
       parsed.year = parseInt(yearOnlyMatch[1]);
+      if (isBC) {
+        parsed.year = -Math.abs(parsed.year);
+      }
       return adjustForApproxWords(parsed);
     }
 
@@ -427,6 +488,10 @@ function extractRangeOrDayRange(inputText) {
         parsed.month = monthNumber;
         parsed.year = yearNumber;
         parsed.day = 1;
+        parsed.originalMonthParsed = true;
+        if (isBC) {
+          parsed.year = -Math.abs(parsed.year);
+        }
         return adjustForApproxWords(parsed);
         }
     }
@@ -454,10 +519,23 @@ function extractRangeOrDayRange(inputText) {
     const rangeInfo = extractRangeOrDayRange(text);
   
     // 3) If it’s a range, we parse only rangeStart (earliest)
-    const dateObj = parseSingleDate(rangeInfo.rangeStart, approxModifier, inputTime);
+    const dateObj = parseSingleDate(rangeInfo.rangeStart, approxModifier, inputTime, rangeInfo.isBC);
     
     // 4) Convert final dateObj to numeric
-    return dateToSortValue(dateObj.year, dateObj.month, dateObj.day);
+//    return dateToSortValue(dateObj.year, dateObj.month, dateObj.day);
+    const result = {
+      sortableValue: dateToSortValue(dateObj.year, dateObj.month, dateObj.day),
+      year: dateObj.year,
+      month: dateObj.month,
+      day: dateObj.day,
+      season: dateObj.season,
+      approxModifier,
+      hasMonth: dateObj.originalMonthParsed || dateObj.season,
+      hasDay: dateObj.originalDayParsed,
+      isBC: dateObj.year < 0
+    };
+
+    return result;
   }
 
 /**
@@ -468,7 +546,7 @@ function extractRangeOrDayRange(inputText) {
 export function extractYear(sortableTime) {
     // If input is a date string, try to get its sortable value first
     if (typeof sortableTime === 'string') {
-        sortableTime = parseTimeToSortableValue(sortableTime);
+        sortableTime = parseTimeToSortableValue(sortableTime).sortableValue;
     }
 
     // Convert to number if it's a string
@@ -523,62 +601,68 @@ export function extractDateComponents(sortableTime) {
  * @returns {string} - Formatted date string
  */
 export function formatHistoricalDate(date) {
-    if (!date) return "Unknown Date";
+  // Handle special cases first
+  if (!date) return "unknown date";
+  if (date.includes('billion years ago') || 
+      date.includes('million years ago')) {
+      return date;
+  }
 
-    // Already formatted dates
-    if (date.includes('billion years ago') || 
-        date.includes('million years ago') ||
-        date.includes('BCE') ||
-        date.includes('AD') ||
-        date.includes('CE') ||
-        date.includes('BC') ||
-        date.includes('c.') ||
-        date.includes('circa') ||
-        /^(?:Spring|Summer|Fall|Autumn|Winter)\s+\d+$/.test(date)) {
-        return date;
-    }
+  // Parse the date
+  const parsed = parseTimeToSortableValue(date);
 
-    // If it's just a year
-    if (/^\d+$/.test(date)) {
-        return date;
-    }
+  if (parsed.sortableValue === 0) {
+      return "unknown date";
+  }
+  
+  // Handle seasons
+  if (parsed.season) {
+      const seasonStr = parsed.approxModifier ? 
+          `${parsed.approxModifier} ${parsed.season}` : 
+          parsed.season;
+      return `${seasonStr} ${Math.abs(parsed.year)}${parsed.isBC ? ' BC' : ''}`;
+  }
 
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
+  // Format day suffix
+  function getDaySuffix(day) {
+      if (day > 3 && day < 21) return 'th';
+      switch (day % 10) {
+          case 1: return 'st';
+          case 2: return 'nd';
+          case 3: return 'rd';
+          default: return 'th';
+      }
+  }
 
-    // Handle various date formats
-    try {
-        // Check if it's already in "DD Month YYYY" format
-        const parts = date.split(' ');
-        if (parts.length === 3 && !isNaN(parts[0]) && !isNaN(parts[2])) {
-            // Validate if middle part is a month name
-            const monthPart = parts[1].toLowerCase();
-            const monthIndex = months.map(m => m.toLowerCase()).indexOf(monthPart);
-            if (monthIndex !== -1) {
-                // Already in correct format, just ensure proper capitalization
-                return `${parts[0]} ${months[monthIndex]} ${parts[2]}`;
-            }
-        }
+  const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+  ];
 
-        // Handle YYYY-MM-DD format
-        const isoMatch = date.match(/^(\d{1,})-(\d{1,2})-(\d{1,2})$/);
-        if (isoMatch) {
-            const [_, year, month, day] = isoMatch;
-            return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
-        }
+  // Build date string based on available components
+  let result = '';
+  
+  if (parsed.hasMonth) {
+      result += months[parsed.month - 1];
+      if (parsed.hasDay) {
+          result += ` ${parsed.day}${getDaySuffix(parsed.day)}`;
+      }
+  }
 
-        // Handle YYYY-MM format
-        const yearMonthMatch = date.match(/^(\d{1,})-(\d{1,2})$/);
-        if (yearMonthMatch) {
-            const [_, year, month] = yearMonthMatch;
-            return `${months[parseInt(month) - 1]} ${year}`;
-        }
+  // Add year
+  const yearStr = Math.abs(parsed.year).toString();
+  if (result) {
+      result += `, ${yearStr}`;
+  } else {
+      result = yearStr;
+  }
 
-        return date; // Return original if no format matches
-    } catch (error) {
-        console.error('Date parsing error:', error);
-        return date; // Return original on error
-    }
+  // Add BC/AD
+  if (parsed.isBC) {
+      result += ' BC';
+  } else if (parsed.year < 1200) {  // Add AD for early dates
+    result += ' AD';
+  }
+
+  return result;
 }

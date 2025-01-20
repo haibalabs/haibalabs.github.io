@@ -150,6 +150,11 @@
             
             // BCE/BC/CE variations without circa
             {
+                input: "50-10-10 BC",
+                expectedSort: -49.13934426,
+                category: "BCE/BC"
+            },
+            {
                 input: "3000 BCE",
                 expectedSort: -2999.9139,
                 category: "BCE/BC"
@@ -302,6 +307,16 @@
                 category: "Ranges"
             },                        
             // Special formats
+            {
+                input: "1970-05",
+                expectedSort: 1970.419399,
+                category: "Special"
+            },
+            {
+                input: "00010-01-01",
+                expectedSort: 10.08606557,
+                category: "Special"                
+            },
             {
                 input: "20th century",
                 expectedSort: 1900.086066,
@@ -504,21 +519,29 @@
                 input: "c. 13.8 billion years ago",
                 expectedFormat: "c. 13.8 billion years ago"
             },
+            {
+                input: "1970-05",
+                expectedFormat: "May 1970"
+            },
+            {
+                input: "50-10-10 BC",
+                expectedFormat: "October 10th, 50 BC"    
+            },
             { 
                 input: "1941-12-10",
-                expectedFormat: "10 December 1941"
+                expectedFormat: "December 10th, 1941"
             },
             { 
                 input: "6 October 907",
-                expectedFormat: "6 October 907"
+                expectedFormat: "October 6th, 907"
             },
             {
                 input: "c. 1 BC",
-                expectedFormat: "c. 1 BC"
+                expectedFormat: "1 BC"
             },
             {
                 input: "approximate date",
-                expectedFormat: "approximate date"
+                expectedFormat: "unknown date"
             }
         ];
 
@@ -539,7 +562,8 @@
                 cases.forEach(testCase => {
                     totalTests++;
                     const actualSort = parseTimeToSortableValue(testCase.input);
-                    if (Math.abs(actualSort - testCase.expectedSort) < 0.0001) {
+                    const sortValue = actualSort?.sortableValue ?? 0;
+                    if (Math.abs(sortValue - testCase.expectedSort) < 0.0001) {
                         passedTests++;
                     }
                 });
@@ -569,13 +593,14 @@
                 
                 cases.forEach(testCase => {
                     const actualSort = parseTimeToSortableValue(testCase.input);
-                    const passed = Math.abs(actualSort - testCase.expectedSort) < 0.0001;
+                    const sortValue = actualSort?.sortableValue ?? 0;
+                    const passed = Math.abs(sortValue - testCase.expectedSort) < 0.0001;
                     
                     tableHTML += `
                         <tr>
                             <td>${testCase.input || '(empty string)'}</td>
                             <td>${testCase.expectedSort}</td>
-                            <td>${actualSort}</td>
+                            <td>${sortValue}</td>
                             <td class="${passed ? 'success' : 'error'}" style="text-align: center; font-weight: bold;">
                                 ${passed ? 'ok' : 'fail'}
                             </td>
@@ -646,7 +671,8 @@
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = '<h2>Custom Test Results</h2>';
             
-            const sortValue = parseTimeToSortableValue(input);
+            const actualSort = parseTimeToSortableValue(input);
+            const sortValue = actualSort?.sortableValue ?? 0;
             const formatted = formatHistoricalDate(input);
             
             resultsDiv.innerHTML += `
