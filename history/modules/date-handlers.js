@@ -105,8 +105,7 @@ function parseYear(yearStr) {
     let cleaned = time.toLowerCase().trim();
 
     // Remove leading zeros from any number, keeping at least one digit
-    cleaned = cleaned.replace(/\b0+(\d+)/g, '$1');
-
+    cleaned = cleaned.replace(/\b0+(\d+)\b/g, '$1'); 
     cleaned = cleaned.replace(/[\(\)"]/g, '');
     cleaned = cleaned.replace(/\bapproximate\s+date\s+in\b/gi, '');
     cleaned = cleaned.replace(/\bapproximate\s+date\:?/gi, '');
@@ -478,7 +477,7 @@ function extractRangeOrDayRange(inputText) {
 
     // 13) "10 954" => Month=10, Year=954
     //   - only do this if day-range and month-year didn't match
-    const spaceMonthYearMatch = dateStr.match(/^(\d{1,2})\s+(\d{3,4})$/);
+    const spaceMonthYearMatch = dateStr.match(/^(\d{1,2})\s+(\d{2,4})$/);
     if (spaceMonthYearMatch) {
         let monthNumber = parseInt(spaceMonthYearMatch[1], 10);
         let yearNumber = parseInt(spaceMonthYearMatch[2], 10);
