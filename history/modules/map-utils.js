@@ -99,23 +99,36 @@ export async function getCoordinates(locationName, geocodeCache) {
  * Show a location on the map by geocoding and placing a marker.
  */
 export async function showLocationOnMap(locationName, map, markersLayer, geocodeCache) {
-  console.log('Showing location:', locationName);
+//  console.log('Showing location:', locationName);
 
-  // Clear existing markers so you can see just the new location
-  markersLayer.clearLayers();
+    // Clear existing markers so you can see just the new location
+    markersLayer.clearLayers();
 
-  const coords = await getCoordinates(locationName, geocodeCache);
-  if (!coords) {
-    console.log('Showing location:', locationName);
-    return;
+    const coords = await getCoordinates(locationName, geocodeCache);
+    if (!coords) {
+      console.log('Location not found:', locationName);
+      return;
+    }
+
+    const marker = L.marker(coords).bindPopup(locationName);
+    markersLayer.addLayer(marker);
+
+
+    // Force map update before changing view
+    map.invalidateSize({
+        animate: true,
+        pan: false
+    });
+
+    // Small delay before setting view
+    await new Promise(resolve => setTimeout(resolve, 50));  
+
+    // Zoom in on this location. Adjust zoom level to your liking.
+    map.setView(coords, 6, {
+      animate: true,
+      duration: 1
+    });
   }
-
-  const marker = L.marker(coords).bindPopup(locationName);
-  markersLayer.addLayer(marker);
-
-  // Zoom in on this location. Adjust zoom level to your liking.
-  map.setView(coords, 6);
-}
 
 export function formatLocations(locations) {
   if (!locations || locations.length === 0) return "";

@@ -1,5 +1,14 @@
 ## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
+### Day 12. Fri 01/20/25
+49392 events! 
+
+The number of events is not an issue anymore with all the performance fixes we've finally put in.
+- Much better handling of the timeline scrolling and jumping with no layout issues.
+- Lots of fixes to dates again and uniform display for the whole range, as well as various other UI fixes.
+- Now the data covers events from year 0 to 2024.
+- Next big challenge -> cleanup location data and add pre-1st century events.
+
 ### Day 9. Fri 01/17/25
 We're getting close to 50K events!
 

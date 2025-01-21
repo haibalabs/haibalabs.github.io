@@ -33,7 +33,13 @@ export class PanelManager {
             this.openMapPanel();
         }
         
-        this.map.invalidateSize();
+        // Wait for transition to complete before invalidating
+        setTimeout(() => {
+            this.map.invalidateSize({
+                animate: true,
+                pan: false
+            });
+        }, 350); // slightly longer than the CSS transition
     }
 
     toggleInfoPanel() {
@@ -356,7 +362,12 @@ export class PanelManager {
         try {
             if (!this.mapPanel.classList.contains('open')) {
                 this.openMapPanel();
-                await new Promise(resolve => setTimeout(resolve, 300));
+                await new Promise(resolve => setTimeout(resolve, 350));
+                // Force map update after transition
+                this.map.invalidateSize({
+                    animate: true,
+                    pan: false
+                });
             }
             
             this.bringMapToFront();
@@ -365,6 +376,8 @@ export class PanelManager {
             if (!coords) {
                 this.showMapError(locationSpan, mapLocation);
             } else {
+                // Add a small delay before showing location
+                await new Promise(resolve => setTimeout(resolve, 50));
                 await showLocationOnMap(mapLocation, this.map, this.markersLayer, this.geocodeCache);
             }
         } catch (error) {
