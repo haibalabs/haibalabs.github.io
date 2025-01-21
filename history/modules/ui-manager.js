@@ -487,7 +487,7 @@ export class UIManager {
             wikiSpan.textContent = '📜';
             wikiSpan.addEventListener('click', (e) => {
                 e.stopPropagation();
-                this.panelManager.handleInfoClick(event.wikipedia_url);
+                this.panelManager.handleInfoClick(event.wikipedia_url, e.currentTarget);
             });
 
             timeDiv.appendChild(wikiSpan);
@@ -570,6 +570,8 @@ export class UIManager {
             this.startIndex = Math.max(0, targetIndex - 1);
             this.endIndex = this.startIndex + 3; // Show a few events
             this.lastScrollPosition = this.positions.get(targetIndex) || targetIndex * this.defaultEventHeight;
+
+            this.scrollTarget = { index: targetIndex };
             
             // Scroll to the position
             this.timelineContainer.scrollTo({
@@ -585,6 +587,7 @@ export class UIManager {
                 this.startIndex = Math.max(0, lastIndex - 2);
                 this.endIndex = lastIndex + 1;
                 this.lastScrollPosition = this.positions.get(lastIndex) || filteredEvents.length * this.defaultEventHeight;
+                this.scrollTarget = { index: targetIndex };
                 
                 this.timelineContainer.scrollTo({
                     top: this.lastScrollPosition,
@@ -599,6 +602,7 @@ export class UIManager {
     jumpToStart() {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         if (filteredEvents.length > 0) {
+            this.scrollTarget = { index: 0 };
             this.timelineContainer.scrollTo({
                 top: 0,
                 behavior: 'smooth'

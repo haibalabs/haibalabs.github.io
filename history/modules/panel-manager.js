@@ -97,7 +97,7 @@ export class PanelManager {
         this.mapPanel.classList.remove('top-panel');
     }
 
-    async handleInfoClick(url) {
+    async handleInfoClick(url, wikiSpan) {
         const title = url.split('/wiki/')[1];
         
         try {
@@ -114,7 +114,26 @@ export class PanelManager {
         } catch (error) {
             console.error('Error loading Wikipedia content:', error);
             this.showInfoPanelError();
+            this.showWikiError(wikiSpan, url);
         }
+    }
+
+    showWikiError(wikiSpan, url) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = `Wikipedia article not found: ${decodeURIComponent(url)}`;
+        this.infoPanel.appendChild(toast);
+        
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 3000);
+    
+        wikiSpan.classList.remove('clickable');
+        wikiSpan.classList.add('disabled');
+        wikiSpan.style.cursor = 'not-allowed';
+        wikiSpan.replaceWith(wikiSpan.cloneNode(true));  // Remove event listeners
     }
 
     async loadWikipediaContent(title) {
@@ -130,6 +149,11 @@ export class PanelManager {
 
         const response = await fetch(`${api}?${params}`);
         const data = await response.json();
+
+        // Check for error or missing content
+        if (data.error || !data.parse || !data.parse.text) {
+            throw new Error('Wikipedia content not found');
+        }
         
         let content = data.parse.text['*'];
         
@@ -274,12 +298,13 @@ export class PanelManager {
                         height: 100vh;
                         margin: 0;
                         font-family: 'Roboto', Arial, sans-serif;
-                        color: #d32f2f;
+                        font-size: x-large;
+                        color:#5b5b5b;
                     }
                 </style>
             </head>
             <body>
-                <div>Error loading content. Please try again later.</div>
+                <div>Content unavailable at the moment.</div>
             </body>
             </html>
         `;
