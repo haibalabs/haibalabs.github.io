@@ -32,18 +32,20 @@
         <div class="content-wrap">
             <div class="header">
                 <h1>What Happened Was..</h1>
-                <div class="filters">
-                    <!-- Buttons will be injected here by JS -->
-                </div>
                 <div class="controls-row">
                     <div class="search-box">
                         <input type="text" id="searchInput" placeholder="Search events...">
                     </div>
-                    <div class="date-navigation">
-                        <button class="nav-button" id="jumpStart">⟪ Start</button>
-                        <input type="text" id="dateInput" placeholder="Jump to year...">
-                        <button class="nav-button" id="jumpEnd">End ⟫</button>
-                    </div>
+                </div>
+            </div>
+            <div class="controls-panel">
+                <div class="date-navigation">
+                    <button class="nav-button" id="jumpStart">⟪ Start</button>
+                    <input type="text" id="dateInput" placeholder="Jump to year...">
+                    <button class="nav-button" id="jumpEnd">End ⟫</button>
+                </div>
+                <div class="filters">
+                    <!-- Buttons injected by JS -->
                 </div>
             </div>
             <div class="timeline-wrapper" id="timeline-wrapper">
