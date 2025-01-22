@@ -7,6 +7,7 @@ export class EventManager {
         this.sortedIndices = [];
         this.currentFilter = 'all';
         this.searchTerm = '';
+        this.cachedFilteredEvents = null;
     }
 
     async loadEvents(dataFile) {
@@ -41,25 +42,30 @@ export class EventManager {
             }))
             .sort((a, b) => a.time - b.time);
     }
-
+  
     getFilteredEvents(filter = null, searchTerm = '') {
-        return this.sortedIndices
-            .map(({ index }) => this.events[index])
-            .filter(event => {
-                // Only include high and medium confidence events
-                const hasAcceptableConfidence = event.confidence !== 'low';
-    
-                const matchesFilter = !filter || filter === 'all' || 
-                    (event.categories && event.categories.includes(filter));
-                
-                const matchesSearch = !searchTerm || (
-                    (event.name && event.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                    (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                    (event.enhanced_description && event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase()))
-                );
-                
-                return hasAcceptableConfidence && matchesFilter && matchesSearch;
-            });
+        // Only recalculate if filter criteria changed
+        if (filter !== this.currentFilter || 
+            searchTerm !== this.searchTerm || 
+            !this.cachedFilteredEvents) {
+            
+            this.currentFilter = filter;
+            this.searchTerm = searchTerm;
+            this.cachedFilteredEvents = this.sortedIndices
+                .map(({ index }) => this.events[index])
+                .filter(event => {
+                    const hasAcceptableConfidence = event.confidence !== 'low';
+                    const matchesFilter = !filter || filter === 'all' || 
+                        (event.categories && event.categories.includes(filter));
+                    const matchesSearch = !searchTerm || (
+                        (event.name && event.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                        (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                        (event.enhanced_description && event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase()))
+                    );
+                    return hasAcceptableConfidence && matchesFilter && matchesSearch;
+                });
+        }
+        return this.cachedFilteredEvents;
     }    
 
     getHighMediumCount() {

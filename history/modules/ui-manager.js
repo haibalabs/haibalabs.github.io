@@ -211,8 +211,8 @@ export class UIManager {
         noResultsDiv.className = 'no-results';
         noResultsDiv.innerHTML = `
             <div class="empty-message">
+                <p>no events to show</p>
                 <span class="empty-emoji">😕</span>
-                <p>No events match the search or filtering criteria</p>
             </div>
         `;
         contentContainer.appendChild(noResultsDiv);
@@ -299,7 +299,39 @@ export class UIManager {
         }
     }
 
-    renderEvents(onMeasurementsComplete) {
+    handleLoadingState(contentContainer, placeholder) {
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'no-results loading';
+        loadingDiv.innerHTML = `
+            <div class="empty-message">
+                <p>traveling back in time...</p>
+                <span class="empty-emoji" id="loading-clock">🕐</span>
+            </div>
+        `;
+        contentContainer.appendChild(loadingDiv);
+        placeholder.style.height = '0px';
+    
+        // Animate the clock
+        const clockEmojis = ['🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚', '🕛'];
+        let index = 0;
+        const clockElement = loadingDiv.querySelector('#loading-clock');
+        
+        const clockInterval = setInterval(() => {
+            index = (index + 1) % clockEmojis.length;
+            clockElement.textContent = clockEmojis[index];
+        }, 166.66); // 2000ms / 12 = ~166.66ms for a full rotation every 2 seconds
+    
+        // Clean up interval when content changes
+        const observer = new MutationObserver((mutations) => {
+            if (!document.contains(loadingDiv)) {
+                clearInterval(clockInterval);
+                observer.disconnect();
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    async renderEvents(onMeasurementsComplete) {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         this.filteredCount = filteredEvents.length;
     
@@ -308,13 +340,21 @@ export class UIManager {
     
         // Clear current content
         contentContainer.innerHTML = '';
-    
+
+        // Force loading state and delay for testing
+//      this.handleLoadingState(contentContainer, placeholder);
+//      await new Promise(resolve => setTimeout(resolve, 50000)); // 2 second delay
+
+        // Show loading state if we haven't calibrated heights yet
+        if (!this.heightEstimateParams.calibrated) {
+            this.handleLoadingState(contentContainer, placeholder);
+        }
         // Handle no results case
-        if (filteredEvents.length === 0) {
+        else if (filteredEvents.length === 0) {
             this.handleNoResults(contentContainer, placeholder);
             return;
         }
-    
+
         // First pass: render elements with estimated or cached heights
         let currentPosition = this.positions.get(this.startIndex) || (this.startIndex * this.defaultEventHeight);
         for (let i = this.startIndex; i < this.endIndex; i++) {

@@ -438,7 +438,7 @@ body.hide-low-confidence .event[data-confidence="low"] {
 .empty-message {
     text-align: center;
     color: #666;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
 .empty-emoji {
@@ -446,4 +446,14 @@ body.hide-low-confidence .event[data-confidence="low"] {
     font-size: 2rem;
     margin-bottom: 1rem;
     filter: grayscale(100%);
+}
+
+.no-results.loading .empty-message p {
+    animation: fadeInOut 1.5s infinite;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
 }
