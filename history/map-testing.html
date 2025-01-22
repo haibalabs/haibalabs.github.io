@@ -2,20 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Simple OSM Test</title>
-  <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-  />
+  <title>Location Key Testing</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <style>
     body {
       margin: 0;
       font-family: sans-serif;
-    }
-    #map {
-      height: 80vh;
-      width: 100%;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
     }
     #controls {
       padding: 1em;
@@ -24,38 +19,227 @@
       width: 300px;
       margin-right: 8px;
     }
+    .main-content {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    #test-panel {
+      width: 50%;
+      padding: 1em;
+      overflow-y: auto;
+      border-right: 1px solid #ccc;
+    }
+    #map-container {
+      flex: 1;
+    }
+    #map {
+      height: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f5f5f5;
+    }
+    .error {
+      color: red;
+    }
+    .location-cell {
+      cursor: pointer;
+    }
+    .location-cell:hover {
+      background-color: #f0f0f0;
+    }
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
   </style>
 </head>
 <body>
   <div id="controls">
     <input type="text" id="locationInput" placeholder="Enter location" />
     <button id="searchBtn">Search</button>
+    <button id="runTestsBtn">Run All Tests</button>
   </div>
-  <div id="map"></div>
+  <div class="main-content">
+    <div id="test-panel">
+      <table>
+        <thead>
+          <tr>
+            <th>Location Input</th>
+            <th>Expected Key</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody id="testResults"></tbody>
+      </table>
+    </div>
+    <div id="map-container">
+      <div id="map"></div>
+    </div>
+  </div>
 
-  <!-- Leaflet JS -->
-  <script
-    src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-  ></script>
-
-  <!-- Your map utilities -->
-  <script type="module" src="map-utils.js"></script>
-
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script type="module">
     import { initMap, showLocationOnMap } from './modules/map-utils.js';
+    import { getLocationKey } from './modules/map-utils.js';
 
-    // Initialize the map
+    // Test cases
+    const testCases = [
+      {
+        input: {
+          name: "United States",
+          city: "Various",
+          region: "Various",
+          country: "United States",
+          historical_name: "United States"
+        },
+        expected: "United States"
+      },
+      {
+        input: {
+          name: "Paris, France",
+          city: "Paris",
+          region: "Île-de-France",
+          country: "France"
+        },
+        expected: "Paris, Île-de-France, France"
+      },
+      {
+        input: {
+          "name": "Germany",
+          "city": "various locations in Germania Inferior",
+          "region": "various regions",
+          "country": "Germany",
+          "historical_name": "Germania Inferior"
+        },
+        expected: "Germany"
+      },
+      {
+        input: {
+          "name": "Germany",
+          "city": "Various",
+          "region": "Various",
+          "country": "Germany",
+          "historical_name": "Teutonic tribes"
+        },
+        expected: "Germany"
+      },
+      {
+        input: {
+          "name": "China",
+          "city": "various locations",
+          "region": "various regions",
+          "country": "China",
+          "historical_name": "Han Dynasty"
+        },
+        expected: "China"
+      },
+      {
+         input: {
+          "name": "Parthia, Iran",
+          "city": "various locations",
+          "region": "various regions",
+          "country": "Iran",
+          "historical_name": "Parthia"
+         },
+        expected: "Parthia, Iran"
+      },
+      {
+        input: {
+          "name": "Various locations in Western Europe",
+        "city": "N/A",
+        "region": "N/A",
+        "country": "Various countries in Western Europe",
+        "historical_name": "N/A"
+        },
+        expected: "Western Europe"
+      },
+      {
+        input: {
+        "name": "Pacific Northwest",
+        "city": "N/A",
+        "region": "N/A",
+        "country": "United States/Canada",
+        "historical_name": "N/A"
+        },
+        expected: "Pacific Northwest"
+      },
+      {
+        input: {
+          name: "Paris, Texas, United States",
+          city: "Paris",
+          region: "Texas",
+          country: "United States"
+        },
+        expected: "Paris, Texas, United States"
+      }
+      // Add more test cases as needed
+    ];
+
+    // Initialize map
     const { map, markersLayer, geocodeCache } = initMap();
 
-    // Set up the search button
-    const searchBtn = document.getElementById('searchBtn');
-    const locationInput = document.getElementById('locationInput');
-    searchBtn.addEventListener('click', () => {
-      const locationName = locationInput.value.trim();
+    function formatLocation(loc) {
+      return typeof loc === 'string' ? loc : JSON.stringify(loc, null, 2);
+    }
+
+    function runTests() {
+      const tbody = document.getElementById('testResults');
+      tbody.innerHTML = '';
+
+      testCases.forEach(test => {
+        const row = document.createElement('tr');
+        
+        // Location input cell
+        const inputCell = document.createElement('td');
+        inputCell.className = 'location-cell';
+        inputCell.innerHTML = `<pre>${formatLocation(test.input)}</pre>`;
+        inputCell.addEventListener('click', () => {
+          const locationKey = getLocationKey(test.input);
+          showLocationOnMap(locationKey, map, markersLayer, geocodeCache);
+        });
+
+        // Expected key cell
+        const expectedCell = document.createElement('td');
+        expectedCell.textContent = test.expected;
+
+        // Result cell
+        const resultCell = document.createElement('td');
+        const result = getLocationKey(test.input);
+        resultCell.textContent = result;
+        if (result !== test.expected) {
+          resultCell.classList.add('error');
+        }
+
+        row.appendChild(inputCell);
+        row.appendChild(expectedCell);
+        row.appendChild(resultCell);
+        tbody.appendChild(row);
+      });
+    }
+
+    // Set up event listeners
+    document.getElementById('searchBtn').addEventListener('click', () => {
+      const locationName = document.getElementById('locationInput').value.trim();
       if (locationName) {
         showLocationOnMap(locationName, map, markersLayer, geocodeCache);
       }
     });
+
+    document.getElementById('runTestsBtn').addEventListener('click', runTests);
+
+    // Run tests on page load
+    runTests();
   </script>
 </body>
 </html>

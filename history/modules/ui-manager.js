@@ -459,6 +459,10 @@ export class UIManager {
         `;
     }
 
+    clearDateFilter() {
+        document.getElementById('dateInput').value = '';
+    }    
+
     addLocationHandler(eventDiv, event) {
         const locationText = formatLocations(event.locations);
         if (locationText) {
@@ -532,6 +536,7 @@ export class UIManager {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 this.currentSearch = e.target.value.toLowerCase();
+                this.clearDateFilter();
                 this.resetWindow();
                 this.renderEvents();
             }, 300);
@@ -546,8 +551,8 @@ export class UIManager {
         });
 
         // Navigation buttons
-        document.getElementById('jumpStart').addEventListener('click', () => this.jumpToStart());
-        document.getElementById('jumpEnd').addEventListener('click', () => this.jumpToEnd());
+        document.getElementById('jumpStart').addEventListener('click', () => { this.clearDateFilter(); this.jumpToStart(); });
+        document.getElementById('jumpEnd').addEventListener('click', () => { this.clearDateFilter(); this.jumpToEnd(); });
     }
 
     jumpToDate(targetYear) {

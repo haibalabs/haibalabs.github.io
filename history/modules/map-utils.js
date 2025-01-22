@@ -101,88 +101,82 @@ export async function getCoordinates(locationName, geocodeCache) {
 export async function showLocationOnMap(locationName, map, markersLayer, geocodeCache) {
 //  console.log('Showing location:', locationName);
 
-    // Clear existing markers so you can see just the new location
-    markersLayer.clearLayers();
+  // Clear existing markers so you can see just the new location
+  markersLayer.clearLayers();
 
-    const coords = await getCoordinates(locationName, geocodeCache);
-    if (!coords) {
-      console.log('Location not found:', locationName);
-      return;
-    }
-
-    const marker = L.marker(coords).bindPopup(locationName);
-    markersLayer.addLayer(marker);
-
-
-    // Force map update before changing view
-    map.invalidateSize({
-        animate: true,
-        pan: false
-    });
-
-    // Small delay before setting view
-    await new Promise(resolve => setTimeout(resolve, 50));  
-
-    // Zoom in on this location. Adjust zoom level to your liking.
-    map.setView(coords, 6, {
-      animate: true,
-      duration: 1
-    });
+  const coords = await getCoordinates(locationName, geocodeCache);
+  if (!coords) {
+    console.log('Location not found:', locationName);
+    return;
   }
+
+  const marker = L.marker(coords).bindPopup(locationName);
+  markersLayer.addLayer(marker);
+
+  // Force map update before changing view
+  map.invalidateSize({
+      animate: true,
+      pan: false
+  });
+
+  // Small delay before setting view
+  await new Promise(resolve => setTimeout(resolve, 50));  
+
+  // Zoom in on this location. Adjust zoom level to your liking.
+  map.setView(coords, 6, {
+    animate: true,
+    duration: 1
+  });
+}
+
+export function getLocationKey(location) {
+  // Handle string input
+  if (typeof location !== 'object') {
+      return String(location);
+  }
+  
+  // If it's just a country with various/unknown in other fields
+  if (location.country && 
+      (!location.city || location.city.toLowerCase().includes('various') || location.city === 'Unknown') &&
+      (!location.region || location.region.toLowerCase().includes('various') || location.region === 'Unknown')) {
+      return location.country;
+  }
+
+  const parts = [];
+  // If name exists and isn't redundant with components
+  if (location.name && !location.name.includes(location.country)) {
+      // Check if name already contains city and region info
+      const nameParts = location.name.split(', ');
+      if (nameParts.length === 3) {  // If name is already in "city, region, country" format
+          return location.name;
+      }
+      parts.push(location.name);
+  } else {
+      // Build from components
+      ['city', 'region', 'country'].forEach(field => {
+          const value = location[field];
+          if (value && 
+              !value.toLowerCase().includes('various') && 
+              value !== "Unknown" && 
+              value !== "N/A") {
+              // Only add if not already included
+              if (!parts.includes(value)) {
+                  parts.push(value);
+              }
+          }
+      });
+  }
+  
+  return parts.length ? parts.join(", ") : "Unknown";
+}
 
 export function formatLocations(locations) {
   if (!locations || locations.length === 0) return "";
-  
-  // Handle new format (array of location objects)
-  if (typeof locations[0] === 'object') {
-      return locations.map(loc => {
-          // Use the full name if available, otherwise build from components
-          if (loc.name) {
-              return loc.name;
-          }
-          // Build from components if name is not available
-          const parts = [];
-          if (loc.city && loc.city !== "Unknown") parts.push(loc.city);
-          if (loc.region && loc.region !== "Unknown") parts.push(loc.region);
-          if (loc.country && loc.country !== "Unknown") parts.push(loc.country);
-          return parts.join(", ");
-      }).join("; ");
-  }
-  
-  // Handle old format (array of strings)
-  return locations.join(", ");
+  return getLocationKey(locations[0]);
+//  return locations.map(loc => getLocationKey(loc)).join("; ");
 }
 
 export function getMapLocation(locations) {
   if (!locations || locations.length === 0) return null;
-  
-  // Handle new format
-  if (typeof locations[0] === 'object') {
-      const firstLoc = locations[0];
-      
-      if (firstLoc.city && firstLoc.city !== "Unknown") {
-          if (firstLoc.region && firstLoc.region !== "Unknown" && 
-              firstLoc.country && firstLoc.country !== "Unknown") {
-              return `${firstLoc.city}, ${firstLoc.region}, ${firstLoc.country}`;
-          }
-          if (firstLoc.country && firstLoc.country !== "Unknown") {
-              return `${firstLoc.city}, ${firstLoc.country}`;
-          }
-          return firstLoc.city;
-      }
-      
-      if (firstLoc.region && firstLoc.region !== "Unknown" &&
-          firstLoc.country && firstLoc.country !== "Unknown") {
-          return `${firstLoc.region}, ${firstLoc.country}`;
-      }
-      
-      if (firstLoc.country && firstLoc.country !== "Unknown") {
-          return firstLoc.country;
-      }
-      
-      return firstLoc.name || null;
-  }
-  
-  // Handle old format
-  return locations[0] ? `${locations[0]}` : null;
+  return getLocationKey(locations[0]);
 }
