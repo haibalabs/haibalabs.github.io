@@ -1,6 +1,16 @@
 ## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
-### Day 12. Fri 01/20/25
+### Day 13. Mon 01/21/25
+
+The big effort today was creating an automatic process using open data and LLMs to get better event locations.
+The script is running right now, and hopefully will be done by morning.
+
+Also:
+- Many fixes to various UI issues and bit more scrolling optimizations.
+- Better handling of locations for display or mapping in the app.
+- Gathered data for the first millenium BC, but we have to fix some issues before being able to process it.
+
+### Day 12. Mon 01/20/25
 49392 events! 
 
 The number of events is not an issue anymore with all the performance fixes we've finally put in.

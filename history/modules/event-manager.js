@@ -19,6 +19,7 @@ export class EventManager {
             this.events = await response.json();
             this.normalizeEvents();
             this.sortEvents();
+            this.cachedFilteredEvents = null; // Invalidate cache after loading new data
             return this.events;
         } catch (error) {
             console.error('Error loading events:', error);
