@@ -4,6 +4,17 @@
     /* --header-height is already being set dynamically in JS */
     --footer-height: 24px;  
     --sidepanel-width: 210px;
+    --min-timeline-width: 480px;
+    --max-timeline-width: 600px;
+}
+
+@media (max-width: 430px) {
+    :root {
+        --footer-height: 20px;  
+        --sidepanel-width: 180px;
+        --min-timeline-width: 390px;
+        --max-timeline-width: 390px;
+    }
 }
 
 body {
@@ -44,7 +55,7 @@ body {
     width: var(--sidepanel-width);
     height: calc(100vh - var(--header-height) - var(--footer-height));
     background: #f4f4f4;
-    padding: 1.5rem;
+    padding: 1rem;
     box-shadow: -2px 0 5px rgba(0,0,0,0.1);
     overflow-x: visible;
     z-index: 89;
@@ -263,7 +274,7 @@ body {
 .timeline-wrapper {
     height: 100%;
     width: calc(100% - 10px);
-    min-width: 480px;
+    min-width: var(--min-timeline-width);
     margin-left: 30px;
     padding-left: 0;
     padding-right: 0;
@@ -292,14 +303,14 @@ body {
 
 .timeline-wrapper.panel-open .timeline {
     margin: 0 auto; /* Keep timeline centered in reduced space */
-    max-width: min(600px, 100%); /* Prevent timeline from being too wide in small spaces */
+    max-width: min(var(--max-timeline-width), 100%); /* Prevent timeline from being too wide in small spaces */
 }
 
 .timeline {
     display: block;
     padding: 2rem 1rem;
     width: 100%;
-    max-width: 600px;
+    max-width: var(--max-timeline-width);
     margin: 0 auto;
     position: relative;    
     background: #fff;

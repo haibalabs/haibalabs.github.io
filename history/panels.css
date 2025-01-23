@@ -4,6 +4,12 @@
     --scrollbar-width: 17px;
 }
 
+@media (max-width: 430px) {
+    :root {
+        --panel-width: min(400px, calc(90vw));
+    }
+}
+
 /* Base Panel Styles - shared classes */
 .side-panel {
     position: fixed;
