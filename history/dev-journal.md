@@ -1,5 +1,13 @@
 ## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
+### Day 14. Mon 01/22/25
+
+The focus today was on a new layout of the UI, mainly to have a functional for mobile in portrait mode.
+
+Also:
+- New version of data with thousands of locations fixed.
+- Various UI fixes.
+
 ### Day 13. Mon 01/21/25
 
 The big effort today was creating an automatic process using open data and LLMs to get better event locations.
