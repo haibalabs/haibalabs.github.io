@@ -97,6 +97,26 @@
     const testCases = [
       {
         input: {
+          name: "École Saint Gabriel",
+          city: "Rabat",
+          region: "",
+          country: "Morocco",
+          historical_name: ""
+        },
+        expected: "École Saint Gabriel, Rabat, Morocco"
+      },
+      {
+        input: {
+          name: "",
+          city: "Rabat",
+          region: "",
+          country: "Morocco",
+          historical_name: ""
+        },
+        expected: "Rabat, Morocco"
+      },
+      {
+        input: {
           name: "United States",
           city: "Various",
           region: "Various",
@@ -112,7 +132,7 @@
           region: "Île-de-France",
           country: "France"
         },
-        expected: "Paris, Île-de-France, France"
+        expected: "Paris, France, Île-de-France"
       },
       {
         input: {

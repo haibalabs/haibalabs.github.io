@@ -115,6 +115,7 @@ function parseYear(yearStr) {
     cleaned = cleaned.replace(/\bdate\s+in\b/gi, '');
     cleaned = cleaned.replace(/^c\.\s*/i, '').replace(/^circa\s*/i, '');
     cleaned = cleaned.replace(/\b(around|in|between|by|before|after)\b\s*/gi, '');
+    //cleaned = cleaned.replace(/^-0+(?=\d)/, '-');
 
     // unify dash
     cleaned = cleaned.replace(/[–—]/g, '-');
@@ -145,7 +146,7 @@ function parseYear(yearStr) {
   
     // "1209-spring" => "spring 1209"
     cleaned = cleaned.replace(
-      /(\d{1,4})-(spring|summer|autumn|fall|winter)/i,
+      /(-?\d{1,4})-(spring|summer|autumn|fall|winter)/i,
       '$2 $1'
     );
 
@@ -170,11 +171,27 @@ function parseYear(yearStr) {
    // - For “Jan 100 – Feb 101” or “100-101” etc., parse the left side.
    // - For day ranges “July 25-27, 677,” parse the earliest day (25).
 function extractRangeOrDayRange(inputText) {
+/*    let isBC = false;
+    if (inputText.match(/\s*(bc|bce)\b/i) || inputText.startsWith('-')) {
+      isBC = true;
+      inputText = inputText.replace(/\s*(bc|bce)\b/i, '').trim();
+      if (inputText.startsWith('-')) {
+          inputText = inputText.substring(1); // Remove leading minus
+      }
+    }*/
+
     let isBC = false;
-    if (inputText.match(/\s*(bc|bce)\b/i)) {
+    if (inputText.match(/\s*(bc|bce)\b/i) || 
+        inputText.startsWith('-') || 
+        inputText.match(/(spring|summer|autumn|fall|winter)\s+-/i)) {
         isBC = true;
         inputText = inputText.replace(/\s*(bc|bce)\b/i, '').trim();
-    }
+        if (inputText.startsWith('-')) {
+            inputText = inputText.substring(1);
+        } else if (inputText.match(/(spring|summer|autumn|fall|winter)\s+-/i)) {
+            inputText = inputText.replace(/\s+-/, ' ');
+        }
+    }   
 
     // 1) If it matches a full ISO date
     if (/^\d{1,4}-\d{1,2}-\d{1,2}$/.test(inputText)) {

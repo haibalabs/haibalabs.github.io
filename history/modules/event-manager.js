@@ -35,6 +35,12 @@ export class EventManager {
         });
     }
 
+    addEvent(event) {
+        this.events.push(event);
+        this.sortEvents();
+        this.cachedFilteredEvents = null; // Invalidate cache after loading new data
+    }
+
     sortEvents() {
         this.sortedIndices = this.events
             .map((event, index) => ({

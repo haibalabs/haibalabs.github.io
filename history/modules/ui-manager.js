@@ -30,12 +30,11 @@ export class UIManager {
 
         // Add position tracking
         this.positions = new Map(); // Store cumulative positions
+        this.eventHeights = new Map(); // Cache for measured heights
 
         this.resetWindow();
 
         // Add height tracking
-        this.eventHeights = new Map(); // Cache for measured heights
-        this.totalHeight = 0; // Total scrollable height
         this.measuredHeightsSum = 0;
         this.measuredHeightsCount = 0;
         this.defaultEventHeight = 173;
@@ -161,14 +160,25 @@ export class UIManager {
         this.totalHeight = currentPosition;
     }
 
+    clearCachedLayout() {
+        this.positions.clear();
+        this.eventHeights.clear();
+        this.totalHeight = 0;
+    }
+
+    resetLayout() {
+        this.clearCachedLayout();
+        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        this.updatePositionsTable(filteredEvents);
+        this.updateVisibleRange();
+        this.renderEvents();
+    }
+
     resetWindow() {
         this.startIndex = 0;
         this.endIndex = 0;
         this.lastScrollPosition = 0;
-        this.positions.clear();
-        const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
-        this.updatePositionsTable(filteredEvents);
-        this.updateVisibleRange();
+        this.resetLayout();
     }
 
     handleScroll() {

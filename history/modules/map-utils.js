@@ -130,44 +130,25 @@ export async function showLocationOnMap(locationName, map, markersLayer, geocode
 }
 
 export function getLocationKey(location) {
-  // Handle string input
-  if (typeof location !== 'object') {
-      return String(location);
-  }
-  
-  // If it's just a country with various/unknown in other fields
-  if (location.country && 
-      (!location.city || location.city.toLowerCase().includes('various') || location.city === 'Unknown') &&
-      (!location.region || location.region.toLowerCase().includes('various') || location.region === 'Unknown')) {
-      return location.country;
-  }
+  if (typeof location !== 'object') return String(location);
 
-  const parts = [];
-  // If name exists and isn't redundant with components
-  if (location.name && !location.name.includes(location.country)) {
-      // Check if name already contains city and region info
-      const nameParts = location.name.split(', ');
-      if (nameParts.length === 3) {  // If name is already in "city, region, country" format
-          return location.name;
-      }
-      parts.push(location.name);
-  } else {
-      // Build from components
-      ['city', 'region', 'country'].forEach(field => {
-          const value = location[field];
-          if (value && 
-              !value.toLowerCase().includes('various') && 
-              value !== "Unknown" && 
-              value !== "N/A") {
-              // Only add if not already included
-              if (!parts.includes(value)) {
-                  parts.push(value);
-              }
-          }
-      });
-  }
+  const parts = new Set();
   
-  return parts.length ? parts.join(", ") : "Unknown";
+  // Add name first if it exists
+  if (location.name) parts.add(location.name);
+
+  // Add components only if they're not already part of the name
+  ['city', 'region', 'country'].forEach(field => {
+    const value = location[field];
+    if (!value || value.toLowerCase().includes('various') || value === "Unknown" || value === "N/A") return;
+    
+    // Check if this component is already included in any existing part
+    if ([...parts].every(part => !part.toLowerCase().includes(value.toLowerCase()))) {
+      parts.add(value);
+    }
+  });
+
+  return [...parts].join(", ");
 }
 
 export function formatLocations(locations) {

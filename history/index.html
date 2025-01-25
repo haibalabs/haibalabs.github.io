@@ -36,13 +36,16 @@
                     <div class="search-box">
                         <input type="text" id="searchInput" placeholder="Search events...">
                     </div>
+                    <button id="add-event" class="nav-button">
+                        <span>+</span>
+                    </button>
                 </div>
             </div>
             <div class="controls-panel">
                 <div class="date-navigation">
-                    <button class="nav-button" id="jumpStart">⟪ Start</button>
-                    <input type="text" id="dateInput" placeholder="Jump to year...">
-                    <button class="nav-button" id="jumpEnd">End ⟫</button>
+                    <button class="nav-button" id="jumpStart">⟪</button>
+                    <input type="text" id="dateInput" placeholder="Year">
+                    <button class="nav-button" id="jumpEnd">⟫</button>
                 </div>
                 <div class="filters">
                     <!-- Buttons injected by JS -->
@@ -81,6 +84,60 @@
             </div>
         </footer>        
     </div><!-- End page-container -->
+    <div class="modal-overlay" id="add-event-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Add Event</h3>
+            </div>
+            <form id="add-event-form" class="modal-form">
+                <div class="form-group">
+                    <label>Event Name</label>
+                    <input type="text" name="name" required
+                            placeholder="This has to be a unique name">
+                </div>
+                
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="text" name="enhanced_time" required 
+                           placeholder="e.g. 1/25/1976, 750, 15 BC, March 982, Late Spring 1204">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="enhanced_description" required rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Location</label>
+                    <div class="location-fields">
+                        <input type="text" name="location_name" placeholder="Name">
+                        <input type="text" name="location_city" placeholder="City">
+                        <input type="text" name="location_region" placeholder="Region">
+                        <input type="text" name="location_country" placeholder="Country">
+                        <input type="text" name="location_historical" placeholder="Historical Name">
+                    </div>
+                </div>
+    
+                <div class="form-group">
+                    <label>Categories</label>
+                    <select name="categories">
+                    </select>
+                </div>
+        
+                <div class="form-group">
+                    <label>Source URL</label>
+                    <input name="wikipedia_url" 
+                            pattern="^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$"
+                            placeholder="e.g. www.wikipedia.org/wiki/page">
+                </div>
+    
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-add">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>    
     <script type="module" src="script.js"></script>
 </body>
 </html>
