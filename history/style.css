@@ -1,5 +1,6 @@
 @import 'panels.css';
 @import 'modal.css';
+@import 'settings.css';
 
 :root {
     /* --header-height is already being set dynamically in JS */

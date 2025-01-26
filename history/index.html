@@ -77,13 +77,28 @@
                 <br>
                 Unauthorized use or distribution of this website or its content is prohibited.
             </div>
-            <div class="event-count">
-                <span id="visibleCount">0</span> of <span id="totalCount">0</span> Events
-                <br>
-                <span class="version">v<span id="versionNumber"></span></span>
-            </div>
+            <button id="settings-btn" class="settings-btn">⚙️</button>
         </footer>        
     </div><!-- End page-container -->
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-header">
+            <h3>Settings</h3>
+        </div>
+        <div class="settings-info">
+            <p>Version: <span class="version">v<span id="versionNumber"></span></span></p>
+            <p>Events: <span id="visibleCount">0</span> of <span id="totalCount">0</span> Events</p>
+        </div>
+        <div class="settings-content">
+            <div class="settings-group">
+                <h4>Debug Options</h4>
+                <label class="settings-toggle">
+                    <input type="checkbox" id="debug-scroll">
+                    Scroll metrics
+                </label>
+            </div>
+        </div>
+        <button class="settings-close-btn">Close</button>
+    </div>
     <div class="modal-overlay" id="add-event-modal">
         <div class="modal">
             <div class="modal-header">

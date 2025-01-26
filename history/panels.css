@@ -140,7 +140,7 @@
 /* Button Positioning States */
 .map-panel:not(.open) .toggle-map-btn,
 .info-panel:not(.open) .toggle-info-btn {
-    right: 0;
+    right: -40px;
 }
 
 .map-panel.open .toggle-map-btn,

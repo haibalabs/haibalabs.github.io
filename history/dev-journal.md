@@ -1,6 +1,19 @@
 ## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
-### Day 14. Mon 01/22/25
+### Day 16. Fri 01/24/25
+
+The focus the last couple days was on enabling posting new events, and by extension editing existing ones.
+
+Details:
+- We've successfully integrated with Google Firebase with an event database and tested push and pull operations.
+- Created a functional 'Add Event' dialog.
+- Fixed various data munching issues to support the 1st Millenium BC data.
+- Fixed a variety of 'negative' date issues.
+- Fixed many location resolving issues.
+- Updated the main data store with events from -1000 BC to 2024.
+- Various UI fixes as usual.
+
+### Day 14. Wed 01/22/25
 
 The focus today was on a new layout of the UI, mainly to have a functional for mobile in portrait mode.
 
@@ -8,7 +21,7 @@ Also:
 - New version of data with thousands of locations fixed.
 - Various UI fixes.
 
-### Day 13. Mon 01/21/25
+### Day 13. Tue 01/21/25
 
 The big effort today was creating an automatic process using open data and LLMs to get better event locations.
 The script is running right now, and hopefully will be done by morning.

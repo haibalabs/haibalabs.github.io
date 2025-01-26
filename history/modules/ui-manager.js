@@ -58,6 +58,59 @@ export class UIManager {
                 this.renderEvents(); // Re-render with new measurements
             }, 150); // Debounce resize events
         });
+
+        this.setupSettings();
+    }
+
+    setupSettings() {
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsPanel = document.getElementById('settings-panel');
+        const closeBtn = document.querySelector('.settings-close-btn');
+        const debugScroll = document.getElementById('debug-scroll');
+
+        // Toggle settings panel
+        settingsBtn.addEventListener('click', () => {
+            settingsPanel.classList.add('open');
+            this.updateSettingsInfo();
+        });
+
+        closeBtn.addEventListener('click', () => {
+            settingsPanel.classList.remove('open');
+        });
+
+        // Debug scroll metrics
+        debugScroll.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                this.showScrollMetrics();
+            } else {
+                this.hideScrollMetrics();
+            }
+        });
+    }
+
+    showScrollMetrics() {
+        // Add debug info to timeline
+        const debugDiv = document.createElement('div');
+        debugDiv.id = 'scroll-debug';
+        debugDiv.className = 'scroll-debug';
+        this.timelineContainer.appendChild(debugDiv);
+
+        // Update metrics on scroll
+        this.timelineContainer.addEventListener('scroll', () => {
+            debugDiv.innerHTML = `
+                Scroll: ${this.timelineContainer.scrollTop}<br>
+                Start: ${this.startIndex}<br>
+                End: ${this.endIndex}<br>
+                Height: ${Math.floor(this.totalHeight)}
+            `;
+        });
+    }
+
+    hideScrollMetrics() {
+        const debugDiv = document.getElementById('scroll-debug');
+        if (debugDiv) {
+            debugDiv.remove();
+        }
     }
 
     calibrateEstimates() {

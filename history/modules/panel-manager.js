@@ -52,10 +52,10 @@ export class PanelManager {
             this.bringInfoToFront();
         } else {
             this.openInfoPanel();
-        }
-        
-        if (!this.infoFrame.src) {
-            this.showInfoPanelHelp();
+            // Only show help if iframe is empty
+            if (!this.infoFrame.srcdoc && !this.infoFrame.src) {
+                this.showInfoPanelHelp();
+            }
         }
     }
 
@@ -66,6 +66,9 @@ export class PanelManager {
             this.timelineWrapper.classList.remove('panel-open');
             this.onPanelStateChange?.(); // Trigger re-render when all panels close
         }
+        else {
+            this.bringInfoToFront();
+        }
     }
 
     closeInfoPanel() {
@@ -74,6 +77,9 @@ export class PanelManager {
         if (!this.mapPanel.classList.contains('open')) {
             this.timelineWrapper.classList.remove('panel-open');
             this.onPanelStateChange?.(); // Trigger re-render when all panels close
+        }
+        else {
+            this.bringMapToFront();
         }
     }
 
