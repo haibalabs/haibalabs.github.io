@@ -586,7 +586,7 @@ export class UIManager {
             const timeDiv = eventDiv.querySelector('.event-time');
             const locationSpan = document.createElement('span');
             locationSpan.className = 'event-location clickable';
-            locationSpan.innerHTML = `⌖ ${locationText}`;
+            locationSpan.innerHTML = `<i class="fa-light fa-location-crosshairs"></i> ${locationText}`;
 
             locationSpan.addEventListener('click', async (e) => {
                 e.stopPropagation();
@@ -605,7 +605,7 @@ export class UIManager {
             const timeDiv = eventDiv.querySelector('.event-time');
             const wikiSpan = document.createElement('span');
             wikiSpan.className = 'wiki-link';
-            wikiSpan.textContent = '📜';
+            wikiSpan.innerHTML = `<i class="fa-light fa-scroll"></i>`;
             wikiSpan.addEventListener('click', (e) => {
                 e.stopPropagation();
                 this.panelManager.handleInfoClick(event.wikipedia_url, e.currentTarget);
@@ -622,7 +622,7 @@ export class UIManager {
             button.className = label.name === 'all' ? 'active' : '';
             button.setAttribute('data-label', label.name);
             button.style.backgroundColor = label.color;
-            button.textContent = label.name.charAt(0).toUpperCase() + label.name.slice(1);
+            button.innerHTML = `<i class="fa-light ${label.icon}"></i> ${label.name.charAt(0).toUpperCase() + label.name.slice(1)}`;
 
             button.addEventListener('click', () => {
                 document.querySelectorAll('.filters button').forEach(btn => 

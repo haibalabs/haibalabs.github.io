@@ -10,12 +10,12 @@ export const VERSION = '0.5.0';
 
 // Define prominent labels and their associated colors
 export const PROMINENT_LABELS = [
-    { name: "all", color: "gray" },
-    { name: "art", color: "#4CAF50" },     // Green
-    { name: "science", color: "#2196F3" },  // Blue
-    { name: "politics", color: "#795548" }, // Brown
-    { name: "war", color: "#F44336" },      // Red
-    { name: "religion", color: "#9C27B0" }, // Purple
-    { name: "culture", color: "#FF9800" },  // Orange
-    { name: "exploration", color: "#009688" } // Teal
+    { name: "all", color: "gray", icon: 'fa-globe' },
+    { name: "art", color: "#4CAF50", icon: 'fa-palette' },     // Green
+    { name: "science", color: "#2196F3", icon: 'fa-flask' },  // Blue
+    { name: "politics", color: "#795548", icon: 'fa-landmark' }, // Brown
+    { name: "war", color: "#F44336", icon: 'fa-shield-halved' },      // Red
+    { name: "religion", color: "#9C27B0", icon: 'fa-place-of-worship' }, // Purple
+    { name: "culture", color: "#FF9800", icon: 'fa-people-roof' },  // Orange
+    { name: "exploration", color: "#009688", icon: 'fa-compass' } // Teal
 ];
