@@ -86,6 +86,14 @@ export class UIManager {
                 this.hideScrollMetrics();
             }
         });
+
+        // toggle adding events
+        const debugAddEvent = document.getElementById('debug-add-event');
+    
+        debugAddEvent.addEventListener('change', (e) => {
+            const addEventBtn = document.getElementById('add-event');
+            addEventBtn.style.display = e.target.checked ? 'block' : 'none';
+        });    
     }
 
     showScrollMetrics() {
@@ -548,7 +556,7 @@ export class UIManager {
             `<span class="confidence-badge confidence-uncertain">uncertain</span>` : 
             '';
     }
-    
+
     getEventHTML(event, formattedDate, confidenceBadge) {
         const highlightedName = this.highlightSearchTerms(event.name, this.currentSearch);
         const highlightedDesc = this.highlightSearchTerms(
