@@ -548,19 +548,25 @@ export class UIManager {
             `<span class="confidence-badge confidence-uncertain">uncertain</span>` : 
             '';
     }
-
+    
     getEventHTML(event, formattedDate, confidenceBadge) {
+        const highlightedName = this.highlightSearchTerms(event.name, this.currentSearch);
+        const highlightedDesc = this.highlightSearchTerms(
+            event.enhanced_description || event.description, 
+            this.currentSearch
+        );
+        
         return `
             <div class="event-header">
-                ${event.name}
+                ${highlightedName}
                 ${confidenceBadge}
             </div>
             <div class="event-time">
                 <span class="event-date">${formattedDate}</span>
             </div>
-            <div class="event-description">${event.enhanced_description || event.description}</div>
+            <div class="event-description">${highlightedDesc}</div>
         `;
-    }
+    }   
 
     clearDateFilter() {
         document.getElementById('dateInput').value = '';
@@ -640,6 +646,7 @@ export class UIManager {
             searchTimeout = setTimeout(() => {
                 this.currentSearch = e.target.value.toLowerCase();
                 this.clearDateFilter();
+                this.timelineContainer.scrollTo({ top: 0 });
                 this.resetWindow();
                 this.renderEvents();
             }, 300);
@@ -656,6 +663,12 @@ export class UIManager {
         // Navigation buttons
         document.getElementById('jumpStart').addEventListener('click', () => { this.clearDateFilter(); this.jumpToStart(); });
         document.getElementById('jumpEnd').addEventListener('click', () => { this.clearDateFilter(); this.jumpToEnd(); });
+    }
+
+    highlightSearchTerms(text, searchTerm) {
+        if (!searchTerm) return text;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return text.replace(regex, '<mark>$1</mark>');
     }
 
     jumpToDate(targetYear) {

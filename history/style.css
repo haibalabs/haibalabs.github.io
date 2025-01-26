@@ -254,6 +254,13 @@ body {
     box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
+/* highlighted search terms */
+mark {
+    background-color: rgba(150, 218, 138, 0.4);
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
 .nav-button {
     padding: 0.7rem;
     border: none;
