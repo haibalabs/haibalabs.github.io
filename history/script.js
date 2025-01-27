@@ -2,8 +2,8 @@ import { VERSION }      from './modules/config.js';
 import { EventManager } from './modules/event-manager.js';
 import { UIManager }    from './modules/ui-manager.js';
 import { PanelManager } from './modules/panel-manager.js';
-import { initMap }      from './modules/map-utils.js';
 import { ModalManager } from './modules/modal-manager.js';
+import { initMap, LocationVerifier } from './modules/map-utils.js';
 
 import { initializeApp as firebaseInit } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
@@ -92,7 +92,11 @@ async function initializeApp() {
         await fetchEventFromFirebase("event1");
     });
 */
-    const eventManager = new EventManager();
+
+    const locationVerifier = new LocationVerifier();
+    await locationVerifier.loadUnverifiedLocations('unverified-locations.json');
+    const eventManager = new EventManager(locationVerifier);
+
     const panelManager = new PanelManager(map, markersLayer, geocodeCache, () => {
         uiManager.resetLayout();
     });

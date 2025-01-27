@@ -60,6 +60,29 @@ export class UIManager {
         });
 
         this.setupSettings();
+
+        // Clear search
+        const clearBtn = document.getElementById('clearSearch');
+        clearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearBtn.classList.remove('visible');
+            this.currentSearch = '';
+            this.resetWindow();
+            this.renderEvents();
+        });
+
+        // Random event
+        const randomBtn = document.getElementById('randomEvent');
+        randomBtn.addEventListener('click', () => {
+            const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, '');
+            const randomIndex = Math.floor(Math.random() * filteredEvents.length);
+            const targetPosition = this.positions.get(randomIndex) || 0;
+            
+            this.timelineContainer.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        });    
     }
 
     setupSettings() {
@@ -585,6 +608,24 @@ export class UIManager {
         if (locationText) {
             const timeDiv = eventDiv.querySelector('.event-time');
             const locationSpan = document.createElement('span');
+
+            // Check verification status
+/*            
+            const isVerified = event.locations[0]?.verified !== false;
+            locationSpan.className = `event-location ${isVerified ? 'clickable' : 'unverified'}`;
+            locationSpan.innerHTML = `${isVerified ? '<i class="fa-light fa-location-crosshairs"></i>' : ''}${locationText}`;
+
+            if (isVerified) {
+                locationSpan.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+                    const mapLocation = getMapLocation(event.locations);
+                    if (mapLocation) {
+                        await this.panelManager.showLocationOnMap(locationSpan, event, mapLocation);
+                    }
+                });
+            }
+*/
+
             locationSpan.className = 'event-location clickable';
             locationSpan.innerHTML = `<i class="fa-light fa-location-crosshairs"></i> ${locationText}`;
 
@@ -650,6 +691,8 @@ export class UIManager {
         let searchTimeout;
         const searchInput = document.getElementById('searchInput');
         searchInput.addEventListener('input', (e) => {
+            const clearBtn = document.getElementById('clearSearch');
+            clearBtn.classList.toggle('visible', searchInput.value.length > 0);
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 this.currentSearch = e.target.value.toLowerCase();

@@ -355,7 +355,7 @@ export class PanelManager {
             </head>
             <body>
                 <div class="help-message">
-                    <p>Click on an event's scroll 📜 to view additional information.</p>
+                    <p>Click on an event's scroll <i class="fa-light fa-scroll"></i> to view additional information.</p>
                 </div>
             </body>
             </html>

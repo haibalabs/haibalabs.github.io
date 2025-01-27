@@ -2,7 +2,8 @@
 import { parseTimeToSortableValue } from './date-handlers.js';
 
 export class EventManager {
-    constructor() {
+    constructor(locationVerifier) {
+        this.locationVerifier = locationVerifier;
         this.events = [];
         this.sortedIndices = [];
         this.currentFilter = 'all';
@@ -17,6 +18,7 @@ export class EventManager {
                 throw new Error(`Could not load data file: ${dataFile}`);
             }
             this.events = await response.json();
+            this.events.forEach(event => this.locationVerifier.verifyEventLocation(event));    
             this.normalizeEvents();
             this.sortEvents();
             this.cachedFilteredEvents = null; // Invalidate cache after loading new data

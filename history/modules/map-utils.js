@@ -161,3 +161,45 @@ export function getMapLocation(locations) {
   if (!locations || locations.length === 0) return null;
   return getLocationKey(locations[0]);
 }
+
+export class LocationVerifier {
+  constructor() {
+      this.locationMappings = new Map();
+      this.isInitialized = false;
+  }
+
+  async loadUnverifiedLocations(file) {
+    try {
+      const response = await fetch(file);
+      if (!response.ok) {
+        console.warn('Unverified locations file not found - treating all locations as verified');
+        return;
+      }
+
+      const data = await response.json();
+      
+      data.forEach(loc => {
+          this.locationMappings.set(loc.original_location, {
+              corrected: loc.corrected_location || null
+          });
+      });
+      this.isInitialized = true;
+    } catch (error) {
+      console.error('Error loading unverified locations:', error);
+    }
+  }
+
+  verifyEventLocation(event) {
+      if (!event.locations || !event.locations.length || !this.isInitialized) 
+        return;
+
+      const locationKey = event.locations[0].name || event.locations[0];
+      const mapping = this.locationMappings.get(locationKey);
+
+      event.locations[0] = {
+          ...event.locations[0],
+          verified: !mapping || mapping.corrected,
+          name: mapping?.corrected || locationKey
+      };
+  }
+}
