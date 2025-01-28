@@ -365,11 +365,42 @@ export class PanelManager {
     }
 
     async showLocationOnMap(locationSpan, event, mapLocation) {
+        // Check coordinates first, before any panel operations
+        const coords = await getCoordinates(mapLocation, this.geocodeCache);
+        if (!coords) {
+            // Create new span without any listeners
+            const newSpan = document.createElement('span');
+            newSpan.className = 'event-location unverified';
+            newSpan.textContent = mapLocation;
+
+            event.locations[0].verified = false;
+            
+            // Replace the old span immediately
+            locationSpan.replaceWith(newSpan);
+    
+            // Show centered error toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = `Location not found: ${mapLocation}`;
+            
+            // Add toast to timeline wrapper instead of map panel
+            const timelineWrapper = document.querySelector('.timeline-wrapper');
+            timelineWrapper.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+    
+            return; // Exit early
+        }
+    
+        // Proceed with showing location on map
         try {
             if (!this.mapPanel.classList.contains('open')) {
                 this.openMapPanel();
                 await new Promise(resolve => setTimeout(resolve, 350));
-                // Force map update after transition
                 this.map.invalidateSize({
                     animate: true,
                     pan: false
@@ -377,35 +408,9 @@ export class PanelManager {
             }
             
             this.bringMapToFront();
-            
-            const coords = await getCoordinates(mapLocation, this.geocodeCache);
-            if (!coords) {
-                this.showMapError(locationSpan, mapLocation);
-            } else {
-                // Add a small delay before showing location
-                await new Promise(resolve => setTimeout(resolve, 50));
-                await showLocationOnMap(mapLocation, this.map, this.markersLayer, this.geocodeCache, event.name);
-            }
+            await showLocationOnMap(mapLocation, this.map, this.markersLayer, this.geocodeCache, event.name);
         } catch (error) {
             console.error('Error handling location:', error);
         }
-    }
-
-    showMapError(locationSpan, mapLocation) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.textContent = `Location not found: ${mapLocation}`;
-        this.mapPanel.appendChild(toast);
-        
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.remove();
-            }
-        }, 3000);
-
-        locationSpan.classList.remove('clickable');
-        locationSpan.classList.add('disabled');
-        locationSpan.style.cursor = 'not-allowed';
-        locationSpan.replaceWith(locationSpan.cloneNode(true));
-    }
+    }    
 }
