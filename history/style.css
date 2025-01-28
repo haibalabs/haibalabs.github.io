@@ -168,6 +168,7 @@ body {
 /* Style the copyright div */
 .site-footer .copyright {
     text-align: left;
+    color: gray;
 }
 
 /* Style the event count */
@@ -396,7 +397,7 @@ mark {
     background: #ffffff; /* White card background */
     padding: 1rem; /* Spacing inside the card */
     box-sizing: border-box;
-    border: 0.5px solid #bfbfbf;
+    border: 0.5px solid #b8b8b8;
 }
 
 /* Hover Effect */
@@ -440,6 +441,15 @@ mark {
     margin: -2px -6px;     /* Offset padding to maintain layout */
     border-radius: 4px;    /* Rounded corners */
     transition: all 0.2s ease; /* Smooth transition for all changes */
+}
+
+.event-location.unverified {
+    color: #67150e;         /* Material Design blue */
+    display: inline-flex;   /* Inline flex for emoji alignment */
+    align-items: center;    /* Center align emoji with text */
+    gap: 0.25rem;          /* Space between emoji and text */
+    padding: 2px 6px;      /* Padding for larger click target */
+    margin: -2px -6px;     /* Offset padding to maintain layout */
 }
 
 /* Hover effects */

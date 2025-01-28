@@ -168,3 +168,21 @@
     70% { opacity: 1; }
     100% { opacity: 0; }
 }
+
+/* Map Display */
+.leaflet-container {
+    border: 0.5px solid #b8b8b8;
+    filter: grayscale(65%);
+  }
+
+.leaflet-control-zoom {
+    background-color: rgba(255, 255, 255, 0.8);
+    border:none !important;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+  font-size: 16px !important; /* Icon size */
+}

@@ -610,7 +610,6 @@ export class UIManager {
             const locationSpan = document.createElement('span');
 
             // Check verification status
-/*            
             const isVerified = event.locations[0]?.verified !== false;
             locationSpan.className = `event-location ${isVerified ? 'clickable' : 'unverified'}`;
             locationSpan.innerHTML = `${isVerified ? '<i class="fa-light fa-location-crosshairs"></i>' : ''}${locationText}`;
@@ -624,18 +623,6 @@ export class UIManager {
                     }
                 });
             }
-*/
-
-            locationSpan.className = 'event-location clickable';
-            locationSpan.innerHTML = `<i class="fa-light fa-location-crosshairs"></i> ${locationText}`;
-
-            locationSpan.addEventListener('click', async (e) => {
-                e.stopPropagation();
-                const mapLocation = getMapLocation(event.locations);
-                if (mapLocation) {
-                    await this.panelManager.showLocationOnMap(locationSpan, event, mapLocation);
-                }
-            });
 
             timeDiv.appendChild(locationSpan);
         }

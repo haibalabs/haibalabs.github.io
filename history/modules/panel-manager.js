@@ -384,7 +384,7 @@ export class PanelManager {
             } else {
                 // Add a small delay before showing location
                 await new Promise(resolve => setTimeout(resolve, 50));
-                await showLocationOnMap(mapLocation, this.map, this.markersLayer, this.geocodeCache);
+                await showLocationOnMap(mapLocation, this.map, this.markersLayer, this.geocodeCache, event.name);
             }
         } catch (error) {
             console.error('Error handling location:', error);

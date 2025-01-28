@@ -39,6 +39,9 @@ export function initMap() {
   // Initialize marker layer
   const markersLayer = L.layerGroup().addTo(map);
 
+  document.querySelector('.leaflet-control-zoom-in').innerHTML = '<i class="fa-light fa-plus"></i>';
+  document.querySelector('.leaflet-control-zoom-out').innerHTML = '<i class="fa-light fa-minus"></i>';
+
   // Simple map bounds—adjust or remove to test bounding issues:
   map.setMaxBounds([
     [-90, -180],
@@ -98,11 +101,17 @@ export async function getCoordinates(locationName, geocodeCache) {
 /**
  * Show a location on the map by geocoding and placing a marker.
  */
-export async function showLocationOnMap(locationName, map, markersLayer, geocodeCache) {
-//  console.log('Showing location:', locationName);
-
+export async function showLocationOnMap(locationName, map, markersLayer, geocodeCache, text) {
   // Clear existing markers so you can see just the new location
   markersLayer.clearLayers();
+
+  // Handle coordinate arrays directly
+  if (Array.isArray(locationName)) {
+    const marker = L.marker(locationName).bindTooltip(text, { permanent: true, direction: 'right' });
+    markersLayer.addLayer(marker);
+    map.setView(locationName, 6);
+    return;
+  }
 
   const coords = await getCoordinates(locationName, geocodeCache);
   if (!coords) {
@@ -110,7 +119,7 @@ export async function showLocationOnMap(locationName, map, markersLayer, geocode
     return;
   }
 
-  const marker = L.marker(coords).bindPopup(locationName);
+  const marker = L.marker(coords).bindTooltip(text, { permanent: true, direction: 'right' });
   markersLayer.addLayer(marker);
 
   // Force map update before changing view
@@ -159,7 +168,15 @@ export function formatLocations(locations) {
 
 export function getMapLocation(locations) {
   if (!locations || locations.length === 0) return null;
-  return getLocationKey(locations[0]);
+  const location = locations[0];
+  
+  // Return coordinates array if available
+  if (location.corrected && Array.isArray(location.corrected)) {
+    return location.corrected;
+  }
+  
+  // Otherwise return string location
+  return location.corrected || getLocationKey(location);
 }
 
 export class LocationVerifier {
@@ -198,8 +215,8 @@ export class LocationVerifier {
 
       event.locations[0] = {
           ...event.locations[0],
-          verified: !mapping || mapping.corrected,
-          name: mapping?.corrected || locationKey
+          verified: Boolean(!mapping) || Boolean(mapping.corrected),
+          corrected: mapping?.corrected || null
       };
   }
 }

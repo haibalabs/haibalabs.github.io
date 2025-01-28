@@ -226,7 +226,7 @@
         inputCell.innerHTML = `<pre>${formatLocation(test.input)}</pre>`;
         inputCell.addEventListener('click', () => {
           const locationKey = getLocationKey(test.input);
-          showLocationOnMap(locationKey, map, markersLayer, geocodeCache);
+          showLocationOnMap(locationKey, map, markersLayer, geocodeCache, locationKey);
         });
 
         // Expected key cell
@@ -252,7 +252,7 @@
     document.getElementById('searchBtn').addEventListener('click', () => {
       const locationName = document.getElementById('locationInput').value.trim();
       if (locationName) {
-        showLocationOnMap(locationName, map, markersLayer, geocodeCache);
+        showLocationOnMap(locationName, map, markersLayer, geocodeCache, locationName);
       }
     });
 
