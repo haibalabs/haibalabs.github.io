@@ -150,16 +150,16 @@
 
 /* Toast Notification */
 .toast {
-    position: absolute;
-    top: 50%;
+    position: fixed;
+    top: 100%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -100%);
     background: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 10px 20px;
     border-radius: 4px;
-    z-index: 1000;
-    animation: fadeOut 5s ease-in;
+    z-index: 10000;
+    animation: fadeOut 3s ease-in;
     pointer-events: none;
 }
 
@@ -172,7 +172,7 @@
 /* Map Display */
 .leaflet-container {
     border: 0.5px solid #b8b8b8;
-    filter: grayscale(65%);
+    filter: grayscale(55%);
   }
 
 .leaflet-control-zoom {

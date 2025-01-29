@@ -1,5 +1,15 @@
 ## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
+### Day 21. Wed 01/29/25
+
+The focus the last few days has been on using a system of location corrections on top of the data.
+This way we can enable realtime corrections, especially for old locations.
+
+Also:
+- New styles for the site. See progress shot [here](https://haibalabs.github.io/history/TimelineProgress-v0.6.png)
+- Out of about 55 thousand events, we have 700 unknown locations to be fixed. Of course some others might be misleading.
+- Prepped some work related to interactive quizzes coming up next!
+
 ### Day 16. Fri 01/24/25
 
 The focus the last couple days was on enabling posting new events, and by extension editing existing ones.

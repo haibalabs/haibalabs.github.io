@@ -1,2998 +1,5014 @@
 [
   {
-    "original_location": "Olembe Stadium",
-    "standardized_location": "Olembe Stadium"
+    "standardized_location": "Antioch on the Orontes",
+    "original_locations": [
+      "Antioch",
+      "Seleucid Empire",
+      "Seleucid Syria"
+    ],
+    "corrected_location": "Antakya, Hatay, Turkey",
+    "frequency": 64
+  },
+  {
+    "standardized_location": "Zhou, Shanxi Province",
+    "original_locations": [
+      "Zhou"
+    ],
+    "corrected_location": "Shanxi, China",
+    "frequency": 27
+  },
+  {
+    "standardized_location": "Ctesiphon",
+    "original_locations": [
+      "Ctesiphon"
+    ],
+    "corrected_location": "Salman Pak, Baghdad Governorate, Iraq",
+    "frequency": 23
+  },
+  {
+    "standardized_location": "Goguryeo Kingdom",
+    "original_locations": [
+      "Goguryeo"
+    ],
+    "corrected_location": "Korea",
+    "frequency": 21
+  },
+  {
+    "standardized_location": "Mediterranean Sea near Antalya",
+    "original_locations": [
+      "Apahunik'",
+      "Asia Minor, Turkey",
+      "Asia, Turkey",
+      "Black Sea, Turkey",
+      "Byzantine Empire",
+      "Eastern Roman Empire",
+      "Osroene, Turkey",
+      "Ottoman Empire, Turkey",
+      "Thrace",
+      "Thrace, Turkey",
+      "Turkey"
+    ],
+    "corrected_location": "Urfa, Turkey",
+    "frequency": 15
+  },
+  {
+    "standardized_location": "Monastery of St. Macarius, Wadi El Natrun",
+    "original_locations": [
+      "Alexandria, Alexandria, Egypt",
+      "Alexandria, Egypt"
+    ],
+    "frequency": 15
+  },
+  {
+    "standardized_location": "Napata, Sudan",
+    "original_locations": [
+      "Napata"
+    ],
+    "frequency": 14
+  },
+  {
+    "standardized_location": "Ctesiphon, Baghdad, Iraq",
+    "original_locations": [
+      "Ctesiphon, Al-Qadisiyyah, Iraq",
+      "Ctesiphon, Baghdad, Iraq",
+      "Ctesiphon, Iraq",
+      "Near Ctesiphon, Baghdad, Iraq"
+    ],
+    "frequency": 12
+  },
+  {
+    "standardized_location": "Tryweryn Valley, Gwynedd",
+    "original_locations": [
+      "Wales"
+    ],
+    "frequency": 12
+  },
+  {
+    "standardized_location": "Biskupin Archaeological Site",
+    "original_locations": [
+      "Biskupin"
+    ],
+    "frequency": 11
+  },
+  {
+    "standardized_location": "Erechtheion, Acropolis",
+    "original_locations": [
+      "Acropolis"
+    ],
+    "frequency": 11
+  },
+  {
+    "standardized_location": "Ctesiphon, Iraq",
+    "original_locations": [
+      "Ctesiphon, Iraq",
+      "Parthian Empire",
+      "Parthian Empire, Iran",
+      "Sassanid Empire, Iran"
+    ],
+    "frequency": 10
+  },
+  {
+    "standardized_location": "Nimrud (Kalhu)",
+    "original_locations": [
+      "Kalhu (Nimrud)"
+    ],
+    "frequency": 9
+  },
+  {
+    "standardized_location": "Dur-Sharrukin (Khorsabad)",
+    "original_locations": [
+      "Dur-Sharrukin"
+    ],
+    "frequency": 8
   },
-  {
-    "original_location": "Joint European Torus",
-    "standardized_location": "Joint European Torus, Culham Science Centre"
-  },
-  {
-    "original_location": "Shia Mosque, Peshawar",
-    "standardized_location": "Imam Bargah Qasr-e-Shirin, Peshawar"
-  },
-  {
-    "original_location": "Saint-Denis, \u00cele-de-France, France",
-    "standardized_location": "Basilica of Saint-Denis, Saint-Denis, \u00cele-de-France, France"
-  },
-  {
-    "original_location": "Durand Line, Afghanistan-Pakistan Border",
-    "standardized_location": "Durand Line, Khyber Pakhtunkhwa, Pakistan"
-  },
-  {
-    "original_location": "Gaza Strip, Palestine",
-    "standardized_location": "Gaza City, Gaza Strip, State of Palestine"
-  },
-  {
-    "original_location": "Guadeloupe, Caribbean",
-    "standardized_location": "Guadeloupe, French Caribbean"
-  },
-  {
-    "original_location": "Windsor Castle, England",
-    "standardized_location": "Windsor Castle, Windsor, Berkshire, England"
-  },
-  {
-    "original_location": "Dimorphos, Asteroid Belt",
-    "standardized_location": "Dimorphos, near Didymos"
-  },
-  {
-    "original_location": "Dimorphos",
-    "standardized_location": "Dimorphos (near Didymos)"
-  },
-  {
-    "original_location": "D\u00e1il \u00c9ireann",
-    "standardized_location": "D\u00e1il \u00c9ireann, Leinster House"
-  },
-  {
-    "original_location": "Colombia",
-    "standardized_location": "Nari\u00f1o Department, Colombia"
-  },
-  {
-    "original_location": "Turkey",
-    "standardized_location": "Mediterranean Sea near Antalya"
-  },
-  {
-    "original_location": "Pazigyi",
-    "standardized_location": "Pazigyi, Sagaing Region"
-  },
-  {
-    "original_location": "SpaceX Launch Site",
-    "standardized_location": "SpaceX Boca Chica Launch Site"
-  },
-  {
-    "original_location": "Shakahola Forest",
-    "standardized_location": "Shakahola Forest"
-  },
-  {
-    "original_location": "Thailand",
-    "standardized_location": "Wat Phra That Doi Suthep"
-  },
-  {
-    "original_location": "Niger River, Kwara State, Nigeria",
-    "standardized_location": "Niger River, Kwara State, Nigeria"
-  },
-  {
-    "original_location": "Tapestry, Inc.",
-    "standardized_location": "Tapestry, Inc."
-  },
-  {
-    "original_location": "Japan",
-    "standardized_location": "Zenpuku-ji, Tokyo, Japan"
-  },
-  {
-    "original_location": "Moon's South Pole",
-    "standardized_location": "Lunar South Pole"
-  },
-  {
-    "original_location": "Stade de France",
-    "standardized_location": "Basilica of Saint-Denis, Saint-Denis, \u00cele-de-France, France"
-  },
-  {
-    "original_location": "Bharat Mandapam",
-    "standardized_location": "Bharat Mandapam, New Delhi"
-  },
-  {
-    "original_location": "Kaneohe, Hawaii, United States",
-    "standardized_location": "Marine Corps Air Station Kaneohe Bay, Kaneohe, Hawaii, United States"
-  },
-  {
-    "original_location": "BRICS Nations",
-    "standardized_location": "BRICS Nations"
-  },
-  {
-    "original_location": "Noto Peninsula",
-    "standardized_location": "Noto Peninsula"
-  },
-  {
-    "original_location": "Berbera",
-    "standardized_location": "Port of Berbera"
-  },
-  {
-    "original_location": "Funafuti",
-    "standardized_location": "Funafuti Atoll, Tuvalu"
-  },
-  {
-    "original_location": "Moon",
-    "standardized_location": "Lunar Surface"
-  },
-  {
-    "original_location": "Rafah, Gaza Strip, Palestine",
-    "standardized_location": "Rafah, Gaza Strip, State of Palestine"
-  },
-  {
-    "original_location": "European Union",
-    "standardized_location": "European Union Headquarters"
-  },
-  {
-    "original_location": "Geze Gofa, Gofa Zuria, Ethiopia",
-    "standardized_location": "Geze Gofa, Gofa Zuria, Southern Nations, Nationalities, and Peoples' Region, Ethiopia"
-  },
-  {
-    "original_location": "Gaza Strip, Gaza, Palestine",
-    "standardized_location": "Gaza City, Gaza Strip, State of Palestine"
-  },
-  {
-    "original_location": "Low Earth Orbit",
-    "standardized_location": "Low Earth Orbit"
-  },
-  {
-    "original_location": "Baigou River, Shandong, China",
-    "standardized_location": "Baigou River, Hebei, China"
-  },
-  {
-    "original_location": "Ava, Myanmar",
-    "standardized_location": "Ava, Mandalay Region, Myanmar"
-  },
-  {
-    "original_location": "Lahneck Castle, Rhineland-Palatinate, Germany",
-    "standardized_location": "Lahneck Castle, Koblenz, Rhineland-Palatinate, Germany"
-  },
-  {
-    "original_location": "Wales",
-    "standardized_location": "Tryweryn Valley, Gwynedd"
-  },
-  {
-    "original_location": "Yangtze River, Jiangsu, China",
-    "standardized_location": "Yangtze River, near Nanjing, Jiangsu, China"
-  },
-  {
-    "original_location": "Suishui, Anhui, China",
-    "standardized_location": "Suishui, Huaibei, Anhui, China"
-  },
-  {
-    "original_location": "Sixian, Jiangsu, China",
-    "standardized_location": "Sixian County, Xuzhou, Jiangsu, China"
-  },
-  {
-    "original_location": "Nesbit Moor, Northumberland, England",
-    "standardized_location": "Nesbit Moor, Northumberland, England"
-  },
-  {
-    "original_location": "Hy-Many, Galway",
-    "standardized_location": "Hy-Many, County Galway"
-  },
-  {
-    "original_location": "Sulu Archipelago, Philippines",
-    "standardized_location": "Sulu Archipelago, Philippines"
-  },
-  {
-    "original_location": "Lan Na, Northern Thailand",
-    "standardized_location": "Wat Phra That Doi Suthep, Chiang Mai, Thailand"
-  },
-  {
-    "original_location": "Bramham Moor, West Yorkshire, England, United Kingdom",
-    "standardized_location": "Bramham Moor, Wetherby, West Yorkshire, England"
-  },
-  {
-    "original_location": "Hvalsey, Qaqortoq, Greenland",
-    "standardized_location": "Hvalsey, Qaqortoq, Greenland"
-  },
-  {
-    "original_location": "Silistra, Dobrich Province, Bulgaria",
-    "standardized_location": "Silistra, Silistra Province, Bulgaria"
-  },
-  {
-    "original_location": "Kerulen River, Mongolia",
-    "standardized_location": "Kerulen River, Khentii Province, Mongolia"
-  },
-  {
-    "original_location": "Chalagan, Azerbaijan",
-    "standardized_location": "Chalagan, Azerbaijan"
-  },
-  {
-    "original_location": "Didymoteicho, East Macedonia and Thrace, Greece",
-    "standardized_location": "Didymoteicho, East Macedonia and Thrace, Greece"
-  },
-  {
-    "original_location": "Vy\u0161ehrad",
-    "standardized_location": "Vy\u0161ehrad Fortress"
-  },
-  {
-    "original_location": "Melno, Warmian-Masurian Voivodeship, Poland",
-    "standardized_location": "Melno, Warmian-Masurian Voivodeship, Poland"
-  },
-  {
-    "original_location": "Ava, Mandalay Region, Myanmar",
-    "standardized_location": "Ava, Mandalay Region, Myanmar"
-  },
-  {
-    "original_location": "Khirokitia, Larnaca District, Cyprus",
-    "standardized_location": "Khirokitia, Larnaca District, Cyprus"
-  },
-  {
-    "original_location": "Lincoln College, University of Oxford",
-    "standardized_location": "Lincoln College, University of Oxford"
-  },
-  {
-    "original_location": "Coptic Church",
-    "standardized_location": "Coptic Orthodox Church Headquarters"
+  {
+    "standardized_location": "Gaza City, Gaza Strip, State of Palestine",
+    "original_locations": [
+      "Gaza City, Gaza Strip, Palestine",
+      "Gaza Strip, Gaza, Palestine",
+      "Gaza Strip, Palestine",
+      "Gaza, Gaza Strip, Palestine",
+      "Gaza, Palestine"
+    ],
+    "frequency": 8
   },
   {
-    "original_location": "Ava",
-    "standardized_location": "Ava (Inwa)"
+    "standardized_location": "New's Divine nightclub, Mexico City",
+    "original_locations": [
+      "Mexico City"
+    ],
+    "frequency": 7
+  },
+  {
+    "standardized_location": "Ava, Mandalay Region, Myanmar",
+    "original_locations": [
+      "Ava Kingdom, Myanmar",
+      "Ava, Mandalay Region, Myanmar",
+      "Ava, Myanmar"
+    ],
+    "frequency": 6
   },
   {
-    "original_location": "Druimnacour",
-    "standardized_location": "Druimnacour, Sutherland"
+    "standardized_location": "Pompeii Archaeological Park",
+    "original_locations": [
+      "Pompeii"
+    ],
+    "frequency": 6
   },
   {
-    "original_location": "Echinades Islands",
-    "standardized_location": "Echinades Islands"
+    "standardized_location": "Veii, Lazio",
+    "original_locations": [
+      "Veii"
+    ],
+    "frequency": 6
   },
   {
-    "original_location": "Baynard's Castle",
-    "standardized_location": "Baynard's Castle, London"
+    "standardized_location": "Basilica of Saint-Denis, Saint-Denis, \u00cele-de-France, France",
+    "original_locations": [
+      "Saint-Denis, France",
+      "Saint-Denis, \u00cele-de-France, France",
+      "Stade de France"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Saint-Pierre-le-Mo\u00fbtier, Auvergne-Rh\u00f4ne-Alpes, France",
-    "standardized_location": "Saint-Pierre-le-Mo\u00fbtier, Auvergne-Rh\u00f4ne-Alpes, France"
+    "standardized_location": "Cyzicus (modern-day Erdek)",
+    "original_locations": [
+      "Cyzicus"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Wallachia, Romania",
-    "standardized_location": "T\u00e2rgovi\u0219te, D\u00e2mbovi\u021ba County, Romania"
+    "standardized_location": "Mrauk U, Rakhine State, Myanmar",
+    "original_locations": [
+      "Mrauk U, Arakan, Myanmar",
+      "Mrauk U, Myanmar",
+      "Mrauk U, Rakhine State",
+      "Mrauk U, Rakhine State, Myanmar"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Oszmiana, Belarus",
-    "standardized_location": "Oshmyany, Belarus"
+    "standardized_location": "Northern Bulgaria",
+    "original_locations": [
+      "Moesia"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Lipany, \u00dast\u00ed nad Labem Region, Czech Republic",
-    "standardized_location": "Lipany, \u00dast\u00ed nad Labem Region, Czech Republic"
+    "standardized_location": "Pelusium (Tell el-Farama)",
+    "original_locations": [
+      "Pelusium"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Cape Bojador, Western Sahara",
-    "standardized_location": "Cape Bojador, Western Sahara"
+    "standardized_location": "Perinthus (modern-day Marmara Ere\u011flisi)",
+    "original_locations": [
+      "Perinthus"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Florence Cathedral, Tuscany",
-    "standardized_location": "Florence Cathedral (Duomo di Firenze)"
+    "standardized_location": "Seleucia (near Baghdad)",
+    "original_locations": [
+      "Seleucia"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Piperdean, Scotland",
-    "standardized_location": "Piperdean, near Duns, Scotland"
+    "standardized_location": "Tell Rifa'at, Syria",
+    "original_locations": [
+      "Arpad"
+    ],
+    "frequency": 5
   },
   {
-    "original_location": "Bob\u00e2lna, Cluj County, Romania",
-    "standardized_location": "Bob\u00e2lna, Cluj County, Romania"
+    "standardized_location": "Ava (Inwa)",
+    "original_locations": [
+      "Ava",
+      "Ava Kingdom"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Cluj-Napoca, Cluj County, Romania",
-    "standardized_location": "Cluj-Napoca, Cluj County, Romania"
+    "standardized_location": "Carnuntum Archaeological Park, Lower Austria, Austria",
+    "original_locations": [
+      "Carnuntum, Austria",
+      "Carnuntum, Lower Austria, Austria",
+      "Carnuntum, Vienna, Austria"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Juva",
-    "standardized_location": "Juva, Southern Savonia"
+    "standardized_location": "Cisalpine Gaul",
+    "original_locations": [
+      "Cisalpine Gaul"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Arguin Gulf",
-    "standardized_location": "Arguin Gulf"
+    "standardized_location": "D\u00e1l Riata (historical region)",
+    "original_locations": [
+      "D\u00e1l Riata"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Varna, Varna, Bulgaria",
-    "standardized_location": "Varna, Varna Province, Bulgaria"
+    "standardized_location": "Galatia (Ankara)",
+    "original_locations": [
+      "Galatia"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Suceava, Suceava, Romania",
-    "standardized_location": "Suceava, Suceava County, Romania"
+    "standardized_location": "Marcianople, Bulgaria",
+    "original_locations": [
+      "Marcianople, Bulgaria"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Gomit, Ethiopia",
-    "standardized_location": "Gomit, Ethiopia"
+    "standardized_location": "Numidia (modern Algeria)",
+    "original_locations": [
+      "Numidia"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Giurgiu, Giurgiu, Romania",
-    "standardized_location": "Giurgiu, Giurgiu County, Romania"
+    "standardized_location": "Seleucia on the Tigris",
+    "original_locations": [
+      "Seleucia",
+      "Seleucia on the Tigris"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Otonet\u00eb, Albania",
-    "standardized_location": "Otonet\u00eb, Albania"
+    "standardized_location": "Selinunte Archaeological Park",
+    "original_locations": [
+      "Selinous",
+      "Selinunte",
+      "Selinus"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Senegal",
-    "standardized_location": "Atlantic Ocean, off the coast of Dakar"
+    "standardized_location": "Zhou, Shanxi, China",
+    "original_locations": [
+      "China"
+    ],
+    "frequency": 4
   },
   {
-    "original_location": "Cambridge, Cambridgeshire",
-    "standardized_location": "Queens' College, University of Cambridge"
+    "standardized_location": "Caenina",
+    "original_locations": [
+      "Caeninenses"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Oronichea, Albania",
-    "standardized_location": "Oronichea, Albania"
+    "standardized_location": "Cirta (modern-day Khenchela)",
+    "original_locations": [
+      "Cirta"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Sfetigrad, Albania",
-    "standardized_location": "Sfetigrad, near Gjirokast\u00ebr, Albania"
+    "standardized_location": "Guanzhong Basin",
+    "original_locations": [
+      "Guanzhong"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Lichtenau Fortress",
-    "standardized_location": "Lichtenau Fortress"
+    "standardized_location": "Hippacritae",
+    "original_locations": [
+      "Hippacritae"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Tumu Fortress",
-    "standardized_location": "Tumu Fortress"
+    "standardized_location": "Kingdom of D\u02bfmt",
+    "original_locations": [
+      "Kingdom of D\u02bfmt"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Chan Chan",
-    "standardized_location": "Chan Chan Archaeological Complex"
+    "standardized_location": "Kirrha, near Delphi",
+    "original_locations": [
+      "Kirrha"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Piedmont, Italy",
-    "standardized_location": "San Giulio Island, Lake Orta"
+    "standardized_location": "Kush (Nubia)",
+    "original_locations": [
+      "Kingdom of Kush",
+      "Kush"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Oronichea",
-    "standardized_location": "Oronichea, near Kruj\u00eb"
+    "standardized_location": "Lysimachia, Turkey",
+    "original_locations": [
+      "Lysimachia"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Ujbardha, Albania",
-    "standardized_location": "Ujbardha, Albania"
+    "standardized_location": "Maya civilization region",
+    "original_locations": [
+      "Mesoamerica"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Chilia, Tulcea, Romania",
-    "standardized_location": "Chilia Veche, Tulcea County, Romania"
+    "standardized_location": "Mesha Stele",
+    "original_locations": [
+      "Mesha Stele"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Vistula Lagoon, Warmian-Masurian Voivodeship, Poland",
-    "standardized_location": "Vistula Lagoon, Warmian-Masurian Voivodeship, Poland"
+    "standardized_location": "Mount Ithome",
+    "original_locations": [
+      "Mount Ithome"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Brittany, France",
-    "standardized_location": "Brest Dockyard, Brest, Brittany, France"
+    "standardized_location": "Museo Capitolino",
+    "original_locations": [
+      "Museo Capitolini",
+      "Museo Capitolino"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Futa Toro, Senegal",
-    "standardized_location": "Futa Toro, Senegal"
+    "standardized_location": "Nari\u00f1o Department, Colombia",
+    "original_locations": [
+      "Colombia"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Chapakchur, Iran",
-    "standardized_location": "Chapakchur, Iran"
+    "standardized_location": "Naucratis",
+    "original_locations": [
+      "Naucratis"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Baia, Romania",
-    "standardized_location": "Baia, Suceava County, Romania"
+    "standardized_location": "Nora (Nora Fortress)",
+    "original_locations": [
+      "Nora"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Losecoat Field",
-    "standardized_location": "Losecoat Field"
+    "standardized_location": "Pamphylia and Lycia",
+    "original_locations": [
+      "Pamphylia"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Nibley Green",
-    "standardized_location": "Nibley Green, Dursley"
+    "standardized_location": "Panormus (modern-day Pula)",
+    "original_locations": [
+      "Panormus"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Lipnic",
-    "standardized_location": "Lipnic, Suceava County"
+    "standardized_location": "Pataliputra, Bihar, India",
+    "original_locations": [
+      "Gupta Empire, India",
+      "Maurya Empire"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Wouri River",
-    "standardized_location": "Wouri River, Douala"
+    "standardized_location": "Petra Archaeological Park",
+    "original_locations": [
+      "Petra"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Newfoundland, Canada",
-    "standardized_location": "50 miles off the coast of Newfoundland, Canada"
+    "standardized_location": "Szigetv\u00e1r, Baranya County, Hungary",
+    "original_locations": [
+      "Szigetv\u00e1r, Baranya County, Hungary"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Vaslui, Romania",
-    "standardized_location": "Vaslui, Vaslui County, Romania"
+    "standardized_location": "Wat Phra That Doi Suthep",
+    "original_locations": [
+      "Thailand",
+      "Thailand, Thailand"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Theodoro, Crimea",
-    "standardized_location": "Theodosia, Crimea"
+    "standardized_location": "Ye, Hebei, China",
+    "original_locations": [
+      "Ye",
+      "Ye, Hebei, China"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Goyghor, Bangladesh",
-    "standardized_location": "Goyghor Mosque, Goyang, Mymensingh Division"
+    "standardized_location": "Ying, Hubei, China",
+    "original_locations": [
+      "Ying"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Florence Cathedral, Florence",
-    "standardized_location": "Cathedral of Santa Maria del Fiore"
+    "standardized_location": "Zenpuku-ji, Tokyo, Japan",
+    "original_locations": [
+      "Hachi\u014dji Castle, Tokyo, Japan",
+      "Japan",
+      "Tokyo, Tokyo, Japan"
+    ],
+    "frequency": 3
   },
   {
-    "original_location": "Alexandria, Egypt",
-    "standardized_location": "Monastery of St. Macarius, Wadi El Natrun"
+    "standardized_location": "Anavysos, Greece",
+    "original_locations": [
+      "Anavysos"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Reims Cathedral",
-    "standardized_location": "Reims Cathedral"
+    "standardized_location": "Baideng, Inner Mongolia, China",
+    "original_locations": [
+      "Baideng"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Sponheim Abbey",
-    "standardized_location": "Sponheim Abbey"
+    "standardized_location": "Baikonur Cosmodrome, Baikonur, Kazakhstan",
+    "original_locations": [
+      "Baikonur Cosmodrome, Kazakhstan"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Taishan, Shandong, China",
-    "standardized_location": "Mount Tai, Taishan District, Shandong, China"
+    "standardized_location": "Bedriaco, Lombardy, Italy",
+    "original_locations": [
+      "Bedriacum, Lombardy, Italy"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Stoke Field, Nottinghamshire, England",
-    "standardized_location": "Stoke Field, near Nottingham, England"
+    "standardized_location": "Boresis, near Luxor",
+    "original_locations": [
+      "Boresis"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Glendale, Skye",
-    "standardized_location": "Glendale, Isle of Skye"
+    "standardized_location": "Bovianum Vetus",
+    "original_locations": [
+      "Bovianum"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Vrpile Gulch, Croatia",
-    "standardized_location": "Vrpile Gulch, Croatia"
+    "standardized_location": "Brest Dockyard, Brest, Brittany, France",
+    "original_locations": [
+      "Brest, Brittany, France",
+      "Brittany, France"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Cuba",
-    "standardized_location": "Off the coast of Havana, Cuba"
+    "standardized_location": "Bubastis (Bastet)",
+    "original_locations": [
+      "Egypt"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Krbava Field",
-    "standardized_location": "Krbava Field, near Udbina"
+    "standardized_location": "Chengpu, near Kaifeng",
+    "original_locations": [
+      "Chengpu"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Burgundy, France",
-    "standardized_location": "Dijon, Burgundy, France"
+    "standardized_location": "Corlea Trackway Archaeological Site",
+    "original_locations": [
+      "Corlea Trackway"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Aberdeen, Scotland",
-    "standardized_location": "King's College, University of Aberdeen"
+    "standardized_location": "Cynoscephalae",
+    "original_locations": [
+      "Cynoscephalae"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Orinoco River",
-    "standardized_location": "Orinoco River Mouth"
+    "standardized_location": "Cyprus and Asia Minor",
+    "original_locations": [
+      "Cyprus and Asia Minor"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Nankai Trough",
-    "standardized_location": "Nankai Trough"
+    "standardized_location": "Dhiban, Madaba Governorate",
+    "original_locations": [
+      "Dhiban"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Tr\u00e9guiers",
-    "standardized_location": "Tr\u00e9guiers"
+    "standardized_location": "Euphrates River, Turkey",
+    "original_locations": [
+      "Euphrates River, Turkey"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Vedrosha, Tver Oblast, Russia",
-    "standardized_location": "Vedrosha, Tver Oblast, Russia"
+    "standardized_location": "Fort Saint Angelo, Kannur, Kerala, India",
+    "original_locations": [
+      "Fort Saint Angelo, Kerala, India"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Madagascar",
-    "standardized_location": "Indian Ocean near Madagascar"
+    "standardized_location": "Gaoque, Inner Mongolia",
+    "original_locations": [
+      "Gaoque"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Bavaria, Germany",
-    "standardized_location": "Weltenburg Abbey, Bavaria"
+    "standardized_location": "Gaugamela (near Erbil)",
+    "original_locations": [
+      "Gaugamela"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Ascension Island, British Overseas Territory",
-    "standardized_location": "Ascension Island, Saint Helena, Ascension and Tristan da Cunha"
+    "standardized_location": "Halule, near modern-day Al-Qadisiyyah",
+    "original_locations": [
+      "Halule"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Siritsa River, Pskov Oblast, Russia",
-    "standardized_location": "Siritsa River, Pskov Oblast, Russia"
+    "standardized_location": "Hierapolis (modern-day Pamukkale)",
+    "original_locations": [
+      "Hierapolis"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Medvednica, Zagreb County, Croatia",
-    "standardized_location": "Medvednica Mountain, Zagreb, Croatia"
+    "standardized_location": "Hispaniola, Caribbean",
+    "original_locations": [
+      "Hispaniola, Caribbean"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Puerto Castilla, Col\u00f3n, Honduras",
-    "standardized_location": "Puerto Castilla, Atl\u00e1ntida, Honduras"
+    "standardized_location": "Itil, Astrakhan Oblast",
+    "original_locations": [
+      "Caspian Sea"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Sz\u00e9kesfeh\u00e9rv\u00e1r, Fej\u00e9r, Hungary",
-    "standardized_location": "Sz\u00e9kesfeh\u00e9rv\u00e1r, Fej\u00e9r County, Hungary"
+    "standardized_location": "Krakatoa Island",
+    "original_locations": [
+      "Krakatoa"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Almirante Bay, Bocas del Toro, Panama",
-    "standardized_location": "Almirante Bay, Bocas del Toro Province, Panama"
+    "standardized_location": "Kusumapura (modern-day Patna)",
+    "original_locations": [
+      "Kusumapura"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Hispaniola, Caribbean",
-    "standardized_location": "Hispaniola, Caribbean"
+    "standardized_location": "Lake Vadimo",
+    "original_locations": [
+      "Lake Vadimo"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Mexico City",
-    "standardized_location": "New's Divine nightclub, Mexico City"
+    "standardized_location": "Lechaeum",
+    "original_locations": [
+      "Lechaeum"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Ia\u0219i, Ia\u0219i County, Romania",
-    "standardized_location": "Ia\u0219i, Ia\u0219i County, Romania"
+    "standardized_location": "Lerma River, Michoac\u00e1n, Mexico",
+    "original_locations": [
+      "Lerma River, Mexico",
+      "Pur\u00e9pecha Empire, Mexico"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Knockdoe, County Galway, Ireland",
-    "standardized_location": "Knockdoe, County Galway, Ireland"
+    "standardized_location": "Liang, Henan, China",
+    "original_locations": [
+      "Liang"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Olsborg Castle",
-    "standardized_location": "Olsborg Castle (Olsborgs slott)"
+    "standardized_location": "Limes Germanicus",
+    "original_locations": [
+      "Limes Germanicus"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Anjediva Island, Karnataka, India",
-    "standardized_location": "Anjediva Island, Karnataka, India"
+    "standardized_location": "Lower Danube Region",
+    "original_locations": [
+      "Lower Danube"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Achnashellach, Highland, Scotland",
-    "standardized_location": "Achnashellach, Strathcarron, Highland, Scotland"
+    "standardized_location": "Lower Moesia, Romania",
+    "original_locations": [
+      "Lower Moesia, Romania"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Gough Island, Tristan da Cunha, British Overseas Territory",
-    "standardized_location": "Gough Island, Tristan da Cunha, Saint Helena, Ascension and Tristan da Cunha"
+    "standardized_location": "Mahran, Dhamar",
+    "original_locations": [
+      "Saba"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Fort Saint Angelo, Kerala, India",
-    "standardized_location": "Fort Saint Angelo, Kannur, Kerala, India"
+    "standardized_location": "Maya Civilization",
+    "original_locations": [
+      "Mesoamerica"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Caparra, Guaynabo, Puerto Rico",
-    "standardized_location": "Caparra Archaeological Site, Guaynabo, Puerto Rico"
+    "standardized_location": "Nicopolis, Egypt",
+    "original_locations": [
+      "Nicopolis"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Brasenose College, Oxford",
-    "standardized_location": "Brasenose College, University of Oxford"
+    "standardized_location": "Oreus, Euboea",
+    "original_locations": [
+      "Oreus"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Mrauk-U, Rakhine State, Myanmar",
-    "standardized_location": "Waithali, Rakhine State, Myanmar"
+    "standardized_location": "Orinoco River Mouth",
+    "original_locations": [
+      "Orinoco River"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Waithali, Rakhine State, Myanmar",
-    "standardized_location": "Waithali, Rakhine State, Myanmar"
+    "standardized_location": "Oshmyany, Belarus",
+    "original_locations": [
+      "Oszmiana, Belarus"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Enshunada Sea, Shizuoka Prefecture, Japan",
-    "standardized_location": "Enshunada Sea, Shizuoka Prefecture, Japan"
+    "standardized_location": "Oxyrhynchus, El-Bahnasa",
+    "original_locations": [
+      "Oxyrhynchus"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Ava Kingdom, Myanmar",
-    "standardized_location": "Ava, Mandalay Region, Myanmar"
+    "standardized_location": "Pechenga Monastery, Pechenga, Murmansk Oblast, Russia",
+    "original_locations": [
+      "Pechenga Monastery, Murmansk Oblast, Russia"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Guinegate",
-    "standardized_location": "Guinegate"
+    "standardized_location": "Phraaspa",
+    "original_locations": [
+      "Phraaspa"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Mrauk U, Arakan, Myanmar",
-    "standardized_location": "Mrauk U, Rakhine State, Myanmar"
+    "standardized_location": "Pointe des Espagnols, Crozon, France",
+    "original_locations": [
+      "Pointe des Espagnols, France"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Chaldiran, Eastern Anatolia, Turkey",
-    "standardized_location": "Chaldiran, Do\u011fubayaz\u0131t, A\u011fr\u0131, Turkey"
+    "standardized_location": "Pteria (near modern-day Tokat)",
+    "original_locations": [
+      "Pteria"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Cathedral of Saint-Denis",
-    "standardized_location": "Basilique cath\u00e9drale de Saint-Denis"
+    "standardized_location": "Pyrenees Mountains",
+    "original_locations": [
+      "Pyrenees"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Cathedral of Reims",
-    "standardized_location": "Cathedral of Reims"
+    "standardized_location": "Rafah, Gaza Strip, State of Palestine",
+    "original_locations": [
+      "Rafah, Gaza Strip, Palestine"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Turnadag Mountain",
-    "standardized_location": "Turnadag Mountain"
+    "standardized_location": "Reims Cathedral",
+    "original_locations": [
+      "Reims Cathedral"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Malatya, Malatya Province, Turkey",
-    "standardized_location": "Malatya, Malatya Province, Turkey"
+    "standardized_location": "Rhandeia, near Mardin",
+    "original_locations": [
+      "Rhandeia, Turkey"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Marj Dabiq, Aleppo Governorate, Syria",
-    "standardized_location": "Marj Dabiq, Aleppo Governorate, Syria"
+    "standardized_location": "Sais, Egypt",
+    "original_locations": [
+      "Sais"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Gaza, Gaza Strip, Palestine",
-    "standardized_location": "Gaza City, Gaza Strip, State of Palestine"
+    "standardized_location": "Salona, near Split",
+    "original_locations": [
+      "Salona"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Nantan, Nandan County, Guangxi, China",
-    "standardized_location": "Nantan, Nandan County, Guangxi, China"
+    "standardized_location": "Santa Cruz Island, Solomon Islands",
+    "original_locations": [
+      "Santa Cruz Island, Solomon Islands"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Lake \u00c5sunden",
-    "standardized_location": "Lake \u00c5sunden"
+    "standardized_location": "Selinus (modern Silifke)",
+    "original_locations": [
+      "Selinus"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Field of the Cloth of Gold",
-    "standardized_location": "Field of the Cloth of Gold"
+    "standardized_location": "Sentinum (modern Sassoferrato)",
+    "original_locations": [
+      "Sentinum"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Pacific Ocean",
-    "standardized_location": "Pacific Ocean, near the Korean Peninsula"
+    "standardized_location": "Shanqiu City",
+    "original_locations": [
+      "Shanqiu County"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Nydala Abbey",
-    "standardized_location": "Nydala Abbey"
+    "standardized_location": "Sinope, Samsun Province, Turkey",
+    "original_locations": [
+      "Sinope, Black Sea Region, Turkey"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Mactan Island",
-    "standardized_location": "Mactan Island, Lapu-Lapu City"
+    "standardized_location": "Sittwe, Rakhine State, Myanmar",
+    "original_locations": [
+      "Arakan Mountains, Myanmar",
+      "Rakhine State, Myanmar"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Otanaha Fortress",
-    "standardized_location": "Otanaha Fortress"
+    "standardized_location": "Steinvikholm Castle, Levanger, Tr\u00f8ndelag, Norway",
+    "original_locations": [
+      "Steinvikholm Castle, Tr\u00f8ndelag, Norway"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Nimbschen Abbey, Germany",
-    "standardized_location": "Nimbschen Abbey, Grimma"
+    "standardized_location": "Strait of Hormuz, Hormozgan Province, Iran",
+    "original_locations": [
+      "Strait of Hormuz, Hormozgan Province, Iran"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Lake Nicaragua, Nicaragua",
-    "standardized_location": "Lake Nicaragua, Rivas"
+    "standardized_location": "Sz\u00e9kesfeh\u00e9rv\u00e1r, Fej\u00e9r County, Hungary",
+    "original_locations": [
+      "Sz\u00e9kesfeh\u00e9rv\u00e1r, Fej\u00e9r, Hungary"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Sultanate of Patani, Thailand",
-    "standardized_location": "Patani, Narathiwat, Thailand"
+    "standardized_location": "Takamatsu Castle, Takamatsu City, Kagawa Prefecture, Japan",
+    "original_locations": [
+      "Takamatsu Castle, Japan"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Iximche, Chimaltenango, Guatemala",
-    "standardized_location": "Iximche Archaeological Site, Chimaltenango, Guatemala"
+    "standardized_location": "Tigranakert (near Artashat)",
+    "original_locations": [
+      "Tigranakert"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Khanwa, Rajasthan, India",
-    "standardized_location": "Khanwa, Rajasthan, India"
+    "standardized_location": "Trebia River",
+    "original_locations": [
+      "Trebia River"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Jakarta, Indonesia",
-    "standardized_location": "Ekayana Monastery, Jakarta, Indonesia"
+    "standardized_location": "Turkic Khaganate",
+    "original_locations": [
+      "Turkic Khaganate"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Sz\u00e9kesfeh\u00e9rv\u00e1r, Hungary",
-    "standardized_location": "Basilica of the Assumption of the Blessed Virgin Mary, Sz\u00e9kesfeh\u00e9rv\u00e1r, Hungary"
+    "standardized_location": "Tyana (modern-day Kemerhisar)",
+    "original_locations": [
+      "Tyana"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Windsor, Berkshire, England",
-    "standardized_location": "Windsor, Berkshire, England"
+    "standardized_location": "T\u00e2rgovi\u0219te, D\u00e2mbovi\u021ba County, Romania",
+    "original_locations": [
+      "T\u00e2rgovi\u0219te, D\u00e2mbovi\u021ba County, Romania",
+      "Wallachia, Romania"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "T\u00e2rgovi\u0219te, D\u00e2mbovi\u021ba County, Romania",
-    "standardized_location": "T\u00e2rgovi\u0219te, D\u00e2mbovi\u021ba County, Romania"
+    "standardized_location": "University of Zagreb, Zagreb, Croatia",
+    "original_locations": [
+      "Illyricum, Croatia",
+      "Zagreb, Croatia"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Shimbra Kure, Ethiopia",
-    "standardized_location": "Shimbra Kure, Ethiopia"
+    "standardized_location": "Varberg Castle",
+    "original_locations": [
+      "Varberg Castle"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Lerma River, Mexico",
-    "standardized_location": "Lerma River, Michoac\u00e1n, Mexico"
+    "standardized_location": "Vivarium, Cassiodorus' Estate",
+    "original_locations": [
+      "Vivarium"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Pur\u00e9pecha Empire, Mexico",
-    "standardized_location": "Lerma River, Michoac\u00e1n, Mexico"
+    "standardized_location": "Volscian Territory",
+    "original_locations": [
+      "Volscian Territory"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Saint-Denis, France",
-    "standardized_location": "Basilica of Saint-Denis, Saint-Denis, \u00cele-de-France, France"
+    "standardized_location": "Waithali, Rakhine State, Myanmar",
+    "original_locations": [
+      "Mrauk-U, Rakhine State, Myanmar",
+      "Waithali, Rakhine State, Myanmar"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Pun\u00e1 Island, Ecuador",
-    "standardized_location": "Pun\u00e1 Island, Guayas Province, Ecuador"
+    "standardized_location": "Weltenburg Abbey, Bavaria",
+    "original_locations": [
+      "Bavaria, Germany",
+      "South Germany"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Mrauk U, Myanmar",
-    "standardized_location": "Mrauk U, Rakhine State, Myanmar"
+    "standardized_location": "Xiaoyao Ford, near Hefei",
+    "original_locations": [
+      "Xiaoyao Ford, near Hefei"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "K\u014dpu Lighthouse, Saare County, Estonia",
-    "standardized_location": "K\u014dpu Lighthouse, Saaremaa, Estonia"
+    "standardized_location": "Yangtze River, near Nanjing, Jiangsu, China",
+    "original_locations": [
+      "Yangtze River, Jiangsu, China"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Quipaipan, Peru",
-    "standardized_location": "Quipaipan, Peru"
+    "standardized_location": "Yanmen Pass",
+    "original_locations": [
+      "Yanmen"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "Pechenga Monastery, Murmansk Oblast, Russia",
-    "standardized_location": "Pechenga Monastery, Pechenga, Murmansk Oblast, Russia"
+    "standardized_location": "Youbeiping District",
+    "original_locations": [
+      "Youbeiping"
+    ],
+    "frequency": 2
   },
   {
-    "original_location": "San Juan Bautista del Teul, Zacatecas, Mexico",
-    "standardized_location": "San Juan Bautista del Teul, Zacatecas, Mexico"
+    "standardized_location": "50 miles off the coast of Newfoundland, Canada",
+    "original_locations": [
+      "Newfoundland, Canada"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Reynog\u00fccel\u00e9n",
-    "standardized_location": "Reynog\u00fccel\u00e9n"
+    "standardized_location": "Abbey of St. Genevieve",
+    "original_locations": [
+      "Abbey of St. Genevieve"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Un no Kuchi",
-    "standardized_location": "Un no Kuchi, Yamanashi"
+    "standardized_location": "Abritus, Dobrich Province, Bulgaria",
+    "original_locations": [
+      "Abritus, Dobrich Province, Bulgaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Steinvikholm Castle, Tr\u00f8ndelag, Norway",
-    "standardized_location": "Steinvikholm Castle, Levanger, Tr\u00f8ndelag, Norway"
+    "standardized_location": "Achnashellach, Strathcarron, Highland, Scotland",
+    "original_locations": [
+      "Achnashellach, Highland, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pe\u00f1ol de Cerqu\u00edn, Lempira, Honduras",
-    "standardized_location": "Pe\u00f1ol de Cerqu\u00edn, Lempira, Honduras"
+    "standardized_location": "Acilisene",
+    "original_locations": [
+      "Acilisene"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kostajnica Fortress, Croatia",
-    "standardized_location": "Kostajnica Fortress, Croatia"
+    "standardized_location": "Ad Pinetam",
+    "original_locations": [
+      "Ad Pinetam"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bisham Abbey, Berkshire, England",
-    "standardized_location": "Bisham Abbey, Maidenhead, Berkshire, England"
+    "standardized_location": "Akanthos (Acanthus)",
+    "original_locations": [
+      "Akanthos"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Naungyo",
-    "standardized_location": "Naungyo"
+    "standardized_location": "Al-Ahli Arab Hospital",
+    "original_locations": [
+      "Al-Ahli Arab Hospital"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dresden",
-    "standardized_location": "Dresden Opera House"
+    "standardized_location": "Al-Karak, Karak Governorate, Jordan",
+    "original_locations": [
+      "Al-Karak, Jordan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Albor\u00e1n Island, Mediterranean Sea",
-    "standardized_location": "Albor\u00e1n Island, Albor\u00e1n Sea"
+    "standardized_location": "Alba Iulia, Alba County, Romania",
+    "original_locations": [
+      "Transylvania, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mabila, Alabama, United States",
-    "standardized_location": "Mabila, Alabama, United States"
+    "standardized_location": "Albor\u00e1n Island, Albor\u00e1n Sea",
+    "original_locations": [
+      "Albor\u00e1n Island, Mediterranean Sea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Koriyama, Yamaguchi Prefecture, Japan",
-    "standardized_location": "Koriyama, Yamaguchi Prefecture, Japan"
+    "standardized_location": "Ale's Stones",
+    "original_locations": [
+      "Ale's Stones"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sahart",
-    "standardized_location": "Sahart, Ethiopia"
+    "standardized_location": "Algeria and Morocco",
+    "original_locations": [
+      "Numidia and Mauretania, Algeria and Morocco"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ethiopia",
-    "standardized_location": "Jarte, Ethiopia"
+    "standardized_location": "Almirante Bay, Bocas del Toro Province, Panama",
+    "original_locations": [
+      "Almirante Bay, Bocas del Toro, Panama"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "K\u014dri-Nishiyama Castle",
-    "standardized_location": "K\u014dri-Nishiyama Castle"
+    "standardized_location": "Amanus Mountains",
+    "original_locations": [
+      "Amanus Gates"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Haddon Rig",
-    "standardized_location": "Haddon Rig, Scottish Borders"
+    "standardized_location": "Anazarbus (Justinopolis)",
+    "original_locations": [
+      "Anazarbus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Wofla, Ethiopia",
-    "standardized_location": "Wofla, Ethiopia"
+    "standardized_location": "Anchialus",
+    "original_locations": [
+      "Anchialus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Solway Moss, Scotland",
-    "standardized_location": "Solway Moss, Annan, Scotland"
+    "standardized_location": "Ancrum Moor, Jedburgh, Scottish Borders, Scotland",
+    "original_locations": [
+      "Ancrum Moor, Scottish Borders, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Wayna Daga, Ethiopia",
-    "standardized_location": "Wayna Daga, Ethiopia"
+    "standardized_location": "Anegawa, Higashi\u014dmi, Shiga Prefecture, Japan",
+    "original_locations": [
+      "Anegawa, Shiga Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mississippi River, United States",
-    "standardized_location": "Mississippi River near Memphis, Tennessee, United States"
+    "standardized_location": "Anjediva Island, Karnataka, India",
+    "original_locations": [
+      "Anjediva Island, Karnataka, India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cr\u00e9py-en-Laonnois, Hauts-de-France, France",
-    "standardized_location": "Cr\u00e9py-en-Laonnois, Hauts-de-France, France"
+    "standardized_location": "Antigoneia, near Idlib",
+    "original_locations": [
+      "Antigoneia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ancrum Moor, Scottish Borders, Scotland",
-    "standardized_location": "Ancrum Moor, Jedburgh, Scottish Borders, Scotland"
+    "standardized_location": "Aqua Alsietina Aqueduct",
+    "original_locations": [
+      "Aqua Alsietina"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kalinjar Fort, Madhya Pradesh, India",
-    "standardized_location": "Kalinjar Fort, Bundelkhand, Madhya Pradesh, India"
+    "standardized_location": "Aqua Marcia Aqueduct",
+    "original_locations": [
+      "Aqua Marcia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sokhoista, Georgia",
-    "standardized_location": "Sokhoista, Georgia"
+    "standardized_location": "Aqua Virgo Aqueduct",
+    "original_locations": [
+      "Aqua Virgo"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Arakan Mountains, Myanmar",
-    "standardized_location": "Sittwe, Rakhine State, Myanmar"
+    "standardized_location": "Aquincum Archaeological Park",
+    "original_locations": [
+      "Aquincum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Diu, Diu, India",
-    "standardized_location": "Diu, Diu District, Gujarat, India"
+    "standardized_location": "Archaeological Museum of Istanbul",
+    "original_locations": [
+      "Archaeological Museum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "South Germany",
-    "standardized_location": "Weltenburg Abbey, Bavaria"
+    "standardized_location": "Arginusae Islands",
+    "original_locations": [
+      "Arginusae"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kasugayama Castle",
-    "standardized_location": "Kasugayama Castle Site"
+    "standardized_location": "Arguin Gulf",
+    "original_locations": [
+      "Arguin Gulf"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Byllye Castle",
-    "standardized_location": "Byllye Castle"
+    "standardized_location": "Arpi (modern-day Foggia)",
+    "original_locations": [
+      "Arpi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Inchkeith, Firth of Forth, Scotland",
-    "standardized_location": "Inchkeith Island, Firth of Forth, Scotland"
+    "standardized_location": "Arthuret, Scotland",
+    "original_locations": [
+      "Arfderydd"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sau\u00f0afell, South Iceland, Iceland",
-    "standardized_location": "Sau\u00f0afell, South Iceland, Iceland"
+    "standardized_location": "Arzanene",
+    "original_locations": [
+      "Arzanene"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Vardzia, Samtskhe-Javakheti, Georgia",
-    "standardized_location": "Vardzia Cave Monastery, Samtskhe-Javakheti, Georgia"
+    "standardized_location": "Ascension Island, Saint Helena, Ascension and Tristan da Cunha",
+    "original_locations": [
+      "Ascension Island, British Overseas Territory"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pucar\u00ed, near Cuzco",
-    "standardized_location": "Pucar\u00ed, near Cusco"
+    "standardized_location": "Asclepieion of Kos",
+    "original_locations": [
+      "Asclepieion"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sesto River",
-    "standardized_location": "Sesto River"
+    "standardized_location": "Ascra, Boeotia, Greece",
+    "original_locations": [
+      "Greece"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hajn\u00e1cska, Ko\u0161ice Region, Slovakia",
-    "standardized_location": "Hajn\u00e1\u010dka, Ko\u0161ice Region, Slovakia"
+    "standardized_location": "Ashtishat, Armenia",
+    "original_locations": [
+      "Ashtishat"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Saint Paul's College, Goa",
-    "standardized_location": "Saint Paul's College, Old Goa"
+    "standardized_location": "Atari, Inc. Headquarters",
+    "original_locations": [
+      "Atari, Inc."
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Katsurayama Castle",
-    "standardized_location": "Katsurayama Castle Site"
+    "standardized_location": "Atlantic Ocean near the Azores",
+    "original_locations": [
+      "Near the Azores"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mau, Nurpur, Uttar Pradesh, India",
-    "standardized_location": "Mau, Himachal Pradesh, India"
+    "standardized_location": "Atlantic Ocean, off the coast of Dakar",
+    "original_locations": [
+      "Senegal"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Okehazama",
-    "standardized_location": "Okehazama, Nisshin"
+    "standardized_location": "Ava, Sagaing Region, Myanmar",
+    "original_locations": [
+      "Ava Kingdom, Myanmar"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Charlesfort",
-    "standardized_location": "Charlesfort Site"
+    "standardized_location": "BRICS Nations",
+    "original_locations": [
+      "BRICS Nations"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Fleet Prison, London, England",
-    "standardized_location": "Fleet Prison, London, United Kingdom"
+    "standardized_location": "Baga\u00ef (modern-day Tunisia)",
+    "original_locations": [
+      "Baga\u00ef"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dunfermline Castle, Fife, Scotland",
-    "standardized_location": "Dunfermline Castle, Dunfermline, Fife, Scotland"
+    "standardized_location": "Baia, Suceava County, Romania",
+    "original_locations": [
+      "Baia, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hampton Court, London, England",
-    "standardized_location": "Hampton Court Palace, East Molesey, Surrey, England"
+    "standardized_location": "Baiae, Bacoli, Campania, Italy",
+    "original_locations": [
+      "Baiae, Campania, Italy"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yokoseura, Japan",
-    "standardized_location": "Yokoseura, Nagasaki, Japan"
+    "standardized_location": "Baigou River, Hebei, China",
+    "original_locations": [
+      "Baigou River, Shandong, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Oskarstr\u00f6m, Halland, Sweden",
-    "standardized_location": "Mared, Oskarstr\u00f6m, Halland County, Sweden"
+    "standardized_location": "Bakhchisarai, Crimea, Russia",
+    "original_locations": [
+      "Bakhchisarai, Crimea, Ukraine"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Rakhine State, Myanmar",
-    "standardized_location": "Sittwe, Rakhine State, Myanmar"
+    "standardized_location": "Basilica of Sant' Apollinare Nuovo",
+    "original_locations": [
+      "Basilica of Sant' Apollinare Nuovo"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sark",
-    "standardized_location": "Sark, Channel Islands"
+    "standardized_location": "Basilica of Sant'Apollinare Nuovo",
+    "original_locations": [
+      "Basilica of Sant'Apollinare Nuovo"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Fukuda Bay",
-    "standardized_location": "Fukuda Bay"
+    "standardized_location": "Basilica of Sant'Apollinare in Classe",
+    "original_locations": [
+      "Basilica of Sant'Apollinare in Classe"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mortella Point",
-    "standardized_location": "Mortella Point"
+    "standardized_location": "Basilica of the Assumption of the Blessed Virgin Mary, Sz\u00e9kesfeh\u00e9rv\u00e1r, Hungary",
+    "original_locations": [
+      "Sz\u00e9kesfeh\u00e9rv\u00e1r, Hungary"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Szigetv\u00e1r, Baranya County, Hungary",
-    "standardized_location": "Szigetv\u00e1r, Baranya County, Hungary"
+    "standardized_location": "Basilique cath\u00e9drale de Saint-Denis",
+    "original_locations": [
+      "Cathedral of Saint-Denis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Jemmingen, Groningen, Netherlands",
-    "standardized_location": "Jemmingen, Groningen, Netherlands"
+    "standardized_location": "Baths of Nero",
+    "original_locations": [
+      "Baths of Nero"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Varberg Castle",
-    "standardized_location": "Varberg Castle"
+    "standardized_location": "Battle of Halys",
+    "original_locations": [
+      "Battle of Halys"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kanbara Castle",
-    "standardized_location": "Kanbara Castle Ruins"
+    "standardized_location": "Bay of Honduras, Honduras",
+    "original_locations": [
+      "Bay of Honduras, Central America"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Anegawa, Shiga Prefecture, Japan",
-    "standardized_location": "Anegawa, Higashi\u014dmi, Shiga Prefecture, Japan"
+    "standardized_location": "Baynard's Castle, London",
+    "original_locations": [
+      "Baynard's Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Santorini, South Aegean, Greece",
-    "standardized_location": "Santorini, Aegean Islands, Greece"
+    "standardized_location": "Beroea, Bulgaria",
+    "original_locations": [
+      "Beroea, Bulgaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Alexandria, Alexandria, Egypt",
-    "standardized_location": "Monastery of St. Macarius, Wadi El Natrun"
+    "standardized_location": "Beth-Horon, State of Israel",
+    "original_locations": [
+      "Beth-Horon, Israel"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Hiei, Shiga Prefecture, Japan",
-    "standardized_location": "Mount Hiei, Shiga Prefecture, Japan"
+    "standardized_location": "Bezabde, Iraq",
+    "original_locations": [
+      "Bezabde, Iraq"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cassiopeia, Constellation",
-    "standardized_location": "Cassiopeia Constellation"
+    "standardized_location": "Bharat Mandapam, New Delhi",
+    "original_locations": [
+      "Bharat Mandapam"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shinshiro, Aichi Prefecture, Japan",
-    "standardized_location": "Noda Castle, Shinshiro, Aichi Prefecture, Japan"
+    "standardized_location": "Bisham Abbey, Maidenhead, Berkshire, England",
+    "original_locations": [
+      "Bisham Abbey, Berkshire, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "C\u00f3rdoba, Argentina",
-    "standardized_location": "C\u00f3rdoba, C\u00f3rdoba Province, Argentina"
+    "standardized_location": "Bithynia, Turkey",
+    "original_locations": [
+      "Bithynia, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Odani Castle, Japan",
-    "standardized_location": "Odani Castle Ruins, Takashima, Shiga Prefecture, Japan"
+    "standardized_location": "Black Sea near Sochi, Russia",
+    "original_locations": [
+      "Sochi, Krasnodar Krai, Russia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Scheldt River, Zeeland, Netherlands",
-    "standardized_location": "Scheldt River, Zeeland, Netherlands"
+    "standardized_location": "Bob\u00e2lna, Cluj County, Romania",
+    "original_locations": [
+      "Bob\u00e2lna, Cluj County, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ottoman Empire, Turkey",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Bonn Minster, Bonn, North Rhine-Westphalia, Germany",
+    "original_locations": [
+      "Bonn, North Rhine-Westphalia, Germany"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tukaroi, Odisha, India",
-    "standardized_location": "Tukaroi, Balasore, Odisha, India"
+    "standardized_location": "Bowang Town, Ma'anshan",
+    "original_locations": [
+      "Bowang"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bay of Honduras, Central America",
-    "standardized_location": "Bay of Honduras, Honduras"
+    "standardized_location": "Boxmeer Castle",
+    "original_locations": [
+      "Boxmeer Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lubiesz\u00f3w, Lublin Voivodeship, Poland",
-    "standardized_location": "Lubiesz\u00f3w, Lublin Voivodeship, Poland"
+    "standardized_location": "Bramham Moor, Wetherby, West Yorkshire, England",
+    "original_locations": [
+      "Bramham Moor, West Yorkshire, England, United Kingdom"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bakhchisarai, Crimea, Ukraine",
-    "standardized_location": "Bakhchisarai, Crimea, Russia"
+    "standardized_location": "Brasenose College, University of Oxford",
+    "original_locations": [
+      "Brasenose College, Oxford"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mrauk U, Rakhine State, Myanmar",
-    "standardized_location": "Mrauk U, Rakhine State, Myanmar"
+    "standardized_location": "Buyeo County",
+    "original_locations": [
+      "Buyeo"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tedorigawa, Niigata Prefecture, Japan",
-    "standardized_location": "Tedorigawa, Niigata Prefecture, Japan"
+    "standardized_location": "Buyur Lake, Inner Mongolia, China",
+    "original_locations": [
+      "Inner Mongolia, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shigisan, Nara Prefecture, Japan",
-    "standardized_location": "Shigi-san, Nara, Japan"
+    "standardized_location": "Byllye Castle",
+    "original_locations": [
+      "Byllye Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Boxmeer Castle",
-    "standardized_location": "Boxmeer Castle"
+    "standardized_location": "Byzacena, Tunisia",
+    "original_locations": [
+      "Tunisia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mimaomote",
-    "standardized_location": "Mimaomote, Kochi"
+    "standardized_location": "Calder Hall Nuclear Power Station",
+    "original_locations": [
+      "Calder Hall"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mrauk U, Rakhine State",
-    "standardized_location": "Mrauk U, Rakhine State, Myanmar"
+    "standardized_location": "Cale Acte",
+    "original_locations": [
+      "Cale Acte"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kashiwara Castle",
-    "standardized_location": "Kashiwara Castle"
+    "standardized_location": "Campus Martius, Rome",
+    "original_locations": [
+      "Campus Martius"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "W\u00fcrzburg, Bavaria",
-    "standardized_location": "University of W\u00fcrzburg, W\u00fcrzburg, Bavaria"
+    "standardized_location": "Cangting, Henan, China",
+    "original_locations": [
+      "Cangting"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Temmokuzan, Japan",
-    "standardized_location": "Temmokuzan, Yamanashi, Japan"
+    "standardized_location": "Canhe Slope",
+    "original_locations": [
+      "Canhe Slope"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Himeji Castle, Hy\u014dgo Prefecture, Japan",
-    "standardized_location": "Himeji Castle, Himeji City, Hy\u014dgo Prefecture, Japan"
+    "standardized_location": "Cantley Common, Doncaster",
+    "original_locations": [
+      "Doncaster, South Yorkshire, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Takamatsu Castle, Japan",
-    "standardized_location": "Takamatsu Castle, Takamatsu City, Kagawa Prefecture, Japan"
+    "standardized_location": "Caparra Archaeological Site, Guaynabo, Puerto Rico",
+    "original_locations": [
+      "Caparra, Guaynabo, Puerto Rico"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chuvash Cape",
-    "standardized_location": "Chuvash Cape, near Tobolsk"
+    "standardized_location": "Cape Bojador, Western Sahara",
+    "original_locations": [
+      "Cape Bojador, Western Sahara"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Caspian Sea",
-    "standardized_location": "Itil, Astrakhan Oblast"
+    "standardized_location": "Cape Ecnomus",
+    "original_locations": [
+      "Cape Ecnomus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bonn, North Rhine-Westphalia, Germany",
-    "standardized_location": "Bonn Minster, Bonn, North Rhine-Westphalia, Germany"
+    "standardized_location": "Caria, Cappadocia, and Syria",
+    "original_locations": [
+      "Caria, Cappadocia, Syria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ichinomiya Castle, Japan",
-    "standardized_location": "Ichinomiya Castle Ruins"
+    "standardized_location": "Carnuntum Archaeological Park",
+    "original_locations": [
+      "Carnuntum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cumberland Sound, Baffin Island, Nunavut, Canada",
-    "standardized_location": "Cumberland Sound, Baffin Island, Nunavut, Canada"
+    "standardized_location": "Casilinum",
+    "original_locations": [
+      "Casilinum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ganja, Ganja District, Azerbaijan",
-    "standardized_location": "Ganja, Ganja District, Azerbaijan"
+    "standardized_location": "Casilinum, Capua",
+    "original_locations": [
+      "Casilinum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Suriagehara",
-    "standardized_location": "Suriagehara, Fukushima"
+    "standardized_location": "Cassandreia (Kassandra)",
+    "original_locations": [
+      "Cassandreia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hachi\u014dji Castle, Tokyo, Japan",
-    "standardized_location": "Zenpuku-ji, Tokyo, Japan"
+    "standardized_location": "Cassiopeia Constellation",
+    "original_locations": [
+      "Cassiopeia, Constellation"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Thailand, Thailand",
-    "standardized_location": "Wat Phra That Doi Suthep"
+    "standardized_location": "Castrum (modern-day Castro dei Volsci)",
+    "original_locations": [
+      "Castrum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tondibi, Koulikoro Region, Mali",
-    "standardized_location": "Tondibi, Koulikoro Region, Mali"
+    "standardized_location": "Castrum Helenae, near modern-day Valencia",
+    "original_locations": [
+      "Castrum Helenae, Spain"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Iwate Prefecture, Japan",
-    "standardized_location": "Mutsu, Iwate Prefecture, Japan"
+    "standardized_location": "Catacombs of the Capuchins",
+    "original_locations": [
+      "Catacombe dei Cappuccini"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ripa\u010d",
-    "standardized_location": "Ripa\u010d, Croatia"
+    "standardized_location": "Cathedral of Reims",
+    "original_locations": [
+      "Cathedral of Reims"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hansan Island, South Korea",
-    "standardized_location": "Hansan Island, South Korea"
+    "standardized_location": "Cathedral of Santa Maria del Fiore",
+    "original_locations": [
+      "Florence Cathedral, Florence"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dryfe Sands, Annandale, Scotland",
-    "standardized_location": "Dryfe Sands, Lockerbie, Scotland"
+    "standardized_location": "Catraeth (Battle of Catraeth)",
+    "original_locations": [
+      "Catraeth"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Goyghor Mosque, West Bengal, India",
-    "standardized_location": "Goyghor Mosque, Murshidabad, West Bengal, India"
+    "standardized_location": "Caucasian Gates",
+    "original_locations": [
+      "Caucasian Gates"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Longvek, Cambodia",
-    "standardized_location": "Longvek, Kandal Province, Cambodia"
+    "standardized_location": "Caudine Forks",
+    "original_locations": [
+      "Caudine Forks"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gherla, Cluj County, Romania",
-    "standardized_location": "Gherla, Cluj County, Romania"
+    "standardized_location": "Centoripe",
+    "original_locations": [
+      "Centoripini"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pointe des Espagnols, France",
-    "standardized_location": "Pointe des Espagnols, Crozon, France"
+    "standardized_location": "Central Highlands, Kenya",
+    "original_locations": [
+      "Kenya Highlands"
+    ],
+    "corrected_location": "Nairobi, Kenya",
+    "frequency": 1
   },
   {
-    "original_location": "Brest, Brittany, France",
-    "standardized_location": "Brest Dockyard, Brest, Brittany, France"
+    "standardized_location": "Chalagan, Azerbaijan",
+    "original_locations": [
+      "Chalagan, Azerbaijan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Calugareni",
-    "standardized_location": "C\u0103lug\u0103reni, Giurgiu County"
+    "standardized_location": "Chalcis, Lebanon",
+    "original_locations": [
+      "Chalcis, Lebanon"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Santa Cruz Island, Solomon Islands",
-    "standardized_location": "Santa Cruz Island, Solomon Islands"
+    "standardized_location": "Chalcis, Syria",
+    "original_locations": [
+      "Chalcis, Idlib Governorate, Syria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Guadalupe Island, Baja California, Mexico",
-    "standardized_location": "Guadalupe Island, Baja California, Mexico"
+    "standardized_location": "Chaldiran, Do\u011fubayaz\u0131t, A\u011fr\u0131, Turkey",
+    "original_locations": [
+      "Chaldiran, Eastern Anatolia, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chilcheollyang",
-    "standardized_location": "Chilcheollyang, Yeosu"
+    "standardized_location": "Chan Chan Archaeological Complex",
+    "original_locations": [
+      "Chan Chan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Manila",
-    "standardized_location": "Colegio de Nuestra Se\u00f1ora del Sant\u00edsimo Rosario, Manila"
+    "standardized_location": "Chang'an (modern Xi'an)",
+    "original_locations": [
+      "Chang'an (modern Xi'an)"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Transylvania, Romania",
-    "standardized_location": "Alba Iulia, Alba County, Romania"
+    "standardized_location": "Changban, Zhengzhou, Henan, China",
+    "original_locations": [
+      "Changban, Henan, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Asama, Japan",
-    "standardized_location": "Mount Asama, Nagano Prefecture, Japan"
+    "standardized_location": "Chapakchur, Iran",
+    "original_locations": [
+      "Chapakchur, Iran"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "County Armagh, Northern Ireland",
-    "standardized_location": "Yellow Ford, County Armagh"
+    "standardized_location": "Charlesfort Site",
+    "original_locations": [
+      "Charlesfort"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nikopol, Bulgaria",
-    "standardized_location": "Nikopol, Pleven Province, Bulgaria"
+    "standardized_location": "Chen City, Hubei Province",
+    "original_locations": [
+      "Battle of Chen"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Noryang",
-    "standardized_location": "Noryang, Jinju"
+    "standardized_location": "Chilcheollyang, Yeosu",
+    "original_locations": [
+      "Chilcheollyang"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Catacombe dei Cappuccini",
-    "standardized_location": "Catacombs of the Capuchins"
+    "standardized_location": "Chilia Veche, Tulcea County, Romania",
+    "original_locations": [
+      "Chilia, Tulcea, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Joara, North Carolina, United States",
-    "standardized_location": "Fort San Juan, North Carolina, United States"
+    "standardized_location": "Chincha Valley, Ica Region, Peru",
+    "original_locations": [
+      "Chincha Valley"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lochleven Castle, Scotland",
-    "standardized_location": "Lochleven Castle, Kinross, Scotland"
+    "standardized_location": "Chinkultic Archaeological Zone",
+    "original_locations": [
+      "Chinkultic"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ava Kingdom",
-    "standardized_location": "Ava (Inwa)"
+    "standardized_location": "Church of Santa Costanza",
+    "original_locations": [
+      "Church of Santa Costanza"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Podkamennaya Tunguska River, Krasnoyarsk Krai, Russia",
-    "standardized_location": "Podkamennaya Tunguska River, Krasnoyarsk Krai, Russia"
+    "standardized_location": "Chuvash Cape, near Tobolsk",
+    "original_locations": [
+      "Chuvash Cape"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Windsor Castle, England, United Kingdom",
-    "standardized_location": "Windsor, Berkshire, England, United Kingdom"
+    "standardized_location": "Cilicia Trachea",
+    "original_locations": [
+      "Cilicia Trachea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sarikamish, Kars Province, Turkey",
-    "standardized_location": "Sarikamish, Kars Province, Turkey"
+    "standardized_location": "Circus Flaminius, Rome",
+    "original_locations": [
+      "Circus Flaminius"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Iran-Turkmenistan border region",
-    "standardized_location": "Kopet Dag Mountains"
+    "standardized_location": "Clastidium",
+    "original_locations": [
+      "Clastidium"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Toumliline Monastery, Azrou",
-    "standardized_location": "Toumliline Monastery, Azrou"
+    "standardized_location": "Clazomenae",
+    "original_locations": [
+      "Clazomenae"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Calder Hall",
-    "standardized_location": "Calder Hall Nuclear Power Station"
+    "standardized_location": "Clonmacnoise Monastery",
+    "original_locations": [
+      "Clonmacnoise"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Atari, Inc.",
-    "standardized_location": "Atari, Inc. Headquarters"
+    "standardized_location": "Cluj-Napoca, Cluj County, Romania",
+    "original_locations": [
+      "Cluj-Napoca, Cluj County, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Utopia Planitia, Mars",
-    "standardized_location": "Utopia Planitia, Mars"
+    "standardized_location": "Cluviae (near modern-day Alife)",
+    "original_locations": [
+      "Cluviae"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Zagreb, Croatia",
-    "standardized_location": "University of Zagreb, Zagreb, Croatia"
+    "standardized_location": "Colegio de Nuestra Se\u00f1ora del Sant\u00edsimo Rosario, Manila",
+    "original_locations": [
+      "Manila"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Victoria, Mah\u00e9, Seychelles",
-    "standardized_location": "Victoria, Mah\u00e9, Seychelles"
+    "standardized_location": "Colline Gate",
+    "original_locations": [
+      "Colline Gate"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lajes Field, Azores, Portugal",
-    "standardized_location": "Lajes Field, Terceira Island, Azores, Portugal"
+    "standardized_location": "Cominium Ocritum (near modern-day Campobasso)",
+    "original_locations": [
+      "Cominium Ocritum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Near the Azores",
-    "standardized_location": "Atlantic Ocean near the Azores"
+    "standardized_location": "Coptic Orthodox Church Headquarters",
+    "original_locations": [
+      "Coptic Church"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tokyo, Tokyo, Japan",
-    "standardized_location": "Zenpuku-ji, Tokyo, Japan"
+    "standardized_location": "Cranita Hills",
+    "original_locations": [
+      "Cranita Hills"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Baikonur Cosmodrome, Kazakhstan",
-    "standardized_location": "Baikonur Cosmodrome, Baikonur, Kazakhstan"
+    "standardized_location": "Cremna, Antalya, Turkey",
+    "original_locations": [
+      "Cremna, Isparta, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gaza City, Gaza Strip, Palestine",
-    "standardized_location": "Gaza City, Gaza Strip, State of Palestine"
+    "standardized_location": "Cretopolis (near modern-day Konya)",
+    "original_locations": [
+      "Cretopolis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sochi, Krasnodar Krai, Russia",
-    "standardized_location": "Black Sea near Sochi, Russia"
+    "standardized_location": "Crocus Field, near Larissa",
+    "original_locations": [
+      "Crocus Field"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Qahtaniya, Nineveh, Iraq",
-    "standardized_location": "Qahtaniya, Nineveh Governorate, Iraq"
+    "standardized_location": "Cr\u00e9py-en-Laonnois, Hauts-de-France, France",
+    "original_locations": [
+      "Cr\u00e9py-en-Laonnois, Hauts-de-France, France"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Strait of Hormuz, Hormozgan Province, Iran",
-    "standardized_location": "Strait of Hormuz, Hormozgan Province, Iran"
+    "standardized_location": "Cumberland Sound, Baffin Island, Nunavut, Canada",
+    "original_locations": [
+      "Cumberland Sound, Baffin Island, Nunavut, Canada"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Middle East, Middle East Region",
-    "standardized_location": "Middle East, Central Command Area"
+    "standardized_location": "Cynaetha",
+    "original_locations": [
+      "Cynaetha"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "South America, South America",
-    "standardized_location": "Total Solar Eclipse Path, Chile"
+    "standardized_location": "C\u00f3rdoba, C\u00f3rdoba Province, Argentina",
+    "original_locations": [
+      "C\u00f3rdoba, Argentina"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Katyn Forest",
-    "standardized_location": "Katyn Forest"
+    "standardized_location": "C\u00fal Drebene, near Armagh",
+    "original_locations": [
+      "C\u00fal Drebene"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Off the Coast of Western Australia",
-    "standardized_location": "Flying Foam Passage, Western Australia"
+    "standardized_location": "C\u0103lug\u0103reni, Giurgiu County",
+    "original_locations": [
+      "Calugareni"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "KFFA",
-    "standardized_location": "KFFA Radio Station"
+    "standardized_location": "Danube River near Drobeta-Turnu Severin",
+    "original_locations": [
+      "Danube River, Serbia/Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Severnaya Bay",
-    "standardized_location": "Severnaya Bay, Sevastopol"
+    "standardized_location": "Daphne, near Antioch, Turkey",
+    "original_locations": [
+      "Daphne, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hitokapu Bay",
-    "standardized_location": "Hitokapu Bay"
+    "standardized_location": "Dara, Mardin Province",
+    "original_locations": [
+      "Near Dara"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "IBM Headquarters",
-    "standardized_location": "IBM Headquarters at 590 Madison Avenue"
+    "standardized_location": "Daranali, near Artashat",
+    "original_locations": [
+      "Daranali"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Stepanakert",
-    "standardized_location": "Stepanakert, Artsakh"
+    "standardized_location": "Dardanelles Strait",
+    "original_locations": [
+      "Dardanelles"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "United States District Court",
-    "standardized_location": "United States District Court for the Eastern District of New York"
+    "standardized_location": "Dardanelles Strait, \u00c7anakkale, Turkey",
+    "original_locations": [
+      "Dardanelles, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Al-Ahli Arab Hospital",
-    "standardized_location": "Al-Ahli Arab Hospital"
+    "standardized_location": "Dardanos (Helenopolis)",
+    "original_locations": [
+      "Drepana (modern Dardanos)"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Euphrates River, Iraq",
-    "standardized_location": "Euphrates River, near Al-Qaim, Iraq"
+    "standardized_location": "Delminium (near modern-day Tomislavgrad)",
+    "original_locations": [
+      "Delminium"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Carnuntum, Vienna, Austria",
-    "standardized_location": "Carnuntum Archaeological Park, Lower Austria, Austria"
+    "standardized_location": "Didymoteicho, East Macedonia and Thrace, Greece",
+    "original_locations": [
+      "Didymoteicho, East Macedonia and Thrace, Greece"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ctesiphon, Baghdad, Iraq",
-    "standardized_location": "Ctesiphon, Baghdad, Iraq"
+    "standardized_location": "Dijon, Burgundy, France",
+    "original_locations": [
+      "Burgundy, France"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nauportus",
-    "standardized_location": "Nauportus (near modern-day Portoro\u017e)"
+    "standardized_location": "Dimorphos (near Didymos)",
+    "original_locations": [
+      "Dimorphos"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Goguryeo",
-    "standardized_location": "Goguryeo Kingdom"
+    "standardized_location": "Dimorphos, near Didymos",
+    "original_locations": [
+      "Dimorphos, Asteroid Belt"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Marcomanni territory",
-    "standardized_location": "Marcomanni territory"
+    "standardized_location": "Dingtao County",
+    "original_locations": [
+      "Dingtao"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Antioch",
-    "standardized_location": "Antioch on the Orontes"
+    "standardized_location": "Dionysia Festival Site (Theater of Dionysus)",
+    "original_locations": [
+      "Dionysia Festival"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Saces territory",
-    "standardized_location": "Saces territory (modern equivalent)"
+    "standardized_location": "Diu, Diu District, Gujarat, India",
+    "original_locations": [
+      "Diu, Diu, India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dongbuyeo",
-    "standardized_location": "Dongbuyeo (historical region)"
+    "standardized_location": "Dongbuyeo (historical region)",
+    "original_locations": [
+      "Dongbuyeo"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kunyang, Hunan, China",
-    "standardized_location": "Kunyang, Changsha, Hunan, China"
+    "standardized_location": "Dresden Opera House",
+    "original_locations": [
+      "Dresden"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Numidia and Mauretania, Algeria and Morocco",
-    "standardized_location": "Algeria and Morocco"
+    "standardized_location": "Druim Cett",
+    "original_locations": [
+      "Druim Cett"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Taygetus, Greece",
-    "standardized_location": "Mount Taygetus, Greece"
+    "standardized_location": "Druimnacour, Sutherland",
+    "original_locations": [
+      "Druimnacour"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pont du Gard, near N\u00eemes",
-    "standardized_location": "Pont du Gard Aqueduct"
+    "standardized_location": "Dryfe Sands, Lockerbie, Scotland",
+    "original_locations": [
+      "Dryfe Sands, Annandale, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Baiae, Campania, Italy",
-    "standardized_location": "Baiae, Bacoli, Campania, Italy"
+    "standardized_location": "Dujiangyan Irrigation System",
+    "original_locations": [
+      "Du Jiang Yan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Seleucia on the Tigris",
-    "standardized_location": "Seleucia on the Tigris"
+    "standardized_location": "Dunfermline Castle, Dunfermline, Fife, Scotland",
+    "original_locations": [
+      "Dunfermline Castle, Fife, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cyprus and Asia Minor",
-    "standardized_location": "Cyprus and Asia Minor"
+    "standardized_location": "Dur-Sharrukin (Khorsabad), Iraq",
+    "original_locations": [
+      "Dur-Sharrukin (Khorsabad)"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Trent and Severn",
-    "standardized_location": "Trent and Severn Rivers"
+    "standardized_location": "Durand Line, Khyber Pakhtunkhwa, Pakistan",
+    "original_locations": [
+      "Durand Line, Afghanistan-Pakistan Border"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ctesiphon, Iraq",
-    "standardized_location": "Ctesiphon, Iraq"
+    "standardized_location": "D\u00e1il \u00c9ireann, Leinster House",
+    "original_locations": [
+      "D\u00e1il \u00c9ireann"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Fucine Lake, Lazio, Italy",
-    "standardized_location": "Fucine Lake (Lago Fucino), Avezzano, Italy"
+    "standardized_location": "Eastern Mediterranean Sea",
+    "original_locations": [
+      "Eastern Mediterranean"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chalcis, Lebanon",
-    "standardized_location": "Chalcis, Lebanon"
+    "standardized_location": "Echinades Islands",
+    "original_locations": [
+      "Echinades Islands"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cyrrhus, Syria",
-    "standardized_location": "Qirbet al-Mafjar, Syria"
+    "standardized_location": "Echinades Islands, Greece",
+    "original_locations": [
+      "Echinades Islands"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tarsus, Turkey",
-    "standardized_location": "Tarsus, Mersin Province, Turkey"
+    "standardized_location": "Echinus, Greece",
+    "original_locations": [
+      "Echinus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gaul (modern France)",
-    "standardized_location": "Gaul (modern France)"
+    "standardized_location": "Ekayana Monastery, Jakarta, Indonesia",
+    "original_locations": [
+      "Jakarta, Indonesia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Baths of Nero",
-    "standardized_location": "Baths of Nero"
+    "standardized_location": "Emain Macha Archaeological Site",
+    "original_locations": [
+      "Emain Macha"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Euphrates River, Turkey",
-    "standardized_location": "Euphrates River, Turkey"
+    "standardized_location": "Enshunada Sea, Shizuoka Prefecture, Japan",
+    "original_locations": [
+      "Enshunada Sea, Shizuoka Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Rhandeia, Turkey",
-    "standardized_location": "Rhandeia, near Mardin"
+    "standardized_location": "Epang Palace Site",
+    "original_locations": [
+      "Epang Palace"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Beth-Horon, Israel",
-    "standardized_location": "Beth-Horon, State of Israel"
+    "standardized_location": "Etemenanki (Ziggurat of Babylon)",
+    "original_locations": [
+      "Etemenanki"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Asia Minor, Turkey",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Euphrates River, near Al-Qaim, Iraq",
+    "original_locations": [
+      "Euphrates River, Iraq"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gamla, Golan Heights, Israel",
-    "standardized_location": "Gamla, Golan Heights, Israel"
+    "standardized_location": "European Union Headquarters",
+    "original_locations": [
+      "European Union"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Scythopolis, Jezreel Valley, Israel",
-    "standardized_location": "Scythopolis (Beit She'an), Northern District, Israel"
+    "standardized_location": "Fangling, Henan, China",
+    "original_locations": [
+      "Fangling"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Galsa Buyeo, North Korea",
-    "standardized_location": "Goguryeo, North Korea"
+    "standardized_location": "Fanwu, Shanxi, China",
+    "original_locations": [
+      "Fanwu"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Qumran, West Bank, Palestine",
-    "standardized_location": "Qumran, West Bank, Israel"
+    "standardized_location": "Fei, Shanxi, China",
+    "original_locations": [
+      "Fei"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bedriacum, Lombardy, Italy",
-    "standardized_location": "Bedriaco, Lombardy, Italy"
+    "standardized_location": "Feishui River, Anhui",
+    "original_locations": [
+      "Feishui"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Herodium, West Bank",
-    "standardized_location": "Herodium National Park, West Bank"
+    "standardized_location": "Ferghana Valley",
+    "original_locations": [
+      "Ferghana Valley"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Doncaster, South Yorkshire, England",
-    "standardized_location": "Cantley Common, Doncaster"
+    "standardized_location": "Fethanleigh, near Winchester",
+    "original_locations": [
+      "Fethanleigh"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Parthian Empire",
-    "standardized_location": "Ctesiphon, Iraq"
+    "standardized_location": "Field of the Cloth of Gold",
+    "original_locations": [
+      "Field of the Cloth of Gold"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Herculaneum",
-    "standardized_location": "Herculaneum Archaeological Park"
+    "standardized_location": "Fleet Prison, London, United Kingdom",
+    "original_locations": [
+      "Fleet Prison, London, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mons Graupius",
-    "standardized_location": "Mons Graupius"
+    "standardized_location": "Florence Cathedral (Duomo di Firenze)",
+    "original_locations": [
+      "Florence Cathedral, Tuscany"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Limes Germanicus",
-    "standardized_location": "Limes Germanicus"
+    "standardized_location": "Flying Foam Passage, Western Australia",
+    "original_locations": [
+      "Off the Coast of Western Australia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Inchtuthil Roman Fort",
-    "standardized_location": "Inchtuthil Roman Fort"
+    "standardized_location": "Fort San Juan, North Carolina, United States",
+    "original_locations": [
+      "Joara, North Carolina, United States"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Moesia",
-    "standardized_location": "Northern Bulgaria"
+    "standardized_location": "Forum Gallorum (near Bologna)",
+    "original_locations": [
+      "Forum Gallorum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gardens of Sallust",
-    "standardized_location": "Gardens of Sallust"
+    "standardized_location": "Forum of Theodosius",
+    "original_locations": [
+      "Forum of Theodosius"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Oxyrhynchus",
-    "standardized_location": "Oxyrhynchus, El-Bahnasa"
+    "standardized_location": "Frigidus River",
+    "original_locations": [
+      "Frigidus River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Danube River, Serbia/Romania",
-    "standardized_location": "Danube River near Drobeta-Turnu Severin"
+    "standardized_location": "Fucine Lake (Lago Fucino), Avezzano, Italy",
+    "original_locations": [
+      "Fucine Lake, Lazio, Italy"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kerak, Karak Governorate, Jordan",
-    "standardized_location": "Kerak, Karak Governorate, Jordan"
+    "standardized_location": "Fukuda Bay",
+    "original_locations": [
+      "Fukuda Bay"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Trajan Bridge, near Drobeta-Turnu Severin",
-    "standardized_location": "Trajan Bridge, near Drobeta-Turnu Severin"
+    "standardized_location": "Funafuti Atoll, Tuvalu",
+    "original_locations": [
+      "Funafuti"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Or\u0103\u0219tie Mountains",
-    "standardized_location": "Or\u0103\u0219tie Mountains"
+    "standardized_location": "Futa Toro, Senegal",
+    "original_locations": [
+      "Futa Toro, Senegal"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bithynia, Turkey",
-    "standardized_location": "Bithynia, Turkey"
+    "standardized_location": "Gabiene",
+    "original_locations": [
+      "Gabiene"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Asia, Turkey",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Gaixia, Anhui, China",
+    "original_locations": [
+      "Battle of Gaixia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Osroene, Turkey",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Gamla, Golan Heights, Israel",
+    "original_locations": [
+      "Gamla, Golan Heights, Israel"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ctesiphon",
-    "standardized_location": "Ctesiphon"
+    "standardized_location": "Ganja, Ganja District, Azerbaijan",
+    "original_locations": [
+      "Ganja, Ganja District, Azerbaijan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Seleucia",
-    "standardized_location": "Seleucia (near Baghdad)"
+    "standardized_location": "Gardens of Sallust",
+    "original_locations": [
+      "Gardens of Sallust"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Selinus",
-    "standardized_location": "Selinus (modern Silifke)"
+    "standardized_location": "Gaul (modern France)",
+    "original_locations": [
+      "Gaul (modern France)"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Trajan's Forum",
-    "standardized_location": "Trajan's Forum"
+    "standardized_location": "Geze Gofa, Gofa Zuria, Southern Nations, Nationalities, and Peoples' Region, Ethiopia",
+    "original_locations": [
+      "Geze Gofa, Gofa Zuria, Ethiopia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Vindolanda",
-    "standardized_location": "Vindolanda Roman Fort"
+    "standardized_location": "Gherla, Cluj County, Romania",
+    "original_locations": [
+      "Gherla, Cluj County, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Temple of Al-Lat",
-    "standardized_location": "Temple of Al-Lat"
+    "standardized_location": "Giurgiu, Giurgiu County, Romania",
+    "original_locations": [
+      "Giurgiu, Giurgiu, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Olympeion",
-    "standardized_location": "Olympeion"
+    "standardized_location": "Glendale, Isle of Skye",
+    "original_locations": [
+      "Glendale, Skye"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kushan Empire (modern-day Afghanistan and northern India)",
-    "standardized_location": "Kushan Empire (central region near Peshawar)"
+    "standardized_location": "Goguryeo, North Korea",
+    "original_locations": [
+      "Galsa Buyeo, North Korea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Caria, Cappadocia, Syria",
-    "standardized_location": "Caria, Cappadocia, and Syria"
+    "standardized_location": "Goguryeo, modern-day North Korea and northeastern China",
+    "original_locations": [
+      "Goguryeo, modern-day North Korea and northeastern China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Petra, Ma'an, Jordan",
-    "standardized_location": "Petra, Ma'an Governorate, Jordan"
+    "standardized_location": "Gomit, Ethiopia",
+    "original_locations": [
+      "Gomit, Ethiopia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "H\u00f6snek, A\u011fr\u0131, Turkey",
-    "standardized_location": "H\u00f6snek, A\u011fr\u0131, Turkey"
+    "standardized_location": "Gothic territories",
+    "original_locations": [
+      "Gothic territories"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kushan Empire, modern-day Afghanistan and northern India",
-    "standardized_location": "Kushan Empire, modern-day Afghanistan and northern India"
+    "standardized_location": "Gough Island, Tristan da Cunha, Saint Helena, Ascension and Tristan da Cunha",
+    "original_locations": [
+      "Gough Island, Tristan da Cunha, British Overseas Territory"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sinope, Black Sea Region, Turkey",
-    "standardized_location": "Sinope, Samsun Province, Turkey"
+    "standardized_location": "Goyghor Mosque, Goyang, Mymensingh Division",
+    "original_locations": [
+      "Goyghor, Bangladesh"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Goguryeo, modern-day North Korea and northeastern China",
-    "standardized_location": "Goguryeo, modern-day North Korea and northeastern China"
+    "standardized_location": "Goyghor Mosque, Murshidabad, West Bengal, India",
+    "original_locations": [
+      "Goyghor Mosque, West Bengal, India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mesoamerica",
-    "standardized_location": "Maya Civilization"
+    "standardized_location": "Guadalupe Island, Baja California, Mexico",
+    "original_locations": [
+      "Guadalupe Island, Baja California, Mexico"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Parthia, Iran",
-    "standardized_location": "Parthia, Iran"
+    "standardized_location": "Guadeloupe, French Caribbean",
+    "original_locations": [
+      "Guadeloupe, Caribbean"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Potaissa, Cluj County, Romania",
-    "standardized_location": "Potaissa, Cluj County, Romania"
+    "standardized_location": "Guanglang, Shanxi",
+    "original_locations": [
+      "Guanglang"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Carnuntum, Lower Austria, Austria",
-    "standardized_location": "Carnuntum Archaeological Park, Lower Austria, Austria"
+    "standardized_location": "Guinegate",
+    "original_locations": [
+      "Guinegate"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lower Danube",
-    "standardized_location": "Lower Danube Region"
+    "standardized_location": "Gundeshapur, Iran",
+    "original_locations": [
+      "Gundeshapur"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Museo Capitolini",
-    "standardized_location": "Museo Capitolino"
+    "standardized_location": "Gundishapur, Khuzestan, Iran",
+    "original_locations": [
+      "Gundishapur, Khuzestan, Iran"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Carnuntum",
-    "standardized_location": "Carnuntum Archaeological Park"
+    "standardized_location": "Haddon Rig, Scottish Borders",
+    "original_locations": [
+      "Haddon Rig"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Parthian Empire, Iran",
-    "standardized_location": "Ctesiphon, Iraq"
+    "standardized_location": "Hajn\u00e1\u010dka, Ko\u0161ice Region, Slovakia",
+    "original_locations": [
+      "Hajn\u00e1cska, Ko\u0161ice Region, Slovakia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hangu Pass, Shaanxi, China",
-    "standardized_location": "Hangu Pass, Shaanxi, China"
+    "standardized_location": "Hampton Court Palace, East Molesey, Surrey, England",
+    "original_locations": [
+      "Hampton Court, London, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Jieqiao, Hebei, China",
-    "standardized_location": "Jieqiao, Hebei, China"
+    "standardized_location": "Hangu Pass",
+    "original_locations": [
+      "Hangu Pass"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Carnuntum, Austria",
-    "standardized_location": "Carnuntum Archaeological Park, Lower Austria, Austria"
+    "standardized_location": "Hangu Pass, Shaanxi, China",
+    "original_locations": [
+      "Hangu Pass, Shaanxi, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Numidia",
-    "standardized_location": "Numidia (modern Algeria)"
+    "standardized_location": "Hansan Island, South Korea",
+    "original_locations": [
+      "Hansan Island, South Korea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cangting",
-    "standardized_location": "Cangting, Henan, China"
+    "standardized_location": "Harpasus",
+    "original_locations": [
+      "Harpasus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bowang",
-    "standardized_location": "Bowang Town, Ma'anshan"
+    "standardized_location": "Harz Mountains, Saxony-Anhalt, Germany",
+    "original_locations": [
+      "Harz Mountains, Saxony-Anhalt, Germany"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Liaodong, Liaoning, China",
-    "standardized_location": "Liaodong District, Dalian, Liaoning, China"
+    "standardized_location": "Hecatompylos",
+    "original_locations": [
+      "Hecatompylos"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ye, Hebei, China",
-    "standardized_location": "Ye, Hebei, China"
+    "standardized_location": "Helike, Achaea",
+    "original_locations": [
+      "Helike"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "White Wolf Mountain, Inner Mongolia, China",
-    "standardized_location": "White Wolf Mountain, Inner Mongolia, China"
+    "standardized_location": "Helmand River Valley",
+    "original_locations": [
+      "Helmand River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Changban, Henan, China",
-    "standardized_location": "Changban, Zhengzhou, Henan, China"
+    "standardized_location": "Heloros River",
+    "original_locations": [
+      "Heloros River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tong Pass, Shaanxi, China",
-    "standardized_location": "Tong Pass, Shaanxi, China"
+    "standardized_location": "Heraclea Minoa",
+    "original_locations": [
+      "Heraclea Minoa"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ruxu, near present-day Hefei",
-    "standardized_location": "Ruxu, near Hefei"
+    "standardized_location": "Heraclea Sintica",
+    "original_locations": [
+      "Heraclea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Xiaoyao Ford, near Hefei",
-    "standardized_location": "Xiaoyao Ford, near Hefei"
+    "standardized_location": "Herculaneum Archaeological Park",
+    "original_locations": [
+      "Herculaneum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Leptis Magna, modern Al Khums",
-    "standardized_location": "Leptis Magna, near Al Khums"
+    "standardized_location": "Hernici territory",
+    "original_locations": [
+      "Hernici territory"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nisibis, modern Nusaybin",
-    "standardized_location": "Nusaybin, Mardin Province"
+    "standardized_location": "Herodium National Park",
+    "original_locations": [
+      "Herodium"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ruxu, Yang Province",
-    "standardized_location": "Ruxu, Jiangsu Province, China"
+    "standardized_location": "Herodium National Park, West Bank",
+    "original_locations": [
+      "Herodium, West Bank"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Jieting, Sichuan, China",
-    "standardized_location": "Jieting, Sichuan, China"
+    "standardized_location": "Heyong, Shanxi, China",
+    "original_locations": [
+      "Heyong"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shiting, Jiangsu, China",
-    "standardized_location": "Shiting, Jiangsu, China"
+    "standardized_location": "Hiera Island",
+    "original_locations": [
+      "Hiera"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Jianwei, Sichuan, China",
-    "standardized_location": "Jianwei County, Sichuan, China"
+    "standardized_location": "Himeji Castle, Himeji City, Hy\u014dgo Prefecture, Japan",
+    "original_locations": [
+      "Himeji Castle, Hy\u014dgo Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nisibis, \u015eanl\u0131urfa, Turkey",
-    "standardized_location": "Nisibis, \u015eanl\u0131urfa, Turkey"
+    "standardized_location": "Himera River",
+    "original_locations": [
+      "Himera River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Qi, China",
-    "standardized_location": "Mount Qi, Sichuan, China"
+    "standardized_location": "Hitokapu Bay",
+    "original_locations": [
+      "Hitokapu Bay"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Wuzhang Plains, Shaanxi, China",
-    "standardized_location": "Wuzhang Plains, Shaanxi, China"
+    "standardized_location": "Huangchi, Jiangsu, China",
+    "original_locations": [
+      "Huangchi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gupta Empire, India",
-    "standardized_location": "Pataliputra, Bihar, India"
+    "standardized_location": "Hvalsey, Qaqortoq, Greenland",
+    "original_locations": [
+      "Hvalsey, Qaqortoq, Greenland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Resaina, Turkey",
-    "standardized_location": "Resaina, Turkey"
+    "standardized_location": "Hy-Many, County Galway",
+    "original_locations": [
+      "Hy-Many, Galway"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Resaena, Syria",
-    "standardized_location": "Resaena, Turkey"
+    "standardized_location": "Hysiae (near modern-day Mycenae)",
+    "original_locations": [
+      "Hysiae"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Zaitha",
-    "standardized_location": "Zaitha, near Fallujah"
+    "standardized_location": "H\u00f6snek, A\u011fr\u0131, Turkey",
+    "original_locations": [
+      "H\u00f6snek, A\u011fr\u0131, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Xingshi",
-    "standardized_location": "Xingshi, Sichuan, China"
+    "standardized_location": "IBM Headquarters at 590 Madison Avenue",
+    "original_locations": [
+      "IBM Headquarters"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Abritus, Dobrich Province, Bulgaria",
-    "standardized_location": "Abritus, Dobrich Province, Bulgaria"
+    "standardized_location": "Ia\u0219i, Ia\u0219i County, Romania",
+    "original_locations": [
+      "Ia\u0219i, Ia\u0219i County, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nehardea, Iraq",
-    "standardized_location": "Nehardea, Iraq"
+    "standardized_location": "Ichinomiya Castle Ruins",
+    "original_locations": [
+      "Ichinomiya Castle, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Thrace, Turkey",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Ihtiman, Sofia Province, Bulgaria",
+    "original_locations": [
+      "Ihtiman, Sofia Province, Bulgaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Black Sea, Turkey",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Illiberis (modern-day Illora)",
+    "original_locations": [
+      "Illiberis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gundishapur, Khuzestan, Iran",
-    "standardized_location": "Gundishapur, Khuzestan, Iran"
+    "standardized_location": "Ilopango Caldera",
+    "original_locations": [
+      "Ilopango Caldera"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tyana, Cappadocia, Turkey",
-    "standardized_location": "Tyana, Ni\u011fde Province, Turkey"
+    "standardized_location": "Imam Bargah Qasr-e-Shirin, Peshawar",
+    "original_locations": [
+      "Shia Mosque, Peshawar"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gundeshapur",
-    "standardized_location": "Gundeshapur, Iran"
+    "standardized_location": "Inchkeith Island, Firth of Forth, Scotland",
+    "original_locations": [
+      "Inchkeith, Firth of Forth, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tyana",
-    "standardized_location": "Tyana (modern-day Kemerhisar)"
+    "standardized_location": "Inchtuthil Roman Fort",
+    "original_locations": [
+      "Inchtuthil Roman Fort"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sea of Marmara, Turkey",
-    "standardized_location": "Sea of Marmara, Turkey"
+    "standardized_location": "Indian Ocean near Madagascar",
+    "original_locations": [
+      "Madagascar"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Inner Mongolia, China",
-    "standardized_location": "Buyur Lake, Inner Mongolia, China"
+    "standardized_location": "Inessa (modern equivalent)",
+    "original_locations": [
+      "Inessa"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Neckar Valley, Baden-W\u00fcrttemberg, Germany",
-    "standardized_location": "Neckar Valley, Baden-W\u00fcrttemberg, Germany"
+    "standardized_location": "Ipsus (near modern-day \u0130psala)",
+    "original_locations": [
+      "Ipsus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cremna, Isparta, Turkey",
-    "standardized_location": "Cremna, Antalya, Turkey"
+    "standardized_location": "Isola di Mozia",
+    "original_locations": [
+      "Motya"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Harz Mountains, Saxony-Anhalt, Germany",
-    "standardized_location": "Harz Mountains, Saxony-Anhalt, Germany"
+    "standardized_location": "Iximche Archaeological Site, Chimaltenango, Guatemala",
+    "original_locations": [
+      "Iximche, Chimaltenango, Guatemala"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Near Ctesiphon, Baghdad, Iraq",
-    "standardized_location": "Ctesiphon, Baghdad, Iraq"
+    "standardized_location": "Iznik, Bursa Province, Turkey",
+    "original_locations": [
+      "Nicaea, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sassanid Empire, Iran",
-    "standardized_location": "Ctesiphon, Iraq"
+    "standardized_location": "Jarte, Ethiopia",
+    "original_locations": [
+      "Ethiopia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Boresis",
-    "standardized_location": "Boresis, near Luxor"
+    "standardized_location": "Jaxartes River",
+    "original_locations": [
+      "Jaxartes River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Salona",
-    "standardized_location": "Salona, near Split"
+    "standardized_location": "Jemmingen, Groningen, Netherlands",
+    "original_locations": [
+      "Jemmingen, Groningen, Netherlands"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Illiberis",
-    "standardized_location": "Illiberis (modern-day Illora)"
+    "standardized_location": "Jianwei County, Sichuan, China",
+    "original_locations": [
+      "Jianwei, Sichuan, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Heraclea",
-    "standardized_location": "Heraclea Sintica"
+    "standardized_location": "Jieqiao, Hebei, China",
+    "original_locations": [
+      "Jieqiao, Hebei, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Drepana (modern Dardanos)",
-    "standardized_location": "Dardanos (Helenopolis)"
+    "standardized_location": "Jieting, Sichuan, China",
+    "original_locations": [
+      "Jieting, Sichuan, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dardanelles, Turkey",
-    "standardized_location": "Dardanelles Strait, \u00c7anakkale, Turkey"
+    "standardized_location": "Joint European Torus, Culham Science Centre",
+    "original_locations": [
+      "Joint European Torus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nicaea, Turkey",
-    "standardized_location": "Iznik, Bursa Province, Turkey"
+    "standardized_location": "Jueqiao",
+    "original_locations": [
+      "Jueqiao"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tanais",
-    "standardized_location": "Tanais (modern-day Tanais archaeological site)"
+    "standardized_location": "Juva, Southern Savonia",
+    "original_locations": [
+      "Juva"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Daranali",
-    "standardized_location": "Daranali, near Artashat"
+    "standardized_location": "Juyan Lake",
+    "original_locations": [
+      "Juyan Lake"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pontic Region",
-    "standardized_location": "Pontus, Turkey"
+    "standardized_location": "KFFA Radio Station",
+    "original_locations": [
+      "KFFA"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Church of Santa Costanza",
-    "standardized_location": "Church of Santa Costanza"
+    "standardized_location": "Kalinjar Fort, Bundelkhand, Madhya Pradesh, India",
+    "original_locations": [
+      "Kalinjar Fort, Madhya Pradesh, India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gothic territories",
-    "standardized_location": "Gothic territories"
+    "standardized_location": "Kanbara Castle Ruins",
+    "original_locations": [
+      "Kanbara Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Castrum Helenae, Spain",
-    "standardized_location": "Castrum Helenae, near modern-day Valencia"
+    "standardized_location": "Kashiwara Castle",
+    "original_locations": [
+      "Kashiwara Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bezabde, Iraq",
-    "standardized_location": "Bezabde, Iraq"
+    "standardized_location": "Kasugayama Castle Site",
+    "original_locations": [
+      "Kasugayama Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nazianzus, Turkey",
-    "standardized_location": "Nazianzus, Turkey"
+    "standardized_location": "Katsurayama Castle Site",
+    "original_locations": [
+      "Katsurayama Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Al-Karak, Jordan",
-    "standardized_location": "Al-Karak, Karak Governorate, Jordan"
+    "standardized_location": "Katyn Forest",
+    "original_locations": [
+      "Katyn Forest"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Daphne, Turkey",
-    "standardized_location": "Daphne, near Antioch, Turkey"
+    "standardized_location": "Kerak, Karak Governorate, Jordan",
+    "original_locations": [
+      "Kerak, Karak Governorate, Jordan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hierapolis",
-    "standardized_location": "Hierapolis (modern-day Pamukkale)"
+    "standardized_location": "Kerulen River, Khentii Province, Mongolia",
+    "original_locations": [
+      "Kerulen River, Mongolia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Alfaf",
-    "standardized_location": "Mount Alfaf, near Mosul"
+    "standardized_location": "Khanwa, Rajasthan, India",
+    "original_locations": [
+      "Khanwa, Rajasthan, India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Illyricum, Croatia",
-    "standardized_location": "University of Zagreb, Zagreb, Croatia"
+    "standardized_location": "Khawak Pass, Badakhshan",
+    "original_locations": [
+      "Khawak Pass"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chalcis, Idlib Governorate, Syria",
-    "standardized_location": "Chalcis, Syria"
+    "standardized_location": "Khirokitia, Larnaca District, Cyprus",
+    "original_locations": [
+      "Khirokitia, Larnaca District, Cyprus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lower Moesia, Romania",
-    "standardized_location": "Lower Moesia, Romania"
+    "standardized_location": "Kilconaire",
+    "original_locations": [
+      "Ciiil Conaire"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Marcianople, Bulgaria",
-    "standardized_location": "Marcianople, Bulgaria"
+    "standardized_location": "King's College, University of Aberdeen",
+    "original_locations": [
+      "Aberdeen, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Beroea, Bulgaria",
-    "standardized_location": "Beroea, Bulgaria"
+    "standardized_location": "Knockdoe, County Galway, Ireland",
+    "original_locations": [
+      "Knockdoe, County Galway, Ireland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Rhine River, Germany",
-    "standardized_location": "Rhine River, Bonn, Germany"
+    "standardized_location": "Kopet Dag Mountains",
+    "original_locations": [
+      "Iran-Turkmenistan border region"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ihtiman, Sofia Province, Bulgaria",
-    "standardized_location": "Ihtiman, Sofia Province, Bulgaria"
+    "standardized_location": "Koriyama, Yamaguchi Prefecture, Japan",
+    "original_locations": [
+      "Koriyama, Yamaguchi Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ctesiphon, Al-Qadisiyyah, Iraq",
-    "standardized_location": "Ctesiphon, Baghdad, Iraq"
+    "standardized_location": "Kostajnica Fortress, Croatia",
+    "original_locations": [
+      "Kostajnica Fortress, Croatia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Feishui",
-    "standardized_location": "Feishui River, Anhui"
+    "standardized_location": "Krbava Field, near Udbina",
+    "original_locations": [
+      "Krbava Field"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Forum of Theodosius",
-    "standardized_location": "Forum of Theodosius"
+    "standardized_location": "Kunyang, Changsha, Hunan, China",
+    "original_locations": [
+      "Kunyang, Hunan, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Acilisene",
-    "standardized_location": "Acilisene"
+    "standardized_location": "Kushan Empire (central region near Peshawar)",
+    "original_locations": [
+      "Kushan Empire (modern-day Afghanistan and northern India)"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Vakataka Kingdom",
-    "standardized_location": "Nandivardhana"
+    "standardized_location": "Kushan Empire, modern-day Afghanistan and northern India",
+    "original_locations": [
+      "Kushan Empire, modern-day Afghanistan and northern India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Library of Alexandria",
-    "standardized_location": "Library of Alexandria"
+    "standardized_location": "K\u014dpu Lighthouse, Saaremaa, Estonia",
+    "original_locations": [
+      "K\u014dpu Lighthouse, Saare County, Estonia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Frigidus River",
-    "standardized_location": "Frigidus River"
+    "standardized_location": "K\u014dri-Nishiyama Castle",
+    "original_locations": [
+      "K\u014dri-Nishiyama Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Baga\u00ef",
-    "standardized_location": "Baga\u00ef (modern-day Tunisia)"
+    "standardized_location": "Lahneck Castle, Koblenz, Rhineland-Palatinate, Germany",
+    "original_locations": [
+      "Lahneck Castle, Rhineland-Palatinate, Germany"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Canhe Slope",
-    "standardized_location": "Canhe Slope"
+    "standardized_location": "Lajes Field, Terceira Island, Azores, Portugal",
+    "original_locations": [
+      "Lajes Field, Azores, Portugal"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Midyat, Mardin, Turkey",
-    "standardized_location": "Mor Gabriel Monastery, near Midyat"
+    "standardized_location": "Lake Nicaragua, Rivas",
+    "original_locations": [
+      "Lake Nicaragua, Nicaragua"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gaza, Palestine",
-    "standardized_location": "Gaza City, Gaza Strip, State of Palestine"
+    "standardized_location": "Lake \u00c5sunden",
+    "original_locations": [
+      "Lake \u00c5sunden"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Aquincum",
-    "standardized_location": "Aquincum Archaeological Park"
+    "standardized_location": "Lautulae",
+    "original_locations": [
+      "Lautulae"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pollentia",
-    "standardized_location": "Pollentia (modern Pollenzo)"
+    "standardized_location": "Lenaia Festival Site",
+    "original_locations": [
+      "Lenaia Festival"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Udyana",
-    "standardized_location": "Udyana (Peshawar)"
+    "standardized_location": "Leptis Magna, near Al Khums",
+    "original_locations": [
+      "Leptis Magna, modern Al Khums"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Krakatoa",
-    "standardized_location": "Krakatoa Island"
+    "standardized_location": "Liaodong District, Dalian, Liaoning, China",
+    "original_locations": [
+      "Liaodong, Liaoning, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Arzanene",
-    "standardized_location": "Arzanene"
+    "standardized_location": "Library of Alexandria",
+    "original_locations": [
+      "Library of Alexandria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cyrrhus",
-    "standardized_location": "Qirret, Syria"
+    "standardized_location": "Library of Alexandria (site of)",
+    "original_locations": [
+      "Library of Alexandria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Northern Yan",
-    "standardized_location": "Northern Yan (historical region)"
+    "standardized_location": "Lichtenau Fortress",
+    "original_locations": [
+      "Lichtenau Fortress"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ilopango Caldera",
-    "standardized_location": "Ilopango Caldera"
+    "standardized_location": "Lincoln College, University of Oxford",
+    "original_locations": [
+      "Lincoln College, University of Oxford"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Margum",
-    "standardized_location": "Margum, near modern-day Vu\u010ditrn"
+    "standardized_location": "Lingju, Inner Mongolia",
+    "original_locations": [
+      "Lingju"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ashtishat",
-    "standardized_location": "Ashtishat, Armenia"
+    "standardized_location": "Lipany, \u00dast\u00ed nad Labem Region, Czech Republic",
+    "original_locations": [
+      "Lipany, \u00dast\u00ed nad Labem Region, Czech Republic"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tisza River",
-    "standardized_location": "Tisza River, near Szeged"
+    "standardized_location": "Lipnic, Suceava County",
+    "original_locations": [
+      "Lipnic"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Eastern Roman Empire",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Lochleven Castle, Kinross, Scotland",
+    "original_locations": [
+      "Lochleven Castle, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Apahunik'",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Locri Epizephyrii",
+    "original_locations": [
+      "Locri"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Thrace",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Longvek, Kandal Province, Cambodia",
+    "original_locations": [
+      "Longvek, Cambodia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Wenming Tomb",
-    "standardized_location": "Wenming Tomb"
+    "standardized_location": "Losecoat Field",
+    "original_locations": [
+      "Losecoat Field"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ad Pinetam",
-    "standardized_location": "Ad Pinetam"
+    "standardized_location": "Low Earth Orbit",
+    "original_locations": [
+      "Low Earth Orbit"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Southern Central Anatolia",
-    "standardized_location": "Southern Central Anatolia"
+    "standardized_location": "Lower Rhine Region",
+    "original_locations": [
+      "Lower Rhine"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dengfeng",
-    "standardized_location": "Shaolin Temple, Dengfeng"
+    "standardized_location": "Lubiesz\u00f3w, Lublin Voivodeship, Poland",
+    "original_locations": [
+      "Lubiesz\u00f3w, Lublin Voivodeship, Poland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kusumapura",
-    "standardized_location": "Kusumapura (modern-day Patna)"
+    "standardized_location": "Lunar South Pole",
+    "original_locations": [
+      "Moon's South Pole"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ale's Stones",
-    "standardized_location": "Ale's Stones"
+    "standardized_location": "Lunar Surface",
+    "original_locations": [
+      "Moon"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Basilica of Sant' Apollinare Nuovo",
-    "standardized_location": "Basilica of Sant' Apollinare Nuovo"
+    "standardized_location": "Lupia River (historical region near the Rhine)",
+    "original_locations": [
+      "Lupia River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Uppsala University Library",
-    "standardized_location": "Uppsala University Library"
+    "standardized_location": "Lycus River (near modern-day Gediz River)",
+    "original_locations": [
+      "Lycus River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "D\u00e1l Riata",
-    "standardized_location": "D\u00e1l Riata (historical region)"
+    "standardized_location": "Mabila, Alabama, United States",
+    "original_locations": [
+      "Mabila, Alabama, United States"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Palaestina Salutaris",
-    "standardized_location": "Palaestina Salutaris"
+    "standardized_location": "Mactan Island, Lapu-Lapu City",
+    "original_locations": [
+      "Mactan Island"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Basilica of Sant'Apollinare Nuovo",
-    "standardized_location": "Basilica of Sant'Apollinare Nuovo"
+    "standardized_location": "Malatya, Malatya Province, Turkey",
+    "original_locations": [
+      "Malatya, Malatya Province, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Caucasian Gates",
-    "standardized_location": "Caucasian Gates"
+    "standardized_location": "Marcianopolis, near Devnya",
+    "original_locations": [
+      "Marcianopolis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Abbey of St. Genevieve",
-    "standardized_location": "Abbey of St. Genevieve"
+    "standardized_location": "Marcomanni territory",
+    "original_locations": [
+      "Marcomanni territory"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sosthenion",
-    "standardized_location": "Sosthenion"
+    "standardized_location": "Marcomanni territory (modern interpretation)",
+    "original_locations": [
+      "Marcomanni territory"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lower Rhine",
-    "standardized_location": "Lower Rhine Region"
+    "standardized_location": "Mared, Oskarstr\u00f6m, Halland County, Sweden",
+    "original_locations": [
+      "Oskarstr\u00f6m, Halland, Sweden"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Anazarbus",
-    "standardized_location": "Anazarbus (Justinopolis)"
+    "standardized_location": "Margum, near modern-day Vu\u010ditrn",
+    "original_locations": [
+      "Margum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tunisia",
-    "standardized_location": "Byzacena, Tunisia"
+    "standardized_location": "Marine Corps Air Station Kaneohe Bay, Kaneohe, Hawaii, United States",
+    "original_locations": [
+      "Kaneohe, Hawaii, United States"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Upper Alamannia",
-    "standardized_location": "Upper Alamannia"
+    "standardized_location": "Marj Dabiq, Aleppo Governorate, Syria",
+    "original_locations": [
+      "Marj Dabiq, Aleppo Governorate, Syria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Aqua Virgo",
-    "standardized_location": "Aqua Virgo Aqueduct"
+    "standardized_location": "Mau, Himachal Pradesh, India",
+    "original_locations": [
+      "Mau, Nurpur, Uttar Pradesh, India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sabi",
-    "standardized_location": "Sabi (Silla Kingdom)"
+    "standardized_location": "Medvednica Mountain, Zagreb, Croatia",
+    "original_locations": [
+      "Medvednica, Zagreb County, Croatia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Vivarium",
-    "standardized_location": "Vivarium, Cassiodorus' Estate"
+    "standardized_location": "Melno, Warmian-Masurian Voivodeship, Poland",
+    "original_locations": [
+      "Melno, Warmian-Masurian Voivodeship, Poland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pelusium",
-    "standardized_location": "Pelusium (Tell el-Farama)"
+    "standardized_location": "Metaurus River",
+    "original_locations": [
+      "Metaurus River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Clonmacnoise",
-    "standardized_location": "Clonmacnoise Monastery"
+    "standardized_location": "Mibin, Shanxi, China",
+    "original_locations": [
+      "Mibing"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ciiil Conaire",
-    "standardized_location": "Kilconaire"
+    "standardized_location": "Middle East, Central Command Area",
+    "original_locations": [
+      "Middle East, Middle East Region"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Basilica of Sant'Apollinare in Classe",
-    "standardized_location": "Basilica of Sant'Apollinare in Classe"
+    "standardized_location": "Milionia (near modern-day Benevento)",
+    "original_locations": [
+      "Milionia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Echinus",
-    "standardized_location": "Echinus, Greece"
+    "standardized_location": "Mimaomote, Kochi",
+    "original_locations": [
+      "Mimaomote"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tarphe",
-    "standardized_location": "Tarphe, Greece"
+    "standardized_location": "Mississippi River near Memphis, Tennessee, United States",
+    "original_locations": [
+      "Mississippi River, United States"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mons Lactarius",
-    "standardized_location": "Monte Lattari"
+    "standardized_location": "Mobei, Inner Mongolia",
+    "original_locations": [
+      "Mobei"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Telephis",
-    "standardized_location": "Telepheus"
+    "standardized_location": "Monokarton",
+    "original_locations": [
+      "Monokarton"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ollaria",
-    "standardized_location": "Ollaria (near modern-day Kairouan)"
+    "standardized_location": "Mons Graupius",
+    "original_locations": [
+      "Mons Graupius"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Casilinum",
-    "standardized_location": "Casilinum"
+    "standardized_location": "Montagne de la Cevenne",
+    "original_locations": [
+      "Mons Cevenna"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yawm Halima",
-    "standardized_location": "Yawm Halima"
+    "standardized_location": "Monte Cassino Abbey",
+    "original_locations": [
+      "Monte Cassino Abbey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ye",
-    "standardized_location": "Ye, Hebei, China"
+    "standardized_location": "Monte Falerno",
+    "original_locations": [
+      "Mt. Falernus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "C\u00fal Drebene",
-    "standardized_location": "C\u00fal Drebene, near Armagh"
+    "standardized_location": "Monte Lattari",
+    "original_locations": [
+      "Mons Lactarius"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Wibbandun",
-    "standardized_location": "Wibbandun (Wimbledon)"
+    "standardized_location": "Mor Gabriel Monastery, near Midyat",
+    "original_locations": [
+      "Midyat, Mardin, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Arfderydd",
-    "standardized_location": "Arthuret, Scotland"
+    "standardized_location": "Mortella Point",
+    "original_locations": [
+      "Mortella Point"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Druim Cett",
-    "standardized_location": "Druim Cett"
+    "standardized_location": "Mount Alfaf, near Mosul",
+    "original_locations": [
+      "Mount Alfaf"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Byzantine Empire",
-    "standardized_location": "Mediterranean Sea near Antalya"
+    "standardized_location": "Mount Asama, Nagano Prefecture, Japan",
+    "original_locations": [
+      "Mount Asama, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Monte Cassino Abbey",
-    "standardized_location": "Monte Cassino Abbey"
+    "standardized_location": "Mount Eryx (Monte San Giuliano)",
+    "original_locations": [
+      "Mount Eryx (Monte San Giuliano)"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Fethanleigh",
-    "standardized_location": "Fethanleigh, near Winchester"
+    "standardized_location": "Mount Gaurus",
+    "original_locations": [
+      "Mount Gaurus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Monokarton",
-    "standardized_location": "Monokarton"
+    "standardized_location": "Mount Hiei, Shiga Prefecture, Japan",
+    "original_locations": [
+      "Mount Hiei, Shiga Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Near Dara",
-    "standardized_location": "Dara, Mardin Province"
+    "standardized_location": "Mount Lykaion",
+    "original_locations": [
+      "Mount Lycaeum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Anchialus",
-    "standardized_location": "Anchialus"
+    "standardized_location": "Mount Qi, Sichuan, China",
+    "original_locations": [
+      "Mount Qi, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shigisan",
-    "standardized_location": "Shigi-san"
+    "standardized_location": "Mount Tai, Taishan District, Shandong, China",
+    "original_locations": [
+      "Taishan, Shandong, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Turkic Khaganate",
-    "standardized_location": "Turkic Khaganate"
+    "standardized_location": "Mount Taygetus, Greece",
+    "original_locations": [
+      "Mount Taygetus, Greece"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chinkultic",
-    "standardized_location": "Chinkultic Archaeological Zone"
+    "standardized_location": "Mount Tiberinus",
+    "original_locations": [
+      "Mt Tifernus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Marcianopolis",
-    "standardized_location": "Marcianopolis, near Devnya"
+    "standardized_location": "Munychia (Piraeus)",
+    "original_locations": [
+      "Munychia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Catraeth",
-    "standardized_location": "Catraeth (Battle of Catraeth)"
+    "standardized_location": "Muthul River",
+    "original_locations": [
+      "Muthul River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lupia River",
-    "standardized_location": "Lupia River (historical region near the Rhine)"
+    "standardized_location": "Mutsu, Iwate Prefecture, Japan",
+    "original_locations": [
+      "Iwate Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Noricum",
-    "standardized_location": "Noricum (Central Europe)"
+    "standardized_location": "Mycale",
+    "original_locations": [
+      "Mycale"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Napata",
-    "standardized_location": "Napata, Sudan"
+    "standardized_location": "Nandivardhana",
+    "original_locations": [
+      "Vakataka Kingdom"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Herodium",
-    "standardized_location": "Herodium National Park"
+    "standardized_location": "Nankai Trough",
+    "original_locations": [
+      "Nankai Trough"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nicopolis",
-    "standardized_location": "Nicopolis, Egypt"
+    "standardized_location": "Nantan, Nandan County, Guangxi, China",
+    "original_locations": [
+      "Nantan, Nandan County, Guangxi, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Circus Flaminius",
-    "standardized_location": "Circus Flaminius, Rome"
+    "standardized_location": "Naulochus",
+    "original_locations": [
+      "Naulochus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Galatia",
-    "standardized_location": "Galatia (Ankara)"
+    "standardized_location": "Naungyo",
+    "original_locations": [
+      "Naungyo"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Aqua Alsietina",
-    "standardized_location": "Aqua Alsietina Aqueduct"
+    "standardized_location": "Nauportus (near modern-day Portoro\u017e)",
+    "original_locations": [
+      "Nauportus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Panormus",
-    "standardized_location": "Panormus (modern-day Pula)"
+    "standardized_location": "Nazianzus, Turkey",
+    "original_locations": [
+      "Nazianzus, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Phraaspa",
-    "standardized_location": "Phraaspa"
+    "standardized_location": "Neckar Valley, Baden-W\u00fcrttemberg, Germany",
+    "original_locations": [
+      "Neckar Valley, Baden-W\u00fcrttemberg, Germany"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Naulochus",
-    "standardized_location": "Naulochus"
+    "standardized_location": "Nehardea, Iraq",
+    "original_locations": [
+      "Nehardea, Iraq"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Zhizhi",
-    "standardized_location": "Zhizhi (near modern-day Hami)"
+    "standardized_location": "Nesbit Moor, Northumberland, England",
+    "original_locations": [
+      "Nesbit Moor, Northumberland, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Portus Julius",
-    "standardized_location": "Portus Julius (Porto di Pozzuoli)"
+    "standardized_location": "Nessebar, Burgas Province",
+    "original_locations": [
+      "Nessebar"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Amanus Gates",
-    "standardized_location": "Amanus Mountains"
+    "standardized_location": "Nibley Green, Dursley",
+    "original_locations": [
+      "Nibley Green"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pont Julien",
-    "standardized_location": "Pont Julien, Cavaillon"
+    "standardized_location": "Niger River, Kwara State, Nigeria",
+    "original_locations": [
+      "Niger River, Kwara State, Nigeria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ugbekun",
-    "standardized_location": "Ugbekun, Edo State, Nigeria"
+    "standardized_location": "Nikopol, Pleven Province, Bulgaria",
+    "original_locations": [
+      "Nikopol, Bulgaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sentinum",
-    "standardized_location": "Sentinum (modern Sassoferrato)"
+    "standardized_location": "Nimbschen Abbey, Grimma",
+    "original_locations": [
+      "Nimbschen Abbey, Germany"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sapaei Pass",
-    "standardized_location": "Sapaei Pass"
+    "standardized_location": "Nisibis, \u015eanl\u0131urfa, Turkey",
+    "original_locations": [
+      "Nisibis, \u015eanl\u0131urfa, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Forum Gallorum",
-    "standardized_location": "Forum Gallorum (near Bologna)"
+    "standardized_location": "Noda Castle, Shinshiro, Aichi Prefecture, Japan",
+    "original_locations": [
+      "Shinshiro, Aichi Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cisalpine Gaul",
-    "standardized_location": "Cisalpine Gaul"
+    "standardized_location": "Noricum (Central Europe)",
+    "original_locations": [
+      "Noricum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pyrenees",
-    "standardized_location": "Pyrenees Mountains"
+    "standardized_location": "Northern Yan (historical region)",
+    "original_locations": [
+      "Northern Yan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pompeii",
-    "standardized_location": "Pompeii Archaeological Park"
+    "standardized_location": "Noryang, Jinju",
+    "original_locations": [
+      "Noryang"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mons Cevenna",
-    "standardized_location": "Montagne de la Cevenne"
+    "standardized_location": "Noto Peninsula",
+    "original_locations": [
+      "Noto Peninsula"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sabis",
-    "standardized_location": "Sabis River (Sambre River)"
+    "standardized_location": "Nusaybin, Mardin Province",
+    "original_locations": [
+      "Nisibis, modern Nusaybin"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sabis River",
-    "standardized_location": "Sabis River"
+    "standardized_location": "Nydala Abbey",
+    "original_locations": [
+      "Nydala Abbey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Vosges Mountains",
-    "standardized_location": "Vosges Mountains"
+    "standardized_location": "Odani Castle Ruins, Takashima, Shiga Prefecture, Japan",
+    "original_locations": [
+      "Odani Castle, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Seleucid Empire",
-    "standardized_location": "Antioch on the Orontes"
+    "standardized_location": "Oenoe, Argolis",
+    "original_locations": [
+      "Oenoe"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lycus River",
-    "standardized_location": "Lycus River (near modern-day Gediz River)"
+    "standardized_location": "Oenophyta",
+    "original_locations": [
+      "Oenophyta"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Eastern Mediterranean",
-    "standardized_location": "Eastern Mediterranean Sea"
+    "standardized_location": "Off the coast of Havana, Cuba",
+    "original_locations": [
+      "Cuba"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nessebar",
-    "standardized_location": "Nessebar, Burgas Province"
+    "standardized_location": "Okehazama, Nisshin",
+    "original_locations": [
+      "Okehazama"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cyzicus",
-    "standardized_location": "Cyzicus (modern-day Erdek)"
+    "standardized_location": "Olembe Stadium",
+    "original_locations": [
+      "Olembe Stadium"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tigranakert",
-    "standardized_location": "Tigranakert (near Artashat)"
+    "standardized_location": "Ollaria (near modern-day Kairouan)",
+    "original_locations": [
+      "Ollaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Colline Gate",
-    "standardized_location": "Colline Gate"
+    "standardized_location": "Olmec Region, Veracruz",
+    "original_locations": [
+      "Olmec region"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Temple of Jupiter",
-    "standardized_location": "Temple of Jupiter Capitolinus"
+    "standardized_location": "Olsborg Castle (Olsborgs slott)",
+    "original_locations": [
+      "Olsborg Castle"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Emain Macha",
-    "standardized_location": "Emain Macha Archaeological Site"
+    "standardized_location": "Olympeion",
+    "original_locations": [
+      "Olympeion"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Zhuoxie Mountains",
-    "standardized_location": "Zhuoxie Mountains"
+    "standardized_location": "Olynthus",
+    "original_locations": [
+      "Olynthus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Petra",
-    "standardized_location": "Petra Archaeological Park"
+    "standardized_location": "Oronichea, Albania",
+    "original_locations": [
+      "Oronichea, Albania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Juyan Lake",
-    "standardized_location": "Juyan Lake"
+    "standardized_location": "Oronichea, near Kruj\u00eb",
+    "original_locations": [
+      "Oronichea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yunzhong",
-    "standardized_location": "Yunzhong, Inner Mongolia"
+    "standardized_location": "Oropus",
+    "original_locations": [
+      "Oropus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shuofang",
-    "standardized_location": "Shuofang, Shanxi, China"
+    "standardized_location": "Orrhoa (near modern \u015eanl\u0131urfa)",
+    "original_locations": [
+      "Orrhoa"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Paphlagonia",
-    "standardized_location": "Paphlagonia"
+    "standardized_location": "Or\u0103\u0219tie Mountains",
+    "original_locations": [
+      "Or\u0103\u0219tie Mountains"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Muthul River",
-    "standardized_location": "Muthul River"
+    "standardized_location": "Otanaha Fortress",
+    "original_locations": [
+      "Otanaha Fortress"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lingju",
-    "standardized_location": "Lingju, Inner Mongolia"
+    "standardized_location": "Otonet\u00eb, Albania",
+    "original_locations": [
+      "Otonet\u00eb, Albania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cirta",
-    "standardized_location": "Cirta (modern-day Khenchela)"
+    "standardized_location": "Pacific Ocean, near the Korean Peninsula",
+    "original_locations": [
+      "Pacific Ocean"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mobei",
-    "standardized_location": "Mobei, Inner Mongolia"
+    "standardized_location": "Palaestina Salutaris",
+    "original_locations": [
+      "Palaestina Salutaris"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Youbeiping",
-    "standardized_location": "Youbeiping District"
+    "standardized_location": "Paphlagonia",
+    "original_locations": [
+      "Paphlagonia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mt. Falernus",
-    "standardized_location": "Monte Falerno"
+    "standardized_location": "Papremis",
+    "original_locations": [
+      "Papremis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gaoque",
-    "standardized_location": "Gaoque, Inner Mongolia"
+    "standardized_location": "Paraetacene",
+    "original_locations": [
+      "Paraetacene"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Youbeiping Prefecture",
-    "standardized_location": "Youbeiping, Hebei, China"
+    "standardized_location": "Parthe (Nishapur)",
+    "original_locations": [
+      "Partahia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yanmen",
-    "standardized_location": "Yanmen Pass"
+    "standardized_location": "Parthia, Iran",
+    "original_locations": [
+      "Parthia, Iran"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Liang",
-    "standardized_location": "Liang, Henan, China"
+    "standardized_location": "Patani, Narathiwat, Thailand",
+    "original_locations": [
+      "Sultanate of Patani, Thailand"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ferghana Valley",
-    "standardized_location": "Ferghana Valley"
+    "standardized_location": "Pazigyi, Sagaing Region",
+    "original_locations": [
+      "Pazigyi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Aqua Marcia",
-    "standardized_location": "Aqua Marcia Aqueduct"
+    "standardized_location": "Persian Gates",
+    "original_locations": [
+      "Persian Gates"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Scarpheia",
-    "standardized_location": "Scarpheia"
+    "standardized_location": "Petra, Ma'an Governorate, Jordan",
+    "original_locations": [
+      "Petra, Ma'an, Jordan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Corlea Trackway",
-    "standardized_location": "Corlea Trackway Archaeological Site"
+    "standardized_location": "Pe\u00f1ol de Cerqu\u00edn, Lempira, Honduras",
+    "original_locations": [
+      "Pe\u00f1ol de Cerqu\u00edn, Lempira, Honduras"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Delminium",
-    "standardized_location": "Delminium (near modern-day Tomislavgrad)"
+    "standardized_location": "Pharos Island, Alexandria",
+    "original_locations": [
+      "Pharos Island"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Temple of Fortuna Equestris",
-    "standardized_location": "Temple of Fortuna Equestris"
+    "standardized_location": "Piperdean, near Duns, Scotland",
+    "original_locations": [
+      "Piperdean, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Buyeo",
-    "standardized_location": "Buyeo County"
+    "standardized_location": "Pixunte (Pixous) near Reggio Calabria",
+    "original_locations": [
+      "Pixunte"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cynoscephalae",
-    "standardized_location": "Cynoscephalae"
+    "standardized_location": "Podkamennaya Tunguska River, Krasnoyarsk Krai, Russia",
+    "original_locations": [
+      "Podkamennaya Tunguska River, Krasnoyarsk Krai, Russia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hiera",
-    "standardized_location": "Hiera Island"
+    "standardized_location": "Pollentia (modern Pollenzo)",
+    "original_locations": [
+      "Pollentia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Baideng",
-    "standardized_location": "Baideng, Inner Mongolia, China"
+    "standardized_location": "Pont Julien, Cavaillon",
+    "original_locations": [
+      "Pont Julien"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chang'an (modern Xi'an)",
-    "standardized_location": "Chang'an (modern Xi'an)"
+    "standardized_location": "Pont du Gard Aqueduct",
+    "original_locations": [
+      "Pont du Gard, near N\u00eemes"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Archaeological Museum",
-    "standardized_location": "Archaeological Museum of Istanbul"
+    "standardized_location": "Pontus, Turkey",
+    "original_locations": [
+      "Pontic Region"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Battle of Chen",
-    "standardized_location": "Chen City, Hubei Province"
+    "standardized_location": "Port of Berbera",
+    "original_locations": [
+      "Berbera"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Battle of Gaixia",
-    "standardized_location": "Gaixia, Anhui, China"
+    "standardized_location": "Portus Julius (Porto di Pozzuoli)",
+    "original_locations": [
+      "Portus Julius"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Guanzhong",
-    "standardized_location": "Guanzhong Basin"
+    "standardized_location": "Potaissa, Cluj County, Romania",
+    "original_locations": [
+      "Potaissa, Cluj County, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Metaurus River",
-    "standardized_location": "Metaurus River"
+    "standardized_location": "Ptolemais (modern Acca)",
+    "original_locations": [
+      "Ptolemais"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yushui River",
-    "standardized_location": "Yushui River"
+    "standardized_location": "Pucar\u00ed, near Cusco",
+    "original_locations": [
+      "Pucar\u00ed, near Cuzco"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dingtao",
-    "standardized_location": "Dingtao County"
+    "standardized_location": "Puerto Castilla, Atl\u00e1ntida, Honduras",
+    "original_locations": [
+      "Puerto Castilla, Col\u00f3n, Honduras"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hecatompylos",
-    "standardized_location": "Hecatompylos"
+    "standardized_location": "Pun\u00e1 Island, Guayas Province, Ecuador",
+    "original_locations": [
+      "Pun\u00e1 Island, Ecuador"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Wey",
-    "standardized_location": "Wey, Shandong, China"
+    "standardized_location": "Qahtaniya, Nineveh Governorate, Iraq",
+    "original_locations": [
+      "Qahtaniya, Nineveh, Iraq"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Salapia",
-    "standardized_location": "Salapia, near Foggia"
+    "standardized_location": "Qingdu, Shanxi, China",
+    "original_locations": [
+      "Qingdu"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tylis",
-    "standardized_location": "Tylis (near modern-day Kazanlak)"
+    "standardized_location": "Qirbet al-Mafjar, Syria",
+    "original_locations": [
+      "Cyrrhus, Syria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Epang Palace",
-    "standardized_location": "Epang Palace Site"
+    "standardized_location": "Qirret, Syria",
+    "original_locations": [
+      "Cyrrhus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Arpi",
-    "standardized_location": "Arpi (modern-day Foggia)"
+    "standardized_location": "Queens' College, University of Cambridge",
+    "original_locations": [
+      "Cambridge, Cambridgeshire"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Trebia River",
-    "standardized_location": "Trebia River"
+    "standardized_location": "Quipaipan, Peru",
+    "original_locations": [
+      "Quipaipan, Peru"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ptolemais",
-    "standardized_location": "Ptolemais (modern Acca)"
+    "standardized_location": "Qumran, West Bank, Israel",
+    "original_locations": [
+      "Qumran, West Bank, Palestine"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cynaetha",
-    "standardized_location": "Cynaetha"
+    "standardized_location": "Rao'an, Shandong, China",
+    "original_locations": [
+      "Rao'an"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Campus Martius",
-    "standardized_location": "Campus Martius, Rome"
+    "standardized_location": "Resaena, Turkey",
+    "original_locations": [
+      "Resaena, Syria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Museo Capitolino",
-    "standardized_location": "Museo Capitolino"
+    "standardized_location": "Resaina, Turkey",
+    "original_locations": [
+      "Resaina, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Clastidium",
-    "standardized_location": "Clastidium"
+    "standardized_location": "Reynog\u00fccel\u00e9n",
+    "original_locations": [
+      "Reynog\u00fccel\u00e9n"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Telamon",
-    "standardized_location": "Telamon, Italy"
+    "standardized_location": "Rhine River, Bonn, Germany",
+    "original_locations": [
+      "Rhine River, Germany"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Lycaeum",
-    "standardized_location": "Mount Lykaion"
+    "standardized_location": "Rhion Peninsula",
+    "original_locations": [
+      "Rhium"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Harpasus",
-    "standardized_location": "Harpasus"
+    "standardized_location": "Ripa\u010d, Croatia",
+    "original_locations": [
+      "Ripa\u010d"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Fanwu",
-    "standardized_location": "Fanwu, Shanxi, China"
+    "standardized_location": "Ruxu, Jiangsu Province, China",
+    "original_locations": [
+      "Ruxu, Yang Province"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Fei",
-    "standardized_location": "Fei, Shanxi, China"
+    "standardized_location": "Ruxu, near Hefei",
+    "original_locations": [
+      "Ruxu, near present-day Hefei"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hippacritae",
-    "standardized_location": "Hippacritae"
+    "standardized_location": "Sabi (Silla Kingdom)",
+    "original_locations": [
+      "Sabi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Rao'an",
-    "standardized_location": "Rao'an, Shandong, China"
+    "standardized_location": "Sabis River",
+    "original_locations": [
+      "Sabis River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Qingdu",
-    "standardized_location": "Qingdu, Shanxi, China"
+    "standardized_location": "Sabis River (Sambre River)",
+    "original_locations": [
+      "Sabis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Suanzao",
-    "standardized_location": "Suanzao, modern-day Shijiazhuang"
+    "standardized_location": "Saces territory (modern equivalent)",
+    "original_locations": [
+      "Saces territory"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yongqiu",
-    "standardized_location": "Yongqiu, Henan"
+    "standardized_location": "Sahart, Ethiopia",
+    "original_locations": [
+      "Sahart"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shizhang",
-    "standardized_location": "Shizhang, Henan"
+    "standardized_location": "Saint Paul's College, Old Goa",
+    "original_locations": [
+      "Saint Paul's College, Goa"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Wusui",
-    "standardized_location": "Wusui, Hebei, China"
+    "standardized_location": "Saint-Pierre-le-Mo\u00fbtier, Auvergne-Rh\u00f4ne-Alpes, France",
+    "original_locations": [
+      "Saint-Pierre-le-Mo\u00fbtier, Auvergne-Rh\u00f4ne-Alpes, France"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Eryx (Monte San Giuliano)",
-    "standardized_location": "Mount Eryx (Monte San Giuliano)"
+    "standardized_location": "Salapia, near Foggia",
+    "original_locations": [
+      "Salapia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shaanxi Province",
-    "standardized_location": "Zhengguo Canal, near Xi'an"
+    "standardized_location": "San Giulio Island, Lake Orta",
+    "original_locations": [
+      "Piedmont, Italy"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hangu Pass",
-    "standardized_location": "Hangu Pass"
+    "standardized_location": "San Juan Bautista del Teul, Zacatecas, Mexico",
+    "original_locations": [
+      "San Juan Bautista del Teul, Zacatecas, Mexico"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Zhou",
-    "standardized_location": "Zhou, Shanxi Province"
+    "standardized_location": "Santorini, Aegean Islands, Greece",
+    "original_locations": [
+      "Santorini, South Aegean, Greece"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Selinous",
-    "standardized_location": "Selinunte Archaeological Park"
+    "standardized_location": "Sapaei Pass",
+    "original_locations": [
+      "Sapaei Pass"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Heraclea Minoa",
-    "standardized_location": "Heraclea Minoa"
+    "standardized_location": "Sarikamish, Kars Province, Turkey",
+    "original_locations": [
+      "Sarikamish, Kars Province, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Partahia",
-    "standardized_location": "Parthe (Nishapur)"
+    "standardized_location": "Sark, Channel Islands",
+    "original_locations": [
+      "Sark"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cape Ecnomus",
-    "standardized_location": "Cape Ecnomus"
+    "standardized_location": "Sau\u00f0afell, South Iceland, Iceland",
+    "original_locations": [
+      "Sau\u00f0afell, South Iceland, Iceland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Du Jiang Yan",
-    "standardized_location": "Dujiangyan Irrigation System"
+    "standardized_location": "Sa\u00efs, Egypt",
+    "original_locations": [
+      "Sa\u00efs"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yanmen Commandery",
-    "standardized_location": "Yanmen Commandery"
+    "standardized_location": "Scarpheia",
+    "original_locations": [
+      "Scarpheia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Maurya Empire",
-    "standardized_location": "Pataliputra, Bihar, India"
+    "standardized_location": "Scheldt River, Zeeland, Netherlands",
+    "original_locations": [
+      "Scheldt River, Zeeland, Netherlands"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cilicia Trachea",
-    "standardized_location": "Cilicia Trachea"
+    "standardized_location": "Scythopolis (Beit She'an), Northern District, Israel",
+    "original_locations": [
+      "Scythopolis, Jezreel Valley, Israel"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Fangling",
-    "standardized_location": "Fangling, Henan, China"
+    "standardized_location": "Sea of Marmara, Turkey",
+    "original_locations": [
+      "Sea of Marmara, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lysimachia",
-    "standardized_location": "Lysimachia, Turkey"
+    "standardized_location": "Senones territory",
+    "original_locations": [
+      "Senones territory"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cranita Hills",
-    "standardized_location": "Cranita Hills"
+    "standardized_location": "Sepeia, near Argos",
+    "original_locations": [
+      "Sepeia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ying",
-    "standardized_location": "Ying, Hubei, China"
+    "standardized_location": "Sesto River",
+    "original_locations": [
+      "Sesto River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Guanglang",
-    "standardized_location": "Guanglang, Shanxi"
+    "standardized_location": "Setia (modern Sezze)",
+    "original_locations": [
+      "Setia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lake Vadimo",
-    "standardized_location": "Lake Vadimo"
+    "standardized_location": "Severnaya Bay, Sevastopol",
+    "original_locations": [
+      "Severnaya Bay"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Yangqin",
-    "standardized_location": "Yangqin, Shandong, China"
+    "standardized_location": "Sfetigrad, near Gjirokast\u00ebr, Albania",
+    "original_locations": [
+      "Sfetigrad, Albania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pharos Island",
-    "standardized_location": "Pharos Island, Alexandria"
+    "standardized_location": "Shakahola Forest",
+    "original_locations": [
+      "Shakahola Forest"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Heyong",
-    "standardized_location": "Heyong, Shanxi, China"
+    "standardized_location": "Shaolin Temple, Dengfeng",
+    "original_locations": [
+      "Dengfeng"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Jueqiao",
-    "standardized_location": "Jueqiao"
+    "standardized_location": "Shigi-san",
+    "original_locations": [
+      "Shigisan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Castrum",
-    "standardized_location": "Castrum (modern-day Castro dei Volsci)"
+    "standardized_location": "Shigi-san, Nara, Japan",
+    "original_locations": [
+      "Shigisan, Nara Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cominium Ocritum",
-    "standardized_location": "Cominium Ocritum (near modern-day Campobasso)"
+    "standardized_location": "Shimbra Kure, Ethiopia",
+    "original_locations": [
+      "Shimbra Kure, Ethiopia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Seleucid Syria",
-    "standardized_location": "Antioch on the Orontes"
+    "standardized_location": "Shiting, Jiangsu, China",
+    "original_locations": [
+      "Shiting, Jiangsu, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tymphaea",
-    "standardized_location": "Tymphaea"
+    "standardized_location": "Shizhang, Henan",
+    "original_locations": [
+      "Shizhang"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Milionia",
-    "standardized_location": "Milionia (near modern-day Benevento)"
+    "standardized_location": "Shuofang, Shanxi, China",
+    "original_locations": [
+      "Shuofang"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mt Tifernus",
-    "standardized_location": "Mount Tiberinus"
+    "standardized_location": "Silistra, Silistra Province, Bulgaria",
+    "original_locations": [
+      "Silistra, Dobrich Province, Bulgaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Stellate Plains",
-    "standardized_location": "Stellate Plains"
+    "standardized_location": "Silva Arsia",
+    "original_locations": [
+      "Silva Arsia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Bovianum",
-    "standardized_location": "Bovianum Vetus"
+    "standardized_location": "Siritsa River, Pskov Oblast, Russia",
+    "original_locations": [
+      "Siritsa River, Pskov Oblast, Russia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Asclepieion",
-    "standardized_location": "Asclepieion of Kos"
+    "standardized_location": "Sixian County, Xuzhou, Jiangsu, China",
+    "original_locations": [
+      "Sixian, Jiangsu, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Ipsus",
-    "standardized_location": "Ipsus (near modern-day \u0130psala)"
+    "standardized_location": "Sokhoista, Georgia",
+    "original_locations": [
+      "Sokhoista, Georgia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Orrhoa",
-    "standardized_location": "Orrhoa (near modern \u015eanl\u0131urfa)"
+    "standardized_location": "Solway Moss, Annan, Scotland",
+    "original_locations": [
+      "Solway Moss, Scotland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Thorgium",
-    "standardized_location": "Thorgium (near modern-day Catania)"
+    "standardized_location": "Sosthenion",
+    "original_locations": [
+      "Sosthenion"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Antigoneia",
-    "standardized_location": "Antigoneia, near Idlib"
+    "standardized_location": "Southern Central Anatolia",
+    "original_locations": [
+      "Southern Central Anatolia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Munychia",
-    "standardized_location": "Munychia (Piraeus)"
+    "standardized_location": "SpaceX Boca Chica Launch Site",
+    "original_locations": [
+      "SpaceX Launch Site"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cluviae",
-    "standardized_location": "Cluviae (near modern-day Alife)"
+    "standardized_location": "Sponheim Abbey",
+    "original_locations": [
+      "Sponheim Abbey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Oreus",
-    "standardized_location": "Oreus, Euboea"
+    "standardized_location": "Stellate Plains",
+    "original_locations": [
+      "Stellate Plains"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Centoripini",
-    "standardized_location": "Centoripe"
+    "standardized_location": "Stepanakert, Artsakh",
+    "original_locations": [
+      "Stepanakert"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lautulae",
-    "standardized_location": "Lautulae"
+    "standardized_location": "Stoke Field, near Nottingham, England",
+    "original_locations": [
+      "Stoke Field, Nottinghamshire, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gabiene",
-    "standardized_location": "Gabiene"
+    "standardized_location": "Suanzao, modern-day Shijiazhuang",
+    "original_locations": [
+      "Suanzao"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cassandreia",
-    "standardized_location": "Cassandreia (Kassandra)"
+    "standardized_location": "Suceava, Suceava County, Romania",
+    "original_locations": [
+      "Suceava, Suceava, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Nora",
-    "standardized_location": "Nora (Nora Fortress)"
+    "standardized_location": "Suishui, Huaibei, Anhui, China",
+    "original_locations": [
+      "Suishui, Anhui, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cretopolis",
-    "standardized_location": "Cretopolis (near modern-day Konya)"
+    "standardized_location": "Sulu Archipelago, Philippines",
+    "original_locations": [
+      "Sulu Archipelago, Philippines"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Triparadisus",
-    "standardized_location": "Triparadisus"
+    "standardized_location": "Suriagehara, Fukushima",
+    "original_locations": [
+      "Suriagehara"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Caudine Forks",
-    "standardized_location": "Caudine Forks"
+    "standardized_location": "Swat Valley",
+    "original_locations": [
+      "Swat Valley"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Etemenanki",
-    "standardized_location": "Etemenanki (Ziggurat of Babylon)"
+    "standardized_location": "Sybaris, near Francavilla Marittima",
+    "original_locations": [
+      "Sybaris"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pamphylia",
-    "standardized_location": "Pamphylia and Lycia"
+    "standardized_location": "Tanais (modern-day Tanais archaeological site)",
+    "original_locations": [
+      "Tanais"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Swat Valley",
-    "standardized_location": "Swat Valley"
+    "standardized_location": "Tapestry, Inc.",
+    "original_locations": [
+      "Tapestry, Inc."
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Paraetacene",
-    "standardized_location": "Paraetacene"
+    "standardized_location": "Tarphe, Greece",
+    "original_locations": [
+      "Tarphe"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Helmand River",
-    "standardized_location": "Helmand River Valley"
+    "standardized_location": "Tarsus, Mersin Province, Turkey",
+    "original_locations": [
+      "Tarsus, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Khawak Pass",
-    "standardized_location": "Khawak Pass, Badakhshan"
+    "standardized_location": "Tedorigawa, Niigata Prefecture, Japan",
+    "original_locations": [
+      "Tedorigawa, Niigata Prefecture, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Jaxartes River",
-    "standardized_location": "Jaxartes River"
+    "standardized_location": "Tegyra, Greece",
+    "original_locations": [
+      "Tegyra"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Persian Gates",
-    "standardized_location": "Persian Gates"
+    "standardized_location": "Telamon, Italy",
+    "original_locations": [
+      "Telamon"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Gaugamela",
-    "standardized_location": "Gaugamela (near Erbil)"
+    "standardized_location": "Telepheus",
+    "original_locations": [
+      "Telephis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Senones territory",
-    "standardized_location": "Senones territory"
+    "standardized_location": "Temmokuzan, Yamanashi, Japan",
+    "original_locations": [
+      "Temmokuzan, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Zeleia",
-    "standardized_location": "Zeleia (near modern-day Zeytinli, Turkey)"
+    "standardized_location": "Temple of Al-Lat",
+    "original_locations": [
+      "Temple of Al-Lat"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dardanelles",
-    "standardized_location": "Dardanelles Strait"
+    "standardized_location": "Temple of Athena of the Brazen House (site location)",
+    "original_locations": [
+      "Temple of Athena"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Perinthus",
-    "standardized_location": "Perinthus (modern-day Marmara Ere\u011flisi)"
+    "standardized_location": "Temple of Castor and Pollux, Roman Forum",
+    "original_locations": [
+      "Temple of Castor and Pollux"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Gaurus",
-    "standardized_location": "Mount Gaurus"
+    "standardized_location": "Temple of Fortuna Equestris",
+    "original_locations": [
+      "Temple of Fortuna Equestris"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Olynthus",
-    "standardized_location": "Olynthus"
+    "standardized_location": "Temple of Jupiter Capitolinus",
+    "original_locations": [
+      "Temple of Jupiter"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Crocus Field",
-    "standardized_location": "Crocus Field, near Larissa"
+    "standardized_location": "Temple of Zeus at Olympia",
+    "original_locations": [
+      "Temple of Zeus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Oropus",
-    "standardized_location": "Oropus"
+    "standardized_location": "Theodosia, Crimea",
+    "original_locations": [
+      "Theodoro, Crimea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Helike",
-    "standardized_location": "Helike, Achaea"
+    "standardized_location": "Thorgium (near modern-day Catania)",
+    "original_locations": [
+      "Thorgium"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tegyra",
-    "standardized_location": "Tegyra, Greece"
+    "standardized_location": "Thymbra, near modern-day Kula",
+    "original_locations": [
+      "Thymbra"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Setia",
-    "standardized_location": "Setia (modern Sezze)"
+    "standardized_location": "Tisza River, near Szeged",
+    "original_locations": [
+      "Tisza River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Locri",
-    "standardized_location": "Locri Epizephyrii"
+    "standardized_location": "Tomb of Marquis Yi of Zeng",
+    "original_locations": [
+      "Tomb of Marquis Yi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lechaeum",
-    "standardized_location": "Lechaeum"
+    "standardized_location": "Tondibi, Koulikoro Region, Mali",
+    "original_locations": [
+      "Tondibi, Koulikoro Region, Mali"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Motya",
-    "standardized_location": "Isola di Mozia"
+    "standardized_location": "Tong Pass, Shaanxi, China",
+    "original_locations": [
+      "Tong Pass, Shaanxi, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sais",
-    "standardized_location": "Sais, Egypt"
+    "standardized_location": "Total Solar Eclipse Path, Chile",
+    "original_locations": [
+      "South America, South America"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Acropolis",
-    "standardized_location": "Erechtheion, Acropolis"
+    "standardized_location": "Toumliline Monastery, Azrou",
+    "original_locations": [
+      "Toumliline Monastery, Azrou"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Arginusae",
-    "standardized_location": "Arginusae Islands"
+    "standardized_location": "Trajan Bridge, near Drobeta-Turnu Severin",
+    "original_locations": [
+      "Trajan Bridge, near Drobeta-Turnu Severin"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Veii",
-    "standardized_location": "Veii, Lazio"
+    "standardized_location": "Trajan's Forum",
+    "original_locations": [
+      "Trajan's Forum"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Clazomenae",
-    "standardized_location": "Clazomenae"
+    "standardized_location": "Trent and Severn Rivers",
+    "original_locations": [
+      "Trent and Severn"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Lenaia Festival",
-    "standardized_location": "Lenaia Festival Site"
+    "standardized_location": "Triparadisus",
+    "original_locations": [
+      "Triparadisus"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hysiae",
-    "standardized_location": "Hysiae (near modern-day Mycenae)"
+    "standardized_location": "Tr\u00e9guiers",
+    "original_locations": [
+      "Tr\u00e9guiers"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Rhium",
-    "standardized_location": "Rhion Peninsula"
+    "standardized_location": "Tukaroi, Balasore, Odisha, India",
+    "original_locations": [
+      "Tukaroi, Odisha, India"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Tomb of Marquis Yi",
-    "standardized_location": "Tomb of Marquis Yi of Zeng"
+    "standardized_location": "Tumu Fortress",
+    "original_locations": [
+      "Tumu Fortress"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Temple of Zeus",
-    "standardized_location": "Temple of Zeus at Olympia"
+    "standardized_location": "Turnadag Mountain",
+    "original_locations": [
+      "Turnadag Mountain"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Cale Acte",
-    "standardized_location": "Cale Acte"
+    "standardized_location": "Tyana, Ni\u011fde Province, Turkey",
+    "original_locations": [
+      "Tyana, Cappadocia, Turkey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Himera River",
-    "standardized_location": "Himera River"
+    "standardized_location": "Tylis (near modern-day Kazanlak)",
+    "original_locations": [
+      "Tylis"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Inessa",
-    "standardized_location": "Inessa (modern equivalent)"
+    "standardized_location": "Tymphaea",
+    "original_locations": [
+      "Tymphaea"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Selinunte",
-    "standardized_location": "Selinunte Archaeological Park"
+    "standardized_location": "Udyana (Peshawar)",
+    "original_locations": [
+      "Udyana"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Oenophyta",
-    "standardized_location": "Oenophyta"
+    "standardized_location": "Ugbekun, Edo State, Nigeria",
+    "original_locations": [
+      "Ugbekun"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Papremis",
-    "standardized_location": "Papremis"
+    "standardized_location": "Ujbardha, Albania",
+    "original_locations": [
+      "Ujbardha, Albania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Oenoe",
-    "standardized_location": "Oenoe, Argolis"
+    "standardized_location": "Un no Kuchi, Yamanashi",
+    "original_locations": [
+      "Un no Kuchi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mount Ithome",
-    "standardized_location": "Mount Ithome"
+    "standardized_location": "United States District Court for the Eastern District of New York",
+    "original_locations": [
+      "United States District Court"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Temple of Athena",
-    "standardized_location": "Temple of Athena of the Brazen House (site location)"
+    "standardized_location": "University of W\u00fcrzburg, W\u00fcrzburg, Bavaria",
+    "original_locations": [
+      "W\u00fcrzburg, Bavaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pixunte",
-    "standardized_location": "Pixunte (Pixous) near Reggio Calabria"
+    "standardized_location": "Upper Alamannia",
+    "original_locations": [
+      "Upper Alamannia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mycale",
-    "standardized_location": "Mycale"
+    "standardized_location": "Uppsala University Library",
+    "original_locations": [
+      "Uppsala University Library"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Huangchi",
-    "standardized_location": "Huangchi, Jiangsu, China"
+    "standardized_location": "Utopia Planitia, Mars",
+    "original_locations": [
+      "Utopia Planitia, Mars"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Volscian Territory",
-    "standardized_location": "Volscian Territory"
+    "standardized_location": "Vardzia Cave Monastery, Samtskhe-Javakheti, Georgia",
+    "original_locations": [
+      "Vardzia, Samtskhe-Javakheti, Georgia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Temple of Castor and Pollux",
-    "standardized_location": "Temple of Castor and Pollux, Roman Forum"
+    "standardized_location": "Varna, Varna Province, Bulgaria",
+    "original_locations": [
+      "Varna, Varna, Bulgaria"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dionysia Festival",
-    "standardized_location": "Dionysia Festival Site (Theater of Dionysus)"
+    "standardized_location": "Vaslui, Vaslui County, Romania",
+    "original_locations": [
+      "Vaslui, Romania"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Hernici territory",
-    "standardized_location": "Hernici territory"
+    "standardized_location": "Vedrosha, Tver Oblast, Russia",
+    "original_locations": [
+      "Vedrosha, Tver Oblast, Russia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Heloros River",
-    "standardized_location": "Heloros River"
+    "standardized_location": "Victoria, Mah\u00e9, Seychelles",
+    "original_locations": [
+      "Victoria, Mah\u00e9, Seychelles"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sepeia",
-    "standardized_location": "Sepeia, near Argos"
+    "standardized_location": "Vindolanda Roman Fort",
+    "original_locations": [
+      "Vindolanda"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Silva Arsia",
-    "standardized_location": "Silva Arsia"
+    "standardized_location": "Vistula Lagoon, Warmian-Masurian Voivodeship, Poland",
+    "original_locations": [
+      "Vistula Lagoon, Warmian-Masurian Voivodeship, Poland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sybaris",
-    "standardized_location": "Sybaris, near Francavilla Marittima"
+    "standardized_location": "Vosges Mountains",
+    "original_locations": [
+      "Vosges Mountains"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Anavysos",
-    "standardized_location": "Anavysos, Greece"
+    "standardized_location": "Vrpile Gulch, Croatia",
+    "original_locations": [
+      "Vrpile Gulch, Croatia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mibing",
-    "standardized_location": "Mibin, Shanxi, China"
+    "standardized_location": "Vy\u0161ehrad Fortress",
+    "original_locations": [
+      "Vy\u0161ehrad"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Pteria",
-    "standardized_location": "Pteria (near modern-day Tokat)"
+    "standardized_location": "Wat Phra That Doi Suthep, Chiang Mai, Thailand",
+    "original_locations": [
+      "Lan Na, Northern Thailand"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Thymbra",
-    "standardized_location": "Thymbra, near modern-day Kula"
+    "standardized_location": "Wayna Daga, Ethiopia",
+    "original_locations": [
+      "Wayna Daga, Ethiopia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Sa\u00efs",
-    "standardized_location": "Sa\u00efs, Egypt"
+    "standardized_location": "Wenming Tomb",
+    "original_locations": [
+      "Wenming Tomb"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kirrha",
-    "standardized_location": "Kirrha, near Delphi"
+    "standardized_location": "Wey, Shandong, China",
+    "original_locations": [
+      "Wey"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Battle of Halys",
-    "standardized_location": "Battle of Halys"
+    "standardized_location": "White Wolf Mountain, Inner Mongolia, China",
+    "original_locations": [
+      "White Wolf Mountain, Inner Mongolia, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Olmec region",
-    "standardized_location": "Olmec Region, Veracruz"
+    "standardized_location": "Wibbandun (Wimbledon)",
+    "original_locations": [
+      "Wibbandun"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Naucratis",
-    "standardized_location": "Naucratis"
+    "standardized_location": "Windsor Castle, Windsor, Berkshire, England",
+    "original_locations": [
+      "Windsor Castle, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chengpu",
-    "standardized_location": "Chengpu, near Kaifeng"
+    "standardized_location": "Windsor, Berkshire, England",
+    "original_locations": [
+      "Windsor, Berkshire, England"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Shanqiu County",
-    "standardized_location": "Shanqiu City"
+    "standardized_location": "Windsor, Berkshire, England, United Kingdom",
+    "original_locations": [
+      "Windsor Castle, England, United Kingdom"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Akanthos",
-    "standardized_location": "Akanthos (Acanthus)"
+    "standardized_location": "Wofla, Ethiopia",
+    "original_locations": [
+      "Wofla, Ethiopia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kush",
-    "standardized_location": "Kush (Nubia)"
+    "standardized_location": "Wouri River, Douala",
+    "original_locations": [
+      "Wouri River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Halule",
-    "standardized_location": "Halule, near modern-day Al-Qadisiyyah"
+    "standardized_location": "Wusui, Hebei, China",
+    "original_locations": [
+      "Wusui"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Saba",
-    "standardized_location": "Mahran, Dhamar"
+    "standardized_location": "Wuzhang Plains, Shaanxi, China",
+    "original_locations": [
+      "Wuzhang Plains, Shaanxi, China"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dur-Sharrukin",
-    "standardized_location": "Dur-Sharrukin (Khorsabad)"
+    "standardized_location": "Xingshi, Sichuan, China",
+    "original_locations": [
+      "Xingshi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Greece",
-    "standardized_location": "Ascra, Boeotia, Greece"
+    "standardized_location": "Yangqin, Shandong, China",
+    "original_locations": [
+      "Yangqin"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "China",
-    "standardized_location": "Zhou, Shanxi, China"
+    "standardized_location": "Yanmen Commandery",
+    "original_locations": [
+      "Yanmen Commandery"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dur-Sharrukin (Khorsabad)",
-    "standardized_location": "Dur-Sharrukin (Khorsabad), Iraq"
+    "standardized_location": "Yawm Halima",
+    "original_locations": [
+      "Yawm Halima"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Biskupin",
-    "standardized_location": "Biskupin Archaeological Site"
+    "standardized_location": "Yellow Ford, County Armagh",
+    "original_locations": [
+      "County Armagh, Northern Ireland"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Arpad",
-    "standardized_location": "Tell Rifa'at, Syria"
+    "standardized_location": "Yokoseura, Nagasaki, Japan",
+    "original_locations": [
+      "Yokoseura, Japan"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Caeninenses",
-    "standardized_location": "Caenina"
+    "standardized_location": "Yongqiu, Henan",
+    "original_locations": [
+      "Yongqiu"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Chincha Valley",
-    "standardized_location": "Chincha Valley, Ica Region, Peru"
+    "standardized_location": "Youbeiping, Hebei, China",
+    "original_locations": [
+      "Youbeiping Prefecture"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kalhu (Nimrud)",
-    "standardized_location": "Nimrud (Kalhu)"
+    "standardized_location": "Yunzhong, Inner Mongolia",
+    "original_locations": [
+      "Yunzhong"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Mesha Stele",
-    "standardized_location": "Mesha Stele"
+    "standardized_location": "Yushui River",
+    "original_locations": [
+      "Yushui River"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Dhiban",
-    "standardized_location": "Dhiban, Madaba Governorate"
+    "standardized_location": "Zaitha, near Fallujah",
+    "original_locations": [
+      "Zaitha"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Egypt",
-    "standardized_location": "Bubastis (Bastet)"
+    "standardized_location": "Zeleia (near modern-day Zeytinli, Turkey)",
+    "original_locations": [
+      "Zeleia"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kenya Highlands",
-    "standardized_location": "Central Highlands, Kenya"
+    "standardized_location": "Zhengguo Canal, near Xi'an",
+    "original_locations": [
+      "Shaanxi Province"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kingdom of Kush",
-    "standardized_location": "Kush (Nubia)"
+    "standardized_location": "Zhizhi (near modern-day Hami)",
+    "original_locations": [
+      "Zhizhi"
+    ],
+    "frequency": 1
   },
   {
-    "original_location": "Kingdom of D\u02bfmt",
-    "standardized_location": "Kingdom of D\u02bfmt"
+    "standardized_location": "Zhuoxie Mountains",
+    "original_locations": [
+      "Zhuoxie Mountains"
+    ],
+    "frequency": 1
   }
 ]

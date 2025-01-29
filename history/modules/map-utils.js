@@ -161,7 +161,10 @@ export function getLocationKey(location) {
 }
 
 export function formatLocations(locations) {
-  if (!locations || locations.length === 0) return "";
+  if (!locations || locations.length === 0) 
+    return "";
+  if (locations[0].name) 
+    return locations[0].name;
   return getLocationKey(locations[0]);
 //  return locations.map(loc => getLocationKey(loc)).join("; ");
 }
@@ -196,7 +199,7 @@ export class LocationVerifier {
       const data = await response.json();
       
       data.forEach(loc => {
-          this.locationMappings.set(loc.original_location, {
+          this.locationMappings.set(loc.standardized_location, {
               corrected: loc.corrected_location || null
           });
       });
@@ -210,7 +213,7 @@ export class LocationVerifier {
       if (!event.locations || !event.locations.length || !this.isInitialized) 
         return;
 
-      const locationKey = event.locations[0].name || event.locations[0];
+      const locationKey = getLocationKey(event.locations[0]);
       const mapping = this.locationMappings.get(locationKey);
 
       event.locations[0] = {

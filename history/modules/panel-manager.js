@@ -1,5 +1,5 @@
 // panel-manager.js
-import { getCoordinates, showLocationOnMap } from './map-utils.js';
+import { getCoordinates, showLocationOnMap, formatLocations } from './map-utils.js';
 
 export class PanelManager {
     constructor(map, markersLayer, geocodeCache, onPanelStateChange) {
@@ -365,34 +365,42 @@ export class PanelManager {
     }
 
     async showLocationOnMap(locationSpan, event, mapLocation) {
+        let locationToCheck = mapLocation;
+
         // Check coordinates first, before any panel operations
-        const coords = await getCoordinates(mapLocation, this.geocodeCache);
+        let coords = await getCoordinates(locationToCheck, this.geocodeCache);
+
+        // Check with just the name if no coordinates found
+        if (!coords && event.locations[0] && event.locations[0].name) {
+            locationToCheck = event.locations[0].name;
+            coords = await getCoordinates(locationToCheck, this.geocodeCache);
+        }
+
         if (!coords) {
             // Create new span without any listeners
+            const location = formatLocations(event.locations);
+
             const newSpan = document.createElement('span');
             newSpan.className = 'event-location unverified';
-            newSpan.textContent = mapLocation;
+            newSpan.textContent = location;
 
             event.locations[0].verified = false;
             
             // Replace the old span immediately
             locationSpan.replaceWith(newSpan);
     
-            // Show centered error toast
+            // Show error toast
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.textContent = `Location not found: ${mapLocation}`;
             
-            // Add toast to timeline wrapper instead of map panel
-            const timelineWrapper = document.querySelector('.timeline-wrapper');
-            timelineWrapper.appendChild(toast);
-            
+            toast.textContent = `Location not found: ${location}`;
+            document.body.appendChild(toast);
+
             setTimeout(() => {
                 if (toast.parentNode) {
                     toast.remove();
                 }
             }, 3000);
-    
             return; // Exit early
         }
     
@@ -408,7 +416,7 @@ export class PanelManager {
             }
             
             this.bringMapToFront();
-            await showLocationOnMap(mapLocation, this.map, this.markersLayer, this.geocodeCache, event.name);
+            await showLocationOnMap(locationToCheck, this.map, this.markersLayer, this.geocodeCache, event.name);
         } catch (error) {
             console.error('Error handling location:', error);
         }
