@@ -94,7 +94,7 @@ export class UIManager {
         // Toggle settings panel
         settingsBtn.addEventListener('click', () => {
             settingsPanel.classList.add('open');
-            this.updateSettingsInfo();
+            //this.updateSettingsInfo();
         });
 
         closeBtn.addEventListener('click', () => {

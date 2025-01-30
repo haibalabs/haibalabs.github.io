@@ -76,7 +76,11 @@
 }
 
 .settings-close-btn {
-    padding: 0.7rem 1.5rem;
+    position: sticky; 
+    bottom: 0;        /* Keep at bottom */
+    width: calc(100% - 2rem);  /* Full width minus margins */
+
+    padding: var(--button-height) 1.5rem;
     background: #f4f4f4;
     border: 1px solid #eee;
     border-radius: 9999px;
