@@ -491,7 +491,12 @@ export class UIManager {
             renderedEvents.forEach((div, index) => {
                 const event = filteredEvents[this.startIndex + index];
                 const actualHeight = div.getBoundingClientRect().height;
-                const cachedHeight = this.eventHeights.get(event.name);
+
+                if (!event.name) {
+                    console.error('Missing event name:', event);
+                }   
+
+                const cachedHeight = event.name ? this.eventHeights.get(event.name) : 0;
                
                 if (actualHeight !== cachedHeight) {
                     this.eventHeights.set(event.name, actualHeight);

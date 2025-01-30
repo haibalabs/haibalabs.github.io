@@ -376,6 +376,12 @@ export class PanelManager {
             coords = await getCoordinates(locationToCheck, this.geocodeCache);
         }
 
+        // if we have a city and country, try those
+        if (!coords && event.locations[0] && event.locations[0].city && event.locations[0].country) {
+            locationToCheck = `${event.locations[0].city}, ${event.locations[0].country}`;
+            coords = await getCoordinates(locationToCheck, this.geocodeCache);
+        }
+
         if (!coords) {
             // Create new span without any listeners
             const location = formatLocations(event.locations);
