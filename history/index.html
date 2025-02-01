@@ -103,6 +103,20 @@
             <p>Events: <span id="visibleCount">0</span> of <span id="totalCount">0</span> Events</p>
         </div>
         <div class="settings-content">
+            <h3>Profile</h3>
+            <div id="auth-section">
+                <!-- Show when logged out -->
+                <div id="login-form" class="auth-form">
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Password">
+                    <button class="auth-btn" id="login-btn">Login</button>
+                </div>
+                <!-- Show when logged in -->
+                <div id="user-info" class="auth-info" style="display: none;">
+                    <span id="user-email"></span>
+                    <button class="auth-btn" id="logout-btn">Logout</button>
+                </div>
+            </div>
             <div class="settings-group">
                 <h4>Debug Options</h4>
                 <label class="settings-toggle">
@@ -110,8 +124,12 @@
                     Scroll metrics
                 </label>
                 <label class="settings-toggle">
-                    <input type="checkbox" id="debug-add-event">
+                    <input type="checkbox" id="debug-add-event" disabled>
                     Enable adding events
+                </label>
+                <label class="settings-toggle">
+                    <input type="checkbox" id="debug-sync" disabled>
+                    Enable sync events
                 </label>
             </div>
         </div>

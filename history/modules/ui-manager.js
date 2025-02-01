@@ -2,6 +2,7 @@
 import { formatHistoricalDate, parseTimeToSortableValue } from './date-handlers.js';
 import { formatLocations, getMapLocation } from './map-utils.js';
 import { PROMINENT_LABELS } from './config.js';
+import { AuthManager } from './auth-manager.js';
 
 export class UIManager {
     constructor(eventManager, panelManager) {
@@ -13,6 +14,8 @@ export class UIManager {
         this.currentFilter = null;
         this.currentSearch = '';
         this.filteredCount = 0;
+
+        this.loggedIn = null;
 
         this.timelineContainer = document.getElementById('timeline-wrapper');
         this.timelineContainer.addEventListener('scroll', () => this.handleScroll());
@@ -112,11 +115,76 @@ export class UIManager {
 
         // toggle adding events
         const debugAddEvent = document.getElementById('debug-add-event');
-    
+        const addEventBtn = document.getElementById('add-event');
+
         debugAddEvent.addEventListener('change', (e) => {
-            const addEventBtn = document.getElementById('add-event');
             addEventBtn.style.display = e.target.checked ? 'block' : 'none';
         });    
+
+        // Auth setup
+        const authManager = new AuthManager();
+        const syncToggle = document.getElementById('debug-sync');
+
+        // Login handler
+        document.getElementById('login-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const isAuthorized = await authManager.login(email, password);
+                if (isAuthorized) {
+                    this.updateAuthUI(true, email);
+                    syncToggle.disabled = false;
+                    debugAddEvent.disabled = false;
+                } else {
+                    alert('User not authorized');
+                    await authManager.logout();
+                    this.updateAuthUI(false);
+                }
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+            }
+        });
+
+        // Logout handler
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            await authManager.logout();
+            this.updateAuthUI(false);
+            syncToggle.checked = false;
+            syncToggle.disabled = true;
+
+            debugAddEvent.checked = false;
+            debugAddEvent.disabled = true;
+            addEventBtn.style.display = 'none';
+        });
+
+        // Sync toggle handler
+        syncToggle.addEventListener('change', (e) => {
+            if (!authManager.isUserAuthorized()) {
+                e.preventDefault();
+                syncToggle.checked = false;
+                return;
+            }
+            // Handle sync toggle...
+        });
+    }
+
+    updateAuthUI(isLoggedIn, email = '') {
+        const loginForm = document.getElementById('login-form');
+        const userInfo = document.getElementById('user-info');
+        const userEmail = document.getElementById('user-email');
+
+        this.loggedIn = email;
+    
+        if (isLoggedIn) {
+            loginForm.style.display = 'none';
+            userInfo.style.display = 'flex';
+            userEmail.textContent = email;
+        } else {
+            loginForm.style.display = 'flex';
+            userInfo.style.display = 'none';
+            userEmail.textContent = '';
+        }
     }
 
     showScrollMetrics() {

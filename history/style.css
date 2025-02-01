@@ -634,4 +634,9 @@ body.hide-low-confidence .event[data-confidence="low"] {
     .nav-button {
         font-size: 0.85rem;
     }
+
+    .auth-btn {
+        font-size: 0.85rem;
+    }
 }
+
