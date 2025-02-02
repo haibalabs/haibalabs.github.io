@@ -118,6 +118,16 @@
                 </div>
             </div>
             <div class="settings-group">
+                <h4>Sync Controls</h4>
+                <div class="sync-controls" style="display: none"> <!-- Only show when sync is enabled -->
+                    <button id="push-changes" class="settings-btn" disabled>
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Push Changes
+                    </button>
+                    <button id="pull-changes" class="settings-btn" disabled>
+                        <i class="fa-solid fa-cloud-arrow-down"></i> Pull Changes
+                    </button>
+                    <div class="sync-status"></div>
+                </div>
                 <h4>Debug Options</h4>
                 <label class="settings-toggle">
                     <input type="checkbox" id="debug-scroll">
