@@ -57,7 +57,7 @@ export class ModalManager {
         };
 
         this.eventManager.addEvent(newEvent);
-        this.uiManager.updateVisibleRange();
+        this.uiManager.resetLayout();
         this.modal.style.display = 'none';
         this.form.reset();
     }

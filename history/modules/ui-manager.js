@@ -97,7 +97,7 @@ export class UIManager {
         // Toggle settings panel
         settingsBtn.addEventListener('click', () => {
             settingsPanel.classList.add('open');
-            //this.updateSettingsInfo();
+            this.updateSettingsInfo();
         });
 
         closeBtn.addEventListener('click', () => {
@@ -182,7 +182,11 @@ export class UIManager {
                 pushBtn.disabled = true;
                 syncStatus.textContent = 'Pushing changes...';
                 const count = await this.eventManager.pushChanges();
-                syncStatus.textContent = `Pushed ${count} events successfully`;
+                if (count > 0) {
+                    this.resetWindow();
+                    syncStatus.textContent = `Pushed ${count} events successfully`;
+                }
+                this.updateSettingsInfo();
                 setTimeout(() => syncStatus.textContent = '', 3000);
             } catch (error) {
                 console.error('Push failed:', error);
@@ -200,11 +204,12 @@ export class UIManager {
                 const count = await this.eventManager.pullChanges();
                 if (count > 0) {
                     this.resetWindow();
-                    this.renderEvents();
+                    //this.renderEvents();
                     syncStatus.textContent = `Pulled ${count} events successfully`;
                 } else {
                     syncStatus.textContent = 'No new changes to pull';
                 }
+                this.updateSettingsInfo(); 
                 setTimeout(() => syncStatus.textContent = '', 3000);
             } catch (error) {
                 console.error('Pull failed:', error);
@@ -213,7 +218,28 @@ export class UIManager {
                 pullBtn.disabled = false;
             }
         });
+
+        this.updateSettingsInfo();
     }
+
+    updateSettingsInfo() {
+        const unpushedCount = this.eventManager.getUnpushedCount();
+        const pushChangesBtn = document.getElementById('push-changes');
+        
+        if (unpushedCount > 0) {
+            pushChangesBtn.innerHTML = `
+                <i class="fa-light fa-cloud-arrow-up"></i> 
+                Push (${unpushedCount})
+            `;
+            pushChangesBtn.disabled = false;
+        } else {
+            pushChangesBtn.innerHTML = `
+                <i class="fa-light fa-cloud-arrow-up"></i> 
+                Push
+            `;
+            pushChangesBtn.disabled = true;
+        }
+    }    
 
     updateAuthUI(isLoggedIn, email = '') {
         const loginForm = document.getElementById('login-form');
@@ -706,17 +732,23 @@ export class UIManager {
             this.currentSearch
         );
         
+        // Add sync status indicator for unpushed changes
+        const syncStatus = (event.localTimestamp > (event.remoteTimestamp || 0)) 
+            ? '<div class="event-sync-status"><i class="fa-sharp fa-light fa-sparkles"></i></div>' 
+            : '';
+        
         return `
             <div class="event-header">
                 ${highlightedName}
                 ${confidenceBadge}
+                ${syncStatus}
             </div>
             <div class="event-time">
                 <span class="event-date">${formattedDate}</span>
             </div>
             <div class="event-description">${highlightedDesc}</div>
         `;
-    }   
+    }
 
     clearDateFilter() {
         document.getElementById('dateInput').value = '';

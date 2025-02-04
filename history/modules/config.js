@@ -6,7 +6,7 @@
  * - PATCH: Bug fixes and minor improvements (backwards-compatible)
  * @type {string}
  */
-export const VERSION = '0.6.0';
+export const VERSION = '0.6.5';
 
 // Define prominent labels and their associated colors
 export const PROMINENT_LABELS = [

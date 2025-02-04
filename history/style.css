@@ -464,11 +464,22 @@ mark {
     background: rgba(33, 150, 243, 0.1); /* Light blue background */
 }
 
-/* Event Description */
 .event-description {
     font-size: 1.05em;
     line-height: 1.5;
     color: #433630;
+}
+
+.event-sync-status {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.8em;
+    color: #666;
+}
+
+.event-sync-status i {
+    color: #cf1b1b;
 }
 
 /* Confidence Badge */

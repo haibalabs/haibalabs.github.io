@@ -15,6 +15,7 @@ export class EventManager {
         this.searchTerm = '';
         this.cachedFilteredEvents = null;
         this.currentFile = null;
+        this.lastSyncTimestamp = null;
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -56,20 +57,37 @@ export class EventManager {
                 lastModified: serverTimestamp(),
                 userId: user.uid // Add user ID to track who made changes
             });
+
+            this.lastSyncTimestamp = Date.now();
             return true;
         } catch (error) {
             console.error('Error saving event:', error);
             throw new Error(`Failed to save event "${event.name}": ${error.message}`);
         }
     }
-    
+
     async pushChanges() {
         let savedCount = 0;
         let errors = [];
-    
-        for (const event of this.events) {
+        
+        // Filter events that need pushing (local changes newer than remote)
+        const unpushedEvents = this.events.filter(event => 
+            event.localTimestamp > (event.remoteTimestamp || 0)
+        );
+
+        for (const event of unpushedEvents) {
             try {
-                await this.saveEvent(event);
+                const eventRef = doc(this.db, this.getCollectionName(), event.name);
+                await setDoc(eventRef, {
+                    ...event,
+                    isNew: false,
+                    lastModified: serverTimestamp(),
+                    userId: this.auth.currentUser?.uid
+                });
+
+                // Update local event after successful push
+                event.isNew = false;
+                event.remoteTimestamp = Date.now();
                 savedCount++;
             } catch (error) {
                 errors.push({
@@ -78,12 +96,24 @@ export class EventManager {
                 });
             }
         }
-    
+
         if (errors.length > 0) {
             throw new Error(`Saved ${savedCount} events, but failed to save ${errors.length} events. First error: ${errors[0].error}`);
         }
-    
+
+        if (errors.length === 0) {
+            // Update lastSyncTimestamp after successful batch push
+            this.lastSyncTimestamp = Date.now();
+        }
+
         return savedCount;
+    }
+
+    // Add method to get unpushed count
+    getUnpushedCount() {
+        return this.events.filter(event => 
+            event.localTimestamp > (event.remoteTimestamp || 0)
+        ).length;
     }
 
     async pullChanges() {
@@ -93,10 +123,16 @@ export class EventManager {
                 throw new Error('User must be authenticated to pull events');
             }
 
+            // Use the most recent timestamp for comparison
+            const sinceTimestamp = Math.max(
+                this.fileTimestamp || 0,
+                this.lastSyncTimestamp || 0
+            );
+
             const eventsRef = collection(this.db, this.getCollectionName());
             const q = query(
                 eventsRef,
-                where('lastModified', '>', new Date(this.fileTimestamp))
+                where('lastModified', '>', new Date(sinceTimestamp))
             );
 
             const snapshot = await getDocs(q);
@@ -104,17 +140,50 @@ export class EventManager {
 
             snapshot.forEach((doc) => {
                 const fbEvent = doc.data();
+                const serverTimestamp = fbEvent.lastModified?.toMillis();
+
+                // Update lastSyncTimestamp with latest server timestamp
+                if (serverTimestamp) {
+                    this.lastSyncTimestamp = Math.max(
+                        this.lastSyncTimestamp || 0,
+                        serverTimestamp
+                    );
+                }
+
                 const existingIndex = this.events.findIndex(e => e.name === doc.id);
                 
                 if (existingIndex >= 0) {
-                    // Update existing event
-                    this.events[existingIndex] = this.normalizeEvent({
-                        ...this.events[existingIndex],
-                        ...fbEvent
-                    });
+                    const localEvent = this.events[existingIndex];
+                    
+                    // Detect conflict:
+                    // 1. Server has newer changes than what we last synced (serverTimestamp > localEvent.remoteTimestamp)
+                    // 2. We have local changes not yet pushed (localEvent.localTimestamp > localEvent.remoteTimestamp)
+                    if (serverTimestamp > localEvent.remoteTimestamp && 
+                        localEvent.localTimestamp > localEvent.remoteTimestamp) {
+                        console.warn(`Conflict detected for ${doc.id}:
+                                     Server timestamp: ${serverTimestamp}
+                                     Local timestamp: ${localEvent.localTimestamp}
+                                     Last sync: ${localEvent.remoteTimestamp}`);
+                        // For now, we could either:
+                        // - Skip the update (keep local changes)
+                        // - Take server version
+                        // - Implement conflict resolution UI
+                        return; // Skip for now
+                    }
+            
+                    // No conflict - server version is newer
+                    this.events[existingIndex] = {
+                        ...fbEvent,
+                        localTimestamp: serverTimestamp,
+                        remoteTimestamp: serverTimestamp
+                    };
                 } else {
-                    // Add new event
-                    this.events.push(this.normalizeEvent(fbEvent));
+                    // New event, no conflict possible
+                    this.events.push({
+                        ...fbEvent,
+                        localTimestamp: serverTimestamp,
+                        remoteTimestamp: serverTimestamp
+                    });
                 }
                 updatedCount++;
             });
@@ -130,8 +199,7 @@ export class EventManager {
             console.error('Error syncing with Firestore:', error);
             throw error;
         }
-    }   
-
+    }
     async loadEvents(dataFile) {
         try {
             this.currentFile = dataFile;
@@ -140,27 +208,47 @@ export class EventManager {
                 throw new Error(`Could not load data file: ${dataFile}`);
             }
     
-            const lastModified = response.headers.get('last-modified');
-            this.fileTimestamp = lastModified ? new Date(lastModified).getTime() : null;
+            const data = await response.json();
+            let eventsArray;
+            let baseTimestamp;
     
-            if (!this.fileTimestamp) {
-                const dateHeader = response.headers.get('date');
-                this.fileTimestamp = dateHeader ? new Date(dateHeader).getTime() : Date.now();
+            // Check if we have the new format with metadata
+            if (data.metadata && data.events) {
+                // Parse ISO timestamp from metadata
+                baseTimestamp = new Date(data.metadata.timestamp).getTime();
+                eventsArray = data.events;
+            } else {
+                // Old format - use HTTP headers
+                const lastModified = response.headers.get('last-modified');
+                baseTimestamp = new Date(lastModified).getTime();
+                eventsArray = data; // Assume data is the events array
             }
     
-            this.events = await response.json();
-            
-            // Normalize events with file timestamp
-            this.events = this.events.map(event => this.normalizeEvent(event, this.fileTimestamp));
+            // Store the file timestamp
+            this.fileTimestamp = baseTimestamp;
+            this.lastSyncTimestamp = baseTimestamp;
+    
+            // Initialize events with timestamps
+            this.events = eventsArray.map(event => {
+                return {
+                    ...event,
+                    localTimestamp: baseTimestamp,
+                    remoteTimestamp: null // Will be set when synced with server
+                };
+            });
             
             this.sortEvents();
             this.invalidateCache();
+    
+            // Immediately pull any server changes
+            // await this.pullChanges(); // to enable later - right now you need to login to pull
+            
             return this.events;
         } catch (error) {
             console.error('Error loading events:', error);
             throw error;
         }
-    }
+    }    
 
     // Helper to invalidate cache
     invalidateCache() {
@@ -194,7 +282,14 @@ export class EventManager {
     }
 
     addEvent(event) {
-        this.events.push(this.normalizeEvent(event));
+        const normalizedEvent = this.normalizeEvent({
+            ...event,
+            isNew: true,  // Mark as new local event
+            localTimestamp: Date.now(),
+            remoteTimestamp: null  // null indicates never synced
+        });
+
+        this.events.push(normalizedEvent);
         this.sortEvents();
         this.invalidateCache();
     }

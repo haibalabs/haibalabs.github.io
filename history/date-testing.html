@@ -343,7 +343,12 @@
                 input: "May 1941",
                 expectedSort: 1941.4194,
                 category: "Full Dates"
-            },            
+            },   
+            {
+                input: "3/9/2004",
+                expectedSort: 2004.27459,
+                category: "Full Dates"
+            },         
             // ranges
             { 
                 input: "8th-9th century",
@@ -376,6 +381,11 @@
                 category: "Ranges"
             },                        
             // Special formats
+            {
+                input: "September, 2004",
+                expectedSort: 2004.752732,
+                category: "Special"    
+            },
             {
                 input: "1970-05",
                 expectedSort: 1970.419399,

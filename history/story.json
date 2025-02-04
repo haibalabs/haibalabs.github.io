@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Birth",
+    "locations": [
+      {
+        "name": "",
+        "city": "Rabat",
+        "region": "",
+        "country": "Morocco",
+        "historical_name": ""
+      }
+    ],
+    "figures": [
+      "Mabrouka",
+      "Rachid"
+    ],
+    "categories": [],
+
+    "enhanced_description": "The birth of Rachid El Guerrab",
+    "enhanced_time": "1976-01-25",
+    "wikipedia_url": "",
+    "confidence": "high"
+  }
+]

@@ -1,5 +1,12 @@
 ## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
+### Day 27. Tue 02/04/25
+
+Big focus last few days on editing and the back-end database, as well as sync controls between various editors:
+- Ability to have profile login to the timeline
+- Ability to use empty timelines and add to them through the UI
+- Various UI updates to allow push and pull of changes from the events server
+
 ### Day 21. Wed 01/29/25
 
 The focus the last few days has been on using a system of location corrections on top of the data.
