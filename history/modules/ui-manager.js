@@ -362,7 +362,12 @@ export class UIManager {
         const description = event.enhanced_description || event.description;
         const charsPerLine = Math.floor((containerWidth - totalHorizontalPadding) / avgCharWidth);
         const estimatedLines = Math.min(5, Math.ceil(description.length / charsPerLine));
-        return baseHeight + (estimatedLines * lineHeight);
+        
+        // Add image height if present
+        const imageHeight = event.image_url ? parseInt(getComputedStyle(document.documentElement)
+            .getPropertyValue('--event-image-height')) : 0;
+            
+        return baseHeight + (estimatedLines * lineHeight) + imageHeight;
     }
 
     precalculatePositions(filteredEvents) {
@@ -726,14 +731,23 @@ export class UIManager {
     }
 
     getEventHTML(event, formattedDate, confidenceBadge) {
+        const imageSection = event.image_url ? `
+            <div class="event-image loading">
+                <img src="${event.image_url}" 
+                    alt="${event.name}"
+                    loading="lazy"
+                    onload="this.parentElement.classList.remove('loading')"
+                    onerror="this.parentElement.style.display='none'"/>
+            </div>
+        ` : '';
+
         const highlightedName = this.highlightSearchTerms(event.name, this.currentSearch);
         const highlightedDesc = this.highlightSearchTerms(
             event.enhanced_description || event.description, 
             this.currentSearch
         );
         
-        // Add sync status indicator for unpushed changes
-        const syncStatus = (event.localTimestamp > (event.remoteTimestamp || 0)) 
+        const syncStatus = event.remoteTimestamp && (event.localTimestamp > (event.remoteTimestamp || 0)) 
             ? '<div class="event-sync-status"><i class="fa-sharp fa-light fa-sparkles"></i></div>' 
             : '';
         
@@ -747,6 +761,7 @@ export class UIManager {
                 <span class="event-date">${formattedDate}</span>
             </div>
             <div class="event-description">${highlightedDesc}</div>
+            ${imageSection}
         `;
     }
 

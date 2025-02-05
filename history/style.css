@@ -9,6 +9,7 @@
     --min-timeline-width: 480px;
     --max-timeline-width: 600px;
     --button-height: 0.5rem;
+    --event-image-height: 300px;
 }
 
 @media (max-width: 430px) {
@@ -480,6 +481,22 @@ mark {
 
 .event-sync-status i {
     color: #cf1b1b;
+}
+
+.event-image {
+    width: 100%;
+    height: var(--event-image-height);
+    margin-top: 0.5rem;
+    position: relative;
+    border: 0.5px solid black;
+    border-radius: 5px;
+}
+
+.event-image img {
+    width: calc(100%);
+    height: calc(100%);
+    object-fit: contain;
+    object-position: center;
 }
 
 /* Confidence Badge */
