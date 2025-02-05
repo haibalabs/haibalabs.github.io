@@ -222,6 +222,29 @@ export class UIManager {
         this.updateSettingsInfo();
     }
 
+    addFigureHandlers(eventDiv, event) {
+        if (!event.figures?.length) return;
+        
+        const figures = eventDiv.querySelectorAll('.figure-mention');
+        figures.forEach(figureSpan => {
+            figureSpan.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const figureName = figureSpan.dataset.figure;
+                
+                try {
+                    // Convert figure name to Wikipedia URL format
+                    const wikiTitle = figureName.replace(/ /g, '_');
+                    const url = `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiTitle)}`;
+                    
+                    await this.panelManager.handleInfoClick(url, figureSpan);
+                } catch (error) {
+                    console.error('Error handling figure click:', error);
+                    figureSpan.classList.add('disabled');
+                }
+            });
+        });
+    }    
+
     updateSettingsInfo() {
         const unpushedCount = this.eventManager.getUnpushedCount();
         const pushChangesBtn = document.getElementById('push-changes');
@@ -353,21 +376,25 @@ export class UIManager {
             totalHorizontalPadding
         };
     }
-
+        
     estimateEventHeight(event) {
         const timelinePlaceholder = document.getElementById('timeline-placeholder');
         const containerWidth = timelinePlaceholder.clientWidth;
-
+    
         const { baseHeight, lineHeight, avgCharWidth, totalHorizontalPadding } = this.heightEstimateParams;
         const description = event.enhanced_description || event.description;
         const charsPerLine = Math.floor((containerWidth - totalHorizontalPadding) / avgCharWidth);
         const estimatedLines = Math.min(5, Math.ceil(description.length / charsPerLine));
         
+        // Calculate additional height for figures section
+        const figuresHeight = event.figures?.length ? 
+            Math.ceil(event.figures.join(' ').length / charsPerLine) * lineHeight + 16 : 0;
+                
         // Add image height if present
         const imageHeight = event.image_url ? parseInt(getComputedStyle(document.documentElement)
             .getPropertyValue('--event-image-height')) : 0;
-            
-        return baseHeight + (estimatedLines * lineHeight) + imageHeight;
+                
+        return baseHeight + (estimatedLines * lineHeight) + figuresHeight + imageHeight;
     }
 
     precalculatePositions(filteredEvents) {
@@ -714,6 +741,7 @@ export class UIManager {
         eventDiv.innerHTML = this.getEventHTML(event, formattedDate, confidenceBadge);
         this.addLocationHandler(eventDiv, event);
         this.addWikiHandler(eventDiv, event);
+        this.addFigureHandlers(eventDiv, event);
 
         return eventDiv;
     }
@@ -741,6 +769,15 @@ export class UIManager {
             </div>
         ` : '';
 
+        const figuresSection = event.figures?.length ? `
+        <div class="event-figures">
+            ${event.figures.map(figure => `
+                <span class="figure-mention" data-figure="${figure}">@${figure}</span>
+            `).join(' ')}
+        </div>
+        ` : '';
+
+
         const highlightedName = this.highlightSearchTerms(event.name, this.currentSearch);
         const highlightedDesc = this.highlightSearchTerms(
             event.enhanced_description || event.description, 
@@ -761,6 +798,7 @@ export class UIManager {
                 <span class="event-date">${formattedDate}</span>
             </div>
             <div class="event-description">${highlightedDesc}</div>
+            ${figuresSection}
             ${imageSection}
         `;
     }
