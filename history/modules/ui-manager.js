@@ -1,8 +1,19 @@
 // ui-manager.js
 import { formatHistoricalDate, parseTimeToSortableValue } from './date-handlers.js';
 import { formatLocations, getMapLocation } from './map-utils.js';
+import { getOptimizedImageUrl, sanitizeUrl } from './image-utils.js';
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
+
+function escapeHtml(str) {
+    if (!str || typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
 export class UIManager {
     constructor(eventManager, panelManager) {
@@ -761,8 +772,8 @@ export class UIManager {
     getEventHTML(event, formattedDate, confidenceBadge) {
         const imageSection = event.image_url ? `
             <div class="event-image loading">
-                <img src="${event.image_url}" 
-                    alt="${event.name}"
+                <img src="${sanitizeUrl(getOptimizedImageUrl(event.image_url))}"
+                    alt="${escapeHtml(event.name)}"
                     loading="lazy"
                     onload="this.parentElement.classList.remove('loading')"
                     onerror="this.parentElement.style.display='none'"/>
