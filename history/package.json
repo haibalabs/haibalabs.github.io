@@ -1,0 +1,15 @@
+{
+  "name": "historiline-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:syntax": "node -e \"import('./modules/date-handlers.js')\" && node -e \"import('./modules/map-utils.js')\"",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:e2e": "npx playwright test",
+    "test": "npm run test:syntax && npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "serve": "^14.0.0"
+  }
+}
