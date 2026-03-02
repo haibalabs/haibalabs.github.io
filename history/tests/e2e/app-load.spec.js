@@ -64,4 +64,26 @@ test.describe('App loads with sample data', () => {
     expect(eventCount).toBeGreaterThan(0);
   });
 
+  test('renders event images with sanitized attributes', async ({ page }) => {
+    setupNetworkBlocking(page);
+
+    await page.goto('/history/index.html?file=events_samples.json');
+    await page.waitForSelector('#timeline-content .event', { timeout: 10000 });
+
+    // events_samples.json has 4 events with image_url
+    const images = page.locator('.event-image img');
+    const imageCount = await images.count();
+    expect(imageCount).toBeGreaterThan(0);
+
+    // Verify sanitized attributes: src should be https, alt should be escaped
+    const firstImg = images.first();
+    const src = await firstImg.getAttribute('src');
+    expect(src).toMatch(/^https:\/\//);
+
+    const alt = await firstImg.getAttribute('alt');
+    expect(alt).toBeTruthy();
+    expect(alt).not.toContain('<');
+    expect(alt).not.toContain('>');
+  });
+
 });

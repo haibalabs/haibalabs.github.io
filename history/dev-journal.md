@@ -1,5 +1,21 @@
 ## [History Timeline](https://haibalabs.github.io/history) - Dev Diary
 
+### Day 29. Sat 02/28/26
+
+Image support — fixed front-end rendering issues and built a data pipeline to collect image URLs at scale.
+- Added shimmer loading animation, opacity fade-in, and reduced image card height to 200px
+- Built Wikimedia thumbnail rewriting to avoid downloading full-res images
+- Fixed XSS vulnerability in image URL rendering (sanitizeUrl + escapeHtml)
+
+### Day 28. Fri 02/28/25
+
+Infrastructure day — set up version control for data and automated testing for the app.
+- Moved history-data to Hugging Face (`datasets/Rush2k/history-data`) with Git LFS for large files
+- Added unit tests for date parsing (110 tests) and location keys (9 tests)
+- Added Playwright E2E smoke tests that load sample data in headless Chromium
+- Set up GitHub Actions CI with two parallel jobs (unit + E2E)
+- Created project documentation (CLAUDE.md for data pipeline, infra.md for CI/testing)
+
 ### Day 27. Tue 02/04/25
 
 Big focus last few days on editing and the back-end database, as well as sync controls between various editors:
