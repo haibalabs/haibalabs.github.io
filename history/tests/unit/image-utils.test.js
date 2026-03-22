@@ -1,6 +1,6 @@
-import { describe, it } from 'node:test';
+import { describe, it, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { getOptimizedImageUrl, sanitizeUrl } from '../../modules/image-utils.js';
+import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, onEventImageLoad } from '../../modules/image-utils.js';
 
 // ---------------------------------------------------------------------------
 // getOptimizedImageUrl tests
@@ -94,5 +94,58 @@ describe('sanitizeUrl — URL protocol validation', () => {
 
   it('returns empty string for undefined input', () => {
     assert.equal(sanitizeUrl(undefined), '');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// loadedImageUrls + onEventImageLoad tests (shimmer cache)
+// ---------------------------------------------------------------------------
+
+describe('loadedImageUrls — shimmer skip cache', () => {
+  beforeEach(() => {
+    // Clear the shared Set before each test so tests are independent.
+    loadedImageUrls.clear();
+  });
+
+  it('starts empty', () => {
+    assert.equal(loadedImageUrls.size, 0);
+  });
+
+  it('onEventImageLoad adds img.src to the cache', () => {
+    const fakeImg = {
+      src: 'https://example.com/photo.jpg',
+      closest: () => null, // no DOM wrapper in unit tests
+    };
+    onEventImageLoad(fakeImg);
+    assert.ok(loadedImageUrls.has('https://example.com/photo.jpg'));
+  });
+
+  it('onEventImageLoad removes the loading class from the wrapper', () => {
+    const wrapperClasses = new Set(['event-image', 'loading']);
+    const fakeWrapper = {
+      classList: {
+        remove: (cls) => wrapperClasses.delete(cls),
+      },
+    };
+    const fakeImg = {
+      src: 'https://example.com/photo.jpg',
+      closest: () => fakeWrapper,
+    };
+    onEventImageLoad(fakeImg);
+    assert.ok(!wrapperClasses.has('loading'), 'loading class should be removed');
+  });
+
+  it('onEventImageLoad handles a null closest() result without throwing', () => {
+    const fakeImg = {
+      src: 'https://example.com/photo.jpg',
+      closest: () => null,
+    };
+    assert.doesNotThrow(() => onEventImageLoad(fakeImg));
+  });
+
+  it('a URL added to loadedImageUrls is detectable before rendering', () => {
+    const url = 'https://example.com/cached.jpg';
+    loadedImageUrls.add(url);
+    assert.ok(loadedImageUrls.has(url));
   });
 });

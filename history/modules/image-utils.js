@@ -1,6 +1,34 @@
 // image-utils.js
 
 /**
+ * Module-level cache of image URLs that have already been loaded successfully.
+ * Persists across virtual-scroll re-renders so the shimmer is only shown once
+ * per image URL per page session.
+ *
+ * @type {Set<string>}
+ */
+export const loadedImageUrls = new Set();
+
+/**
+ * Called by the inline onload handler on event-card <img> elements.
+ * Caches the URL and removes the shimmer loading class from the wrapper.
+ *
+ * Registered on window so it is reachable from inline HTML attribute handlers
+ * without needing a dynamic import().
+ *
+ * @param {HTMLImageElement} img
+ */
+export function onEventImageLoad(img) {
+    loadedImageUrls.add(img.src);
+    img.closest('.event-image')?.classList.remove('loading');
+}
+
+// Register on window for use in inline onload= HTML attributes (browser only).
+if (typeof window !== 'undefined') {
+    window._onEventImageLoad = onEventImageLoad;
+}
+
+/**
  * Rewrite Wikimedia Commons URLs to request thumbnails at the given width.
  * Pattern: /commons/a/ab/File.jpg -> /commons/thumb/a/ab/File.jpg/{width}px-File.jpg
  * Non-Wikimedia URLs pass through unchanged.
