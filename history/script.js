@@ -4,6 +4,7 @@ import { UIManager }    from './modules/ui-manager.js';
 import { PanelManager } from './modules/panel-manager.js';
 import { ModalManager } from './modules/modal-manager.js';
 import { initMap, LocationVerifier } from './modules/map-utils.js';
+import { initTimelineNav } from './modules/timeline-nav.js';
 
 // Initialize map globally since it's used across different modules
 const { map, markersLayer, geocodeCache } = initMap();
@@ -46,6 +47,7 @@ async function initializeApp() {
 
         // Calculate initial visible range and render
         uiManager.resetWindow();
+        initTimelineNav({ eventManager, uiManager });
     } catch (error) {
         console.error('Failed to initialize app:', error);
     }

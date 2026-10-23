@@ -1,7 +1,7 @@
 // ui-manager.js
 import { formatHistoricalDate, parseTimeToSortableValue } from './date-handlers.js';
 import { formatLocations, getMapLocation } from './map-utils.js';
-import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls } from './image-utils.js';
+import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, failedImageUrls, setImageFailureHandler } from './image-utils.js';
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 
@@ -71,6 +71,13 @@ export class UIManager {
             resizeTimeout = setTimeout(() => {
                 this.renderEvents(); // Re-render with new measurements
             }, 150); // Debounce resize events
+        });
+
+        // A dropped image shrinks its event; re-render so measured heights and positions follow
+        let imageFailureTimeout;
+        setImageFailureHandler(() => {
+            clearTimeout(imageFailureTimeout);
+            imageFailureTimeout = setTimeout(() => this.renderEvents(), 150);
         });
 
         this.setupSettings();
@@ -402,7 +409,8 @@ export class UIManager {
             Math.ceil(event.figures.join(' ').length / charsPerLine) * lineHeight + 16 : 0;
                 
         // Add image height if present
-        const imageHeight = event.image_url ? parseInt(getComputedStyle(document.documentElement)
+        const hasImage = event.image_url && !failedImageUrls.has(sanitizeUrl(event.image_url));
+        const imageHeight = hasImage ? parseInt(getComputedStyle(document.documentElement)
             .getPropertyValue('--event-image-height')) : 0;
                 
         return baseHeight + (estimatedLines * lineHeight) + figuresHeight + imageHeight;
@@ -771,8 +779,11 @@ export class UIManager {
 
     getEventHTML(event, formattedDate, confidenceBadge) {
         let imageSection = '';
-        if (event.image_url) {
-            const optimizedUrl = sanitizeUrl(getOptimizedImageUrl(event.image_url));
+        const originalUrl = sanitizeUrl(event.image_url);
+        if (originalUrl && !failedImageUrls.has(originalUrl)) {
+            const optimizedUrl = thumbFailedUrls.has(originalUrl)
+                ? originalUrl
+                : sanitizeUrl(getOptimizedImageUrl(originalUrl));
             const alreadyLoaded = loadedImageUrls.has(optimizedUrl);
             // Only apply the loading/shimmer class if this image hasn't been seen before.
             // Once loaded, the onload handler caches the URL so subsequent virtual-scroll
@@ -780,11 +791,12 @@ export class UIManager {
             const loadingClass = alreadyLoaded ? '' : ' loading';
             imageSection = `
             <div class="event-image${loadingClass}">
-                <img src="${optimizedUrl}"
+                <img src="${escapeHtml(optimizedUrl)}"
+                    data-original="${escapeHtml(originalUrl)}"
                     alt="${escapeHtml(event.name)}"
                     loading="lazy"
                     onload="window._onEventImageLoad(this)"
-                    onerror="this.closest('.event-image').style.display='none'"/>
+                    onerror="window._onEventImageError(this)"/>
             </div>
         `;
         }

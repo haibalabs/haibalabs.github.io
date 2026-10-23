@@ -1,0 +1,81 @@
+/* bar.css: the single top bar + chip row used by v2–v4 */
+
+.header {
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid var(--line);
+}
+
+.bar {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    height: 60px;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    flex: 1 1 0;
+    min-width: 0;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+    letter-spacing: -.01em;
+}
+/* the logo PNG is a wordmark; crop to its scroll glyph */
+.brand img {
+    width: 22px;
+    height: 28px;
+    object-fit: cover;
+    object-position: left center;
+    filter: var(--logo-filter, none);
+}
+
+.search-box { flex: 0 1 460px; }
+.action-buttons { flex: 1 1 0; display: flex; justify-content: flex-end; gap: 2px; }
+
+.filters {
+    justify-content: center;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 1.25rem 10px;
+}
+
+.current-year { display: none; }
+
+@media (max-width: 760px) {
+    .header {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-areas:
+            "brand search actions"
+            "date  chips  chips";
+        align-items: center;
+        gap: 8px 8px;
+        padding: 10px 12px;
+    }
+    .bar { display: contents; }
+    .brand { grid-area: brand; flex: none; }
+    .brand span { display: none; }
+    .search-box { grid-area: search; }
+    .action-buttons { grid-area: actions; flex: none; }
+    .date-navigation { grid-area: date; height: 32px; }
+    .date-navigation .nav-button { width: 26px; height: 26px; }
+    #dateInput { width: 52px; }
+    #searchInput { height: 36px; }
+    .icon-btn { width: 34px; height: 34px; }
+    .filters {
+        grid-area: chips;
+        justify-content: flex-start;
+        margin: 0 -12px 0 0;
+        padding: 0 12px 0 0;
+        mask-image: linear-gradient(90deg, #000 85%, transparent);
+    }
+}
