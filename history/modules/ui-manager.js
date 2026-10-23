@@ -833,12 +833,27 @@ export class UIManager {
             const timeDiv = eventDiv.querySelector('.event-time');
             const locationSpan = document.createElement('span');
 
-            // Check verification status
-            const isVerified = event.locations[0]?.verified !== false;
-            locationSpan.className = `event-location ${isVerified ? 'clickable' : 'unverified'}`;
-            locationSpan.innerHTML = `${isVerified ? '<i class="fa-light fa-location-crosshairs"></i>' : ''}${locationText}`;
+            // A cached point can be displayed without claiming factual verification.
+            const location = event.locations[0];
+            const geography = location?.geography;
+            const canMap = geography
+                ? ['reused', 'corrected'].includes(geography.status) &&
+                  (Array.isArray(geography.coordinates) || Boolean(location.corrected))
+                : location?.verified !== false;
+            locationSpan.className = `event-location ${canMap ? 'clickable' : 'unverified'}`;
+            locationSpan.textContent = locationText;
+            if (canMap) {
+                const icon = document.createElement('i');
+                icon.className = 'fa-light fa-location-crosshairs';
+                locationSpan.prepend(icon);
+            }
+            if (geography?.precision === 'approximate') {
+                locationSpan.title = 'Approximate cached location; not independently verified';
+            } else if (geography?.status === 'ambiguous') {
+                locationSpan.title = 'Location needs review before mapping';
+            }
 
-            if (isVerified) {
+            if (canMap) {
                 locationSpan.addEventListener('click', async (e) => {
                     e.stopPropagation();
                     const mapLocation = getMapLocation(event.locations);

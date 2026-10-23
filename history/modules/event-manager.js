@@ -230,11 +230,11 @@ export class EventManager {
     
             // Initialize events with timestamps
             this.events = eventsArray.map(event => {
-                return {
+                return this.normalizeEvent({
                     ...event,
                     localTimestamp: baseTimestamp,
                     remoteTimestamp: null // Will be set when synced with server
-                };
+                }, baseTimestamp);
             });
             
             this.sortEvents();

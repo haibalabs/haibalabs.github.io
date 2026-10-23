@@ -59,3 +59,47 @@ describe('getLocationKey', () => {
     });
   });
 });
+
+import { getCoordinates, getMapLocation, LocationVerifier } from '../../modules/map-utils.js';
+
+describe('canonical locations and saved corrections', () => {
+  it('uses embedded coordinates without a geocoding request', async () => {
+    const location = { name: 'Paris', geography: { coordinates: [48.8, 2.3], status: 'reused' } };
+    assert.deepEqual(getMapLocation([location]), [48.8, 2.3]);
+    assert.deepEqual(await getCoordinates(getMapLocation([location]), new Map()), [48.8, 2.3]);
+    assert.equal(await getCoordinates([100, 0], new Map()), null);
+  });
+
+  it('applies corrections to every location and preserves place IDs', () => {
+    const verifier = new LocationVerifier();
+    verifier.isInitialized = true;
+    verifier.locationMappings.set('Old town', { corrected: [1, 2] });
+    const event = { locations: ['Paris', { name: 'Old town', country: 'Country', place_id: 'p1',
+      geography: { coordinates: [3, 4], status: 'reused' } }] };
+    verifier.verifyEventLocation(event);
+    assert.equal(event.locations[0].name, 'Paris');
+    assert.equal(event.locations[1].place_id, 'p1');
+    assert.deepEqual(event.locations[1].geography.coordinates, [1, 2]);
+    assert.deepEqual(getMapLocation([event.locations[1]]), [1, 2]);
+  });
+
+  it('a text correction invalidates an older cached point', () => {
+    const verifier = new LocationVerifier();
+    verifier.isInitialized = true;
+    verifier.locationMappings.set('Old town', { corrected: 'New town' });
+    const event = { locations: [{ name: 'Old town', geography: { coordinates: [3, 4], status: 'reused' } }] };
+    verifier.verifyEventLocation(event);
+    assert.equal(event.locations[0].geography.coordinates, null);
+    assert.equal(getMapLocation(event.locations), 'New town');
+  });
+
+  it('keeps already-corrected snapshot coordinates when the correction agrees', () => {
+    const verifier = new LocationVerifier();
+    verifier.isInitialized = true;
+    verifier.locationMappings.set('Old town', { corrected: 'New town' });
+    const event = { locations: [{ name: 'Old town', corrected: 'New town', geography: {
+      coordinates: [3, 4], correction: 'New town', status: 'corrected' } }] };
+    verifier.verifyEventLocation(event);
+    assert.deepEqual(getMapLocation(event.locations), [3, 4]);
+  });
+});
