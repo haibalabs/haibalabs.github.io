@@ -45,7 +45,7 @@ async function setup(page) {
 test('area intersects secondary locations and years; selecting a result reaches virtual card and all points', async ({ page }) => {
   const errors = []; let geocodes = 0;
   page.on('pageerror', error => errors.push(error.message));
-  await page.route('https://nominatim.openstreetmap.org/**', route => { geocodes++; return route.abort(); });
+  page.on('request', request => { if (request.url().includes('nominatim.openstreetmap.org')) geocodes++; });
   await setup(page);
   await page.getByRole('button', { name: 'Search this area', exact: true }).click();
   await expect(page.locator('.map-status')).toContainText('Selected area: 79 events');
