@@ -25,12 +25,25 @@ function fmtYear(y) {
     if (y < 0) return `${-y} BC`;
     return y < 1000 ? `${y} AD` : String(y);
 }
-const centuryOf = y => (y > 0 ? Math.floor((y - 1) / 100) + 1 : -(Math.floor((Math.max(1, -y) - 1) / 100) + 1));
+export const centuryOf = y => (y > 0 ? Math.floor((y - 1) / 100) + 1 : -(Math.floor((Math.max(1, -y) - 1) / 100) + 1));
 const centStart = c => (c > 0 ? (c - 1) * 100 + 1 : c * 100);
 const centLabel = (c, short) => `${ord(Math.abs(c))} ${short ? 'c.' : 'century'}${c < 0 ? ' BC' : ''}`;
 // A decade is keyed by its earliest year: the 40s BC (49–40 BC) is -49.
-const decadeOf = y => (y > 0 ? Math.floor(y / 10) * 10 : -(Math.floor(Math.max(1, -y) / 10) * 10 + 9));
+export const decadeOf = y => (y > 0 ? Math.floor(y / 10) * 10 : -(Math.floor(Math.max(1, -y) / 10) * 10 + 9));
 const decLabel = d => (d >= 0 ? `${d}s` : `${-d - 9}s BC`);
+
+// The decades of century c, each clipped to the century's years [from, to). Centuries start at
+// year 1 of their first decade (1801), so the first and last buckets are partial; a one-year
+// bucket is labelled with its year (1900).
+export function decadeBuckets(c) {
+    const s = centStart(c), end = s + 100, buckets = [];
+    for (let d = decadeOf(s); d < end; d += 10) {
+        const from = Math.max(d, s), to = Math.min(d + 10, end);
+        buckets.push({ key: d, from, to, label: to - from === 1 ? fmtYear(from) : decLabel(d) });
+    }
+    return buckets;
+}
+const decadeIn = (c, y) => decadeBuckets(c).find(b => y >= b.from && y < b.to);
 const eraRange = e => (e.from === -Infinity ? 'before 3000 BC' : `${fmtYear(e.from)} – ${e.to === Infinity ? 'today' : fmtYear(e.to)}`);
 
 function lowerBound(arr, v) {
@@ -110,7 +123,7 @@ function updateCrumbs(y) {
         `<button class="crumb" data-level="era" aria-expanded="${openLevel === 'era'}"><span class="era-dot" style="background:${ERAS[ei].hue}"></span>${ERAS[ei].name}</button>` +
         (deep ? '' :
             `<span class="sep">›</span><button class="crumb" data-level="cent" aria-expanded="${openLevel === 'cent'}">${centLabel(c, true)}</button>` +
-            `<span class="sep">›</span><button class="crumb" data-level="dec" aria-expanded="${openLevel === 'dec'}">${decLabel(d)}</button>`) +
+            `<span class="sep">›</span><button class="crumb" data-level="dec" aria-expanded="${openLevel === 'dec'}">${decadeIn(c, y)?.label ?? decLabel(d)}</button>`) +
         `<button class="nav-button step" data-step="1" title="Next decade ( ] )"><i class="fa-light fa-chevron-right"></i></button>`;
 }
 // Moves the open panel's highlight to the current era/century/decade without redrawing it.
@@ -145,8 +158,7 @@ function openPopover(level) {
         }
         html = cellsHTML(`${e.name} · centuries`, items, e.hue);
     } else {
-        const s = centStart(cur.c), items = [];
-        for (let d = decadeOf(s); d < s + 99; d += 10) items.push({ go: d, key: `d${d}`, label: decLabel(d), current: d === cur.d, n: countBetween(d, d + 10) });
+        const items = decadeBuckets(cur.c).map(b => ({ go: b.from, key: `d${b.key}`, label: b.label, current: b.key === cur.d, n: countBetween(b.from, b.to) }));
         html = cellsHTML(`${centLabel(cur.c)} · decades`, items, e.hue);
     }
     html += `<div class="pop-foot"><input id="popYear" placeholder="Go to year… 1066, 44 BC" autocomplete="off">

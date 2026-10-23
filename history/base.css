@@ -154,12 +154,13 @@ button { cursor: pointer; }
     object-fit: contain;
     transition: opacity .3s ease-in;
 }
-.event-image.loading img {
-    opacity: 0;
+/* the shimmer is on the wrapper: opacity 0 on the img would hide a background painted on it */
+.event-image.loading {
     background: linear-gradient(90deg, var(--surface-2) 25%, var(--line) 50%, var(--surface-2) 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
 }
+.event-image.loading img { opacity: 0; }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
 .event-sync-status { position: absolute; top: 0; right: 0; font-size: .8em; color: #dc2626; }
