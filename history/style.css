@@ -9,7 +9,7 @@
     --min-timeline-width: 480px;
     --max-timeline-width: 600px;
     --button-height: 0.5rem;
-    --event-image-height: 300px;
+    --event-image-height: 200px;
 }
 
 @media (max-width: 430px) {
@@ -488,8 +488,7 @@ mark {
     height: var(--event-image-height);
     margin-top: 0.5rem;
     position: relative;
-    border: 0.5px solid black;
-    border-radius: 5px;
+    border: none;
 }
 
 .event-image img {
@@ -497,6 +496,27 @@ mark {
     height: calc(100%);
     object-fit: contain;
     object-position: center;
+    transition: opacity 0.3s ease-in;
+}
+
+/* the shimmer is on the wrapper: opacity 0 on the img would hide a background painted on it */
+.event-image.loading {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.event-image.loading img {
+    opacity: 0;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 .event-figures {

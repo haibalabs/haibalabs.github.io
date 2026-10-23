@@ -1,8 +1,19 @@
 // ui-manager.js
 import { formatHistoricalDate, parseTimeToSortableValue } from './date-handlers.js';
 import { formatLocations, getMapLocation } from './map-utils.js';
+import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, failedImageUrls, setImageFailureHandler } from './image-utils.js';
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
+
+function escapeHtml(str) {
+    if (!str || typeof str !== 'string') return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
 export class UIManager {
     constructor(eventManager, panelManager) {
@@ -60,6 +71,13 @@ export class UIManager {
             resizeTimeout = setTimeout(() => {
                 this.renderEvents(); // Re-render with new measurements
             }, 150); // Debounce resize events
+        });
+
+        // A dropped image shrinks its event; re-render so measured heights and positions follow
+        let imageFailureTimeout;
+        setImageFailureHandler(() => {
+            clearTimeout(imageFailureTimeout);
+            imageFailureTimeout = setTimeout(() => this.renderEvents(), 150);
         });
 
         this.setupSettings();
@@ -391,7 +409,8 @@ export class UIManager {
             Math.ceil(event.figures.join(' ').length / charsPerLine) * lineHeight + 16 : 0;
                 
         // Add image height if present
-        const imageHeight = event.image_url ? parseInt(getComputedStyle(document.documentElement)
+        const hasImage = event.image_url && !failedImageUrls.has(sanitizeUrl(event.image_url));
+        const imageHeight = hasImage ? parseInt(getComputedStyle(document.documentElement)
             .getPropertyValue('--event-image-height')) : 0;
                 
         return baseHeight + (estimatedLines * lineHeight) + figuresHeight + imageHeight;
@@ -759,15 +778,28 @@ export class UIManager {
     }
 
     getEventHTML(event, formattedDate, confidenceBadge) {
-        const imageSection = event.image_url ? `
-            <div class="event-image loading">
-                <img src="${event.image_url}" 
-                    alt="${event.name}"
+        let imageSection = '';
+        const originalUrl = sanitizeUrl(event.image_url);
+        if (originalUrl && !failedImageUrls.has(originalUrl)) {
+            const optimizedUrl = thumbFailedUrls.has(originalUrl)
+                ? originalUrl
+                : sanitizeUrl(getOptimizedImageUrl(originalUrl));
+            const alreadyLoaded = loadedImageUrls.has(optimizedUrl);
+            // Only apply the loading/shimmer class if this image hasn't been seen before.
+            // Once loaded, the onload handler caches the URL so subsequent virtual-scroll
+            // re-renders skip the shimmer entirely.
+            const loadingClass = alreadyLoaded ? '' : ' loading';
+            imageSection = `
+            <div class="event-image${loadingClass}">
+                <img src="${escapeHtml(optimizedUrl)}"
+                    data-original="${escapeHtml(originalUrl)}"
+                    alt="${escapeHtml(event.name)}"
                     loading="lazy"
-                    onload="this.parentElement.classList.remove('loading')"
-                    onerror="this.parentElement.style.display='none'"/>
+                    onload="window._onEventImageLoad(this)"
+                    onerror="window._onEventImageError(this)"/>
             </div>
-        ` : '';
+        `;
+        }
 
         const figuresSection = event.figures?.length ? `
         <div class="event-figures">
