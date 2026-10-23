@@ -118,18 +118,15 @@ test('full canonical snapshot loads in the actual timeline', async ({ page }) =>
   expect(loaded.firstCorrection).toBeTruthy();
   expect(loaded.mapped).toBeGreaterThan(0);
   await page.locator('#toggle-map').click();
-  await page.getByRole('button', { name: 'Search this area', exact: true }).click();
-  await page.getByRole('spinbutton', { name: 'From year' }).fill('1800');
-  await page.getByRole('spinbutton', { name: 'Through year' }).fill('1900');
-  await page.getByRole('button', { name: 'Apply years', exact: true }).click();
-  const target = page.locator('.map-results button').first();
+  await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
+  const target = page.locator('.event').first();
   const targetId = await target.getAttribute('data-event-id');
-  await target.click();
+  await target.getByRole('button', { name: 'Show on map', exact: true }).click();
   await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', targetId);
   await expect(page.locator('.event.map-selected')).toBeInViewport();
-  await expect(page.locator('.map-status')).toContainText('Selected area:');
+  await expect(page.locator('.map-status')).toContainText('events in selected area');
   await expect(page.locator('.leaflet-marker-icon').first()).toBeVisible();
   await page.waitForTimeout(700); // Finish Leaflet's fitBounds animation for visual evidence.
-  await page.screenshot({ path: '/tmp/t6-canonical-map.png' });
+  await page.screenshot({ path: '/tmp/t6-simple-map.png' });
   console.log('Canonical browser acceptance:', JSON.stringify({ ...loaded, firstRenderMs, targetId }));
 });

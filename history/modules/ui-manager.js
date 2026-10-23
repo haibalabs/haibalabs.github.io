@@ -785,7 +785,8 @@ export class UIManager {
         if (this.mapBrowser) {
             const button = document.createElement('button');
             button.className = 'event-map-button';
-            button.textContent = 'Show places';
+            button.textContent = 'Show on map';
+            button.title = 'Show all saved locations linked to this event';
             button.addEventListener('click', () => this.mapBrowser.selectEvent(eventDiv.dataset.eventId));
             eventDiv.querySelector('.event-time').appendChild(button);
         }

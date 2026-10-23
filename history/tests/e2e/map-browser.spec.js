@@ -40,43 +40,40 @@ async function setup(page) {
   await page.goto('/history/index.html?file=map-fixture.json');
   await expect(page.locator('.event').first()).toBeVisible();
   await page.locator('#toggle-map').click();
-  await expect(page.getByRole('button', { name: 'Search this area', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Filter by visible area', exact: true })).toBeVisible();
 }
-test('area intersects secondary locations and years; selecting a result reaches virtual card and all points', async ({ page }) => {
+test('visible area includes secondary places and marker selection reaches a virtual card', async ({ page }) => {
   const errors = []; let geocodes = 0;
   page.on('pageerror', error => errors.push(error.message));
   page.on('request', request => { if (request.url().includes('nominatim.openstreetmap.org')) geocodes++; });
   await setup(page);
-  await page.getByRole('button', { name: 'Search this area', exact: true }).click();
-  await expect(page.locator('.map-status')).toContainText('Selected area: 79 events');
-  await page.locator('#searchInput').fill('Fixture');
-  await page.getByRole('spinbutton', { name: 'From year' }).fill('1930');
-  await page.getByRole('spinbutton', { name: 'Through year' }).fill('1950');
-  await page.getByRole('button', { name: 'Apply years', exact: true }).click();
-  await expect(page.locator('.map-status')).toContainText('21 events');
-  await page.locator('.map-results button[data-event-id="evt_49"]').click();
-  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_49');
+  await expect(page.locator('.map-results, .map-years')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
+  await expect(page.locator('.map-status')).toHaveText('79 events in selected area');
+  await page.locator('.leaflet-overlay-pane path.leaflet-interactive').first().click();
+  await page.locator('.leaflet-popup button[data-event-id="evt_19"]').click();
+  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_19');
   await expect(page.locator('.event.map-selected')).toBeInViewport();
   await expect(page.locator('.leaflet-marker-icon')).toHaveCount(2);
-  await expect(page.locator('.map-status')).toContainText('Selected area: 21 events');
-  await page.getByRole('button', { name: 'Clear area / place', exact: true }).click();
-  await expect(page.locator('.map-status')).toContainText('All areas: 21 events');
-  await expect(page.locator('#searchInput')).toHaveValue('Fixture');
-  await expect(page.getByRole('spinbutton', { name: 'From year' })).toHaveValue('1930');
+  await expect(page.locator('.map-selection')).toContainText('2 saved locations');
+  await expect(page.locator('.map-status')).toHaveText('79 events in selected area');
+  await page.locator('#searchInput').fill('Fixture 1');
+  await expect(page.locator('.map-status')).toHaveText('11 events in selected area');
+  await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Clear area filter', exact: true })).toBeHidden();
+  await expect(page.locator('#searchInput')).toHaveValue('Fixture 1');
   expect(geocodes).toBe(0); expect(errors).toEqual([]);
 });
-test('unmapped events remain selectable; precision filters and empty intersections are explicit', async ({ page }) => {
+test('clearing the area restores unmapped events and their honest map state', async ({ page }) => {
   await setup(page);
-  await page.getByRole('button', { name: 'Unmapped events', exact: true }).click();
-  await expect(page.locator('.map-status')).toContainText('Unmapped only: 1 events');
-  await page.locator('.map-results button').click();
-  await expect(page.locator('.map-selection')).toContainText('No saved coordinates');
-  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_79');
-  await page.getByRole('button', { name: 'Clear area / place', exact: true }).click();
-  await page.getByRole('checkbox', { name: /Include approximate/ }).uncheck();
-  await expect(page.locator('.map-status')).toContainText('All areas: 0 events');
-  await page.getByRole('checkbox', { name: /Include approximate/ }).check();
-  await expect(page.locator('.map-status')).toContainText('All areas: 80 events');
+  await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
+  await page.locator('#searchInput').fill('Fixture 79');
+  await expect(page.locator('.map-status')).toHaveText('0 events in selected area');
+  await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
+  await expect(page.locator('.event[data-event-id="evt_79"]')).toBeVisible();
+  await page.getByRole('button', { name: 'Show on map', exact: true }).click();
+  await expect(page.locator('.map-selection')).toContainText('No saved map location');
+  await expect(page.locator('.leaflet-marker-icon')).toHaveCount(0);
 });
 test('manager combines geographic, category, literal text and start-year filters', async ({ page }) => {
   await setup(page);
@@ -94,17 +91,15 @@ test('manager combines geographic, category, literal text and start-year filters
   expect(result.afterClear).toEqual(result.ids);
 });
 
-test('a place marker filters events and literal punctuation survives combined filters', async ({ page }) => {
+test('area filtering preserves category and literal text search', async ({ page }) => {
   await setup(page);
-  await page.locator('.leaflet-overlay-pane path.leaflet-interactive').first().click();
-  await page.getByRole('button', { name: 'Filter to this place', exact: true }).click();
-  await expect(page.locator('.map-status')).toContainText('Selected place: 79 events');
+  await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
   await page.locator('.filters button', { hasText: 'Culture' }).click();
-  await expect(page.locator('.map-status')).toContainText('40 events');
+  await expect(page.locator('.map-status')).toHaveText('40 events in selected area');
   await page.locator('#searchInput').fill('[78]');
-  await expect(page.locator('.map-status')).toContainText('1 events');
+  await expect(page.locator('.map-status')).toHaveText('1 event in selected area');
   await expect(page.locator('.event mark').first()).toHaveText('[78]');
-  await page.getByRole('button', { name: 'Clear area / place', exact: true }).click();
-  await expect(page.locator('.map-status')).toContainText('All areas: 1 events');
+  await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
   await expect(page.locator('#searchInput')).toHaveValue('[78]');
+  await expect(page.locator('.event')).toHaveCount(1);
 });

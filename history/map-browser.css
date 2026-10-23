@@ -1,22 +1,17 @@
-/* Reserve space inside the existing map panel for exploration controls. */
-#map-panel { display: flex; flex-direction: column; }
-#map-panel #map { flex: 1 1 auto; min-height: 150px; height: auto; }
-.map-browser { padding: 14px 16px 10px; background: var(--surface); color: var(--ink, #292722); font: 12px/1.45 system-ui, sans-serif; max-height: 46%; overflow: auto; }
-.map-browser strong { font-size: 14px; }
-.map-browser small { display: block; opacity: .75; }
-.map-actions, .map-years { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
-.map-browser button, .map-results button, .event-map-button { border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 3px; padding: 5px 7px; cursor: pointer; font: inherit; }
-.map-browser button:hover, .map-results button:hover { background: var(--surface-2); }
-.map-years input { width: 90px; padding: 5px; border: 1px solid var(--line); background: transparent; color: inherit; }
-.map-precision { display: block; margin: 8px 0; }
-.map-status { margin: 8px 0; }
+/* Let the map fill its panel; the timeline remains the event results list. */
+#map-panel #map { width: 100%; height: 100%; }
+.map-browser { position: absolute; z-index: 800; top: 14px; left: 58px; right: 14px; display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; font: 12px/1.4 var(--font-ui); }
+.map-actions { display: flex; gap: 1px; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; background: var(--surface); box-shadow: 0 2px 10px rgb(0 0 0 / .12); pointer-events: auto; }
+.map-actions button { border: 0; background: transparent; color: var(--ink); padding: 10px 14px; cursor: pointer; font: inherit; }
+.map-actions button:hover { background: var(--surface-2); }
+.map-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.map-status { margin: 0; padding: 4px 9px; border-radius: 12px; background: var(--surface); color: var(--ink-2); box-shadow: 0 1px 4px rgb(0 0 0 / .08); }
 .map-selection:empty { display: none; }
-.map-selection { border-top: 1px solid var(--line); padding-top: 8px; }
-.map-selection p { margin: 4px 0; }
-.map-results { flex: 0 1 22%; overflow: auto; background: var(--surface); padding: 8px 16px; font: 12px/1.4 system-ui, sans-serif; }
-.map-results button { display: block; width: 100%; text-align: left; margin-top: 5px; }
+.map-selection { position: absolute; z-index: 800; bottom: 30px; left: 14px; right: 14px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); box-shadow: 0 2px 10px rgb(0 0 0 / .1); font: 12px/1.4 var(--font-ui); pointer-events: none; }
+.map-selection strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.map-selection p { margin: 3px 0 0; color: var(--ink-2); }
 .leaflet-popup-content button { display: block; margin: 5px 0; }
 .event.map-selected { outline: 2px solid #9b783f; outline-offset: -2px; }
-.event-map-button { margin-left: 8px; font-size: 11px; }
-/* The map is an entry point now, including when no timeline event is selected. */
+.event-map-button { margin-left: 8px; font: inherit; font-size: 11px; color: var(--ink-2); background: transparent; border: 1px solid var(--line); border-radius: 3px; padding: 5px 7px; cursor: pointer; }
 #map-panel:not(.open) #toggle-map { right: 12px; }
+@media (max-width: 640px) { .map-browser { right: 58px; } }

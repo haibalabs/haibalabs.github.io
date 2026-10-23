@@ -1,16 +1,18 @@
 # Map browsing
 
-Open **Explore map** at the right edge. Move/zoom the map and choose **Search this area** to freeze an area filter. Set **From year / Through year**, then use the existing category buttons and text search. Negative years mean BCE; dates use the existing parser's start year, including for ranges. This is not interval-overlap or calendar-aware historical boundary search.
+Open **Explore map** at the right edge, pan/zoom, then choose **Filter by visible area**. The visible rectangle becomes a filter for the timeline, combined with the existing category and text filters. **Clear** removes only the area filter. Moving the map does not silently change an active filter; press the button again to use the new view.
 
-Click a point to see its matching events or filter to its place. Click a result to select and scroll to its stable event ID through the virtual timeline. **Show places** on an event displays all its saved points, including secondary locations. Moving the map or selecting an event does not silently replace an active area filter. **Clear area / place** preserves years, category, text and the precision preference. On a narrow screen, close the map panel to return to the timeline.
+The timeline is the results list. Click a map point to see its associated events; selecting one scrolls to its stable event ID through the virtual timeline. **Show on map** on a timeline event displays every saved location linked to that event, including secondary locations. Multiple points express recorded event associations, not proof of simultaneous occurrence, an inferred route, or a filled historical area. Area/polygon representation is future work. On narrow screens, close the map to return to the timeline.
 
-Approximate and unknown-precision points have outlined brown circles; exact/site points have solid blue circles. Popups and selected-event locations state the saved precision. Regional points represent locations, not historical polygons. **Unmapped events** keeps events without usable coordinates available. A manual coordinate correction takes precedence; otherwise only valid saved coordinates with reused/corrected status are used. Ambiguous candidate points are excluded. No map browsing action calls a geocoder.
+Approximate and unknown-precision points have outlined brown circles; explicit exact/site points have solid blue circles. Tooltips and the compact selection caption identify uncertain points. Manual coordinate corrections take precedence; otherwise only valid saved coordinates with reused/corrected status are used. Ambiguous candidate points are excluded. No browsing action calls a geocoder. Events without coordinates remain available in the timeline when the area filter is cleared; their Show on map action explains that no saved location is available.
 
-At most 200 matching points in the viewport, 50 result buttons, and 20 event buttons per popup are drawn, with explicit counts. All matching events remain in the virtual timeline; zoom or filter to narrow large sets. The index retains every event/place link, including unmapped locations. Conflicting coordinate/precision records for a place are kept separately. Canonical event/place IDs are preserved; old files use session-only fallback identities. Duplicate persisted event IDs fail loading rather than select the wrong record.
+At most 200 matching points in the viewport and 20 event buttons per popup are drawn, with a prompt to zoom or narrow the search when capped. All matching events remain in the virtual timeline. The index retains every event/place link, including unmapped locations. Conflicting coordinate/precision records for a place are kept separately. Canonical IDs are preserved; legacy files use session-only fallback identities. Duplicate persisted event IDs fail loading rather than select the wrong record.
+
+The earlier map-specific year fields, precision checkbox, unmapped-only button and duplicate results list were removed to keep the map simple. The data layer's time-range query remains covered by tests; the existing year navigator jumps through the timeline and does not filter a year range.
 
 ## Local canonical preview
 
-The default deployed `events.json` remains the legacy dataset. The canonical snapshot is not copied into this repository by this change. To use the full T2 data locally:
+The default `events.json` remains the legacy dataset. The canonical snapshot is not copied into this repository. For the full T2 data locally:
 
 ```sh
 cd history
