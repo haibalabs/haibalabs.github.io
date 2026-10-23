@@ -499,11 +499,15 @@ mark {
     transition: opacity 0.3s ease-in;
 }
 
-.event-image.loading img {
-    opacity: 0;
+/* the shimmer is on the wrapper: opacity 0 on the img would hide a background painted on it */
+.event-image.loading {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
+}
+
+.event-image.loading img {
+    opacity: 0;
 }
 
 @keyframes shimmer {
