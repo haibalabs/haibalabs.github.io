@@ -84,8 +84,10 @@ test('full canonical snapshot loads in the actual timeline', async ({ page }) =>
     if (url.startsWith('http://localhost:8080/') || url.includes('unpkg.com/leaflet')) return route.continue();
     return route.abort();
   });
+  const started = Date.now();
   await page.goto('/history/index.html?file=canonical-t2.json');
   await expect(page.locator('#timeline-content .event').first()).toBeVisible({ timeout: 60000 });
+  const firstRenderMs = Date.now() - started;
   expect(errors).toEqual([]);
   const loaded = await page.evaluate(async () => {
     const { EventManager } = await import('./modules/event-manager.js');
@@ -94,8 +96,19 @@ test('full canonical snapshot loads in the actual timeline', async ({ page }) =>
     await verifier.loadUnverifiedLocations('unverified-locations.json');
     const manager = new EventManager(verifier);
     await manager.loadEvents('canonical-t2.json');
+    const index = manager.placeIndex;
+    const bounds = { south: 35, north: 60, west: -10, east: 30 };
+    const samples = [];
+    for (let i = 0; i < 50; i++) {
+      const start = performance.now();
+      manager.setGeographicFilter({ bounds });
+      manager.setTimeRange(1800, 1900);
+      manager.getFilteredEvents('culture', '');
+      samples.push(performance.now() - start);
+    }
+    samples.sort((a,b) => a-b);
     const corrected = manager.events.flatMap(e => e.locations).filter(l => l.geography.status === 'corrected');
-    return { count: manager.events.length, ids: new Set(manager.events.map(e => e.event_id)).size,
+    return { browser: navigator.userAgent, points: index.points.size, allLocationMapped: index.events.size - index.unmapped.size, filterP50Ms: samples[25], filterP95Ms: samples[47], count: manager.events.length, ids: new Set(manager.events.map(e => e.event_id)).size,
       corrected: corrected.length, firstCorrection: corrected[0].corrected,
       mapped: manager.events.filter(e => Array.isArray(getMapLocation(e.locations))).length };
   });
@@ -104,5 +117,19 @@ test('full canonical snapshot loads in the actual timeline', async ({ page }) =>
   expect(loaded.corrected).toBeGreaterThan(0);
   expect(loaded.firstCorrection).toBeTruthy();
   expect(loaded.mapped).toBeGreaterThan(0);
-  console.log('Canonical browser acceptance:', JSON.stringify(loaded));
+  await page.locator('#toggle-map').click();
+  await page.getByRole('button', { name: 'Search this area', exact: true }).click();
+  await page.getByRole('spinbutton', { name: 'From year' }).fill('1800');
+  await page.getByRole('spinbutton', { name: 'Through year' }).fill('1900');
+  await page.getByRole('button', { name: 'Apply years', exact: true }).click();
+  const target = page.locator('.map-results button').first();
+  const targetId = await target.getAttribute('data-event-id');
+  await target.click();
+  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', targetId);
+  await expect(page.locator('.event.map-selected')).toBeInViewport();
+  await expect(page.locator('.map-status')).toContainText('Selected area:');
+  await expect(page.locator('.leaflet-marker-icon').first()).toBeVisible();
+  await page.waitForTimeout(700); // Finish Leaflet's fitBounds animation for visual evidence.
+  await page.screenshot({ path: '/tmp/t6-canonical-map.png' });
+  console.log('Canonical browser acceptance:', JSON.stringify({ ...loaded, firstRenderMs, targetId }));
 });

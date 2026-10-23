@@ -1,3 +1,4 @@
+import { PlaceEventIndex } from './place-event-index.js';
 // event-manager.js
 import { parseTimeToSortableValue } from './date-handlers.js';
 
@@ -14,6 +15,9 @@ export class EventManager {
         this.currentFilter = 'all';
         this.searchTerm = '';
         this.cachedFilteredEvents = null;
+        this.placeIndex = new PlaceEventIndex();
+        this.geographicFilter = {};
+        this.timeRange = {};
         this.currentFile = null;
         this.lastSyncTimestamp = null;
 
@@ -294,7 +298,18 @@ export class EventManager {
         this.invalidateCache();
     }
 
+    setGeographicFilter(filter = {}) {
+        this.geographicFilter = filter;
+        this.invalidateCache();
+    }
+
+    setTimeRange(from = null, through = null) {
+        this.timeRange = { from, through };
+        this.invalidateCache();
+    }
+
     sortEvents() {
+        this.placeIndex = new PlaceEventIndex(this.events);
         this.sortedIndices = this.events
             .map((event, index) => ({
                 index,
@@ -309,6 +324,7 @@ export class EventManager {
             searchTerm !== this.searchTerm || 
             !this.cachedFilteredEvents) {
             
+            const geographicIds = this.placeIndex.query(this.geographicFilter);
             this.currentFilter = filter;
             this.searchTerm = searchTerm;
             this.cachedFilteredEvents = this.sortedIndices
@@ -322,7 +338,11 @@ export class EventManager {
                         (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (event.enhanced_description && event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase()))
                     );
-                    return hasAcceptableConfidence && matchesFilter && matchesSearch;
+                    const id = this.placeIndex.idFor(event);
+                    const year = this.placeIndex.years.get(id);
+                    const { from, through } = this.timeRange;
+                    const matchesTime = (from == null || year >= from) && (through == null || year <= through);
+                    return hasAcceptableConfidence && matchesFilter && matchesSearch && matchesTime && geographicIds.has(id);
                 });
         }
         return this.cachedFilteredEvents;
