@@ -40,8 +40,10 @@ With the Firebase adapter, `ref` is the Storage path, which carries the timeline
 ```
 timelines/{timelineId}/{generation}/events/{eventId}/img_{uuid}.webp
 timelines/{timelineId}/{generation}/events/{eventId}/img_{uuid}_thumb.webp
-generation = the timeline's createdAt in milliseconds
+generation = "{seconds}_{nanoseconds}" of the timeline's createdAt, e.g. 1729800000_123456000
 ```
+
+The generation is the full Firestore Timestamp, not milliseconds: `toMillis()` drops sub-millisecond precision, so two timelines created under the same ID within one millisecond would otherwise share files. The client builds it from `createdAt.seconds` and `createdAt.nanoseconds`, exactly as stored; the rules compare it as `generation == string(t.seconds()) + '_' + string(t.nanos())`, where `t` is the timeline's current `createdAt`.
 
 Files are immutable: replacing a photo uploads a new file and deletes the old one.
 
@@ -52,7 +54,7 @@ Files are immutable: replacing a photo uploads a new file and deletes the old on
 | `image-resize.js` | browser canvas only | Decodes the chosen file with its camera orientation applied, re-encodes it as WebP (JPEG where WebP encoding is unavailable) at most 1600 px on the long edge, makes a 400 px thumbnail, and drops all metadata, including GPS location |
 | `image-store.js` | nothing | The adapter contract below, and the in-memory adapter used by tests |
 | `firebase-image-store.js` | Firebase Storage SDK | The Firebase adapter; the only module that knows about Storage |
-| `link-image-store.js` | nothing | Optional adapter for testing without billing: `ref` is an https URL the user pastes; no uploads |
+| `link-image-store.js` | nothing | Optional adapter for testing without billing: `ref` is an https URL the user pastes; no uploads. **Not private**: anyone with the link can see the image, so the form labels it as test input |
 | form and card code | the contract only | Choosing, previewing, captioning, reordering and removing photos; showing the thumbnail on the card and the full image when opened |
 
 ### Adapter contract
@@ -71,7 +73,7 @@ The Firebase adapter reads files through the signed-in SDK (`getBlob`), not down
 
 ## Access (Storage rules, deployed from `firebase/storage.rules`)
 
-- Read and delete: the caller is signed in with a role, is the timeline's owner or a listed member, and the path's generation equals that timeline's current `createdAt`. The rules read the timeline and the caller's role from Firestore (cross-service rules).
+- Read and delete: the caller is signed in with a role, is the timeline's owner or a listed member, and the path's generation equals that timeline's current `createdAt` in the seconds-and-nanoseconds encoding above. The rules read the timeline and the caller's role from Firestore (cross-service rules).
 - Create: as above, plus a size limit (2 MB full, 200 KB thumbnail), content type `image/webp` or `image/jpeg`, and a file name of the form `img_<uuid>.webp` or `img_<uuid>_thumb.webp` (or `.jpg`). There are no updates.
 - Everything else is denied.
 - Firestore rules for timeline events add an `images` check: a list of at most 4 entries, each `ref` under that same event's path and generation, with typed fields and length limits. A stray ref could not be read anyway, but the check keeps the records clean.
@@ -82,12 +84,28 @@ The Firebase adapter reads files through the signed-in SDK (`getBlob`), not down
 - Edit: removing a photo deletes its files after the event saves without it; reordering and captions only change the event record.
 - Delete event: delete its files, then the event.
 - Delete timeline: delete its files, then its events, then the timeline. Files that a failed cleanup leaves behind are unreachable, because the generation no longer matches. They cost storage until removed by hand; an admin cleanup tool is left for later.
-- Display: cards load thumbnails lazily as they scroll into view, and opening the image loads the full one; object URLs are cached per session and revoked when the timeline closes.
+- Display: cards load thumbnails lazily as they scroll into view, and opening the image loads the full one.
+
+### Loading and the image cache
+
+Image loads follow the same guards as other timeline reads (see the session and selection tokens in `modules/timeline-ui.js`):
+
+- Each `load` notes the session, the selection and the timeline generation it started under. When it completes, the result is shown only if all three still match; otherwise the new object URL is revoked at once and nothing is displayed or cached.
+- The cache is keyed by generation and `ref`, and belongs to the open timeline. Closing the timeline, signing out, switching accounts, losing access, and deleting or recreating the timeline clear it: displayed images are removed and every object URL is revoked.
+- Tests include a load that completes after the timeline was closed and after an account switch, checking that no image is shown and no object URL is left unrevoked.
+
+## Rights and attribution
+
+A photo is treated as personal because of where it comes from, never because license fields are missing:
+
+- Personal photos are the images of an event from a personal timeline (`timelines/...`), recorded by the app with `image_role: "personal_photo"`. For these, the card shows the optional `credit` and no license line; no `rights_basis` such as "personal" and no ownership claim is recorded.
+- World-event images keep the image pipeline's fields. A world image without rights fields stays "rights unknown"; it is never treated as personal.
 
 ## Testing
 
 - The adapter contract test suite runs against the in-memory adapter, and against the Firebase adapter on the Storage emulator.
-- Storage rules tests on the emulator (`@firebase/rules-unit-testing`): owner, member and outsider access; generation mismatch after a timeline is recreated; size, type and name limits; no updates.
+- Storage rules tests on the emulator (`@firebase/rules-unit-testing`): owner, member and outsider access; generation mismatch after a timeline is recreated, including two generations within the same millisecond (same `toMillis()`, different nanoseconds); size, type and name limits; no updates.
+- Unit tests for image loading with deferred adapter results: a late load after close, sign-out or account switch shows nothing and revokes its object URL; closing clears the cache.
 - Firestore rules tests for the `images` field.
 - Browser tests on the emulators: add, caption, reorder, remove, delete an event, delete a timeline; private reads (no download URLs requested); metadata stripped from the stored file.
 
@@ -102,4 +120,4 @@ The Firebase adapter reads files through the signed-in SDK (`getBlob`), not down
 1. Maximum photos per event: 4 proposed.
 2. Keep only resized copies (1600 px), not originals: proposed, to keep costs and privacy exposure low.
 3. Captions and credits: optional fields on each photo, as above.
-4. Build the link-only adapter as well, for testing before billing is enabled, or only the Firebase adapter.
+4. Build the link-only adapter as well, for testing before billing is enabled (not private; labelled as test input), or only the Firebase adapter.
