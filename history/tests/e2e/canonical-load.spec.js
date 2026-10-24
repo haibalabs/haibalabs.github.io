@@ -7,7 +7,10 @@ const firebaseStub = `
 export const initializeApp = () => ({});
 export const getAnalytics = () => ({});
 export const getFirestore = () => ({});
+export const connectFirestoreEmulator = () => {};
+export const connectAuthEmulator = () => {};
 export const getAuth = () => ({ currentUser: null });
+export const onAuthStateChanged = (auth, callback) => { queueMicrotask(() => callback(null)); return () => {}; };
 export const collection = () => ({});
 export const doc = () => ({});
 export const setDoc = async () => {};
