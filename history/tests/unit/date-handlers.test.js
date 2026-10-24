@@ -4,7 +4,8 @@ import {
   parseTimeToSortableValue,
   formatHistoricalDate,
   extractYear,
-  extractDateComponents
+  extractDateComponents,
+  numericDateParts
 } from '../../modules/date-handlers.js';
 
 const TOLERANCE = 0.0001;
@@ -237,5 +238,18 @@ describe('numeric dates typed in the event form', () => {
   it('does not touch ISO date ranges from the world data', () => {
     assert.equal(parseTimeToSortableValue('1786-09-01/1786-12-31').year, 1786);
     assert.equal(parseTimeToSortableValue('1876-06-25/26').year, 1876);
+  });
+});
+
+describe('numericDateParts — the shared month/day/year reading', () => {
+  it('reads month first, and day first only when the first number cannot be a month', () => {
+    assert.deepEqual(numericDateParts('1/25/1976'), { year: 1976, month: 1, day: 25 });
+    assert.deepEqual(numericDateParts('25/1/1976'), { year: 1976, month: 1, day: 25 });
+    assert.deepEqual(numericDateParts('3/4/950'), { year: 950, month: 3, day: 4 });
+  });
+  it('returns null for other shapes and for days that do not exist', () => {
+    for (const text of ['1/25/76', '1/25/19760', 'early 1/25/1976', '2/30/1976', '2/29/1900', '13/13/1976', '0/5/1976', '1976-01-25']) {
+      assert.equal(numericDateParts(text), null, text);
+    }
   });
 });
