@@ -1,3 +1,4 @@
+import { MapBrowser } from './modules/map-browser.js';
 import { VERSION }      from './modules/config.js';
 import { EventManager } from './modules/event-manager.js';
 import { UIManager }    from './modules/ui-manager.js';
@@ -42,6 +43,7 @@ async function initializeApp() {
     try {
         document.body.classList.add('hide-low-confidence');
         await eventManager.loadEvents(dataFile);
+        uiManager.mapBrowser = new MapBrowser(eventManager, uiManager, panelManager);
         uiManager.renderFilters();
         initControls();
 

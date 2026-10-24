@@ -9,7 +9,7 @@ export default defineConfig({
     headless: true,
   },
   webServer: {
-    command: 'python3 -m http.server 8080 -d ..',
+    command: 'python3 tests/serve.py',
     port: 8080,
     reuseExistingServer: !process.env.CI,
   },

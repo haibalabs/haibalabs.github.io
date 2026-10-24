@@ -59,6 +59,9 @@ export function initMap() {
  * Geocode a location using the Nominatim API. Uses a simple rate-limit trick.
  */
 export async function getCoordinates(locationName, geocodeCache) {
+  if (Array.isArray(locationName)) {
+      return isValidCoordinates(locationName) ? locationName : null;
+  }
   // Return from cache if available
   if (geocodeCache.has(locationName)) {
       return geocodeCache.get(locationName);
@@ -149,7 +152,7 @@ export function getLocationKey(location) {
   // Add components only if they're not already part of the name
   ['city', 'region', 'country'].forEach(field => {
     const value = location[field];
-    if (!value || value.toLowerCase().includes('various') || value === "Unknown" || value === "N/A") return;
+    if (!value || value.toLowerCase().includes('various') || ['unknown', 'n/a'].includes(value.trim().toLowerCase())) return;
     
     // Check if this component is already included in any existing part
     if ([...parts].every(part => !part.toLowerCase().includes(value.toLowerCase()))) {
@@ -174,12 +177,21 @@ export function getMapLocation(locations) {
   const location = locations[0];
   
   // Return coordinates array if available
-  if (location.corrected && Array.isArray(location.corrected)) {
+  if (isValidCoordinates(location.corrected)) {
     return location.corrected;
+  }
+
+  if (isValidCoordinates(location.geography?.coordinates)) {
+    return location.geography.coordinates;
   }
   
   // Otherwise return string location
   return location.corrected || getLocationKey(location);
+}
+
+export function isValidCoordinates(value) {
+  return Array.isArray(value) && value.length === 2 &&
+    value.every(Number.isFinite) && Math.abs(value[0]) <= 90 && Math.abs(value[1]) <= 180;
 }
 
 export class LocationVerifier {
@@ -213,13 +225,22 @@ export class LocationVerifier {
       if (!event.locations || !event.locations.length || !this.isInitialized) 
         return;
 
-      const locationKey = getLocationKey(event.locations[0]);
-      const mapping = this.locationMappings.get(locationKey);
-
-      event.locations[0] = {
-          ...event.locations[0],
-          verified: Boolean(!mapping) || Boolean(mapping.corrected),
-          corrected: mapping?.corrected || null
-      };
+      event.locations = event.locations.map(raw => {
+          const location = typeof raw === 'string' ? { name: raw } : { ...raw };
+          const mapping = this.locationMappings.get(getLocationKey(location)) ||
+              this.locationMappings.get(location.name);
+          const corrected = mapping?.corrected || location.corrected || null;
+          // A new manual override invalidates coordinates from an older snapshot.
+          if (corrected && JSON.stringify(corrected) !== JSON.stringify(location.geography?.correction)) {
+              if (location.geography) {
+                  location.geography = { ...location.geography, status: 'corrected',
+                      coordinates: isValidCoordinates(corrected) ? corrected : null,
+                      correction: corrected, precision: 'unknown' };
+              }
+          }
+          return { ...location,
+              verified: location.geography ? location.geography.status === 'corrected' : Boolean(!mapping) || Boolean(corrected),
+              corrected };
+      });
   }
 }

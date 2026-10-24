@@ -88,6 +88,8 @@ test.describe('App loads with sample data', () => {
 
   test('keeps a quote in an image URL inside the src attribute', async ({ page }) => {
     setupNetworkBlocking(page);
+    // Keep the image alive while inspecting attributes; DNS failure would remove it.
+    await page.route('https://example.test/**', route => route.fulfill({ contentType: 'image/png', body: PNG }));
     await page.route('**/quote-fixture.json', route => route.fulfill({ json: [{
       name: 'Quote fixture', locations: [], figures: [], categories: ['culture'],
       enhanced_description: 'Image URL containing a quote.', enhanced_time: '1899', confidence: 'high',
@@ -142,11 +144,17 @@ test.describe('App loads with sample data', () => {
 
   test('drops images that fail entirely and closes the gap they leave', async ({ page }) => {
     setupNetworkBlocking(page);
-    routeWikimediaImages(page, { thumb: false, original: false });
+    let releaseFailures;
+    const ready = new Promise(resolve => { releaseFailures = resolve; });
+    await page.route('**/upload.wikimedia.org/**', async route => {
+      await ready;
+      await route.fulfill({ status: 404, body: '' });
+    });
 
-    await page.goto('/history/index.html?file=events_samples.json');
+    await page.goto('/history/index.html?file=events_samples.json', { waitUntil: 'domcontentloaded' });
     await page.waitForSelector('.event-image img', { state: 'attached' });
     const name = await page.evaluate(() => document.querySelector('.event-image img').getAttribute('alt'));
+    releaseFailures();
     // the failure re-render is debounced; wait until that event renders without its image
     await expect.poll(() => page.evaluate((n) => {
       const event = [...document.querySelectorAll('#timeline-content .event')]

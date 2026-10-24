@@ -539,7 +539,7 @@ export class UIManager {
 
     getEventHeight(event) {
         // Real height (measured)
-        const realHeight = this.eventHeights.get(event.name);
+        const realHeight = this.eventHeights.get(this.eventManager.placeIndex.idFor(event));
         if (realHeight) return realHeight;
     
         // Estimated height (if calibrated)
@@ -652,6 +652,7 @@ export class UIManager {
     async renderEvents(onMeasurementsComplete) {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         this.filteredCount = filteredEvents.length;
+        this.mapBrowser?.refresh(filteredEvents);
     
         const contentContainer = document.getElementById('timeline-content');
         const placeholder = document.getElementById('timeline-placeholder');
@@ -669,6 +670,7 @@ export class UIManager {
         }
         // Handle no results case
         else if (filteredEvents.length === 0) {
+            this.updateEventCounts();
             this.handleNoResults(contentContainer, placeholder);
             return;
         }
@@ -720,10 +722,10 @@ export class UIManager {
                     console.error('Missing event name:', event);
                 }   
 
-                const cachedHeight = event.name ? this.eventHeights.get(event.name) : 0;
+                const cachedHeight = event.name ? this.eventHeights.get(this.eventManager.placeIndex.idFor(event)) : 0;
                
                 if (actualHeight !== cachedHeight) {
-                    this.eventHeights.set(event.name, actualHeight);
+                    this.eventHeights.set(this.eventManager.placeIndex.idFor(event), actualHeight);
                     // Update running average
                     if (!cachedHeight) { // Only for new measurements
                         this.measuredHeightsSum += actualHeight;
@@ -777,9 +779,27 @@ export class UIManager {
         }, 3000);
     }
 
+    scrollToEventId(id) {
+        const events = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
+        const index = events.findIndex(event => this.eventManager.placeIndex.idFor(event) === id);
+        if (index < 0) return false;
+        this.timelineContainer.scrollTop = this.positions.get(index) || 0;
+        this.lastScrollPosition = this.timelineContainer.scrollTop;
+        this.updateVisibleRange();
+        this.renderEvents();
+        // Re-align after the virtual window has measured the target card.
+        requestAnimationFrame(() => {
+            const target = [...document.querySelectorAll('.event[data-event-id]')].find(el => el.dataset.eventId === id);
+            if (target) this.timelineContainer.scrollTop += target.getBoundingClientRect().top - this.timelineContainer.getBoundingClientRect().top;
+        });
+        return true;
+    }
+
     renderEvent(event, sortableTime) {
         const eventDiv = document.createElement('div');
         eventDiv.className = 'event';
+        eventDiv.dataset.eventId = this.eventManager.placeIndex.idFor(event);
+        eventDiv.classList.toggle('map-selected', eventDiv.dataset.eventId === this.mapBrowser?.selectedId);
         eventDiv.setAttribute('data-confidence', event.confidence || 'medium');
         eventDiv.setAttribute('data-sortable-time', sortableTime);
 
@@ -878,14 +898,40 @@ export class UIManager {
             const timeDiv = eventDiv.querySelector('.event-time');
             const locationSpan = document.createElement('span');
 
-            // Check verification status
-            const isVerified = event.locations[0]?.verified !== false;
-            locationSpan.className = `event-location ${isVerified ? 'clickable' : 'unverified'}`;
-            locationSpan.innerHTML = `${isVerified ? '<i class="fa-light fa-location-crosshairs"></i>' : ''}${locationText}`;
+            // A cached point can be displayed without claiming factual verification.
+            const location = event.locations[0];
+            const geography = location?.geography;
+            const canMap = this.mapBrowser ? this.eventManager.placeIndex.eventPoints.get(this.eventManager.placeIndex.idFor(event))?.length > 0 : geography
+                ? ['reused', 'corrected'].includes(geography.status) &&
+                  (Array.isArray(geography.coordinates) || Boolean(location.corrected))
+                : location?.verified !== false;
+            locationSpan.className = `event-location ${canMap ? 'clickable' : 'unverified'}`;
+            locationSpan.textContent = locationText;
+            if (canMap) {
+                const icon = document.createElement('i');
+                icon.className = 'fa-light fa-location-crosshairs';
+                icon.setAttribute('aria-hidden', 'true');
+                locationSpan.prepend(icon);
+                locationSpan.setAttribute('role', 'button');
+                locationSpan.setAttribute('aria-label', 'Show on map');
+                locationSpan.tabIndex = 0;
+                locationSpan.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); locationSpan.click(); }
+                });
+            }
+            if (geography?.precision === 'approximate') {
+                locationSpan.title = 'Approximate cached location; not independently verified';
+            } else if (geography?.status === 'ambiguous') {
+                locationSpan.title = 'Location needs review before mapping';
+            }
 
-            if (isVerified) {
+            if (canMap) {
                 locationSpan.addEventListener('click', async (e) => {
                     e.stopPropagation();
+                    if (this.mapBrowser) {
+                        this.mapBrowser.selectEvent(this.eventManager.placeIndex.idFor(event));
+                        return;
+                    }
                     const mapLocation = getMapLocation(event.locations);
                     if (mapLocation) {
                         await this.panelManager.showLocationOnMap(locationSpan, event, mapLocation);
@@ -973,8 +1019,10 @@ export class UIManager {
     }
 
     highlightSearchTerms(text, searchTerm) {
+        text = text || '';
         if (!searchTerm) return text;
-        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        const literal = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(${literal})`, 'gi');
         return text.replace(regex, '<mark>$1</mark>');
     }
 

@@ -4,3 +4,14 @@
 node_modules/
 test-results/
 playwright-report/
+
+# Historical snapshots archived in history-data/legacy/frontend-local-2026-10-24/
+/history/bc_events_fixed_unfound.json
+/history/dupli.txt
+/history/events_fixed_unfound.json
+/history/events_sample_images.json
+/history/events_w_duplicates.json
+/history/immigrant_song.json
+/history/mid500_with_images.json
+/history/unverified-locations_old-2.json
+/history/unverified-locations_old.json
