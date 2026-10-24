@@ -14,7 +14,7 @@ Editors add photos to events in their personal timelines (see [PERSONAL-TIMELINE
 
 ## Cost (Firebase Storage)
 
-Storage requires the Blaze plan. This project's bucket is a `*.firebasestorage.app` bucket, which includes at no cost each month 5 GB stored, 100 GB downloaded, 5,000 upload operations and 50,000 download operations, in `us-central1`, `us-east1` or `us-west1` only ([pricing](https://firebase.google.com/pricing), checked 2026-10-24). With a resized photo of about 300 KB plus a thumbnail of about 30 KB, that is roughly 15,000 photos stored and 2,500 photos uploaded a month. Testing costs nothing; a $5 budget alert reports anything unexpected. Setup steps: [firebase/README.md](firebase/README.md#cloud-storage-personal-timeline-images).
+Storage requires the Blaze plan. This project's bucket is a `*.firebasestorage.app` bucket, which includes at no cost each month 5 GB stored, 100 GB downloaded, 5,000 upload operations and 50,000 download operations, in `us-central1`, `us-east1` or `us-west1` only ([pricing](https://firebase.google.com/pricing), checked 2026-10-24). With a resized photo of about 300 KB plus a thumbnail of about 30 KB, that is roughly 15,000 photos stored and 2,500 photos uploaded a month. Testing costs nothing; a $5 budget alert reports anything unexpected. The bucket is `gs://historytimeline-81f70.firebasestorage.app` in `us-east1`, a no-cost region, created 2026-10-24 on a billing account in its Google Cloud free trial (to be upgraded to paid before day 90 to keep Storage). Setup steps: [firebase/README.md](firebase/README.md#cloud-storage-personal-timeline-images).
 
 ## Data model
 
