@@ -8,6 +8,7 @@ HistoriLine uses Firebase Authentication (email/password) and Cloud Firestore. T
 | Console | https://console.firebase.google.com/project/historytimeline-81f70 |
 | Owner | rachid.el.guerrab@gmail.com (Project settings → Users and permissions) |
 | Rules | [firestore.rules](firestore.rules), deployed from this directory only |
+| Storage | Planned for personal timeline images; see [Cloud Storage](#cloud-storage-personal-timeline-images) |
 
 ## Access model
 
@@ -59,6 +60,21 @@ Never edit rules in the console: the next deploy from this directory overwrites 
    ```
 
 Publishing the site to GitHub Pages does not deploy rules.
+
+## Cloud Storage (personal timeline images)
+
+Planned for photos in personal timelines; the app does not use Storage yet. See [../PERSONAL-IMAGES.md](../PERSONAL-IMAGES.md) for the design.
+
+Storage requires the pay-as-you-go **Blaze** plan (since February 2026). The project's bucket is a `*.firebasestorage.app` bucket, which on Blaze includes at no cost each month 5 GB stored, 100 GB downloaded, 5,000 upload operations and 50,000 download operations, but only for buckets in `us-central1`, `us-east1` or `us-west1`. Check https://firebase.google.com/pricing for current figures.
+
+One-time setup by the project owner:
+
+1. Firebase console → **Spark plan → Upgrade** (bottom left) → **Blaze**, and link a Cloud Billing account.
+2. Google Cloud console → **Billing → Budgets & alerts → Create budget**: scope `historytimeline-81f70`, amount $5, email alerts at 50%, 90% and 100%. A budget alerts; it does not cap spending.
+3. Firebase console → **Build → Storage → Get started** → **Start in production mode** (denies everything until the repository's rules are deployed) → location **`us-central1`** (no-cost eligible and inside Firestore's `nam5`; it cannot be changed later).
+4. Set the bucket's CORS so the site can read private images (exact commands come with the implementation; run once from Google Cloud Shell).
+
+As with Firestore, never edit Storage rules in the console: they will live in this directory and be deployed from here.
 
 ## Local testing
 
