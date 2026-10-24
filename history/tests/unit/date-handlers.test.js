@@ -86,7 +86,7 @@ describe('parseTimeToSortableValue — Full Dates', () => {
   it('parses "10 May 1941"', () => assertSortValue("10 May 1941", 1941.4440));
   it('parses "May 5th 1941"', () => assertSortValue("May 5th 1941", 1941.4303));
   it('parses "May 1941"', () => assertSortValue("May 1941", 1941.4194));
-  it.todo('parses "3/9/2004"'); // expected: 2004.27459 — M/D/YYYY format not yet supported
+  it('parses "3/9/2004"', () => assertSortValue("3/9/2004", 2004.27459));
 });
 
 describe('parseTimeToSortableValue — Ranges', () => {
