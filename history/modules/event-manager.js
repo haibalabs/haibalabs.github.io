@@ -48,8 +48,11 @@ export class EventManager {
         };
 
         // Initialize Firebase
+        // the app and emulator flag are kept for the personal-photo Storage adapter (script.js)
+        this.usesEmulators = USE_EMULATORS;
         if (USE_EMULATORS) {
-            const firebaseApp = firebaseInit({ apiKey: 'demo-key', projectId: 'demo-historiline' });
+            const firebaseApp = firebaseInit({ apiKey: 'demo-key', projectId: 'demo-historiline', storageBucket: 'demo-historiline.appspot.com' });
+            this.firebaseApp = firebaseApp;
             this.db = getFirestore(firebaseApp);
             this.auth = getAuth(firebaseApp);
             connectFirestoreEmulator(this.db, '127.0.0.1', 8085);
@@ -57,6 +60,7 @@ export class EventManager {
             return;
         }
         const firebaseApp = firebaseInit(firebaseConfig);
+        this.firebaseApp = firebaseApp;
         const analytics = getAnalytics(firebaseApp);
         this.db = getFirestore(firebaseApp);
         this.auth = getAuth(firebaseApp);

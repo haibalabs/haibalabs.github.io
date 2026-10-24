@@ -1,6 +1,6 @@
 // A stand-in for the Firebase SDK modules the app imports from www.gstatic.com, for browser tests
 // that run without the emulators. It exports every name the app imports from the auth, app,
-// analytics and firestore modules; add a name here when the app starts importing it.
+// analytics, firestore and storage modules; add a name here when the app starts importing it.
 export const firebaseStub = `
 export const initializeApp = () => ({});
 export const getAnalytics = () => ({});
@@ -25,6 +25,12 @@ export const getCountFromServer = async () => ({ data: () => ({ count: 0 }) });
 export const updateDoc = async () => {};
 export const deleteDoc = async () => {};
 export const writeBatch = () => ({ delete: () => {}, commit: async () => {} });
+export const getStorage = () => ({});
+export const connectStorageEmulator = () => {};
+export const ref = () => ({});
+export const uploadBytes = async () => ({});
+export const getBlob = async () => new Blob();
+export const deleteObject = async () => {};
 `;
 
 // Serves firebaseStub for every Firebase SDK module request.

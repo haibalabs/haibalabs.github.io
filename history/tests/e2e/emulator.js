@@ -56,3 +56,18 @@ export async function listAsOwner(request, collectionName) {
   const response = await request.get(`${DOCUMENTS()}/${collectionName}`, { headers: OWNER });
   return (await response.json()).documents ?? [];
 }
+
+// Storage emulator access as the owner, bypassing storage.rules. The app's emulator bucket is set
+// in event-manager.js.
+export const STORAGE = process.env.FIREBASE_STORAGE_EMULATOR_HOST;
+const BUCKET = 'demo-historiline.appspot.com';
+
+export async function listFilesAsOwner(request, prefix) {
+  const response = await request.get(`http://${STORAGE}/v0/b/${BUCKET}/o?prefix=${encodeURIComponent(prefix)}`, { headers: OWNER });
+  return ((await response.json()).items ?? []).map(item => item.name).sort();
+}
+
+export async function downloadAsOwner(request, path) {
+  const response = await request.get(`http://${STORAGE}/v0/b/${BUCKET}/o/${encodeURIComponent(path)}?alt=media`, { headers: OWNER });
+  return { contentType: response.headers()['content-type'], body: await response.body() };
+}

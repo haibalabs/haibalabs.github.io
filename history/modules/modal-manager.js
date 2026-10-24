@@ -1,5 +1,83 @@
 import { PROMINENT_LABELS } from './config.js';
+import { resizePhoto } from './image-resize.js';
 import { eventProblem } from './timeline-model.js';
+
+// The event form's photo field, shown only in forms for a personal timeline (one photo per event;
+// see PERSONAL-IMAGES.md). A chosen file is resized right away, so the preview shows what will be
+// stored. choice is what saving does with the photo: keep it, remove it, or add the resized one.
+export class PhotoField {
+    /**
+     * @param {HTMLElement} root - the field's container (#photo-group)
+     * @param {{ images: () => import('./personal-images.js').PersonalImages, onError: (message: string) => void }} hooks
+     */
+    constructor(root, hooks) {
+        this.root = root;
+        this.hooks = hooks;
+        this.input = root.querySelector('input[type="file"]');
+        this.preview = root.querySelector('.photo-preview');
+        this.previewImg = this.preview.querySelector('img');
+        this.removeButton = root.querySelector('.photo-remove');
+        this.choice = { action: 'keep' };
+        this.pending = Promise.resolve();
+        this.input.addEventListener('change', () => this.choose(this.input.files[0]));
+        this.removeButton.addEventListener('click', () => this.remove());
+    }
+
+    // Shows the field (or hides it for world events), with the event's current photo if any.
+    reset(visible, event = null) {
+        this.release();
+        this.choice = { action: 'keep' };
+        this.root.hidden = !visible;
+        this.input.value = '';
+        const thumb = visible ? event?.image?.thumb_ref : null;
+        if (!thumb) return this.showPreview(null);
+        // TimelineUI fills an img carrying data-photo-ref when the thumbnail loads
+        this.previewImg.dataset.photoRef = thumb;
+        this.showPreview(this.hooks.images().url(thumb));
+    }
+
+    choose(file) {
+        if (!file) return;
+        this.pending = resizePhoto(file).then((resized) => {
+            this.release();
+            this.choice = { action: 'add', resized };
+            this.objectUrl = URL.createObjectURL(resized.thumb);
+            this.showPreview(this.objectUrl);
+        }, (error) => {
+            this.input.value = '';
+            this.hooks.onError(error.message);
+        });
+        return this.pending;
+    }
+
+    remove() {
+        this.release();
+        this.choice = { action: 'remove' };
+        this.input.value = '';
+        this.showPreview(null);
+    }
+
+    // The choice once any resizing in progress has finished.
+    async settled() {
+        await this.pending;
+        return this.choice;
+    }
+
+    showPreview(url) {
+        this.preview.hidden = !url && !this.previewImg.dataset.photoRef;
+        this.removeButton.hidden = this.preview.hidden;
+        if (url) this.previewImg.src = url;
+        else this.previewImg.removeAttribute('src');
+        this.preview.classList.toggle('loading', !url);
+    }
+
+    // Revokes the preview of a newly chosen photo and stops tracking the event's stored one.
+    release() {
+        if (this.objectUrl) URL.revokeObjectURL(this.objectUrl);
+        this.objectUrl = null;
+        delete this.previewImg.dataset.photoRef;
+    }
+}
 
 export class ModalManager {
     constructor(eventManager, uiManager) {
@@ -7,6 +85,10 @@ export class ModalManager {
         this.uiManager = uiManager;
         this.modal = document.getElementById('add-event-modal');
         this.form = document.getElementById('add-event-form');
+        this.photoField = new PhotoField(document.getElementById('photo-group'), {
+            images: () => uiManager.timelineUI.images,
+            onError: (message) => this.showError(message),
+        });
         this.populateCategories();
         this.setupListeners();
     }
@@ -57,6 +139,7 @@ export class ModalManager {
             // a new event in a personal timeline starts as People; the user can change it
             this.form.elements.categories.value = 'people';
         }
+        this.photoField.reset(Boolean(this.target), event);
         this.modal.style.display = 'flex';
     }
 
@@ -64,6 +147,7 @@ export class ModalManager {
         this.modal.style.display = 'none';
         this.editing = null;
         this.target = null;
+        this.photoField.reset(false);
     }
 
     // Closes and empties a form opened for a personal timeline, so its private fields go nowhere.
@@ -108,7 +192,8 @@ export class ModalManager {
             buttons.forEach(button => button.disabled = true);
             let problem;
             try {
-                problem = await this.uiManager.timelineUI.saveEvent(newEvent, this.editing, target);
+                const photo = await this.photoField.settled();
+                problem = await this.uiManager.timelineUI.saveEvent({ ...newEvent, photo }, this.editing, target);
             } finally {
                 buttons.forEach(button => button.disabled = false);
             }
