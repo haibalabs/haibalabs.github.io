@@ -100,6 +100,25 @@ function parseYear(yearStr) {
     // - Convert synonyms of “before,” “by,” “after,” etc. into known placeholders,
     //   or store them in an “approxTime” field if you want to handle them.
     // - Identify “early / mid / late” and store as approxModifier
+  /**
+   * The calendar day named by a whole-string numeric date with a three- or four-digit year, such
+   * as 1/25/1976: month first, as the event form suggests, and day first only when the first
+   * number cannot be a month (25/1/1976). Null when the text is not in that form or names no
+   * real day (2/30/1976, 13/13/1976).
+   *
+   * @param {string} text
+   * @returns {{ year: number, month: number, day: number }|null}
+   */
+  export function numericDateParts(text) {
+    const match = String(text).trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{3,4})$/);
+    if (!match) return null;
+    const [a, b, year] = match.slice(1).map(Number);
+    const [month, day] = a > 12 ? [b, a] : [a, b];
+    const leap = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    const monthDays = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
+    return year >= 1 && monthDays && day >= 1 && day <= monthDays ? { year, month, day } : null;
+  }
+
   function preprocessTimeString(time) {
   
     let cleaned = time.toLowerCase().trim();
@@ -122,7 +141,11 @@ function parseYear(yearStr) {
 
     // remove extra spaces
     cleaned = cleaned.replace(/\s+/g, ' ').trim();
-    
+
+    // A numeric date such as 1/25/1976 becomes ISO 1976-1-25; anything else is left alone.
+    const numeric = numericDateParts(cleaned);
+    if (numeric) cleaned = `${numeric.year}-${numeric.month}-${numeric.day}`;
+
     let approxModifier = '';
     if (cleaned.includes('early ')) {
       approxModifier = 'early';

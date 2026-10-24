@@ -54,3 +54,33 @@ describe('timelineIdFromSearch — the ?timeline= link', () => {
     assert.equal(timelineIdFromSearch('?timeline='), null);
   });
 });
+
+describe('eventProblem — numeric dates', () => {
+  it('accepts a month/day/year date', () => assert.equal(eventProblem({ name: 'Birth', enhanced_time: '1/25/1976' }), null));
+  it('rejects a numeric date the parser cannot read instead of placing it in an early year', () => {
+    assert.match(eventProblem({ name: 'Birth', enhanced_time: '13/13/1976' }), /not a date the timeline can place/);
+    assert.match(eventProblem({ name: 'Birth', enhanced_time: '2/30/1976' }), /not a date the timeline can place/);
+  });
+});
+
+describe('eventProblem — slashed numeric dates must land on the day they name', () => {
+  const accepted = ['1/25/1976', '01/25/1976', '25/1/1976', '1941/7/1', '2/29/2000', 'approx. 1/25/1976', '(1/25/1976)', 'c. 1/25/1976'];
+  const refused = [
+    '1/25/0001', '1/2/0001',                     // zero-padded years fall back to year 1
+    'approx. 2/30/1976', '(2/30/1976)',          // no such day once the wrapper is removed
+    'early 1/25/1976', 'late 1/25/1976',         // modifiers stop the numeric reading
+    '1/25/1976 AD', '1/25/1976 BC', '1/25/76',   // era suffixes and two-digit years
+    '1941/13/1', '1/25/1976 - 2/1/1976',         // no such month; two dates
+  ];
+  for (const time of accepted) {
+    it(`accepts ${JSON.stringify(time)}`, () => assert.equal(eventProblem({ name: 'Birth', enhanced_time: time }), null));
+  }
+  for (const time of refused) {
+    it(`refuses ${JSON.stringify(time)}`, () => assert.match(eventProblem({ name: 'Birth', enhanced_time: time }), /not a date the timeline can place/));
+  }
+  it('leaves dates without a slashed number alone', () => {
+    for (const time of ['April/May 1097', '1786-09-01/1786-12-31', 'March 1931', '44 BC']) {
+      assert.equal(eventProblem({ name: 'x', enhanced_time: time }), null, time);
+    }
+  });
+});

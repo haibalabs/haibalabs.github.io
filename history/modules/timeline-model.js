@@ -1,7 +1,7 @@
 // timeline-model.js
 // Validation and field mapping for personal timelines (see PERSONAL-TIMELINES.md). No browser or
 // Firebase imports, so the rules here are unit-tested in Node.
-import { parseTimeToSortableValue } from './date-handlers.js';
+import { numericDateParts, parseTimeToSortableValue } from './date-handlers.js';
 
 export const TITLE_MAX = 120;
 export const NAME_MAX = 300;
@@ -42,10 +42,26 @@ export function eventProblem(event) {
     const time = String(event.enhanced_time ?? '').trim();
     if (!time) return 'Give the event a date.';
     const parsed = parseTimeToSortableValue(time);
-    if (!parsed || typeof parsed !== 'object' || parsed.year === 0) {
-        return `"${time}" is not a date the timeline can place. Try forms like 1931, March 1931, 44 BC or Spring 1950.`;
+    if (!parsed || typeof parsed !== 'object' || parsed.year === 0 || !numericDateIsRead(time, parsed)) {
+        return `"${time}" is not a date the timeline can place. Try forms like 1931, March 1931, 1/25/1976, 44 BC or Spring 1950.`;
     }
     return null;
+}
+
+// Text with a slashed numeric date (n/n/n) is accepted only if that date names a real day, as
+// month/day/year (1/25/1976) or year/month/day (1941/7/1), and the parser read exactly that day.
+// Otherwise (early 1/25/1976, 2/30/1976, 1/25/76, 1/25/0001, two such dates) the parser falls
+// back to reading a single number as the year and would silently save an unrelated date.
+function numericDateIsRead(time, parsed) {
+    const triples = [...time.matchAll(/(\d+)\s*\/\s*(\d+)\s*\/\s*(\d+)/g)];
+    if (triples.length === 0) return true;
+    if (triples.length > 1) return false;
+    const [, a, b, c] = triples[0];
+    const expected = a.length >= 3 && Number(b) <= 12
+        ? numericDateParts(`${b}/${c}/${a}`)
+        : numericDateParts(`${a}/${b}/${c}`);
+    return Boolean(expected) && parsed.year === expected.year && parsed.month === expected.month
+        && parsed.day === expected.day;
 }
 
 /**
