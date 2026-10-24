@@ -10,6 +10,7 @@ const element = () => ({ checked: false, hidden: true, style: {}, classList: { r
 globalThis.document = { getElementById: element, createElement: element };
 
 const { TimelineUI } = await import('../../modules/timeline-ui.js');
+const { ModalManager } = await import('../../modules/modal-manager.js');
 
 const A = { id: 'tl_A', title: 'Family', createdAt: { seconds: 100, nanoseconds: 1 } };
 const B = { id: 'tl_B', title: 'Projects', createdAt: { seconds: 200, nanoseconds: 2 } };
@@ -125,7 +126,7 @@ describe('TimelineUI — results that arrive after the user moved on', () => {
       saveEvent: (timeline, event) => { writes.push({ timelineId: timeline.id, event }); return write.promise; },
     });
     await view.open(A.id);
-    const saving = view.saveEvent({ ...secret }, null);
+    const saving = view.saveEvent({ ...secret }, null, view.formTarget());
     await view.open(B.id);
     write.resolve();
     assert.equal(await saving, null);
@@ -139,7 +140,7 @@ describe('TimelineUI — results that arrive after the user moved on', () => {
     const write = deferred();
     const view = ui({ get: async () => A, loadEvents: async () => [], saveEvent: () => write.promise });
     await view.open(A.id);
-    const saving = view.saveEvent({ ...secret }, null);
+    const saving = view.saveEvent({ ...secret }, null, view.formTarget());
     view.close();
     write.resolve();
     assert.equal(await saving, null);
@@ -148,19 +149,51 @@ describe('TimelineUI — results that arrive after the user moved on', () => {
 
   it('a save with no open timeline is refused instead of throwing', async () => {
     const view = ui({ saveEvent: () => assert.fail('nothing should be written') });
-    assert.match(await view.saveEvent({ ...secret }, null), /timeline was closed/);
+    assert.match(await view.saveEvent({ ...secret }, null, null), /timeline was closed/);
   });
 
-  it('a delete finishing after sign-out leaves the screen alone', async () => {
+  it('a delete finishing after the timeline was closed leaves the screen alone', async () => {
     const removal = deferred();
-    const view = ui({ get: async () => A, loadEvents: async () => [secret], deleteEvent: () => removal.promise, listMine: async () => [] });
+    const view = ui({ get: async () => A, loadEvents: async () => [secret], deleteEvent: () => removal.promise });
+    let removed = 0;
+    view.eventManager.removePersonalEvent = () => { removed++; };
     await view.open(A.id);
     const deleting = view.deleteEvent(secret);
-    await view.setAccount({ uid: 'bob' }, 'editor');
-    view.shown.personal = [{ ...secret, owner: 'bob' }];
+    view.close();
     removal.resolve();
     await deleting;
-    assert.equal(view.shown.personal.length, 1);
+    assert.equal(removed, 0);
+  });
+
+  it('switching straight to another account closes the previous account\'s timeline and list', async () => {
+    const view = ui({ get: async () => A, loadEvents: async () => [secret], listMine: () => new Promise(() => {}) });
+    await view.open(A.id);
+    view.shown.list = [A.id];
+    // no sign-out in between; Bob's own list is still loading
+    view.setAccount({ uid: 'bob' }, 'editor');
+    assert.equal(view.current, null);
+    assert.deepEqual(view.shown.personal, []);
+    assert.equal(view.pill.hidden, true);
+    assert.deepEqual(view.shown.list, []);
+    // Alice's link is not kept for Bob
+    assert.equal(view.pendingId, null);
+  });
+
+  it('signing out keeps the open timeline\'s link to reopen after the next sign-in', async () => {
+    const view = ui({ get: async () => A, loadEvents: async () => [secret] });
+    await view.open(A.id);
+    await view.setAccount(null, null);
+    assert.equal(view.current, null);
+    assert.equal(view.pendingId, A.id);
+  });
+
+  it('a save for a form opened before the account changed is refused without writing', async () => {
+    const view = ui({ get: async () => A, loadEvents: async () => [], listMine: async () => [],
+      saveEvent: () => assert.fail('nothing should be written') });
+    await view.open(A.id);
+    const target = view.formTarget();
+    await view.setAccount(null, null);
+    assert.match(await view.saveEvent({ ...secret }, secret, target), /account changed/);
   });
 
   it('the previous account\'s timeline list never replaces the current account\'s', async () => {
@@ -172,6 +205,84 @@ describe('TimelineUI — results that arrive after the user moved on', () => {
     aliceList.resolve([A]);
     await refreshing;
     assert.deepEqual(view.shown.list, [B.id]);
+  });
+});
+
+describe('ModalManager — the event form keeps the destination it was opened for', () => {
+  // FormData over the form double's values
+  globalThis.FormData = class {
+    constructor(form) { this.values = form.values; }
+    get(name) { return this.values[name] ?? ''; }
+    getAll(name) { return this.values[name] ? [this.values[name]] : []; }
+  };
+  const FIELDS = ['name', 'enhanced_time', 'enhanced_description', 'wikipedia_url', 'categories', 'location_name',
+    'location_city', 'location_region', 'location_country', 'location_historical'];
+
+  function form(view) {
+    const values = {};
+    const elements = Object.fromEntries(FIELDS.map(name => [name, {
+      get value() { return values[name] ?? ''; }, set value(v) { values[name] = v; },
+    }]));
+    const manager = Object.create(ModalManager.prototype);
+    Object.assign(manager, {
+      form: {
+        values, elements, reset() { for (const key of Object.keys(values)) delete values[key]; },
+        querySelector: () => element(), querySelectorAll: () => [element(), element()],
+      },
+      modal: { style: {}, querySelector: () => element() },
+      uiManager: view.uiManager,
+      eventManager: { added: [], addEvent(event) { this.added.push(event); } },
+    });
+    view.uiManager.timelineUI = view;
+    view.uiManager.modalManager = manager;
+    return manager;
+  }
+  const submit = (manager) => manager.handleSubmit({ preventDefault() {} });
+
+  it('a personal editor is closed and emptied when the account signs out, and adds nothing to world events', async () => {
+    const view = ui({ get: async () => A, loadEvents: async () => [secret], listMine: async () => [] });
+    const manager = form(view);
+    await view.open(A.id);
+    manager.open(secret);
+    assert.equal(manager.form.values.name, secret.name);
+    await view.setAccount(null, null);
+    assert.equal(manager.modal.style.display, 'none');
+    assert.deepEqual(manager.form.values, {});
+    await submit(manager);
+    assert.deepEqual(manager.eventManager.added, []);
+  });
+
+  it('a personal editor is discarded when its timeline closes', async () => {
+    const view = ui({ get: async () => A, loadEvents: async () => [secret] });
+    const manager = form(view);
+    await view.open(A.id);
+    manager.open(secret);
+    view.close();
+    assert.equal(manager.modal.style.display, 'none');
+    assert.equal(manager.target, null);
+  });
+
+  it('a personal save goes to the timeline the form was opened for', async () => {
+    const writes = [];
+    const view = ui({ get: async () => A, loadEvents: async () => [], saveEvent: async (timeline) => { writes.push(timeline.id); } });
+    const manager = form(view);
+    await view.open(A.id);
+    manager.open();
+    Object.assign(manager.form.values, { name: 'Wedding', enhanced_time: '1930', enhanced_description: 'x' });
+    await submit(manager);
+    assert.deepEqual(writes, [A.id]);
+    assert.deepEqual(manager.eventManager.added, []);
+    assert.equal(manager.modal.style.display, 'none');
+  });
+
+  it('with no timeline open, the form still adds a world event (admin debug path)', async () => {
+    const view = ui({});
+    const manager = form(view);
+    manager.open();
+    Object.assign(manager.form.values, { name: 'Treaty signed', enhanced_time: '1648', enhanced_description: 'x' });
+    await submit(manager);
+    assert.equal(manager.eventManager.added.length, 1);
+    assert.equal(manager.eventManager.added[0].name, 'Treaty signed');
   });
 });
 
@@ -191,7 +302,7 @@ describe('TimelineUI — the ordinary path still applies results', () => {
 
   it('a save shows the event in the timeline it was saved to', async () => {
     await view.open(A.id);
-    assert.equal(await view.saveEvent({ name: 'Wedding', enhanced_time: '1930' }, null), null);
+    assert.equal(await view.saveEvent({ name: 'Wedding', enhanced_time: '1930' }, null, view.formTarget()), null);
     assert.equal(view.shown.personal.at(-1).timelineId, A.id);
   });
 });

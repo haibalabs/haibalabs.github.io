@@ -84,20 +84,24 @@ export class TimelineUI {
     }
 
     async setAccount(user, role) {
+        const sameAccount = Boolean(user) && user.uid === this.user?.uid;
         this.session++;
         const token = this.token();
         this.user = user;
         this.role = role;
         const { member, canEdit } = permissionsFor(role);
         this.section.hidden = !(user && canEdit);
-        if (!user || !member) {
+        // A different account (or none) must not keep the previous one's timeline or list on
+        // screen; Firebase can switch accounts without signing out in between.
+        if (!(sameAccount && member)) {
             if (this.current) {
-                this.pendingId = this.current.id;
-                this.close({ keepAddress: true });
+                // signed out: reopen the same link after the next sign-in
+                if (!user) this.pendingId = this.current.id;
+                this.close({ keepAddress: !user });
             }
             this.list.replaceChildren();
-            return;
         }
+        if (!user || !member) return;
         if (canEdit) await this.refreshList();
         if (this.isCurrent(token, { selection: false })) this.openPending();
     }
@@ -277,6 +281,7 @@ export class TimelineUI {
     close({ keepAddress = false } = {}) {
         this.selection++;
         this.current = null;
+        this.uiManager.modalManager?.discardPersonal();
         this.eventManager.clearPersonalEvents();
         if (!keepAddress) this.setAddress(null);
         this.pill.hidden = true;
@@ -320,20 +325,28 @@ export class TimelineUI {
         this.uiManager.resetLayout();
     }
 
+    // Where the event form saves to, noted when the form opens: the open timeline under the
+    // current account, or null for world events.
+    formTarget() {
+        return this.current ? { timeline: this.current, token: this.token() } : null;
+    }
+
     /**
-     * Saves an event from the event form to the open timeline. Returns a message to show in the
-     * form when the event cannot be saved, or null once it is saved.
+     * Saves an event from the event form to the timeline the form was opened for. Returns a
+     * message to show in the form when the event cannot be saved, or null once it is saved.
      *
      * @param {object} fields - the form's event fields
      * @param {object|null} editing - the personal event being edited, or null for a new one
+     * @param {{ timeline: object, token: object }|null} target - formTarget() when the form opened
      * @returns {Promise<string|null>}
      */
-    async saveEvent(fields, editing) {
+    async saveEvent(fields, editing, target) {
+        if (!target || !this.isCurrent(target.token)) {
+            return 'The timeline was closed or the account changed, so this event was not saved.';
+        }
         const problem = eventProblem(fields);
         if (problem) return problem;
-        const timeline = this.current;
-        if (!timeline) return 'The timeline was closed. Open it again to add events.';
-        const token = this.token();
+        const { timeline, token } = target;
         const event = { ...fields, event_id: editing?.event_id ?? newEventId() };
         try {
             await this.store.saveEvent(timeline, event);

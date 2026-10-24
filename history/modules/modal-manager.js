@@ -34,8 +34,11 @@ export class ModalManager {
     }
 
     // Opens the form empty to add an event, or filled in to edit a personal event.
+    // The destination is fixed here: a form opened for a personal timeline never saves anywhere
+    // else, and is discarded if that timeline closes or the account changes.
     open(event = null) {
         this.editing = event;
+        this.target = this.uiManager.timelineUI?.formTarget() ?? null;
         this.form.reset();
         this.showError('');
         this.modal.querySelector('.modal-header h3').textContent = event ? 'Edit event' : 'Add event';
@@ -57,6 +60,14 @@ export class ModalManager {
     close() {
         this.modal.style.display = 'none';
         this.editing = null;
+        this.target = null;
+    }
+
+    // Closes and empties a form opened for a personal timeline, so its private fields go nowhere.
+    discardPersonal() {
+        if (!this.target) return;
+        this.close();
+        this.form.reset();
     }
 
     showError(message) {
@@ -87,17 +98,19 @@ export class ModalManager {
             confidence: 'high'
         };
 
-        const timelineUI = this.uiManager.timelineUI;
-        if (timelineUI?.current) {
+        const target = this.target;
+        if (target) {
             // the form stays open, and stays this form, until the save settles
             const buttons = this.form.querySelectorAll('.modal-actions button');
             buttons.forEach(button => button.disabled = true);
             let problem;
             try {
-                problem = await timelineUI.saveEvent(newEvent, this.editing);
+                problem = await this.uiManager.timelineUI.saveEvent(newEvent, this.editing, target);
             } finally {
                 buttons.forEach(button => button.disabled = false);
             }
+            // discarded while saving (timeline closed or account changed): leave the form alone
+            if (this.target !== target) return;
             if (problem) return this.showError(problem);
         } else {
             const problem = eventProblem(newEvent);
