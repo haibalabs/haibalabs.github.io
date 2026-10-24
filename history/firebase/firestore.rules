@@ -55,8 +55,29 @@ service cloud.firestore {
     // admins may create timelines. Only the owner renames, shares or deletes one; members read it
     // and edit its events. Firestore does not cascade deletes, so clients delete a timeline's
     // events first.
+    //
+    // Each event stores the createdAt of the timeline it was written into (timelineCreatedAt),
+    // and every event read or write requires it to match the current timeline document. A
+    // timeline recreated under the same ID has a new createdAt, so events left from an earlier
+    // timeline (leftovers, or writes racing its deletion) stay unreachable for every account.
+    // Because the rules test that field, event list queries must filter on it.
     function timelinePath(timelineId) {
       return /databases/$(database)/documents/timelines/$(timelineId);
+    }
+
+    function currentTimeline(timelineId) {
+      return get(timelinePath(timelineId)).data;
+    }
+
+    function validTimelineEvent(timelineId, eventId) {
+      let data = request.resource.data;
+      return eventId.matches('evt_[0-9a-f-]{36}')
+        && data.event_id == eventId
+        && data.timelineCreatedAt == currentTimeline(timelineId).createdAt
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 300
+        && data.enhanced_time is string
+        && data.userId == request.auth.uid
+        && data.lastModified == request.time;
     }
 
     function canUseTimeline(timeline) {
@@ -88,15 +109,15 @@ service cloud.firestore {
 
       match /events/{eventId} {
         allow read, delete: if exists(timelinePath(timelineId))
-          && canUseTimeline(get(timelinePath(timelineId)).data);
-        allow create, update: if exists(timelinePath(timelineId))
-          && canUseTimeline(get(timelinePath(timelineId)).data)
-          && request.resource.data.event_id == eventId
-          && request.resource.data.name is string
-          && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 300
-          && request.resource.data.enhanced_time is string
-          && request.resource.data.userId == request.auth.uid
-          && request.resource.data.lastModified == request.time;
+          && canUseTimeline(currentTimeline(timelineId))
+          && resource.data.timelineCreatedAt == currentTimeline(timelineId).createdAt;
+        allow create: if exists(timelinePath(timelineId))
+          && canUseTimeline(currentTimeline(timelineId))
+          && validTimelineEvent(timelineId, eventId);
+        allow update: if exists(timelinePath(timelineId))
+          && canUseTimeline(currentTimeline(timelineId))
+          && resource.data.timelineCreatedAt == currentTimeline(timelineId).createdAt
+          && validTimelineEvent(timelineId, eventId);
       }
     }
   }
