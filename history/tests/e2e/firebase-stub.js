@@ -21,6 +21,10 @@ export const where = () => ({});
 export const getDocs = async () => ({ forEach: () => {} });
 export const runTransaction = async () => null;
 export const serverTimestamp = () => 0;
+export const getCountFromServer = async () => ({ data: () => ({ count: 0 }) });
+export const updateDoc = async () => {};
+export const deleteDoc = async () => {};
+export const writeBatch = () => ({ delete: () => {}, commit: async () => {} });
 `;
 
 // Serves firebaseStub for every Firebase SDK module request.

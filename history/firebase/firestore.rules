@@ -72,7 +72,7 @@ service cloud.firestore {
 
     function validTimelineEvent(timelineId, eventId) {
       let data = request.resource.data;
-      return eventId.matches('evt_[0-9a-f-]{36}')
+      return eventId.matches('evt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
         && data.event_id == eventId
         && data.timelineCreatedAt == currentTimeline(timelineId).createdAt
         && data.name is string && data.name.size() > 0 && data.name.size() <= 300

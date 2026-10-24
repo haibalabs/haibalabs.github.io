@@ -34,6 +34,7 @@ export class EventManager {
         // document key -> reason, for server documents that cannot be merged as events
         this.quarantined = new Map();
         this.datasetMetadata = null;
+        this.timelineView = 'with-world';
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -65,7 +66,7 @@ export class EventManager {
 
     // Re-checks whether the current events may sync; IDs can change after load (adds, pulls).
     refreshSyncTarget() {
-        this.syncTarget = syncTarget(this.currentFile, this.datasetMetadata, this.events);
+        this.syncTarget = syncTarget(this.currentFile, this.datasetMetadata, this.events.filter(event => !event.personal));
     }
 
     // The dataset's collection; throws with the reason when this dataset cannot sync.
@@ -339,6 +340,48 @@ export class EventManager {
         this.invalidateCache();
     }
 
+    // Personal timeline events live in this.events next to world events, marked personal: true.
+    // TimelineStore saves them as they change, so they are never dirty for world sync.
+    setPersonalEvents(timelineId, events) {
+        this.events = this.events.filter(event => !event.personal);
+        for (const event of events) this.events.push(this.toPersonal(timelineId, event));
+        this.sortEvents();
+        this.invalidateCache();
+    }
+
+    clearPersonalEvents() {
+        this.events = this.events.filter(event => !event.personal);
+        this.timelineView = 'with-world';
+        this.sortEvents();
+        this.invalidateCache();
+    }
+
+    upsertPersonalEvent(timelineId, event) {
+        const index = this.events.findIndex(e => e.personal && e.event_id === event.event_id);
+        const personal = this.toPersonal(timelineId, event);
+        if (index >= 0) this.events[index] = personal;
+        else this.events.push(personal);
+        this.sortEvents();
+        this.invalidateCache();
+    }
+
+    removePersonalEvent(eventId) {
+        this.events = this.events.filter(e => !(e.personal && e.event_id === eventId));
+        this.sortEvents();
+        this.invalidateCache();
+    }
+
+    toPersonal(timelineId, event) {
+        return this.normalizeEvent({ confidence: 'high', categories: [], figures: [], locations: [], ...event,
+            personal: true, timelineId, dirty: false });
+    }
+
+    // 'with-world' shows personal events among world events; 'only' shows personal events alone.
+    setTimelineView(view) {
+        this.timelineView = view;
+        this.invalidateCache();
+    }
+
     sortEvents() {
         this.placeIndex = new PlaceEventIndex(this.events);
         this.sortedIndices = this.events
@@ -373,7 +416,8 @@ export class EventManager {
                     const year = this.placeIndex.years.get(id);
                     const { from, through } = this.timeRange;
                     const matchesTime = (from == null || year >= from) && (through == null || year <= through);
-                    return hasAcceptableConfidence && matchesFilter && matchesSearch && matchesTime && geographicIds.has(id);
+                    const matchesView = this.timelineView !== 'only' || event.personal === true;
+                    return hasAcceptableConfidence && matchesFilter && matchesSearch && matchesTime && matchesView && geographicIds.has(id);
                 });
         }
         return this.cachedFilteredEvents;

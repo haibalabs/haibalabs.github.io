@@ -157,4 +157,13 @@ describe('acknowledgement — local state after a push commits', () => {
     assert.deepEqual(ack, { syncedRevision: 200, dirty: true });
     assert.equal(pushDecision({ ...local, ...ack }, 200), 'write');
   });
+
+  it('stays dirty when a nested field changed in place while the push was in flight', () => {
+    const local = pushed({ locations: [{ name: 'Paris' }] });
+    const sent = toSyncDoc(local);
+    local.locations[0].name = 'Lyon';
+    const ack = acknowledgement(local, sent, 'wA', { data: { ...sent, writeId: 'wA' }, revision: 200 });
+    assert.equal(ack.dirty, true);
+    assert.equal(sent.locations[0].name, 'Paris');
+  });
 });

@@ -1,6 +1,6 @@
 # Personal timelines (U1)
 
-Status: data model and Firestore rules implemented and tested; screens approved by Rachid on 2026-10-24 (decisions below) and being built.
+Status: data model, Firestore rules and screens implemented and tested (screens in `modules/timeline-ui.js`, browser tests in `tests/e2e/timelines-flow.spec.js`); screens approved by Rachid on 2026-10-24 (decisions below).
 
 An editor keeps private timelines of their own events (a family history, a project) and can view one alone or interleaved with world history. Timelines are private to their owner. The model already allows listed members, but there is no sharing UI yet.
 
@@ -31,7 +31,7 @@ timelines/{timelineId}/events/{eventId}
 - The owner and listed members can read a timeline and read, add, change and delete its events. Nobody else can see it, admins included (the Firebase console still can).
 - Only the owner can rename it, change its members or delete it, and the owner cannot hand it to another account or make it public.
 - Firestore does not delete subcollections with their parent, so the app deletes a timeline's events before the timeline. Events left behind (a cleanup that failed, or a member's write racing the deletion) stay unreachable, even if someone later creates a timeline with the same ID: every event read and write requires the event's `timelineCreatedAt` to equal the current timeline's `createdAt`, and a new timeline has a new `createdAt`.
-- Event IDs must be `evt_` followed by a UUID. Listing a timeline's events must filter on `timelineCreatedAt` equal to the timeline's `createdAt`; an unfiltered list is denied.
+- Event IDs must be `evt_` followed by a UUID in its canonical 8-4-4-4-12 hex form. Listing a timeline's events must filter on `timelineCreatedAt` equal to the timeline's `createdAt`; an unfiltered list is denied.
 
 ## Screens
 

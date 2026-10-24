@@ -50,13 +50,14 @@ export function syncTarget(file, metadata, events) {
 }
 
 /**
- * The event as stored in Firestore: every field except local sync state.
+ * The event as stored in Firestore: every field except local sync state. A deep copy, so a push
+ * can compare it with the event afterwards even if nested fields such as locations were edited.
  *
  * @param {object} event
  * @returns {object}
  */
 export function toSyncDoc(event) {
-    const out = { ...event };
+    const out = structuredClone(event);
     for (const field of LOCAL_FIELDS) delete out[field];
     return out;
 }

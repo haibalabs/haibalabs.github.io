@@ -104,7 +104,9 @@ export async function getCoordinates(locationName, geocodeCache) {
 /**
  * Show a location on the map by geocoding and placing a marker.
  */
-export async function showLocationOnMap(locationName, map, markersLayer, geocodeCache, text) {
+export async function showLocationOnMap(locationName, map, markersLayer, geocodeCache, name) {
+  // a text node, so Leaflet never parses the event name as HTML
+  const text = document.createTextNode(name ?? '');
   // Clear existing markers so you can see just the new location
   markersLayer.clearLayers();
 
