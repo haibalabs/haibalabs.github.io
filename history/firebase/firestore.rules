@@ -51,9 +51,10 @@ service cloud.firestore {
       allow delete: if collection.matches('events_.+') && isAdmin();
     }
 
-    // Personal timelines: private to their owner and any listed members. Any invited account may
-    // own timelines. Only the owner renames, shares or deletes one; members read it and edit its
-    // events. Firestore does not cascade deletes, so clients delete a timeline's events first.
+    // Personal timelines: private to their owner and any listed members. Editors, reviewers and
+    // admins may create timelines. Only the owner renames, shares or deletes one; members read it
+    // and edit its events. Firestore does not cascade deletes, so clients delete a timeline's
+    // events first.
     function timelinePath(timelineId) {
       return /databases/$(database)/documents/timelines/$(timelineId);
     }
@@ -74,7 +75,7 @@ service cloud.firestore {
 
     match /timelines/{timelineId} {
       allow read: if canUseTimeline(resource.data);
-      allow create: if isMember()
+      allow create: if isEditor()
         && request.resource.data.owner == request.auth.uid
         && request.resource.data.createdAt == request.time
         && validTimeline(request.resource.data);

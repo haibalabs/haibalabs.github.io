@@ -1,8 +1,8 @@
 # Personal timelines (U1)
 
-Status: data model and Firestore rules implemented and tested; screens proposed below, waiting for Rachid's approval before they are built.
+Status: data model and Firestore rules implemented and tested; screens approved by Rachid on 2026-10-24 (decisions below) and being built.
 
-An invited user keeps private timelines of their own events (a family history, a project) and can view one alone or interleaved with world history. Timelines are private to their owner. The model already allows listed members, but there is no sharing UI yet.
+An editor keeps private timelines of their own events (a family history, a project) and can view one alone or interleaved with world history. Timelines are private to their owner. The model already allows listed members, but there is no sharing UI yet.
 
 ## Data model
 
@@ -26,14 +26,14 @@ timelines/{timelineId}/events/{eventId}
 
 ## Access (enforced in `firebase/firestore.rules`, tested in `firebase/tests/rules.test.js`)
 
-- Any invited account (any role) can create timelines it owns.
+- Editors, reviewers and admins can create timelines they own; viewers cannot, until timelines open up to more accounts.
 - The owner and listed members can read a timeline and read, add, change and delete its events. Nobody else can see it, admins included (the Firebase console still can).
 - Only the owner can rename it, change its members or delete it, and the owner cannot hand it to another account or make it public.
 - Firestore does not delete subcollections with their parent, so the app deletes a timeline's events before the timeline. Once a timeline document is gone, its leftover events are unreachable.
 
-## Proposed screens (for approval)
+## Screens
 
-1. **"My timelines" in the settings panel**, shown to any signed-in invited user: a list of their timelines with event counts, a field to create a new one, and per timeline **Open**, **Rename** and **Delete** (delete asks for confirmation and states how many events go with it).
+1. **"My timelines" in the settings panel**, shown to signed-in editors, reviewers and admins: a list of their timelines with event counts, a field to create a new one, and per timeline **Open**, **Rename** and **Delete** (delete asks for confirmation and states how many events go with it).
 2. **Opening a timeline** sets `?timeline=<id>` in the address, so it can be bookmarked; the link works only for the owner and members. A pill in the top bar shows the timeline's title with a menu:
    - **With world history**: personal events interleaved with world events in date order, marked with a left accent line and a small "Personal" label;
    - **This timeline only**;
@@ -44,9 +44,10 @@ timelines/{timelineId}/events/{eventId}
 
 Out of scope for U1: a sharing UI, public timelines, merging family timelines, and importing from photos or journals.
 
-## Decisions for Rachid
+## Decisions (Rachid, 2026-10-24)
 
-1. May every invited account create timelines, including viewers? (The rules allow it.)
-2. When a timeline is opened, should the default view be **with world history** or **this timeline only**?
-3. Is saving immediately, with no Push button and the later save winning, right for personal timelines?
-4. Any limit on timelines or events per account for now? (Proposal: none.)
+1. Only editors, reviewers and admins create timelines for now, until timelines open up to more accounts.
+2. Opening a timeline shows it **with world history** by default.
+3. Personal events save immediately, with no Push button; the later save wins.
+4. No limit on timelines or events per account for now.
+5. Timelines are reached from the settings panel for now.

@@ -130,26 +130,28 @@ async function seedTimeline(owner, members = []) {
 }
 
 describe('personal timelines: creating', () => {
-  it('any invited account can create a timeline it owns', async () => {
-    await assertSucceeds(setDoc(tl(as('viewer')), timeline('viewer')));
-    await assertSucceeds(setDoc(tl(as('editor'), 't2'), timeline('editor')));
+  it('editors, reviewers and admins can create a timeline they own', async () => {
+    await assertSucceeds(setDoc(tl(as('editor')), timeline('editor')));
+    await assertSucceeds(setDoc(tl(as('reviewer'), 't2'), timeline('reviewer')));
+    await assertSucceeds(setDoc(tl(as('admin'), 't3'), timeline('admin')));
   });
-  it('accounts without a role and anonymous visitors cannot create one', async () => {
+  it('viewers, accounts without a role and anonymous visitors cannot create one', async () => {
+    await assertFails(setDoc(tl(as('viewer')), timeline('viewer')));
     await assertFails(setDoc(tl(as('stranger')), timeline('stranger')));
     await assertFails(setDoc(tl(anonymous()), timeline('nobody')));
   });
   it('a timeline cannot be created for another owner', () =>
-    assertFails(setDoc(tl(as('viewer')), timeline('editor'))));
+    assertFails(setDoc(tl(as('editor')), timeline('admin'))));
   it('only private visibility is allowed', () =>
-    assertFails(setDoc(tl(as('viewer')), timeline('viewer', { visibility: 'public' }))));
+    assertFails(setDoc(tl(as('editor')), timeline('editor', { visibility: 'public' }))));
   it('the title must be 1 to 120 characters', async () => {
-    await assertFails(setDoc(tl(as('viewer')), timeline('viewer', { title: '' })));
-    await assertFails(setDoc(tl(as('viewer')), timeline('viewer', { title: 'x'.repeat(121) })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { title: '' })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { title: 'x'.repeat(121) })));
   });
   it('unknown fields, client timestamps and the owner as a member are rejected', async () => {
-    await assertFails(setDoc(tl(as('viewer')), timeline('viewer', { color: 'red' })));
-    await assertFails(setDoc(tl(as('viewer')), timeline('viewer', { createdAt: Timestamp.fromMillis(0) })));
-    await assertFails(setDoc(tl(as('viewer')), timeline('viewer', { members: ['viewer'] })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { color: 'red' })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { createdAt: Timestamp.fromMillis(0) })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { members: ['editor'] })));
   });
 });
 
