@@ -394,6 +394,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2
     background: var(--surface-2); font-weight: 500;
 }
 .auth-btn:hover { background: var(--line); }
+.auth-status { margin: .6rem 0 0; color: #b42318; font-size: .8125rem; line-height: 1.4; }
 .settings-toggle { display: flex; align-items: center; gap: .5rem; padding: .3rem 0; color: var(--ink-2); cursor: pointer; }
 .settings-info { padding: 1rem 1.25rem; color: var(--ink-3); font-size: .75rem; border-top: 1px solid var(--line); }
 .settings-info p { margin: .2rem 0; }

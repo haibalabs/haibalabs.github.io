@@ -1,0 +1,15 @@
+{
+  "name": "historiline-firebase",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:rules": "firebase emulators:exec --only firestore --project demo-historiline \"node --test tests/*.test.js\"",
+    "test:auth-flow": "firebase emulators:exec --only auth,firestore --project demo-historiline \"npm --prefix .. run test:e2e -- tests/e2e/auth-flow.spec.js\"",
+    "deploy:rules": "firebase deploy --only firestore:rules --project historytimeline-81f70"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "5.0.2",
+    "firebase": "12.19.0",
+    "firebase-tools": "15.32.1"
+  }
+}

@@ -52,3 +52,37 @@ jobs:
       - name: Run E2E tests
         working-directory: ./history
         run: npm run test:e2e
+
+  firebase-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            ./history/package-lock.json
+            ./history/firebase/package-lock.json
+
+      # the Firestore emulator needs Java 21
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Install dependencies
+        run: npm ci --prefix history && npm ci --prefix history/firebase
+
+      - name: Install Playwright browsers
+        working-directory: ./history
+        run: npx playwright install --with-deps chromium
+
+      - name: Firestore rules tests
+        working-directory: ./history/firebase
+        run: npm run test:rules
+
+      - name: Sign-in tests against the emulators
+        working-directory: ./history/firebase
+        run: npm run test:auth-flow

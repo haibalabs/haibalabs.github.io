@@ -2,9 +2,14 @@
 import { parseTimeToSortableValue } from './date-handlers.js';
 
 import { initializeApp as firebaseInit } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-import { getFirestore, collection, doc, setDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { getFirestore, connectFirestoreEmulator, collection, doc, setDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getAuth, connectAuthEmulator } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+// ?emulator on localhost connects to the local Firebase emulators (see firebase/README.md)
+const USE_EMULATORS = typeof location !== 'undefined'
+    && ['localhost', '127.0.0.1'].includes(location.hostname)
+    && new URLSearchParams(location.search).has('emulator');
 
 export class EventManager {
     constructor(locationVerifier) {
@@ -29,9 +34,17 @@ export class EventManager {
         };
 
         // Initialize Firebase
+        if (USE_EMULATORS) {
+            const firebaseApp = firebaseInit({ apiKey: 'demo-key', projectId: 'demo-historiline' });
+            this.db = getFirestore(firebaseApp);
+            this.auth = getAuth(firebaseApp);
+            connectFirestoreEmulator(this.db, '127.0.0.1', 8085);
+            connectAuthEmulator(this.auth, 'http://127.0.0.1:9099', { disableWarnings: true });
+            return;
+        }
         const firebaseApp = firebaseInit(firebaseConfig);
         const analytics = getAnalytics(firebaseApp);
-        this.db = getFirestore(firebaseApp); 
+        this.db = getFirestore(firebaseApp);
         this.auth = getAuth(firebaseApp);
 
         console.log("Firebase initialized successfully!");
