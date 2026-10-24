@@ -269,6 +269,7 @@ export class TimelineUI {
             this.setAddress(id);
             this.renderPill();
             this.addEventBtn.style.display = 'block';
+            this.uiManager.setPersonalFiltersVisible(true);
             this.markCurrentInList();
             document.getElementById('settings-panel').classList.remove('open');
             this.uiManager.resetLayout();
@@ -288,6 +289,7 @@ export class TimelineUI {
         this.toggleMenu(false);
         // back to whatever the admin debug toggle allows
         this.addEventBtn.style.display = document.getElementById('debug-add-event').checked ? 'block' : 'none';
+        this.uiManager.setPersonalFiltersVisible(false);
         this.markCurrentInList();
         this.uiManager.resetLayout();
     }

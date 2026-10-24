@@ -43,6 +43,7 @@ timelines/{timelineId}/events/{eventId}
 3. **Adding events**: while a timeline is open, an **Add event** button (for the owner and members, not only admins) opens the existing event form and adds to that timeline. Events can be edited and deleted from the event itself. A date that cannot be parsed is rejected with a message instead of being saved as year 0.
 4. **Saving**: personal events are saved as soon as they are added, edited or deleted, with no Push button; another device sees them after a reload. With no sharing yet, the owner is normally the only writer; if two devices edit the same event, the later save wins.
 5. **Filters**: search, categories and the map apply to personal events as they do to world events; personal events without a location stay in the timeline and stay off the map.
+6. **People category** (Rachid, 2026-10-24): new personal events start in the People category, which can be changed in the form. The People filter appears only while a personal timeline is open, since world events do not use it.
 
 Out of scope for U1: a sharing UI, public timelines, merging family timelines, and importing from photos or journals.
 

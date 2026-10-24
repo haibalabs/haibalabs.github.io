@@ -73,3 +73,6 @@
     #timeline-pill-btn { max-width: calc(100vw - 24px); }
     .timeline-menu { left: 0; right: auto; }
 }
+
+/* category filters that apply only while a personal timeline is open (People) */
+.filters button[hidden] { display: none; }
