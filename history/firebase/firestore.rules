@@ -50,5 +50,53 @@ service cloud.firestore {
         && request.resource.data.lastModified == request.time;
       allow delete: if collection.matches('events_.+') && isAdmin();
     }
+
+    // Personal timelines: private to their owner and any listed members. Any invited account may
+    // own timelines. Only the owner renames, shares or deletes one; members read it and edit its
+    // events. Firestore does not cascade deletes, so clients delete a timeline's events first.
+    function timelinePath(timelineId) {
+      return /databases/$(database)/documents/timelines/$(timelineId);
+    }
+
+    function canUseTimeline(timeline) {
+      return isMember()
+        && (timeline.owner == request.auth.uid || request.auth.uid in timeline.members);
+    }
+
+    function validTimeline(data) {
+      return data.keys().hasOnly(['owner', 'title', 'visibility', 'members', 'createdAt', 'updatedAt'])
+        && data.title is string && data.title.size() > 0 && data.title.size() <= 120
+        && data.visibility == 'private'
+        && data.members is list && data.members.size() <= 20
+        && !(data.owner in data.members)
+        && data.updatedAt == request.time;
+    }
+
+    match /timelines/{timelineId} {
+      allow read: if canUseTimeline(resource.data);
+      allow create: if isMember()
+        && request.resource.data.owner == request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && validTimeline(request.resource.data);
+      allow update: if isMember()
+        && resource.data.owner == request.auth.uid
+        && request.resource.data.owner == resource.data.owner
+        && request.resource.data.createdAt == resource.data.createdAt
+        && validTimeline(request.resource.data);
+      allow delete: if isMember() && resource.data.owner == request.auth.uid;
+
+      match /events/{eventId} {
+        allow read, delete: if exists(timelinePath(timelineId))
+          && canUseTimeline(get(timelinePath(timelineId)).data);
+        allow create, update: if exists(timelinePath(timelineId))
+          && canUseTimeline(get(timelinePath(timelineId)).data)
+          && request.resource.data.event_id == eventId
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 300
+          && request.resource.data.enhanced_time is string
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.lastModified == request.time;
+      }
+    }
   }
 }

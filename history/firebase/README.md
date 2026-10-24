@@ -22,6 +22,8 @@ Accounts are invite-only. Each invited account has a document `users/{uid}`, whe
 
 A signed-in account without a `users` document can read and write nothing. Collections not listed in the rules are denied. The app hides controls by role, but the rules are what enforce access. For now the app shows its sync and debug controls (including adding events) to admins only, although the rules also allow editors to write.
 
+Personal timelines (`timelines/{id}` and their `events` subcollection) are private to their owner and listed members, whatever the role; admins cannot read them through the app. See [../PERSONAL-TIMELINES.md](../PERSONAL-TIMELINES.md).
+
 ## Invite a user
 
 1. Authentication → Users → **Add user**: enter their email and a temporary password, and send both to them privately.
