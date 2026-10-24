@@ -17,6 +17,7 @@ export const getDocs = async () => ({ forEach: () => {} });
 export const serverTimestamp = () => 0;
 export const signInWithEmailAndPassword = async () => ({});
 export const signOut = async () => {};
+export const sendPasswordResetEmail = async () => {};
 `;
 
 async function stubFirebase(page) {
