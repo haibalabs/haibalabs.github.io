@@ -34,17 +34,19 @@ beforeEach(async () => {
 const as = (uid) => env.authenticatedContext(uid).firestore();
 const anonymous = () => env.unauthenticatedContext().firestore();
 const event = (uid, extra = {}) => ({ name: 'New event', userId: uid, lastModified: serverTimestamp(), ...extra });
+// Writes an event document whose event_id matches its document ID, unless data overrides it.
+const writeEvent = (db, collectionName, id, data) => setDoc(doc(db, collectionName, id), { event_id: id, ...data });
 
 describe('anonymous visitors', () => {
   it('cannot read events', () => assertFails(getDoc(doc(anonymous(), 'events_main', 'evt_1'))));
   it('cannot list events', () => assertFails(getDocs(collection(anonymous(), 'events_main'))));
-  it('cannot write events', () => assertFails(setDoc(doc(anonymous(), 'events_main', 'evt_2'), event('nobody'))));
+  it('cannot write events', () => assertFails(writeEvent(anonymous(), 'events_main', 'evt_2', event('nobody'))));
   it('cannot read roles', () => assertFails(getDoc(doc(anonymous(), 'users', 'admin'))));
 });
 
 describe('signed-in accounts without a role', () => {
   it('cannot read events', () => assertFails(getDoc(doc(as('stranger'), 'events_main', 'evt_1'))));
-  it('cannot write events', () => assertFails(setDoc(doc(as('stranger'), 'events_main', 'evt_2'), event('stranger'))));
+  it('cannot write events', () => assertFails(writeEvent(as('stranger'), 'events_main', 'evt_2', event('stranger'))));
   it('cannot list roles', () => assertFails(getDocs(collection(as('stranger'), 'users'))));
   it('cannot give themselves a role', () => assertFails(setDoc(doc(as('stranger'), 'users', 'stranger'), { role: 'admin' })));
 });
@@ -56,25 +58,29 @@ describe('viewers', () => {
   });
   it('can read their own role', () => assertSucceeds(getDoc(doc(as('viewer'), 'users', 'viewer'))));
   it('cannot read another account\'s role', () => assertFails(getDoc(doc(as('viewer'), 'users', 'admin'))));
-  it('cannot write events', () => assertFails(setDoc(doc(as('viewer'), 'events_main', 'evt_2'), event('viewer'))));
+  it('cannot write events', () => assertFails(writeEvent(as('viewer'), 'events_main', 'evt_2', event('viewer'))));
 });
 
 for (const role of [ROLES.editor, ROLES.reviewer]) {
   describe(`${role}s`, () => {
     it('can create and update events attributed to themselves', async () => {
-      await assertSucceeds(setDoc(doc(as(role), 'events_main', 'evt_2'), event(role)));
-      await assertSucceeds(setDoc(doc(as(role), 'events_main', 'evt_1'), event(role, { name: 'Renamed' })));
+      await assertSucceeds(writeEvent(as(role), 'events_main', 'evt_2', event(role)));
+      await assertSucceeds(writeEvent(as(role), 'events_main', 'evt_1', event(role, { name: 'Renamed' })));
     });
     it('cannot attribute a write to another account', () =>
-      assertFails(setDoc(doc(as(role), 'events_main', 'evt_2'), event('admin'))));
+      assertFails(writeEvent(as(role), 'events_main', 'evt_2', event('admin'))));
     it('cannot set their own timestamp', () =>
-      assertFails(setDoc(doc(as(role), 'events_main', 'evt_2'), event(role, { lastModified: Timestamp.fromMillis(0) }))));
+      assertFails(writeEvent(as(role), 'events_main', 'evt_2', event(role, { lastModified: Timestamp.fromMillis(0) }))));
     it('cannot write an event without a name', () =>
-      assertFails(setDoc(doc(as(role), 'events_main', 'evt_2'), event(role, { name: 42 }))));
+      assertFails(writeEvent(as(role), 'events_main', 'evt_2', event(role, { name: 42 }))));
+    it('cannot store an event under a document ID other than its event_id', async () => {
+      await assertFails(writeEvent(as(role), 'events_main', 'evt_2', event(role, { event_id: 'evt_3' })));
+      await assertFails(setDoc(doc(as(role), 'events_main', 'evt_2'), event(role)));
+    });
     it('cannot delete events', () => assertFails(deleteDoc(doc(as(role), 'events_main', 'evt_1'))));
     it('cannot change their own role', () => assertFails(setDoc(doc(as(role), 'users', role), { role: 'admin' })));
     it('cannot grant roles to others', () => assertFails(setDoc(doc(as(role), 'users', 'stranger'), { role: 'editor' })));
-    it('cannot write outside event collections', () => assertFails(setDoc(doc(as(role), 'other', 'y'), event(role))));
+    it('cannot write outside event collections', () => assertFails(writeEvent(as(role), 'other', 'y', event(role))));
   });
 }
 
@@ -106,5 +112,5 @@ describe('collections without rules', () => {
     await assertFails(setDoc(doc(as('admin'), 'timelines', 't1'), { title: 'x' }));
   });
   it('deny a collection named only "events_"', () =>
-    assertFails(setDoc(doc(as('admin'), 'events_', 'e'), event('admin'))));
+    assertFails(writeEvent(as('admin'), 'events_', 'e', event('admin'))));
 });

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "test:rules": "firebase emulators:exec --only firestore --project demo-historiline \"node --test tests/*.test.js\"",
-    "test:auth-flow": "firebase emulators:exec --only auth,firestore --project demo-historiline \"npm --prefix .. run test:e2e -- tests/e2e/auth-flow.spec.js\"",
+    "test:auth-flow": "firebase emulators:exec --only auth,firestore --project demo-historiline \"npm --prefix .. run test:e2e -- tests/e2e/auth-flow.spec.js tests/e2e/sync-flow.spec.js --workers=1\"",
     "deploy:rules": "firebase deploy --only firestore:rules --project historytimeline-81f70"
   },
   "devDependencies": {

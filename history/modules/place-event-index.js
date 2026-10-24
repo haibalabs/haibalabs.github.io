@@ -22,9 +22,19 @@ export class PlaceEventIndex {
         this.eventPoints = new Map();
         this.unmapped = new Set();
         this.years = new Map();
+        // A persisted ID shared by several records identifies none of them: each such record
+        // gets its own session-only identity, and the shared ID is reported in duplicateIds.
+        const idCounts = new Map();
+        for (const event of events) {
+            if (event.event_id) idCounts.set(event.event_id, (idCounts.get(event.event_id) ?? 0) + 1);
+        }
+        this.duplicateIds = new Set([...idCounts].filter(([, n]) => n > 1).map(([id]) => id));
+        if (this.duplicateIds.size) {
+            console.warn(`Event IDs shared by more than one record: ${[...this.duplicateIds].join(', ')}`);
+        }
         events.forEach((event, i) => {
-            const id = event.event_id || `session:${i}`;
-            if (this.events.has(id)) throw new Error(`Duplicate event identity: ${id}`);
+            const id = !event.event_id ? `session:${i}`
+                : this.duplicateIds.has(event.event_id) ? `session-duplicate:${i}` : event.event_id;
             this.events.set(id, event);
             this.ids.set(event, id);
             this.years.set(id, parseTimeToSortableValue(event.enhanced_time)?.year);
