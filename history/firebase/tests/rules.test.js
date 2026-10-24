@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { after, before, beforeEach, describe, it } from 'node:test';
 import { assertFails, assertSucceeds, initializeTestEnvironment } from '@firebase/rules-unit-testing';
-import { collection, deleteDoc, doc, getDoc, getDocs, serverTimestamp, setDoc, Timestamp } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, Timestamp, where } from 'firebase/firestore';
 
 const RULES = readFileSync(new URL('../firestore.rules', import.meta.url), 'utf8');
 const ROLES = { viewer: 'viewer', editor: 'editor', reviewer: 'reviewer', admin: 'admin' };
@@ -109,8 +109,136 @@ describe('collections without rules', () => {
   });
   it('deny any other collection, even to admins', async () => {
     await assertFails(getDoc(doc(as('admin'), 'other', 'x')));
-    await assertFails(setDoc(doc(as('admin'), 'timelines', 't1'), { title: 'x' }));
+    await assertFails(setDoc(doc(as('admin'), 'notes', 'n1'), { title: 'x' }));
   });
   it('deny a collection named only "events_"', () =>
     assertFails(writeEvent(as('admin'), 'events_', 'e', event('admin'))));
+});
+
+// Personal timelines. Accounts come from the seeded users: viewer, editor, reviewer, admin.
+const timeline = (owner, extra = {}) => ({
+  owner, title: 'Family history', visibility: 'private', members: [],
+  createdAt: serverTimestamp(), updatedAt: serverTimestamp(), ...extra,
+});
+const timelineEvent = (uid, id, extra = {}) => ({
+  event_id: id, name: 'Grandmother born', enhanced_time: '1931', userId: uid, lastModified: serverTimestamp(), ...extra,
+});
+const tl = (db, id = 't1') => doc(db, 'timelines', id);
+const tlEvent = (db, id, timelineId = 't1') => doc(db, 'timelines', timelineId, 'events', id);
+
+// Seeds timeline t1 owned by `owner`, with one event, bypassing the rules.
+async function seedTimeline(owner, members = []) {
+  await env.withSecurityRulesDisabled(async (ctx) => {
+    const db = ctx.firestore();
+    await setDoc(tl(db), { owner, title: 'Family history', visibility: 'private', members, createdAt: Timestamp.now(), updatedAt: Timestamp.now() });
+    await setDoc(tlEvent(db, 'evt_a'), { event_id: 'evt_a', name: 'Seeded', enhanced_time: '1900', userId: owner, lastModified: Timestamp.now() });
+  });
+}
+
+describe('personal timelines: creating', () => {
+  it('editors, reviewers and admins can create a timeline they own', async () => {
+    await assertSucceeds(setDoc(tl(as('editor')), timeline('editor')));
+    await assertSucceeds(setDoc(tl(as('reviewer'), 't2'), timeline('reviewer')));
+    await assertSucceeds(setDoc(tl(as('admin'), 't3'), timeline('admin')));
+  });
+  it('viewers, accounts without a role and anonymous visitors cannot create one', async () => {
+    await assertFails(setDoc(tl(as('viewer')), timeline('viewer')));
+    await assertFails(setDoc(tl(as('stranger')), timeline('stranger')));
+    await assertFails(setDoc(tl(anonymous()), timeline('nobody')));
+  });
+  it('a timeline cannot be created for another owner', () =>
+    assertFails(setDoc(tl(as('editor')), timeline('admin'))));
+  it('only private visibility is allowed', () =>
+    assertFails(setDoc(tl(as('editor')), timeline('editor', { visibility: 'public' }))));
+  it('the title must be 1 to 120 characters', async () => {
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { title: '' })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { title: 'x'.repeat(121) })));
+  });
+  it('unknown fields, client timestamps and the owner as a member are rejected', async () => {
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { color: 'red' })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { createdAt: Timestamp.fromMillis(0) })));
+    await assertFails(setDoc(tl(as('editor')), timeline('editor', { members: ['editor'] })));
+  });
+});
+
+describe('personal timelines: reading and listing', () => {
+  beforeEach(() => seedTimeline('viewer', ['reviewer']));
+
+  it('the owner and listed members can read it', async () => {
+    await assertSucceeds(getDoc(tl(as('viewer'))));
+    await assertSucceeds(getDoc(tl(as('reviewer'))));
+  });
+  it('other accounts, admins included, and anonymous visitors cannot', async () => {
+    await assertFails(getDoc(tl(as('editor'))));
+    await assertFails(getDoc(tl(as('admin'))));
+    await assertFails(getDoc(tl(as('stranger'))));
+    await assertFails(getDoc(tl(anonymous())));
+  });
+  it('the owner can list their timelines; nobody can list another account\'s', async () => {
+    await assertSucceeds(getDocs(query(collection(as('viewer'), 'timelines'), where('owner', '==', 'viewer'))));
+    await assertSucceeds(getDocs(query(collection(as('reviewer'), 'timelines'), where('members', 'array-contains', 'reviewer'))));
+    await assertFails(getDocs(query(collection(as('editor'), 'timelines'), where('owner', '==', 'viewer'))));
+    await assertFails(getDocs(collection(as('viewer'), 'timelines')));
+  });
+});
+
+describe('personal timelines: changing and deleting', () => {
+  beforeEach(() => seedTimeline('viewer', ['reviewer']));
+  const renamed = (extra = {}) => ({
+    owner: 'viewer', title: 'Renamed', visibility: 'private', members: ['reviewer'], updatedAt: serverTimestamp(), ...extra,
+  });
+
+  it('the owner can rename it and change its members', async () => {
+    const db = as('viewer');
+    const createdAt = (await getDoc(tl(db))).data().createdAt;
+    await assertSucceeds(setDoc(tl(db), renamed({ createdAt })));
+    await assertSucceeds(setDoc(tl(db), renamed({ createdAt, members: [] })));
+  });
+  it('the owner cannot hand it to someone else or make it public', async () => {
+    const db = as('viewer');
+    const createdAt = (await getDoc(tl(db))).data().createdAt;
+    await assertFails(setDoc(tl(db), renamed({ createdAt, owner: 'editor' })));
+    await assertFails(setDoc(tl(db), renamed({ createdAt, visibility: 'public' })));
+  });
+  it('members cannot rename, reshare or delete it', async () => {
+    const db = as('reviewer');
+    const createdAt = (await getDoc(tl(db))).data().createdAt;
+    await assertFails(setDoc(tl(db), renamed({ createdAt })));
+    await assertFails(deleteDoc(tl(db)));
+  });
+  it('only the owner can delete it', async () => {
+    await assertFails(deleteDoc(tl(as('admin'))));
+    await assertSucceeds(deleteDoc(tl(as('viewer'))));
+  });
+});
+
+describe('personal timelines: events', () => {
+  beforeEach(() => seedTimeline('viewer', ['reviewer']));
+
+  it('the owner and members can add, change, read and delete events', async () => {
+    await assertSucceeds(setDoc(tlEvent(as('viewer'), 'evt_b'), timelineEvent('viewer', 'evt_b')));
+    await assertSucceeds(setDoc(tlEvent(as('reviewer'), 'evt_c'), timelineEvent('reviewer', 'evt_c')));
+    await assertSucceeds(setDoc(tlEvent(as('reviewer'), 'evt_a'), timelineEvent('reviewer', 'evt_a', { name: 'Edited' })));
+    await assertSucceeds(getDocs(collection(as('viewer'), 'timelines', 't1', 'events')));
+    await assertSucceeds(deleteDoc(tlEvent(as('viewer'), 'evt_a')));
+  });
+  it('other accounts cannot read or write its events', async () => {
+    await assertFails(getDoc(tlEvent(as('editor'), 'evt_a')));
+    await assertFails(getDocs(collection(as('admin'), 'timelines', 't1', 'events')));
+    await assertFails(setDoc(tlEvent(as('editor'), 'evt_b'), timelineEvent('editor', 'evt_b')));
+    await assertFails(getDoc(tlEvent(anonymous(), 'evt_a')));
+  });
+  it('event writes need a matching event_id, a name, a date, the author and the server time', async () => {
+    const db = as('viewer');
+    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_other')));
+    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b', { name: '' })));
+    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b', { enhanced_time: 1931 })));
+    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('reviewer', 'evt_b')));
+    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b', { lastModified: Timestamp.fromMillis(0) })));
+  });
+  it('events of a deleted timeline are no longer reachable', async () => {
+    await env.withSecurityRulesDisabled(async (ctx) => { await deleteDoc(tl(ctx.firestore())); });
+    await assertFails(getDoc(tlEvent(as('viewer'), 'evt_a')));
+    await assertFails(setDoc(tlEvent(as('viewer'), 'evt_b'), timelineEvent('viewer', 'evt_b')));
+  });
 });
