@@ -39,12 +39,13 @@ service cloud.firestore {
       allow delete: if isAdmin() && uid != request.auth.uid;
     }
 
-    // Shared event datasets: events_main, events_<file>, ... Every write is attributed to its
-    // author and stamped with the server time.
+    // Shared event datasets (events_main for the world dataset). Documents are keyed by the
+    // event's own event_id; every write is attributed to its author and stamped with the server time.
     match /{collection}/{eventId} {
       allow read: if collection.matches('events_.+') && isMember();
       allow create, update: if collection.matches('events_.+')
         && isEditor()
+        && request.resource.data.event_id == eventId
         && request.resource.data.name is string
         && request.resource.data.userId == request.auth.uid
         && request.resource.data.lastModified == request.time;

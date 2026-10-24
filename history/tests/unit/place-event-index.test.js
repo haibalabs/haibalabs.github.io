@@ -30,10 +30,27 @@ test('bounds include edges, dateline, wrapped viewports and full world; reject i
     assert(!containsPoint({ south: 2, north: 1, west: 0, east: 1 }, [1, 0]));
     assert(!containsPoint({ south: 0, north: NaN, west: 0, east: 1 }, [0, 0]));
 });
-test('duplicate persisted IDs fail, legacy identities are scoped to the loaded session', () => {
-    assert.throws(() => new PlaceEventIndex([events[0], events[0]]), /Duplicate event identity/);
+test('legacy identities are scoped to the loaded session', () => {
     const index = new PlaceEventIndex([{ name: 'A' }, { name: 'A' }]);
     assert.equal(index.events.size, 2);
+});
+test('records sharing a persisted ID all stay, each with a distinct session identity', () => {
+    const shared = 'evt_00000000-0000-4000-8000-000000000000';
+    const records = [
+        { event_id: shared, name: 'Siege of Paris', enhanced_time: '1870', locations: [point('paris', [48.8, 2.3])] },
+        { event_id: shared, name: 'Treaty of Frankfurt', enhanced_time: '1871', locations: [point('frankfurt', [50.1, 8.7])] },
+        events[0],
+    ];
+    const index = new PlaceEventIndex(records);
+    assert.deepEqual([...index.duplicateIds], [shared]);
+    assert.equal(index.events.size, 3);
+    const [a, b] = [index.idFor(records[0]), index.idFor(records[1])];
+    assert.notEqual(a, b);
+    assert.ok(a.startsWith('session-duplicate:') && b.startsWith('session-duplicate:'));
+    assert.equal(index.events.has(shared), false);
+    assert.equal(index.idFor(records[2]), 'one');
+    assert.deepEqual([...index.query({ placeId: 'paris' })], [a]);
+    assert.deepEqual([...index.query({ placeId: 'frankfurt' })], [b]);
 });
 test('different points for the same place remain distinct', () => {
     const index = new PlaceEventIndex([{ event_id: 'a', locations: [point('x', [0, 1]), point('x', [1, 2])] }]);

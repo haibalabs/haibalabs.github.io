@@ -403,6 +403,9 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2
     color: var(--accent); font-size: .8125rem;
 }
 .auth-link:hover { text-decoration: underline; }
+.sync-status { margin: .5rem 0; color: var(--ink-2); font-size: .8125rem; line-height: 1.4; }
+.sync-conflict { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; padding: .4rem 0; border-top: 1px solid var(--line); font-size: .8125rem; }
+.sync-conflict span { flex: 1 1 100%; color: var(--ink); }
 .settings-toggle { display: flex; align-items: center; gap: .5rem; padding: .3rem 0; color: var(--ink-2); cursor: pointer; }
 .settings-info { padding: 1rem 1.25rem; color: var(--ink-3); font-size: .75rem; border-top: 1px solid var(--line); }
 .settings-info p { margin: .2rem 0; }

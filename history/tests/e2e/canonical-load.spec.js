@@ -1,33 +1,9 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
+import { firebaseStub, stubFirebase } from './firebase-stub.js';
 
 const snapshot = process.env.CANONICAL_SNAPSHOT;
-const firebaseStub = `
-export const initializeApp = () => ({});
-export const getAnalytics = () => ({});
-export const getFirestore = () => ({});
-export const connectFirestoreEmulator = () => {};
-export const connectAuthEmulator = () => {};
-export const getAuth = () => ({ currentUser: null });
-export const onAuthStateChanged = (auth, callback) => { queueMicrotask(() => callback(null)); return () => {}; };
-export const collection = () => ({});
-export const doc = () => ({});
-export const setDoc = async () => {};
-export const getDoc = async () => ({ exists: () => false });
-export const query = () => ({});
-export const where = () => ({});
-export const getDocs = async () => ({ forEach: () => {} });
-export const serverTimestamp = () => 0;
-export const signInWithEmailAndPassword = async () => ({});
-export const signOut = async () => {};
-export const sendPasswordResetEmail = async () => {};
-`;
-
-async function stubFirebase(page) {
-  await page.route('https://www.gstatic.com/firebasejs/**', route =>
-    route.fulfill({ contentType: 'text/javascript', body: firebaseStub }));
-}
 
 test('initial load applies a manual correction and uses its coordinates', async ({ page }) => {
   await stubFirebase(page);

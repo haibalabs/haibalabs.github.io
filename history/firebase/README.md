@@ -20,6 +20,8 @@ Accounts are invite-only. Each invited account has a document `users/{uid}`, whe
 | `reviewer` | Same as editor for now |
 | `admin` | Also delete events and manage other accounts' roles (not their own) |
 
+Shared edits to the world dataset live in `events_main`, one document per event keyed by its `event_id` (the rules require the two to match). The app syncs only datasets it recognizes as the world dataset whose events all have valid, unique IDs; for any other dataset, including the legacy default `events.json`, sync is disabled with an explanation in the settings panel. Conflicting changes are listed there to resolve as "Keep mine" or "Take theirs".
+
 A signed-in account without a `users` document can read and write nothing. Collections not listed in the rules are denied. The app hides controls by role, but the rules are what enforce access. For now the app shows its sync and debug controls (including adding events) to admins only, although the rules also allow editors to write.
 
 ## Invite a user
@@ -63,7 +65,7 @@ Requirements: Node 20+ and Java 21 for the emulators (macOS: `brew install openj
 ```
 npm ci
 npm run test:rules        # rules against the Firestore emulator
-npm run test:auth-flow    # sign-in in the browser against the Auth and Firestore emulators
+npm run test:auth-flow    # sign-in and sync in the browser against the Auth and Firestore emulators
 ```
 
 `test:auth-flow` also needs the app's dependencies and browser: `npm ci` and `npx playwright install chromium` in `../`.

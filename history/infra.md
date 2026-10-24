@@ -121,3 +121,4 @@ Three parallel jobs, all using Node.js 20:
 - Uncaught JavaScript exceptions during page load
 - Firestore rules changes that widen access (role-by-role allow/deny tests)
 - Sign-in regressions: session restore on reload, role-based controls, uninvited accounts
+- Sync regressions: event_id-keyed documents, the sync gate for unrecognized datasets and duplicate IDs, server revisions reaching untouched events, conflict resolution (the emulator specs share one emulator, so they run with `--workers=1`)

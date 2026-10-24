@@ -1,41 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { AUTH, EMULATORS_RUNNING, PROJECT, createAccount, resetEmulators, signIn } from './emulator.js';
 
-// Sign-in against the local Firebase emulators. Runs only under `firebase emulators:exec`
-// (see firebase/README.md), which sets FIREBASE_AUTH_EMULATOR_HOST.
-const AUTH = process.env.FIREBASE_AUTH_EMULATOR_HOST;
-const FIRESTORE = process.env.FIRESTORE_EMULATOR_HOST;
-const PROJECT = 'demo-historiline';
-const PASSWORD = 'test-password-1';
+// Sign-in against the local Firebase emulators.
 const APP = '/history/index.html?emulator&file=events_sample_small.json';
 
-test.skip(!AUTH || !FIRESTORE, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
-
-async function resetEmulators(request) {
-  await request.delete(`http://${AUTH}/emulator/v1/projects/${PROJECT}/accounts`);
-  await request.delete(`http://${FIRESTORE}/emulator/v1/projects/${PROJECT}/databases/(default)/documents`);
-}
-
-// Creates an account and, when role is given, its users/{uid} document (written as the emulator
-// owner, which bypasses the rules).
-async function createAccount(request, email, role) {
-  const signUp = await request.post(
-    `http://${AUTH}/identitytoolkit.googleapis.com/v1/accounts:signUp?key=demo-key`,
-    { data: { email, password: PASSWORD, returnSecureToken: true } });
-  const { localId } = await signUp.json();
-  if (role) {
-    await request.patch(
-      `http://${FIRESTORE}/v1/projects/${PROJECT}/databases/(default)/documents/users/${localId}`,
-      { headers: { Authorization: 'Bearer owner' }, data: { fields: { role: { stringValue: role } } } });
-  }
-  return localId;
-}
-
-async function signIn(page, email, password = PASSWORD) {
-  await page.click('#settings-btn');
-  await page.fill('#email', email);
-  await page.fill('#password', password);
-  await page.click('#login-btn');
-}
+test.skip(!EMULATORS_RUNNING, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
 
 test.beforeEach(async ({ request }) => {
   await resetEmulators(request);

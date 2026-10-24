@@ -242,8 +242,12 @@ export class UIManager {
                 return;
             }
             syncControls.style.display = e.target.checked ? 'block' : 'none';
-            pushBtn.disabled = !e.target.checked;
-            pullBtn.disabled = !e.target.checked;
+            this.eventManager.refreshSyncTarget();
+            const { collection, reason } = this.eventManager.syncTarget;
+            syncStatus.textContent = e.target.checked && !collection ? reason : '';
+            pullBtn.disabled = !e.target.checked || !collection;
+            this.updateSettingsInfo();
+            this.renderConflicts();
         });
 
         // Push changes handler
@@ -251,18 +255,19 @@ export class UIManager {
             try {
                 pushBtn.disabled = true;
                 syncStatus.textContent = 'Pushing changes...';
-                const count = await this.eventManager.pushChanges();
-                if (count > 0) {
-                    this.resetWindow();
-                    syncStatus.textContent = `Pushed ${count} events successfully`;
-                }
-                this.updateSettingsInfo();
-                setTimeout(() => syncStatus.textContent = '', 3000);
+                const { saved, conflicts } = await this.eventManager.pushChanges();
+                if (saved > 0) this.resetWindow();
+                const pushed = `Pushed ${saved} events`;
+                syncStatus.textContent = conflicts > 0
+                    ? `${pushed}. ${conflicts} event${conflicts === 1 ? ' was' : 's were'} changed on the server first; resolve below.`
+                    : pushed;
+                this.renderConflicts();
+                if (!conflicts) setTimeout(() => syncStatus.textContent = '', 3000);
             } catch (error) {
                 console.error('Push failed:', error);
                 syncStatus.textContent = 'Push failed: ' + error.message;
             } finally {
-                pushBtn.disabled = false;
+                this.updateSettingsInfo();
             }
         });
 
@@ -271,16 +276,18 @@ export class UIManager {
             try {
                 pullBtn.disabled = true;
                 syncStatus.textContent = 'Pulling changes...';
-                const count = await this.eventManager.pullChanges();
-                if (count > 0) {
-                    this.resetWindow();
-                    //this.renderEvents();
-                    syncStatus.textContent = `Pulled ${count} events successfully`;
-                } else {
-                    syncStatus.textContent = 'No new changes to pull';
+                const { applied, conflicts, quarantined } = await this.eventManager.pullChanges();
+                if (applied > 0) this.resetWindow();
+                const parts = [applied > 0 ? `Pulled ${applied} events` : 'No new changes to pull'];
+                if (conflicts > 0) parts.push(`${conflicts} conflicting change${conflicts === 1 ? '' : 's'} to resolve below`);
+                if (quarantined > 0) {
+                    parts.push(`${quarantined} server record${quarantined === 1 ? '' : 's'} ignored for an invalid event ID `
+                        + `(${[...this.eventManager.quarantined.keys()].slice(0, 3).join(', ')})`);
                 }
-                this.updateSettingsInfo(); 
-                setTimeout(() => syncStatus.textContent = '', 3000);
+                syncStatus.textContent = parts.join('. ') + '.';
+                this.updateSettingsInfo();
+                this.renderConflicts();
+                if (!conflicts && !quarantined) setTimeout(() => syncStatus.textContent = '', 3000);
             } catch (error) {
                 console.error('Pull failed:', error);
                 syncStatus.textContent = 'Pull failed: ' + error.message;
@@ -315,10 +322,40 @@ export class UIManager {
         });
     }    
 
+    // One row per conflict, with buttons to keep the local change or take the server's.
+    renderConflicts() {
+        const list = document.querySelector('.sync-conflicts');
+        list.replaceChildren();
+        for (const [eventId, { server }] of this.eventManager.conflicts) {
+            const row = document.createElement('div');
+            row.className = 'sync-conflict';
+            row.dataset.eventId = eventId;
+            const name = document.createElement('span');
+            const local = this.eventManager.events.find(event => event.event_id === eventId);
+            name.textContent = local?.name === server.name ? local.name : `${local?.name ?? eventId} / ${server.name}`;
+            row.append(name);
+            for (const [keep, label] of [['local', 'Keep mine'], ['server', 'Take theirs']]) {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'settings-btn';
+                button.dataset.keep = keep;
+                button.textContent = label;
+                button.addEventListener('click', () => {
+                    this.eventManager.resolveConflict(eventId, keep);
+                    this.resetWindow();
+                    this.updateSettingsInfo();
+                    this.renderConflicts();
+                });
+                row.append(button);
+            }
+            list.append(row);
+        }
+    }
+
     updateSettingsInfo() {
-        const unpushedCount = this.eventManager.getUnpushedCount();
+        const unpushedCount = this.eventManager.syncTarget.collection ? this.eventManager.getUnpushedCount() : 0;
         const pushChangesBtn = document.getElementById('push-changes');
-        
+
         if (unpushedCount > 0) {
             pushChangesBtn.innerHTML = `
                 <i class="fa-light fa-cloud-arrow-up"></i> 
@@ -888,7 +925,7 @@ export class UIManager {
             this.currentSearch
         );
         
-        const syncStatus = event.remoteTimestamp && (event.localTimestamp > (event.remoteTimestamp || 0)) 
+        const syncStatus = event.dirty
             ? '<div class="event-sync-status"><i class="fa-sharp fa-light fa-sparkles"></i></div>' 
             : '';
         
