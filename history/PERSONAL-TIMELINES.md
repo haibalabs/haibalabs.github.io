@@ -19,6 +19,7 @@ timelines/{timelineId}/events/{eventId}
   event_id        string  equals the document ID; evt_ + UUID, assigned once at creation
   name            string  1–300 characters
   enhanced_time   string  the date as typed, parsed by the same date handling as world events
+  timelineCreatedAt timestamp  the parent timeline's createdAt; ties the event to that timeline
   ...             the other world-event fields (description, locations, categories, figures) when given
   userId          string  author's Auth UID
   lastModified    timestamp  server time of the write
@@ -29,7 +30,8 @@ timelines/{timelineId}/events/{eventId}
 - Editors, reviewers and admins can create timelines they own; viewers cannot, until timelines open up to more accounts.
 - The owner and listed members can read a timeline and read, add, change and delete its events. Nobody else can see it, admins included (the Firebase console still can).
 - Only the owner can rename it, change its members or delete it, and the owner cannot hand it to another account or make it public.
-- Firestore does not delete subcollections with their parent, so the app deletes a timeline's events before the timeline. Once a timeline document is gone, its leftover events are unreachable.
+- Firestore does not delete subcollections with their parent, so the app deletes a timeline's events before the timeline. Events left behind (a cleanup that failed, or a member's write racing the deletion) stay unreachable, even if someone later creates a timeline with the same ID: every event read and write requires the event's `timelineCreatedAt` to equal the current timeline's `createdAt`, and a new timeline has a new `createdAt`.
+- Event IDs must be `evt_` followed by a UUID. Listing a timeline's events must filter on `timelineCreatedAt` equal to the timeline's `createdAt`; an unfiltered list is denied.
 
 ## Screens
 

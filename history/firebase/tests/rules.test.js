@@ -120,20 +120,31 @@ const timeline = (owner, extra = {}) => ({
   owner, title: 'Family history', visibility: 'private', members: [],
   createdAt: serverTimestamp(), updatedAt: serverTimestamp(), ...extra,
 });
+// The seeded timeline's createdAt, which its events carry as timelineCreatedAt.
+const SEEDED_AT = Timestamp.fromMillis(1_700_000_000_000);
+const EVT_A = 'evt_00000000-0000-4000-8000-00000000000a';
+const EVT_B = 'evt_00000000-0000-4000-8000-00000000000b';
+const EVT_C = 'evt_00000000-0000-4000-8000-00000000000c';
 const timelineEvent = (uid, id, extra = {}) => ({
-  event_id: id, name: 'Grandmother born', enhanced_time: '1931', userId: uid, lastModified: serverTimestamp(), ...extra,
+  event_id: id, name: 'Grandmother born', enhanced_time: '1931', timelineCreatedAt: SEEDED_AT,
+  userId: uid, lastModified: serverTimestamp(), ...extra,
 });
 const tl = (db, id = 't1') => doc(db, 'timelines', id);
 const tlEvent = (db, id, timelineId = 't1') => doc(db, 'timelines', timelineId, 'events', id);
+const tlEvents = (db, createdAt = SEEDED_AT) =>
+  query(collection(db, 'timelines', 't1', 'events'), where('timelineCreatedAt', '==', createdAt));
 
 // Seeds timeline t1 owned by `owner`, with one event, bypassing the rules.
 async function seedTimeline(owner, members = []) {
   await env.withSecurityRulesDisabled(async (ctx) => {
     const db = ctx.firestore();
-    await setDoc(tl(db), { owner, title: 'Family history', visibility: 'private', members, createdAt: Timestamp.now(), updatedAt: Timestamp.now() });
-    await setDoc(tlEvent(db, 'evt_a'), { event_id: 'evt_a', name: 'Seeded', enhanced_time: '1900', userId: owner, lastModified: Timestamp.now() });
+    await setDoc(tl(db), { owner, title: 'Family history', visibility: 'private', members, createdAt: SEEDED_AT, updatedAt: SEEDED_AT });
+    await setDoc(tlEvent(db, EVT_A), { event_id: EVT_A, name: 'Seeded', enhanced_time: '1900', timelineCreatedAt: SEEDED_AT, userId: owner, lastModified: SEEDED_AT });
   });
 }
+
+// Deletes t1 alone, as the owner, leaving its events behind as a failed or racing cleanup would.
+const deleteTimelineOnly = (owner) => assertSucceeds(deleteDoc(tl(as(owner))));
 
 describe('personal timelines: creating', () => {
   it('editors, reviewers and admins can create a timeline they own', async () => {
@@ -216,29 +227,71 @@ describe('personal timelines: events', () => {
   beforeEach(() => seedTimeline('viewer', ['reviewer']));
 
   it('the owner and members can add, change, read and delete events', async () => {
-    await assertSucceeds(setDoc(tlEvent(as('viewer'), 'evt_b'), timelineEvent('viewer', 'evt_b')));
-    await assertSucceeds(setDoc(tlEvent(as('reviewer'), 'evt_c'), timelineEvent('reviewer', 'evt_c')));
-    await assertSucceeds(setDoc(tlEvent(as('reviewer'), 'evt_a'), timelineEvent('reviewer', 'evt_a', { name: 'Edited' })));
-    await assertSucceeds(getDocs(collection(as('viewer'), 'timelines', 't1', 'events')));
-    await assertSucceeds(deleteDoc(tlEvent(as('viewer'), 'evt_a')));
+    await assertSucceeds(setDoc(tlEvent(as('viewer'), EVT_B), timelineEvent('viewer', EVT_B)));
+    await assertSucceeds(setDoc(tlEvent(as('reviewer'), EVT_C), timelineEvent('reviewer', EVT_C)));
+    await assertSucceeds(setDoc(tlEvent(as('reviewer'), EVT_A), timelineEvent('reviewer', EVT_A, { name: 'Edited' })));
+    await assertSucceeds(getDoc(tlEvent(as('reviewer'), EVT_A)));
+    const listed = await assertSucceeds(getDocs(tlEvents(as('viewer'))));
+    if (listed.size !== 3) throw new Error(`expected 3 events, listed ${listed.size}`);
+    await assertSucceeds(deleteDoc(tlEvent(as('viewer'), EVT_A)));
   });
+  it('listing events must filter on the timeline\'s createdAt', () =>
+    assertFails(getDocs(collection(as('viewer'), 'timelines', 't1', 'events'))));
   it('other accounts cannot read or write its events', async () => {
-    await assertFails(getDoc(tlEvent(as('editor'), 'evt_a')));
-    await assertFails(getDocs(collection(as('admin'), 'timelines', 't1', 'events')));
-    await assertFails(setDoc(tlEvent(as('editor'), 'evt_b'), timelineEvent('editor', 'evt_b')));
-    await assertFails(getDoc(tlEvent(anonymous(), 'evt_a')));
+    await assertFails(getDoc(tlEvent(as('editor'), EVT_A)));
+    await assertFails(getDocs(tlEvents(as('admin'))));
+    await assertFails(setDoc(tlEvent(as('editor'), EVT_B), timelineEvent('editor', EVT_B)));
+    await assertFails(getDoc(tlEvent(anonymous(), EVT_A)));
   });
-  it('event writes need a matching event_id, a name, a date, the author and the server time', async () => {
+  it('event writes need a matching event_id, a name, a date, the timeline\'s createdAt, the author and the server time', async () => {
     const db = as('viewer');
-    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_other')));
-    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b', { name: '' })));
-    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b', { enhanced_time: 1931 })));
-    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('reviewer', 'evt_b')));
-    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b', { lastModified: Timestamp.fromMillis(0) })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_C)));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { name: '' })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { enhanced_time: 1931 })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { timelineCreatedAt: Timestamp.fromMillis(0) })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { timelineCreatedAt: null })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('reviewer', EVT_B)));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { lastModified: Timestamp.fromMillis(0) })));
+  });
+  it('event IDs must be evt_ followed by a UUID', async () => {
+    const db = as('viewer');
+    await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b')));
+    await assertFails(setDoc(tlEvent(db, 'Battle of Hastings'), timelineEvent('viewer', 'Battle of Hastings')));
   });
   it('events of a deleted timeline are no longer reachable', async () => {
-    await env.withSecurityRulesDisabled(async (ctx) => { await deleteDoc(tl(ctx.firestore())); });
-    await assertFails(getDoc(tlEvent(as('viewer'), 'evt_a')));
-    await assertFails(setDoc(tlEvent(as('viewer'), 'evt_b'), timelineEvent('viewer', 'evt_b')));
+    await deleteTimelineOnly('viewer');
+    await assertFails(getDoc(tlEvent(as('viewer'), EVT_A)));
+    await assertFails(setDoc(tlEvent(as('viewer'), EVT_B), timelineEvent('viewer', EVT_B)));
+  });
+  it('a timeline recreated under the same ID by another account cannot reach the old events', async () => {
+    await deleteTimelineOnly('viewer');
+    await assertSucceeds(setDoc(tl(as('editor')), timeline('editor')));
+    const db = as('editor');
+    const createdAt = (await getDoc(tl(db))).data().createdAt;
+    await assertFails(getDoc(tlEvent(db, EVT_A)));
+    await assertFails(getDocs(tlEvents(db)));
+    const listed = await assertSucceeds(getDocs(tlEvents(db, createdAt)));
+    if (listed.size !== 0) throw new Error(`expected no events, listed ${listed.size}`);
+    await assertFails(setDoc(tlEvent(db, EVT_A), timelineEvent('editor', EVT_A, { timelineCreatedAt: createdAt })));
+    await assertFails(setDoc(tlEvent(db, EVT_A), timelineEvent('editor', EVT_A)));
+    await assertFails(deleteDoc(tlEvent(db, EVT_A)));
+    // The previous owner and member are not members of the new timeline either.
+    await assertFails(getDoc(tlEvent(as('viewer'), EVT_A)));
+    await assertFails(getDoc(tlEvent(as('reviewer'), EVT_A)));
+  });
+  it('an event written by a member while the owner deletes the timeline stays unreachable after it is recreated', async () => {
+    // The member's write lands after the owner's cleanup removed the events but before the
+    // timeline document itself is deleted.
+    await assertSucceeds(deleteDoc(tlEvent(as('viewer'), EVT_A)));
+    await assertSucceeds(setDoc(tlEvent(as('reviewer'), EVT_B), timelineEvent('reviewer', EVT_B)));
+    await deleteTimelineOnly('viewer');
+    await assertSucceeds(setDoc(tl(as('editor')), timeline('editor', { members: ['reviewer'] })));
+    const createdAt = (await getDoc(tl(as('editor')))).data().createdAt;
+    for (const uid of ['editor', 'reviewer']) {
+      await assertFails(getDoc(tlEvent(as(uid), EVT_B)));
+      await assertFails(setDoc(tlEvent(as(uid), EVT_B), timelineEvent(uid, EVT_B, { timelineCreatedAt: createdAt })));
+      const listed = await assertSucceeds(getDocs(tlEvents(as(uid), createdAt)));
+      if (listed.size !== 0) throw new Error(`expected no events for ${uid}, listed ${listed.size}`);
+    }
   });
 });
