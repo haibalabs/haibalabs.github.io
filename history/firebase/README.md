@@ -6,7 +6,7 @@ HistoriLine uses Firebase Authentication (email/password) and Cloud Firestore. T
 |---|---|
 | Project ID | `historytimeline-81f70` |
 | Console | https://console.firebase.google.com/project/historytimeline-81f70 |
-| Owner | Record the owning Google account here (Project settings → Users and permissions). |
+| Owner | rachid.el.guerrab@gmail.com (Project settings → Users and permissions) |
 | Rules | [firestore.rules](firestore.rules), deployed from this directory only |
 
 ## Access model
@@ -29,6 +29,10 @@ A signed-in account without a `users` document can read and write nothing. Colle
 3. Firestore → `users` → **Add document**: Document ID = the UID; field `role` (string) = `viewer`, `editor`, `reviewer` or `admin`.
 
 Keep self-service sign-up off: Authentication → Settings → User actions → clear **Enable create (sign-up)**.
+
+## Forgotten passwords
+
+Users select **Forgot password?** on the sign-in form after entering their email; Firebase emails a link to its hosted reset page. An admin can send the same email from Authentication → Users → ⋮ → **Reset password**. Do not delete and re-add the account: that creates a new User UID, and its `users` document would no longer match.
 
 ## Change or revoke access
 

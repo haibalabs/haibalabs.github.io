@@ -1,6 +1,6 @@
 // auth-manager.js
 
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 export class AuthManager {
@@ -30,6 +30,15 @@ export class AuthManager {
             console.error('Login error:', error);
             throw error;
         }
+    }
+
+    /**
+     * Emails a password-reset link through Firebase's hosted reset page.
+     *
+     * @param {string} email
+     */
+    async resetPassword(email) {
+        await sendPasswordResetEmail(this.auth, email);
     }
 
     async logout() {
