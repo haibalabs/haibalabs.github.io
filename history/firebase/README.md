@@ -69,7 +69,7 @@ Storage requires the pay-as-you-go **Blaze** plan (since February 2026). The pro
 
 One-time setup by the project owner:
 
-1. Firebase console → **Spark plan → Upgrade** (bottom left) → **Blaze**, and link a Cloud Billing account.
+1. Firebase console → **Spark plan → Upgrade** (bottom left) → **Blaze**, and link a Cloud Billing account. A new billing account starts as a Google Cloud free trial ($300 credit for 90 days; done 2026-10-24). Before the trial ends, upgrade the billing account to paid (Google Cloud console → **Billing → Account overview → Upgrade**): otherwise Firebase moves the project back to Spark, Storage stops, and trial resources, including stored photos, can be deleted after a 30-day grace period. Firestore and Auth keep working on Spark.
 2. Google Cloud console → **Billing → Budgets & alerts → Create budget**: scope `historytimeline-81f70`, amount $5, email alerts at 50%, 90% and 100%. A budget alerts; it does not cap spending.
 3. Firebase console → **Build → Storage → Get started** → **Start in production mode** (denies everything until the repository's rules are deployed) → location **`us-central1`** (no-cost eligible and inside Firestore's `nam5`; it cannot be changed later).
 4. Set the bucket's CORS so the site can read private images (exact commands come with the implementation; run once from Google Cloud Shell).
