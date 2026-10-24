@@ -4,7 +4,8 @@ import { readFileSync } from 'node:fs';
 import { parseTimeToSortableValue } from '../../modules/date-handlers.js';
 
 // Rachid's "Date Scoring Test List - working set" sheet, exported as CSV: Input, expected Sort
-// Value, Calculated Date. The CSV is the maintained copy; correct it here when a row is wrong.
+// Value, Calculated Date. It is the date parser's regression set: every date seen parsing wrongly
+// gets a row here, with the value it should have. The CSV is the maintained copy.
 const CSV = readFileSync(new URL('./fixtures/date-scoring-working-set.csv', import.meta.url), 'utf8');
 
 // Rows the parser does not handle yet, with the value it currently returns noted in the reason.
@@ -31,7 +32,7 @@ const close = (actual, expected) => Math.abs(actual - expected) < Math.max(0.000
 describe('date scoring sheet', () => {
   const rows = parseRows(CSV);
 
-  it('has every row of the sheet', () => assert.equal(rows.length, 94));
+  it('has every row of the sheet', () => assert.equal(rows.length, 95));
 
   for (const { input, sort } of rows) {
     if (NOT_YET_SUPPORTED[input]) {
