@@ -209,3 +209,33 @@ describe('Sort order invariants', () => {
       `Spring (${spring.sortableValue}) should be < Summer (${summer.sortableValue})`);
   });
 });
+
+describe('numeric dates typed in the event form', () => {
+  it('reads month/day/year, the form placeholder\'s format', () => {
+    const parsed = parseTimeToSortableValue('1/25/1976');
+    assert.deepEqual([parsed.year, parsed.month, parsed.day], [1976, 1, 25]);
+    assert.equal(formatHistoricalDate('1/25/1976'), 'January 25th, 1976');
+    assert.equal(formatHistoricalDate('01/25/1976'), 'January 25th, 1976');
+  });
+
+  it('reads day first only when the first number cannot be a month', () => {
+    assert.equal(formatHistoricalDate('25/1/1976'), 'January 25th, 1976');
+    assert.equal(formatHistoricalDate('3/4/1950'), 'March 4th, 1950');
+  });
+
+  it('accepts three-digit years and leap days', () => {
+    assert.equal(formatHistoricalDate('12/31/999'), 'December 31st, 999 AD');
+    assert.equal(parseTimeToSortableValue('2/29/2000').day, 29);
+  });
+
+  it('leaves impossible dates unconverted', () => {
+    assert.notEqual(parseTimeToSortableValue('13/13/1976').year, 1976);
+    assert.notEqual(parseTimeToSortableValue('2/30/1976').year, 1976);
+    assert.notEqual(parseTimeToSortableValue('2/29/1900').year, 1900);
+  });
+
+  it('does not touch ISO date ranges from the world data', () => {
+    assert.equal(parseTimeToSortableValue('1786-09-01/1786-12-31').year, 1786);
+    assert.equal(parseTimeToSortableValue('1876-06-25/26').year, 1876);
+  });
+});

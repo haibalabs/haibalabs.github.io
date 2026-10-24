@@ -122,7 +122,18 @@ function parseYear(yearStr) {
 
     // remove extra spaces
     cleaned = cleaned.replace(/\s+/g, ' ').trim();
-    
+
+    // A numeric date such as 1/25/1976 (month first, as the event form suggests) becomes ISO
+    // 1976-1-25. Day first is used only when the first number cannot be a month (25/1/1976).
+    // Impossible dates are left alone, so they still fail to parse.
+    cleaned = cleaned.replace(/^(\d{1,2})\/(\d{1,2})\/(\d{3,4})$/, (whole, a, b, year) => {
+      const [month, day] = Number(a) > 12 ? [Number(b), Number(a)] : [Number(a), Number(b)];
+      const y = Number(year);
+      const leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+      const monthDays = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
+      return monthDays && day >= 1 && day <= monthDays ? `${year}-${month}-${day}` : whole;
+    });
+
     let approxModifier = '';
     if (cleaned.includes('early ')) {
       approxModifier = 'early';

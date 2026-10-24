@@ -42,7 +42,9 @@ export function eventProblem(event) {
     const time = String(event.enhanced_time ?? '').trim();
     if (!time) return 'Give the event a date.';
     const parsed = parseTimeToSortableValue(time);
-    if (!parsed || typeof parsed !== 'object' || parsed.year === 0) {
+    // a numeric date the parser could not read (13/13/1976) would otherwise land in year 13
+    const numeric = time.match(/^\d{1,2}\/\d{1,2}\/(\d{3,4})$/);
+    if (!parsed || typeof parsed !== 'object' || parsed.year === 0 || (numeric && parsed.year !== Number(numeric[1]))) {
         return `"${time}" is not a date the timeline can place. Try forms like 1931, March 1931, 44 BC or Spring 1950.`;
     }
     return null;

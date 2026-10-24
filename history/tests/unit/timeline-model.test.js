@@ -54,3 +54,11 @@ describe('timelineIdFromSearch — the ?timeline= link', () => {
     assert.equal(timelineIdFromSearch('?timeline='), null);
   });
 });
+
+describe('eventProblem — numeric dates', () => {
+  it('accepts a month/day/year date', () => assert.equal(eventProblem({ name: 'Birth', enhanced_time: '1/25/1976' }), null));
+  it('rejects a numeric date the parser cannot read instead of placing it in an early year', () => {
+    assert.match(eventProblem({ name: 'Birth', enhanced_time: '13/13/1976' }), /not a date the timeline can place/);
+    assert.match(eventProblem({ name: 'Birth', enhanced_time: '2/30/1976' }), /not a date the timeline can place/);
+  });
+});
