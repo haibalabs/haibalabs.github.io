@@ -257,6 +257,10 @@ describe('personal timelines: events', () => {
     const db = as('viewer');
     await assertFails(setDoc(tlEvent(db, 'evt_b'), timelineEvent('viewer', 'evt_b')));
     await assertFails(setDoc(tlEvent(db, 'Battle of Hastings'), timelineEvent('viewer', 'Battle of Hastings')));
+    const hyphens = 'evt_' + '-'.repeat(36);
+    await assertFails(setDoc(tlEvent(db, hyphens), timelineEvent('viewer', hyphens)));
+    const misplaced = 'evt_0000000000000-4000-8000-00000000000-b';
+    await assertFails(setDoc(tlEvent(db, misplaced), timelineEvent('viewer', misplaced)));
   });
   it('events of a deleted timeline are no longer reachable', async () => {
     await deleteTimelineOnly('viewer');
