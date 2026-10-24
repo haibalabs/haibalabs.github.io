@@ -4,18 +4,28 @@
 // hides what an account cannot use; the Firestore rules decide what it can reach.
 import { permissionsFor } from './roles.js';
 import { newEventId } from './sync-identity.js';
-import { TimelineStore } from './timeline-store.js';
 import { eventProblem, timelineIdFromSearch, titleProblem } from './timeline-model.js';
 
+// Every Firestore call here is awaited while the user can still sign out, open another timeline
+// or close this one. Each call notes the session (bumped on every account change) and the
+// selection (bumped on every open and close) it started under, and applies its result only if
+// neither has moved on; a write still lands in the timeline it was made for.
 export class TimelineUI {
-    constructor(eventManager, uiManager) {
+    /**
+     * @param {object} eventManager
+     * @param {object} uiManager
+     * @param {import('./timeline-store.js').TimelineStore} store
+     */
+    constructor(eventManager, uiManager, store) {
         this.eventManager = eventManager;
         this.uiManager = uiManager;
-        this.store = new TimelineStore(eventManager.db, eventManager.auth);
+        this.store = store;
         // the open timeline document ({ id, title, createdAt, ... }), or null
         this.current = null;
         this.user = null;
         this.role = null;
+        this.session = 0;
+        this.selection = 0;
         this.worldLoaded = false;
         // a ?timeline= link waiting for sign-in or for world events to load
         this.pendingId = timelineIdFromSearch(location.search);
@@ -64,7 +74,18 @@ export class TimelineUI {
         this.openPending();
     }
 
+    // The session and selection an awaited call started under.
+    token() {
+        return { session: this.session, selection: this.selection };
+    }
+
+    isCurrent(token, { selection = true } = {}) {
+        return token.session === this.session && (!selection || token.selection === this.selection);
+    }
+
     async setAccount(user, role) {
+        this.session++;
+        const token = this.token();
         this.user = user;
         this.role = role;
         const { member, canEdit } = permissionsFor(role);
@@ -78,7 +99,7 @@ export class TimelineUI {
             return;
         }
         if (canEdit) await this.refreshList();
-        this.openPending();
+        if (this.isCurrent(token, { selection: false })) this.openPending();
     }
 
     showStatus(message) {
@@ -87,13 +108,18 @@ export class TimelineUI {
     }
 
     async refreshList() {
+        const token = this.token();
+        let timelines;
         try {
-            this.timelines = await this.store.listMine();
+            timelines = await this.store.listMine();
         } catch (error) {
             console.error('Could not list timelines:', error);
-            this.showStatus('Could not load your timelines. Reload to try again.');
+            if (this.isCurrent(token, { selection: false })) this.showStatus('Could not load your timelines. Reload to try again.');
             return;
         }
+        // another account's list must never replace this one
+        if (!this.isCurrent(token, { selection: false })) return;
+        this.timelines = timelines;
         this.list.replaceChildren(...this.timelines.map(timeline => this.renderListItem(timeline)));
         if (!this.timelines.length) {
             const empty = document.createElement('li');
@@ -144,11 +170,13 @@ export class TimelineUI {
         const problem = titleProblem(input.value);
         if (problem) return this.showStatus(problem);
         this.showStatus('');
+        const token = this.token();
         try {
             const id = await this.store.create(input.value);
+            if (!this.isCurrent(token, { selection: false })) return;
             input.value = '';
             await this.refreshList();
-            await this.open(id);
+            if (this.isCurrent(token, { selection: false })) await this.open(id);
         } catch (error) {
             console.error('Could not create timeline:', error);
             this.showStatus('Could not create the timeline. Try again.');
@@ -172,8 +200,10 @@ export class TimelineUI {
             const problem = titleProblem(input.value);
             if (problem) return this.showStatus(problem);
             this.showStatus('');
+            const token = this.token();
             try {
                 await this.store.rename(timeline.id, input.value);
+                if (!this.isCurrent(token, { selection: false })) return;
                 if (this.current?.id === timeline.id) {
                     this.current.title = input.value.trim();
                     this.renderPill();
@@ -193,8 +223,10 @@ export class TimelineUI {
         const events = timeline.count === 1 ? '1 event' : `${timeline.count} events`;
         if (!confirm(`Delete "${timeline.title}" and its ${events}? This cannot be undone.`)) return;
         this.showStatus('');
+        const token = this.token();
         try {
             await this.store.remove(timeline);
+            if (!this.isCurrent(token, { selection: false })) return;
             if (this.current?.id === timeline.id) this.close();
             await this.refreshList();
         } catch (error) {
@@ -215,14 +247,18 @@ export class TimelineUI {
     }
 
     async open(id) {
+        this.selection++;
+        const token = this.token();
         try {
             const timeline = await this.store.get(id);
+            if (!this.isCurrent(token)) return;
             if (!timeline) {
                 this.uiManager.showToast('That timeline does not exist, or this account cannot open it.');
                 if (timelineIdFromSearch(location.search) === id) this.setAddress(null);
                 return;
             }
             const events = await this.store.loadEvents(timeline);
+            if (!this.isCurrent(token)) return;
             this.current = timeline;
             this.eventManager.setPersonalEvents(id, events);
             this.eventManager.setTimelineView('with-world');
@@ -234,11 +270,12 @@ export class TimelineUI {
             this.uiManager.resetLayout();
         } catch (error) {
             console.error('Could not open timeline:', error);
-            this.uiManager.showToast('Could not open the timeline. Try again.');
+            if (this.isCurrent(token)) this.uiManager.showToast('Could not open the timeline. Try again.');
         }
     }
 
     close({ keepAddress = false } = {}) {
+        this.selection++;
         this.current = null;
         this.eventManager.clearPersonalEvents();
         if (!keepAddress) this.setAddress(null);
@@ -294,32 +331,41 @@ export class TimelineUI {
     async saveEvent(fields, editing) {
         const problem = eventProblem(fields);
         if (problem) return problem;
+        const timeline = this.current;
+        if (!timeline) return 'The timeline was closed. Open it again to add events.';
+        const token = this.token();
         const event = { ...fields, event_id: editing?.event_id ?? newEventId() };
         try {
-            await this.store.saveEvent(this.current, event);
+            await this.store.saveEvent(timeline, event);
         } catch (error) {
             console.error('Could not save event:', error);
+            if (!this.isCurrent(token)) return null;
             return error.code === 'permission-denied'
                 ? 'This account can no longer edit this timeline.'
                 : 'Could not save the event. Try again.';
         }
+        // saved to its timeline, but that timeline is no longer the one on screen
+        if (!this.isCurrent(token)) return null;
         const id = this.eventManager.placeIndex.idFor(editing ?? event);
         this.uiManager.eventHeights.delete(id);
-        this.eventManager.upsertPersonalEvent(this.current.id, event);
+        this.eventManager.upsertPersonalEvent(timeline.id, event);
         this.uiManager.resetLayout();
         this.uiManager.scrollToEventId(this.eventManager.placeIndex.idFor(event));
         return null;
     }
 
     async deleteEvent(event) {
-        if (!confirm(`Delete "${event.name}" from this timeline?`)) return;
+        const timeline = this.current;
+        if (!timeline || !confirm(`Delete "${event.name}" from this timeline?`)) return;
+        const token = this.token();
         try {
-            await this.store.deleteEvent(this.current, event.event_id);
+            await this.store.deleteEvent(timeline, event.event_id);
         } catch (error) {
             console.error('Could not delete event:', error);
-            this.uiManager.showToast('Could not delete the event. Try again.');
+            if (this.isCurrent(token)) this.uiManager.showToast('Could not delete the event. Try again.');
             return;
         }
+        if (!this.isCurrent(token)) return;
         this.eventManager.removePersonalEvent(event.event_id);
         this.uiManager.resetLayout();
     }

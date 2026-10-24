@@ -89,10 +89,15 @@ export class ModalManager {
 
         const timelineUI = this.uiManager.timelineUI;
         if (timelineUI?.current) {
-            const submit = this.form.querySelector('button[type="submit"]');
-            submit.disabled = true;
-            const problem = await timelineUI.saveEvent(newEvent, this.editing);
-            submit.disabled = false;
+            // the form stays open, and stays this form, until the save settles
+            const buttons = this.form.querySelectorAll('.modal-actions button');
+            buttons.forEach(button => button.disabled = true);
+            let problem;
+            try {
+                problem = await timelineUI.saveEvent(newEvent, this.editing);
+            } finally {
+                buttons.forEach(button => button.disabled = false);
+            }
             if (problem) return this.showError(problem);
         } else {
             const problem = eventProblem(newEvent);

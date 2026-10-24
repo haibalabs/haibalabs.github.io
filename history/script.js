@@ -7,6 +7,7 @@ import { ModalManager } from './modules/modal-manager.js';
 import { initMap, LocationVerifier } from './modules/map-utils.js';
 import { initTimelineNav } from './modules/timeline-nav.js';
 import { TimelineUI }   from './modules/timeline-ui.js';
+import { TimelineStore } from './modules/timeline-store.js';
 
 // Initialize map globally since it's used across different modules
 const { map, markersLayer, geocodeCache } = initMap();
@@ -38,7 +39,7 @@ async function initializeApp() {
     const modalManager = new ModalManager(eventManager, uiManager);
     uiManager.modalManager = modalManager;
     // before any await, so it hears the first sign-in state
-    uiManager.timelineUI = new TimelineUI(eventManager, uiManager);
+    uiManager.timelineUI = new TimelineUI(eventManager, uiManager, new TimelineStore(eventManager.db, eventManager.auth));
 
     // Get data file from URL params
     const params = new URLSearchParams(window.location.search);
