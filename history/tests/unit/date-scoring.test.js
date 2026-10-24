@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { parseTimeToSortableValue } from '../../modules/date-handlers.js';
 
-// Rachid's "Date Scoring Test List - working set" sheet, exported as CSV and kept verbatim:
-// Input, expected Sort Value, Calculated Date.
+// Rachid's "Date Scoring Test List - working set" sheet, exported as CSV: Input, expected Sort
+// Value, Calculated Date. The CSV is the maintained copy; correct it here when a row is wrong.
 const CSV = readFileSync(new URL('./fixtures/date-scoring-working-set.csv', import.meta.url), 'utf8');
 
 // Rows the parser does not handle yet, with the value it currently returns noted in the reason.
@@ -16,12 +16,6 @@ const NOT_YET_SUPPORTED = {
   '1970-05': 'YYYY-MM ignores the month',
   '15 44 BC': '"day year BC"',
   'September, 2004': '"Month, Year" with a comma',
-};
-
-// Rows where the sheet's value is wrong (confirmed by Rachid, 2026-10-24).
-const SUPERSEDED = {
-  // "c." marks the date approximate, not the month unknown: October 1, not January 1
-  'c. October 1172': 1172.836066,
 };
 
 function parseRows(csv) {
@@ -40,14 +34,13 @@ describe('date scoring sheet', () => {
   it('has every row of the sheet', () => assert.equal(rows.length, 94));
 
   for (const { input, sort } of rows) {
-    const expected = SUPERSEDED[input] ?? sort;
     if (NOT_YET_SUPPORTED[input]) {
-      it.todo(`sorts ${JSON.stringify(input)} at ${expected} (${NOT_YET_SUPPORTED[input]})`);
+      it.todo(`sorts ${JSON.stringify(input)} at ${sort} (${NOT_YET_SUPPORTED[input]})`);
       continue;
     }
-    it(`sorts ${JSON.stringify(input)} at ${expected}`, () => {
+    it(`sorts ${JSON.stringify(input)} at ${sort}`, () => {
       const actual = parseTimeToSortableValue(input).sortableValue;
-      assert.ok(close(actual, expected), `expected ${expected}, got ${actual}`);
+      assert.ok(close(actual, sort), `expected ${sort}, got ${actual}`);
     });
   }
 });
