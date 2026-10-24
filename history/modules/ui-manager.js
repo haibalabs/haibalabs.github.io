@@ -147,9 +147,10 @@ export class UIManager {
         const debugSettings = document.getElementById('debug-settings');
         const loginBtn = document.getElementById('login-btn');
         const authStatus = document.getElementById('auth-status');
-        const showAuthStatus = (message) => {
+        const showAuthStatus = (message, { info = false } = {}) => {
             authStatus.textContent = message;
             authStatus.hidden = !message;
+            authStatus.classList.toggle('info', info);
         };
 
         // Sync controls
@@ -203,6 +204,24 @@ export class UIManager {
                 showAuthStatus(authErrorMessage(error.code));
             } finally {
                 loginBtn.disabled = false;
+            }
+        });
+
+        // Password reset. The message is the same whether or not the email has an account.
+        document.getElementById('reset-password-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+                showAuthStatus('Enter your email above, then select "Forgot password?" again.');
+                return;
+            }
+            const sent = 'If that email has an account, a reset link is on its way. Check your inbox and spam folder.';
+            try {
+                await authManager.resetPassword(email);
+                showAuthStatus(sent, { info: true });
+            } catch (error) {
+                if (error.code === 'auth/user-not-found') showAuthStatus(sent, { info: true });
+                else if (error.code === 'auth/invalid-email') showAuthStatus('Enter a valid email address.');
+                else showAuthStatus(authErrorMessage(error.code));
             }
         });
 
