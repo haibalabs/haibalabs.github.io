@@ -1,6 +1,6 @@
 # Personal timelines (U1)
 
-Status: data model and Firestore rules implemented and tested; screens approved by Rachid on 2026-10-24 (decisions below) and being built.
+Status: data model, Firestore rules and screens implemented and tested (screens in `modules/timeline-ui.js`, browser tests in `tests/e2e/timelines-flow.spec.js`); screens approved by Rachid on 2026-10-24 (decisions below).
 
 An editor keeps private timelines of their own events (a family history, a project) and can view one alone or interleaved with world history. Timelines are private to their owner. The model already allows listed members, but there is no sharing UI yet.
 
