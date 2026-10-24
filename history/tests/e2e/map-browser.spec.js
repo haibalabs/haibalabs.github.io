@@ -1,29 +1,5 @@
 import { test, expect } from '@playwright/test';
-const firebaseStub = `
-export const initializeApp = () => ({});
-export const getAnalytics = () => ({});
-export const getFirestore = () => ({});
-export const connectFirestoreEmulator = () => {};
-export const connectAuthEmulator = () => {};
-export const getAuth = () => ({ currentUser: null });
-export const onAuthStateChanged = (auth, callback) => { queueMicrotask(() => callback(null)); return () => {}; };
-export const collection = () => ({});
-export const doc = () => ({});
-export const setDoc = async () => {};
-export const getDoc = async () => ({ exists: () => false });
-export const query = () => ({});
-export const where = () => ({});
-export const getDocs = async () => ({ forEach: () => {} });
-export const serverTimestamp = () => 0;
-export const signInWithEmailAndPassword = async () => ({});
-export const signOut = async () => {};
-export const sendPasswordResetEmail = async () => {};
-`;
-
-async function stubFirebase(page) {
-  await page.route('https://www.gstatic.com/firebasejs/**', route =>
-    route.fulfill({ contentType: 'text/javascript', body: firebaseStub }));
-}
+import { stubFirebase } from './firebase-stub.js';
 
 
 const location = (id, coordinates) => ({ place_id: id, name: id, geography: { status: 'reused', precision: 'approximate', coordinates } });

@@ -242,6 +242,7 @@ export class UIManager {
                 return;
             }
             syncControls.style.display = e.target.checked ? 'block' : 'none';
+            this.eventManager.refreshSyncTarget();
             const { collection, reason } = this.eventManager.syncTarget;
             syncStatus.textContent = e.target.checked && !collection ? reason : '';
             pullBtn.disabled = !e.target.checked || !collection;
@@ -254,13 +255,14 @@ export class UIManager {
             try {
                 pushBtn.disabled = true;
                 syncStatus.textContent = 'Pushing changes...';
-                const count = await this.eventManager.pushChanges();
-                if (count > 0) {
-                    this.resetWindow();
-                    syncStatus.textContent = `Pushed ${count} events successfully`;
-                }
-                this.updateSettingsInfo();
-                setTimeout(() => syncStatus.textContent = '', 3000);
+                const { saved, conflicts } = await this.eventManager.pushChanges();
+                if (saved > 0) this.resetWindow();
+                const pushed = `Pushed ${saved} events`;
+                syncStatus.textContent = conflicts > 0
+                    ? `${pushed}. ${conflicts} event${conflicts === 1 ? ' was' : 's were'} changed on the server first; resolve below.`
+                    : pushed;
+                this.renderConflicts();
+                if (!conflicts) setTimeout(() => syncStatus.textContent = '', 3000);
             } catch (error) {
                 console.error('Push failed:', error);
                 syncStatus.textContent = 'Push failed: ' + error.message;
@@ -274,15 +276,18 @@ export class UIManager {
             try {
                 pullBtn.disabled = true;
                 syncStatus.textContent = 'Pulling changes...';
-                const { applied, conflicts } = await this.eventManager.pullChanges();
+                const { applied, conflicts, quarantined } = await this.eventManager.pullChanges();
                 if (applied > 0) this.resetWindow();
-                const pulled = applied > 0 ? `Pulled ${applied} events` : 'No new changes to pull';
-                syncStatus.textContent = conflicts > 0
-                    ? `${pulled}. ${conflicts} conflicting change${conflicts === 1 ? '' : 's'} to resolve below.`
-                    : pulled;
+                const parts = [applied > 0 ? `Pulled ${applied} events` : 'No new changes to pull'];
+                if (conflicts > 0) parts.push(`${conflicts} conflicting change${conflicts === 1 ? '' : 's'} to resolve below`);
+                if (quarantined > 0) {
+                    parts.push(`${quarantined} server record${quarantined === 1 ? '' : 's'} ignored for an invalid event ID `
+                        + `(${[...this.eventManager.quarantined.keys()].slice(0, 3).join(', ')})`);
+                }
+                syncStatus.textContent = parts.join('. ') + '.';
                 this.updateSettingsInfo();
                 this.renderConflicts();
-                if (!conflicts) setTimeout(() => syncStatus.textContent = '', 3000);
+                if (!conflicts && !quarantined) setTimeout(() => syncStatus.textContent = '', 3000);
             } catch (error) {
                 console.error('Pull failed:', error);
                 syncStatus.textContent = 'Pull failed: ' + error.message;

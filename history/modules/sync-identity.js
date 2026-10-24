@@ -76,3 +76,31 @@ export function mergeDecision(local, revision) {
     if (local.syncedRevision != null && revision <= local.syncedRevision) return 'unchanged';
     return local.dirty ? 'conflict' : 'accept';
 }
+
+/**
+ * Whether a push may write, given the server document's current revision (checked inside the
+ * write transaction). A write is allowed only if the server has no document yet, or still has the
+ * revision the local edit was based on; anything newer means another change landed first.
+ *
+ * @param {object} local
+ * @param {number|null} serverRevision - null when the server has no document
+ * @returns {'write'|'conflict'}
+ */
+export function pushDecision(local, serverRevision) {
+    if (serverRevision == null) return 'write';
+    return local.syncedRevision != null && serverRevision <= local.syncedRevision ? 'write' : 'conflict';
+}
+
+/**
+ * Why a server document cannot be used as an event, or null if it can: its key must be a valid
+ * event ID and match the event_id it stores.
+ *
+ * @param {string} key - Firestore document ID
+ * @param {object} data
+ * @returns {string|null}
+ */
+export function incomingProblem(key, data) {
+    if (!EVENT_ID_PATTERN.test(key)) return `document key "${key}" is not a valid event ID`;
+    if (data?.event_id !== key) return `document ${key} stores a different event_id`;
+    return null;
+}

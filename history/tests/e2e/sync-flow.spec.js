@@ -139,3 +139,59 @@ for (const [keep, button] of [['server', 'Take theirs'], ['local', 'Keep mine']]
     }
   });
 }
+
+test('a push does not overwrite a server document that appeared after the local edit', async ({ page, request }) => {
+  await openWorld(page);
+  await signIn(page, 'admin@example.test');
+  const eventId = await addEvent(page, 'Local version');
+  // another editor creates the same document before this browser pushes, with no pull in between
+  await writeAsOwner(request, `events_main/${eventId}`, serverEvent(fixtureEvent(0, 'Server version', { event_id: eventId })));
+
+  await page.click('#settings-btn');
+  await enableSync(page);
+  await page.click('#push-changes');
+  await expect(page.locator('.sync-status')).toHaveText(/Pushed 0 events\. 1 event was changed on the server first/);
+  await expect(page.locator(`.sync-conflict[data-event-id="${eventId}"]`)).toBeVisible();
+  const [doc] = await listAsOwner(request, 'events_main');
+  expect(doc.fields.name.stringValue).toBe('Server version');
+  await expect(card(page, 'Local version')).toHaveCount(1);
+});
+
+test('a server edit made after "Keep mine" is not overwritten', async ({ page, request }) => {
+  await openWorld(page);
+  await signIn(page, 'admin@example.test');
+  const eventId = await addEvent(page, 'Local version');
+  await writeAsOwner(request, `events_main/${eventId}`, serverEvent(fixtureEvent(0, 'Server version 1', { event_id: eventId })));
+
+  await page.click('#settings-btn');
+  await enableSync(page);
+  await page.click('#pull-changes');
+  const row = page.locator(`.sync-conflict[data-event-id="${eventId}"]`);
+  await row.getByRole('button', { name: 'Keep mine' }).click();
+  await expect(page.locator('#push-changes')).toHaveText(/Push \(1\)/);
+
+  // the server changes again after the decision but before the push
+  await writeAsOwner(request, `events_main/${eventId}`, serverEvent(fixtureEvent(0, 'Server version 2', { event_id: eventId })));
+  await page.click('#push-changes');
+  await expect(page.locator('.sync-status')).toHaveText(/1 event was changed on the server first/);
+  expect((await listAsOwner(request, 'events_main'))[0].fields.name.stringValue).toBe('Server version 2');
+
+  // deciding again against the newest server version lets the push through
+  await row.getByRole('button', { name: 'Keep mine' }).click();
+  await page.click('#push-changes');
+  await expect(page.locator('.sync-status')).toHaveText(/Pushed 1 events/);
+  expect((await listAsOwner(request, 'events_main'))[0].fields.name.stringValue).toBe('Local version');
+});
+
+test('server documents with invalid identities are ignored and reported', async ({ page, request }) => {
+  await openWorld(page);
+  await writeAsOwner(request, 'events_main/not-an-event-id', serverEvent(fixtureEvent(5, 'Record with a title key', { event_id: 'not-an-event-id' })));
+  await writeAsOwner(request, `events_main/${id(6)}`, serverEvent(fixtureEvent(5, 'Record with a mismatched key')));
+  await signIn(page, 'admin@example.test');
+  await enableSync(page);
+  await page.click('#pull-changes');
+  await expect(page.locator('.sync-status')).toHaveText(/No new changes to pull\. 2 server records ignored for an invalid event ID/);
+  await expect(card(page, 'Record with a title key')).toHaveCount(0);
+  await expect(card(page, 'Record with a mismatched key')).toHaveCount(0);
+  await expect(page.locator('#pull-changes')).toBeEnabled();
+});

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { EVENT_ID_PATTERN, WORLD_COLLECTION, newEventId, syncTarget, toSyncDoc, mergeDecision } from '../../modules/sync-identity.js';
+import { EVENT_ID_PATTERN, WORLD_COLLECTION, newEventId, syncTarget, toSyncDoc, mergeDecision, pushDecision, incomingProblem } from '../../modules/sync-identity.js';
 
 const id = (n) => `evt_${String(n).padStart(8, '0')}-0000-4000-8000-000000000000`;
 const events = (...ids) => ids.map((event_id, i) => ({ event_id, name: `Event ${i}` }));
@@ -76,5 +76,39 @@ describe('mergeDecision — applying a server revision', () => {
   it('reports a conflict when both sides changed', () => {
     assert.equal(mergeDecision({ dirty: true, syncedRevision: 5 }, 10), 'conflict');
     assert.equal(mergeDecision({ dirty: true, syncedRevision: null }, 10), 'conflict');
+  });
+});
+
+describe('pushDecision — writing only over the revision an edit was based on', () => {
+  it('writes when the server has no document', () => {
+    assert.equal(pushDecision({ syncedRevision: null }, null), 'write');
+    assert.equal(pushDecision({ syncedRevision: 100 }, null), 'write');
+  });
+
+  it('writes when the server still has the base revision', () => {
+    assert.equal(pushDecision({ syncedRevision: 100 }, 100), 'write');
+  });
+
+  it('refuses to overwrite a newer server revision', () => {
+    assert.equal(pushDecision({ syncedRevision: 100 }, 150), 'conflict');
+  });
+
+  it('refuses to overwrite a server document the edit never saw', () => {
+    assert.equal(pushDecision({ syncedRevision: null }, 150), 'conflict');
+  });
+});
+
+describe('incomingProblem — server documents that cannot be merged', () => {
+  it('accepts a valid key that matches the stored event_id', () => {
+    assert.equal(incomingProblem(id(1), { event_id: id(1) }), null);
+  });
+
+  it('rejects keys that are not event IDs', () => {
+    assert.match(incomingProblem('Battle of Hastings', { event_id: 'Battle of Hastings' }), /not a valid event ID/);
+  });
+
+  it('rejects a document whose stored event_id differs from its key', () => {
+    assert.match(incomingProblem(id(1), { event_id: id(2) }), /different event_id/);
+    assert.match(incomingProblem(id(1), {}), /different event_id/);
   });
 });
