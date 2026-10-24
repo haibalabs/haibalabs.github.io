@@ -77,7 +77,7 @@ export class MapBrowser {
         const id = this.selectedId;
         for (const point of index.eventPoints.get(id) || []) {
             const marker = L.circleMarker(point.coordinates, {
-                radius: 5, stroke: false, fillColor: '#3573a1', fillOpacity: 0.45,
+                radius: 8, stroke: false, fillColor: '#60a5fa', fillOpacity: 0.85,
                 className: 'map-selected-dot'
             }).addTo(this.selection);
             const select = () => this.ui.scrollToEventId(id);
