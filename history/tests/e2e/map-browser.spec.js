@@ -26,7 +26,7 @@ const location = (id, coordinates) => ({ place_id: id, name: id, geography: { st
 const fixtures = Array.from({ length: 80 }, (_, i) => ({
   event_id: `evt_${i}`, name: i === 78 ? 'Fixture [78]' : `Fixture ${i}`, enhanced_time: String(1900 + i),
   enhanced_description: 'Shared historical fixture.', categories: [i % 2 ? 'science' : 'culture'], figures: [], confidence: 'high',
-  locations: i === 79 ? [] : [location('remote', [0, 120]), location('secondary', [20, 0])]
+  locations: i === 79 ? [] : [location('remote', [0, 120]), location(i === 19 ? 'secondary-19' : 'secondary', [20, i === 19 ? 15 : 0])]
 }));
 async function setup(page) {
   await page.route('**/*', route => {
@@ -40,6 +40,7 @@ async function setup(page) {
   await page.goto('/history/index.html?file=map-fixture.json');
   await expect(page.locator('.event').first()).toBeVisible();
   await page.locator('#toggle-map').click();
+  await expect.poll(() => page.locator('#map-panel').evaluate(el => getComputedStyle(el).right)).toBe('0px');
   await expect(page.getByRole('button', { name: 'Filter by visible area', exact: true })).toBeVisible();
 }
 test('visible area includes secondary places and marker selection reaches a virtual card', async ({ page }) => {
@@ -50,12 +51,17 @@ test('visible area includes secondary places and marker selection reaches a virt
   await expect(page.locator('.map-results, .map-years')).toHaveCount(0);
   await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
   await expect(page.locator('.map-status')).toHaveText('79 events in selected area');
-  await page.locator('.leaflet-overlay-pane path.leaflet-interactive').first().click();
-  await page.locator('.leaflet-popup button[data-event-id="evt_19"]').click();
+  await page.locator('.map-event-dot[aria-label="secondary-19: 1 events"]').click();
   await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_19');
   await expect(page.locator('.event.map-selected')).toBeInViewport();
-  await expect(page.locator('.leaflet-marker-icon')).toHaveCount(2);
-  await expect(page.locator('.map-selection')).toContainText('2 saved locations');
+  await expect(page.locator('.map-selected-dot')).toHaveCount(2);
+  await expect(page.locator('.leaflet-popup, .map-selection, .event-map-button')).toHaveCount(0);
+  expect(await page.locator('.event.map-selected').evaluate(el => getComputedStyle(el).outlineStyle)).toBe('none');
+  await page.locator('.event.map-selected').getByRole('button', { name: 'Show on map', exact: true }).click();
+  await expect(page.locator('.map-event-dot')).toHaveCount(0);
+  await expect(page.locator('.map-selected-dot')).toHaveCount(2);
+  await page.locator('.leaflet-control-zoom-out').click();
+  await expect(page.locator('.map-event-dot').first()).toBeVisible();
   await expect(page.locator('.map-status')).toHaveText('79 events in selected area');
   await page.locator('#searchInput').fill('Fixture 1');
   await expect(page.locator('.map-status')).toHaveText('11 events in selected area');
@@ -71,9 +77,8 @@ test('clearing the area restores unmapped events and their honest map state', as
   await expect(page.locator('.map-status')).toHaveText('0 events in selected area');
   await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
   await expect(page.locator('.event[data-event-id="evt_79"]')).toBeVisible();
-  await page.getByRole('button', { name: 'Show on map', exact: true }).click();
-  await expect(page.locator('.map-selection')).toContainText('No saved map location');
-  await expect(page.locator('.leaflet-marker-icon')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Show on map', exact: true })).toHaveCount(0);
+  await expect(page.locator('.map-selected-dot')).toHaveCount(0);
 });
 test('manager combines geographic, category, literal text and start-year filters', async ({ page }) => {
   await setup(page);
@@ -102,4 +107,18 @@ test('area filtering preserves category and literal text search', async ({ page 
   await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
   await expect(page.locator('#searchInput')).toHaveValue('[78]');
   await expect(page.locator('.event')).toHaveCount(1);
+});
+
+test('a shared dot advances through events directly without a popup or moving the map', async ({ page }) => {
+  await setup(page);
+  const dot = page.locator('.map-event-dot[aria-label="secondary: 78 events"]');
+  const before = await dot.boundingBox();
+  await dot.click();
+  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_0');
+  await dot.click();
+  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_1');
+  await expect(page.locator('.leaflet-popup')).toHaveCount(0);
+  const after = await dot.boundingBox();
+  expect(Math.abs(before.x - after.x)).toBeLessThan(1);
+  expect(Math.abs(before.y - after.y)).toBeLessThan(1);
 });

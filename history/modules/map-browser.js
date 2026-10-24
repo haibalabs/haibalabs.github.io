@@ -22,6 +22,8 @@ export class MapBrowser {
         // The header establishes the panel height after Leaflet first initializes.
         this.map.invalidateSize({ pan: true, animate: false });
         this.selectedId = null;
+        this.focusedEvent = false;
+        this.movingToEvent = false;
         this.lastEvents = null;
         this.pointMarkers = new Map();
         this.layer = L.layerGroup().addTo(this.map);
@@ -41,10 +43,15 @@ export class MapBrowser {
         this.status = element('p', null, 'map-status');
         this.status.setAttribute('role', 'status');
         controls.append(actions, this.status);
-        this.selected = element('div', null, 'map-selection');
-        this.selected.setAttribute('aria-live', 'polite');
-        panels.mapPanel.append(controls, this.selected);
+        panels.mapPanel.append(controls);
+        this.map.on('dragstart', () => this.browsePlaces());
+        this.map.on('zoomstart', () => { if (!this.movingToEvent) this.browsePlaces(); });
         this.map.on('moveend', () => this.refresh(this.lastEvents || [], true));
+    }
+    browsePlaces() {
+        if (!this.focusedEvent) return;
+        this.focusedEvent = false;
+        this.refresh(this.lastEvents || [], true);
     }
     applyGeography(filter) {
         this.manager.setGeographicFilter(filter);
@@ -59,7 +66,7 @@ export class MapBrowser {
     reset() {
         this.selectedId = null;
         this.selection.clearLayers();
-        this.selected.replaceChildren();
+        this.focusedEvent = false;
         this.ui.timelineContainer.scrollTop = 0;
         this.ui.resetWindow();
     }
@@ -68,13 +75,14 @@ export class MapBrowser {
         const dataChanged = events !== this.lastEvents;
         this.lastEvents = events;
         const index = this.manager.placeIndex;
-        const ids = new Set(events.map(event => index.idFor(event)));
+        const order = new Map(events.map((event, position) => [index.idFor(event), position]));
+        const ids = new Set(order.keys());
         if (this.selectedId && !ids.has(this.selectedId)) {
             this.selectedId = null;
             this.selection.clearLayers();
-            this.selected.replaceChildren();
+            this.focusedEvent = false;
         }
-        if (dataChanged) {
+        if (dataChanged || this.focusedEvent) {
             this.layer.clearLayers();
             this.pointMarkers.clear();
         }
@@ -82,24 +90,25 @@ export class MapBrowser {
         const visible = this.map.getBounds();
         const bounds = { south: visible.getSouth(), north: visible.getNorth(), west: visible.getWest(), east: visible.getEast() };
         let points = 0;
-        for (const point of index.points.values()) {
+        for (const point of this.focusedEvent ? [] : index.points.values()) {
             if (!containsPoint(bounds, point.coordinates)) continue;
-            const matches = [...point.eventIds].filter(id => ids.has(id));
+            const matches = [...point.eventIds].filter(id => ids.has(id)).sort((a, b) => order.get(a) - order.get(b));
             if (!matches.length) continue;
             points++;
             if (points > 200) continue;
             retained.add(point.key);
             if (this.pointMarkers.has(point.key)) continue;
-            const marker = L.circleMarker(point.coordinates, { radius: 6, color: point.approximate ? '#9b783f' : '#355b70', fillOpacity: point.approximate ? 0.35 : 0.8, dashArray: point.approximate ? '3 3' : null }).addTo(this.layer);
-            const popup = element('div');
-            popup.append(element('strong', point.name), element('p', `${point.precision} point · ${matches.length} matching events`));
-            for (const id of matches.slice(0, 20)) {
-                const result = button(index.events.get(id).name, () => this.selectEvent(id, true));
-                result.dataset.eventId = id;
-                popup.append(result);
-            }
-            if (matches.length > 20) popup.append(element('p', 'First 20 shown. Narrow your timeline search to find more.'));
-            marker.bindPopup(popup, { autoPan: true, maxHeight: 120, autoPanPadding: [8, 8] });
+            const marker = L.circleMarker(point.coordinates, {
+                radius: 4, stroke: false, fillColor: '#526675', fillOpacity: 0.3,
+                className: 'map-event-dot'
+            }).addTo(this.layer);
+            // Co-located events remain reachable without a popup: successive clicks
+            // advance through the currently filtered timeline order.
+            marker.on('click', () => {
+                const current = matches.indexOf(this.selectedId);
+                this.selectEvent(matches[(current + 1) % matches.length], true);
+            });
+            marker.getElement()?.setAttribute('aria-label', `${point.name}: ${matches.length} events`);
             this.pointMarkers.set(point.key, marker);
         }
         for (const [key, marker] of this.pointMarkers) {
@@ -108,7 +117,6 @@ export class MapBrowser {
         const filter = this.manager.geographicFilter;
         this.clear.hidden = !filter.bounds;
         this.status.textContent = filter.bounds ? `${events.length.toLocaleString()} ${events.length === 1 ? 'event' : 'events'} in selected area` : '';
-        if (points > 200) this.status.textContent += `${filter.bounds ? ' · ' : ''}Zoom in to see more places`;
         this.status.hidden = !this.status.textContent;
     }
     selectEvent(id, scroll = false) {
@@ -120,22 +128,28 @@ export class MapBrowser {
         this.panels.bringMapToFront();
         this.selection.clearLayers();
         const points = index.eventPoints.get(id) || [];
-        const locationCount = new Set(points.map(point => point.placeId)).size;
-        const uncertain = points.some(point => point.approximate);
-        this.selected.replaceChildren(element('strong', event.name), element('p', points.length
-            ? `${locationCount} saved ${locationCount === 1 ? 'location' : 'locations'}${uncertain ? ' · approximate or uncertain points' : ''}`
-            : 'No saved map location'));
+        this.focusedEvent = !scroll;
         for (const point of points) {
-            const label = element('span', `${point.name} · ${point.precision}`);
-            L.marker(point.coordinates).bindTooltip(label).addTo(this.selection);
+            L.circleMarker(point.coordinates, {
+                radius: 5, stroke: false, fillColor: '#3573a1', fillOpacity: 0.45,
+                interactive: false, className: 'map-selected-dot'
+            }).addTo(this.selection);
         }
-        // Changing selection never changes the geographic filter.
-        setTimeout(() => {
-            if (this.selectedId !== id) return;
-            this.map.invalidateSize();
-            if (points.length) this.map.fitBounds(L.latLngBounds(points.map(point => point.coordinates)), { maxZoom: 6, paddingTopLeft: [35, 100], paddingBottomRight: [35, 100] });
-            if (scroll) this.ui.scrollToEventId(id);
-        }, 350);
+        this.refresh(this.lastEvents || [], true);
+        if (scroll) {
+            // A dot click navigates the timeline without moving the map.
+            this.ui.scrollToEventId(id);
+        } else if (points.length) {
+            setTimeout(() => {
+                if (this.selectedId !== id || !this.focusedEvent) return;
+                this.movingToEvent = true;
+                this.map.invalidateSize();
+                this.map.fitBounds(L.latLngBounds(points.map(point => point.coordinates)), {
+                    maxZoom: 6, padding: [35, 60], animate: false
+                });
+                this.movingToEvent = false;
+            }, 350);
+        }
         this.ui.renderEvents();
     }
 }

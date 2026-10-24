@@ -782,14 +782,6 @@ export class UIManager {
         this.addWikiHandler(eventDiv, event);
         this.addFigureHandlers(eventDiv, event);
 
-        if (this.mapBrowser) {
-            const button = document.createElement('button');
-            button.className = 'event-map-button';
-            button.textContent = 'Show on map';
-            button.title = 'Show all saved locations linked to this event';
-            button.addEventListener('click', () => this.mapBrowser.selectEvent(eventDiv.dataset.eventId));
-            eventDiv.querySelector('.event-time').appendChild(button);
-        }
         return eventDiv;
     }
    
@@ -885,7 +877,14 @@ export class UIManager {
             if (canMap) {
                 const icon = document.createElement('i');
                 icon.className = 'fa-light fa-location-crosshairs';
+                icon.setAttribute('aria-hidden', 'true');
                 locationSpan.prepend(icon);
+                locationSpan.setAttribute('role', 'button');
+                locationSpan.setAttribute('aria-label', 'Show on map');
+                locationSpan.tabIndex = 0;
+                locationSpan.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); locationSpan.click(); }
+                });
             }
             if (geography?.precision === 'approximate') {
                 locationSpan.title = 'Approximate cached location; not independently verified';

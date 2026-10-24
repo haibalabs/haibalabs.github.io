@@ -51,11 +51,11 @@ test('initial load applies a manual correction and uses its coordinates', async 
   const correctedLink = page.locator('.event-location.clickable', { hasText: 'Old town' });
   await expect(correctedLink).toBeVisible();
   await correctedLink.click();
-  await expect(page.locator('.leaflet-marker-icon')).toHaveCount(1);
+  await expect(page.locator('.map-selected-dot')).toHaveCount(1);
   const cachedLink = page.locator('.event-location.clickable', { hasText: 'Cached town' });
   await expect(cachedLink).toHaveAttribute('title', /Approximate/);
   await cachedLink.click();
-  await expect(page.locator('.leaflet-marker-icon')).toHaveCount(1);
+  await expect(page.locator('.map-selected-dot')).toHaveCount(1);
   expect(geocodingRequests).toBe(0);
   const result = await page.evaluate(async () => {
     const { EventManager } = await import('./modules/event-manager.js');
@@ -125,8 +125,8 @@ test('full canonical snapshot loads in the actual timeline', async ({ page }) =>
   await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', targetId);
   await expect(page.locator('.event.map-selected')).toBeInViewport();
   await expect(page.locator('.map-status')).toContainText('events in selected area');
-  await expect(page.locator('.leaflet-marker-icon').first()).toBeVisible();
+  await expect(page.locator('.map-selected-dot').first()).toBeVisible();
   await page.waitForTimeout(700); // Finish Leaflet's fitBounds animation for visual evidence.
-  await page.screenshot({ path: '/tmp/t6-simple-map.png' });
+  await page.screenshot({ path: '/tmp/t6-minimal-map.png' });
   console.log('Canonical browser acceptance:', JSON.stringify({ ...loaded, firstRenderMs, targetId }));
 });

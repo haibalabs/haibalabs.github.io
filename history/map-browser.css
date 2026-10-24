@@ -6,12 +6,6 @@
 .map-actions button:hover { background: var(--surface-2); }
 .map-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 .map-status { margin: 0; padding: 4px 9px; border-radius: 12px; background: var(--surface); color: var(--ink-2); box-shadow: 0 1px 4px rgb(0 0 0 / .08); }
-.map-selection:empty { display: none; }
-.map-selection { position: absolute; z-index: 800; bottom: 30px; left: 14px; right: 14px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); box-shadow: 0 2px 10px rgb(0 0 0 / .1); font: 12px/1.4 var(--font-ui); pointer-events: none; }
-.map-selection strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.map-selection p { margin: 3px 0 0; color: var(--ink-2); }
-.leaflet-popup-content button { display: block; margin: 5px 0; }
-.event.map-selected { outline: 2px solid #9b783f; outline-offset: -2px; }
-.event-map-button { margin-left: 8px; font: inherit; font-size: 11px; color: var(--ink-2); background: transparent; border: 1px solid var(--line); border-radius: 3px; padding: 5px 7px; cursor: pointer; }
 #map-panel:not(.open) #toggle-map { right: 12px; }
 @media (max-width: 640px) { .map-browser { right: 58px; } }
+.event.map-selected .event-header { color: var(--accent); }
