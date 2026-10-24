@@ -25,7 +25,7 @@ function deferred() {
 // A TimelineUI signed in as an editor, with DOM and manager doubles that record what is shown.
 function ui(store) {
   const instance = Object.create(TimelineUI.prototype);
-  const shown = { personal: [], timelineId: null, toasts: [], list: null };
+  const shown = { personal: [], timelineId: null, toasts: [], list: null, personalFilters: false };
   Object.assign(instance, {
     store, shown, current: null, user: { uid: 'alice' }, role: 'editor', session: 1, selection: 0,
     pendingId: null, worldLoaded: true,
@@ -39,6 +39,7 @@ function ui(store) {
   });
   instance.uiManager = {
     showToast: (message) => shown.toasts.push(message), resetLayout() {}, scrollToEventId() {}, eventHeights: new Map(),
+    setPersonalFiltersVisible(visible) { shown.personalFilters = visible; },
   };
   instance.eventManager = {
     timelineView: 'with-world',
@@ -284,6 +285,20 @@ describe('ModalManager — the event form keeps the destination it was opened fo
     assert.equal(manager.eventManager.added.length, 1);
     assert.equal(manager.eventManager.added[0].name, 'Treaty signed');
   });
+
+  it('a new event in a personal timeline starts in the People category; world events start with none', async () => {
+    const view = ui({ get: async () => A, loadEvents: async () => [] });
+    const manager = form(view);
+    manager.open();
+    assert.equal(manager.form.values.categories, undefined);
+    manager.close();
+    await view.open(A.id);
+    manager.open();
+    assert.equal(manager.form.values.categories, 'people');
+    manager.close();
+    manager.open({ ...secret, categories: ['culture'] });
+    assert.equal(manager.form.values.categories, 'culture');
+  });
 });
 
 describe('TimelineUI — the ordinary path still applies results', () => {
@@ -298,6 +313,14 @@ describe('TimelineUI — the ordinary path still applies results', () => {
     assert.equal(view.shown.timelineId, A.id);
     assert.equal(view.shown.personal[0].name, secret.name);
     assert.equal(view.pill.hidden, false);
+  });
+
+  it('the People filter shows while a timeline is open and hides when it closes', async () => {
+    assert.equal(view.shown.personalFilters, false);
+    await view.open(A.id);
+    assert.equal(view.shown.personalFilters, true);
+    view.close();
+    assert.equal(view.shown.personalFilters, false);
   });
 
   it('a save shows the event in the timeline it was saved to', async () => {

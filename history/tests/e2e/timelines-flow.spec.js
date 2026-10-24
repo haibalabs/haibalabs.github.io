@@ -80,6 +80,33 @@ test('an editor creates a timeline, adds an event that saves at once, and finds 
   await expect(page.locator('.timeline-item .timeline-count')).toHaveText('1 event');
 });
 
+test('new personal events start as People, and the People filter shows only while a timeline is open', async ({ page, request }) => {
+  await openWorld(page);
+  const people = page.locator('.filters [data-label="people"]');
+  await expect(people).toBeHidden();
+  await signIn(page, 'editor@example.test');
+  const id = await createTimeline(page, 'Family history');
+  await expect(people).toBeVisible();
+
+  await page.click('#add-event');
+  await expect(page.locator('#add-event-form [name="categories"]')).toHaveValue('people');
+  await fillEvent(page, 'Grandmother born', 'March 1901');
+  await expect(card(page, 'Grandmother born')).toHaveCount(1);
+  const [doc] = await listAsOwner(request, `timelines/${id}/events`);
+  expect(doc.fields.categories.arrayValue.values.map(v => v.stringValue)).toEqual(['people']);
+
+  await people.click();
+  await expect(page.locator('#timeline-content .event')).toHaveCount(1);
+  await expect(card(page, 'Grandmother born')).toHaveCount(1);
+
+  // closing the timeline hides the filter and returns to all events
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-action="close"]');
+  await expect(people).toBeHidden();
+  await expect(page.locator('.filters [data-label="all"]')).toHaveClass(/active/);
+  await expect(page.locator('#timeline-content .event')).toHaveCount(3);
+});
+
 test('the pill switches between with world history and this timeline only, and closes the timeline', async ({ page }) => {
   await openWorld(page);
   await signIn(page, 'editor@example.test');

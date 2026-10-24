@@ -17,5 +17,8 @@ export const PROMINENT_LABELS = [
     { name: "war", color: "#F44336", icon: 'fa-shield-halved' },      // Red
     { name: "religion", color: "#9C27B0", icon: 'fa-place-of-worship' }, // Purple
     { name: "culture", color: "#FF9800", icon: 'fa-people-roof' },  // Orange
-    { name: "exploration", color: "#009688", icon: 'fa-compass' } // Teal
+    { name: "exploration", color: "#009688", icon: 'fa-compass' }, // Teal
+    // People in a personal timeline (births, weddings, family); its filter shows only while a
+    // personal timeline is open, since world events do not use it
+    { name: "people", color: "#E91E63", icon: 'fa-user', personal: true } // Pink
 ];

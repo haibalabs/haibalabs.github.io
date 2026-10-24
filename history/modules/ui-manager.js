@@ -1050,6 +1050,7 @@ export class UIManager {
             const button = document.createElement('button');
             button.className = label.name === 'all' ? 'active' : '';
             button.setAttribute('data-label', label.name);
+            if (label.personal) button.hidden = !this.timelineUI?.current;
             button.style.backgroundColor = label.color;
             button.innerHTML = `<i class="fa-light ${label.icon}"></i> ${label.name.charAt(0).toUpperCase() + label.name.slice(1)}`;
 
@@ -1067,6 +1068,19 @@ export class UIManager {
 
         const initialEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         this.updatePositionsTable(initialEvents);
+    }
+
+    // Shows or hides the filters for personal-timeline categories (People), falling back to All if
+    // a hidden one was selected.
+    setPersonalFiltersVisible(visible) {
+        for (const label of PROMINENT_LABELS.filter(l => l.personal)) {
+            const button = this.filtersContainer.querySelector(`[data-label="${label.name}"]`);
+            if (!button) continue;
+            button.hidden = !visible;
+            if (!visible && this.currentFilter === label.name) {
+                this.filtersContainer.querySelector('[data-label="all"]')?.click();
+            }
+        }
     }
 
     updateEventCounts() {

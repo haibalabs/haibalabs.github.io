@@ -53,6 +53,9 @@ export class ModalManager {
                 location_historical: location.historical_name,
             };
             for (const [name, value] of Object.entries(values)) this.form.elements[name].value = value ?? '';
+        } else if (this.target) {
+            // a new event in a personal timeline starts as People; the user can change it
+            this.form.elements.categories.value = 'people';
         }
         this.modal.style.display = 'flex';
     }
