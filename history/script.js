@@ -6,6 +6,7 @@ import { PanelManager } from './modules/panel-manager.js';
 import { ModalManager } from './modules/modal-manager.js';
 import { initMap, LocationVerifier } from './modules/map-utils.js';
 import { initTimelineNav } from './modules/timeline-nav.js';
+import { TimelineUI }   from './modules/timeline-ui.js';
 
 // Initialize map globally since it's used across different modules
 const { map, markersLayer, geocodeCache } = initMap();
@@ -35,6 +36,9 @@ async function initializeApp() {
     const uiManager = new UIManager(eventManager, panelManager);
 
     const modalManager = new ModalManager(eventManager, uiManager);
+    uiManager.modalManager = modalManager;
+    // before any await, so it hears the first sign-in state
+    uiManager.timelineUI = new TimelineUI(eventManager, uiManager);
 
     // Get data file from URL params
     const params = new URLSearchParams(window.location.search);
@@ -50,6 +54,7 @@ async function initializeApp() {
         // Calculate initial visible range and render
         uiManager.resetWindow();
         initTimelineNav({ eventManager, uiManager });
+        uiManager.timelineUI.worldReady();
     } catch (error) {
         console.error('Failed to initialize app:', error);
     }

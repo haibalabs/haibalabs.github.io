@@ -174,7 +174,9 @@ export class UIManager {
             rejectedUninvited = false;
 
             this.role = role;
+            this.account = { user, role };
             this.updateAuthUI(Boolean(user), user?.email ?? '');
+            this.onAccountChange?.(user, role);
             // sync and debug controls are admin-only for now
             debugSettings.hidden = !isAdmin;
             syncToggle.disabled = !isAdmin;
@@ -870,8 +872,36 @@ export class UIManager {
         this.addLocationHandler(eventDiv, event);
         this.addWikiHandler(eventDiv, event);
         this.addFigureHandlers(eventDiv, event);
+        if (event.personal) this.addPersonalMarks(eventDiv, event);
 
         return eventDiv;
+    }
+
+    // An event from the open personal timeline: an accent line, a "Personal" label, and edit and
+    // delete buttons (see TimelineUI).
+    addPersonalMarks(eventDiv, event) {
+        eventDiv.classList.add('personal');
+        eventDiv.style.borderLeft = '3px solid var(--accent)';
+        const bar = document.createElement('div');
+        bar.className = 'personal-bar';
+        const label = document.createElement('span');
+        label.className = 'personal-label';
+        label.textContent = 'Personal';
+        bar.append(label);
+        for (const [action, icon, text] of [['edit', 'fa-pen', 'Edit event'], ['remove', 'fa-trash-can', 'Delete event']]) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `personal-action personal-${action}`;
+            button.title = text;
+            button.setAttribute('aria-label', text);
+            button.innerHTML = `<i class="fa-light ${icon}" aria-hidden="true"></i>`;
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.personalEventActions?.[action](event);
+            });
+            bar.append(button);
+        }
+        eventDiv.append(bar);
     }
    
     getPrimaryLabel(event) {
@@ -913,7 +943,7 @@ export class UIManager {
         const figuresSection = event.figures?.length ? `
         <div class="event-figures">
             ${event.figures.map(figure => `
-                <span class="figure-mention" data-figure="${figure}">@${figure}</span>
+                <span class="figure-mention" data-figure="${escapeHtml(figure)}">@${escapeHtml(figure)}</span>
             `).join(' ')}
         </div>
         ` : '';
@@ -936,7 +966,7 @@ export class UIManager {
                 ${syncStatus}
             </div>
             <div class="event-time">
-                <span class="event-date">${formattedDate}</span>
+                <span class="event-date">${escapeHtml(formattedDate)}</span>
             </div>
             <div class="event-description">${highlightedDesc}</div>
             ${figuresSection}
@@ -1074,12 +1104,15 @@ export class UIManager {
         document.getElementById('jumpEnd').addEventListener('click', () => { this.clearDateFilter(); this.jumpToEnd(); });
     }
 
+    // Escapes the text, which includes events people typed into personal timelines, then marks matches.
     highlightSearchTerms(text, searchTerm) {
         text = text || '';
-        if (!searchTerm) return text;
+        if (!searchTerm) return escapeHtml(text);
         const literal = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`(${literal})`, 'gi');
-        return text.replace(regex, '<mark>$1</mark>');
+        // split() with a capture group puts the matches at odd indices
+        return text.split(new RegExp(`(${literal})`, 'gi'))
+            .map((part, i) => i % 2 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part))
+            .join('');
     }
 
     jumpToDate(targetYear) {
