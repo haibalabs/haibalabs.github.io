@@ -119,6 +119,7 @@ button { cursor: pointer; }
 }
 .event-location i, .wiki-link i { font-size: .85em; opacity: .8; }
 .event-location.clickable { color: var(--accent); cursor: pointer; }
+.event-location.clickable i { font-size: 1.1em; opacity: 1; }
 .event-location.clickable:hover { background: var(--accent-soft); }
 .event-location.unverified { color: var(--ink-3); }
 .event-location.disabled { color: var(--ink-3); cursor: not-allowed; }
