@@ -1,7 +1,7 @@
 // auth-manager.js
 
-import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 
 export class AuthManager {
     constructor() {
@@ -9,10 +9,23 @@ export class AuthManager {
         this.db = getFirestore();
     }
 
+    /**
+     * Calls back with the signed-in user (or null) and their role on page load, sign-in and
+     * sign-out. Firebase restores a saved session on load, so a reload keeps the user signed in.
+     *
+     * @param {(user: object|null, role: string|null) => void} callback
+     * @returns {() => void} unsubscribe
+     */
+    onChange(callback) {
+        return onAuthStateChanged(this.auth, async (user) => {
+            callback(user, user ? await this.getRole(user) : null);
+        });
+    }
+
     async login(email, password) {
         try {
             const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-            return this.isAuthorizedUser(userCredential.user);
+            return this.getRole(userCredential.user);
         } catch (error) {
             console.error('Login error:', error);
             throw error;
@@ -28,19 +41,24 @@ export class AuthManager {
         }
     }
 
-    async isAuthorizedUser(user) {
-        if (!user) return false;
-        const userRef = doc(this.db, 'authorized_users', user.uid);
-        const userSnap = await getDoc(userRef);
-        return userSnap.exists();
+    /**
+     * The user's role from users/{uid}, or null for an account that was not invited.
+     *
+     * @param {object|null} user - Firebase Auth user
+     * @returns {Promise<string|null>}
+     */
+    async getRole(user) {
+        if (!user) return null;
+        try {
+            const userSnap = await getDoc(doc(this.db, 'users', user.uid));
+            return userSnap.exists() ? userSnap.data().role ?? null : null;
+        } catch (error) {
+            console.error('Role lookup error:', error);
+            return null;
+        }
     }
 
     getCurrentUser() {
         return this.auth.currentUser;
-    }
-
-    async isUserAuthorized() {
-        const user = this.getCurrentUser();
-        return await this.isAuthorizedUser(user);
     }
 }

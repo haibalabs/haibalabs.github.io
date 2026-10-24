@@ -4,6 +4,7 @@ import { formatLocations, getMapLocation } from './map-utils.js';
 import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, failedImageUrls, setImageFailureHandler } from './image-utils.js';
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
+import { permissionsFor, authErrorMessage } from './roles.js';
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -27,6 +28,7 @@ export class UIManager {
         this.filteredCount = 0;
 
         this.loggedIn = null;
+        this.role = null;
 
         this.timelineContainer = document.getElementById('timeline-wrapper');
         this.timelineContainer.addEventListener('scroll', () => this.handleScroll());
@@ -142,39 +144,13 @@ export class UIManager {
         // Auth setup
         const authManager = new AuthManager();
         const syncToggle = document.getElementById('debug-sync');
-
-        // Login handler
-        document.getElementById('login-btn').addEventListener('click', async () => {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            try {
-                const isAuthorized = await authManager.login(email, password);
-                if (isAuthorized) {
-                    this.updateAuthUI(true, email);
-                    syncToggle.disabled = false;
-                    debugAddEvent.disabled = false;
-                } else {
-                    alert('User not authorized');
-                    await authManager.logout();
-                    this.updateAuthUI(false);
-                }
-            } catch (error) {
-                alert('Login failed: ' + error.message);
-            }
-        });
-
-        // Logout handler
-        document.getElementById('logout-btn').addEventListener('click', async () => {
-            await authManager.logout();
-            this.updateAuthUI(false);
-            syncToggle.checked = false;
-            syncToggle.disabled = true;
-
-            debugAddEvent.checked = false;
-            debugAddEvent.disabled = true;
-            addEventBtn.style.display = 'none';
-        });
+        const debugSettings = document.getElementById('debug-settings');
+        const loginBtn = document.getElementById('login-btn');
+        const authStatus = document.getElementById('auth-status');
+        const showAuthStatus = (message) => {
+            authStatus.textContent = message;
+            authStatus.hidden = !message;
+        };
 
         // Sync controls
         const syncControls = document.querySelector('.sync-controls');
@@ -182,9 +158,66 @@ export class UIManager {
         const pullBtn = document.getElementById('pull-changes');
         const syncStatus = document.querySelector('.sync-status');
 
+        // Runs on page load (restoring a saved session), sign-in and sign-out
+        let rejectedUninvited = false;
+        authManager.onChange(async (user, role) => {
+            const { member, isAdmin } = permissionsFor(role);
+            if (user && !member) {
+                // signed in to Firebase but not invited: no role document
+                rejectedUninvited = true;
+                showAuthStatus('This account has not been invited. Ask an administrator for access.');
+                await authManager.logout();
+                return;
+            }
+            if (user || !rejectedUninvited) showAuthStatus('');
+            rejectedUninvited = false;
+
+            this.role = role;
+            this.updateAuthUI(Boolean(user), user?.email ?? '');
+            // sync and debug controls are admin-only for now
+            debugSettings.hidden = !isAdmin;
+            syncToggle.disabled = !isAdmin;
+            debugAddEvent.disabled = !isAdmin;
+            if (!isAdmin) {
+                syncToggle.checked = false;
+                syncControls.style.display = 'none';
+                debugAddEvent.checked = false;
+                addEventBtn.style.display = 'none';
+                if (debugScroll.checked) {
+                    debugScroll.checked = false;
+                    this.hideScrollMetrics();
+                }
+            }
+        });
+
+        // Login handler
+        loginBtn.addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            loginBtn.disabled = true;
+            showAuthStatus('');
+            try {
+                await authManager.login(email, password);
+            } catch (error) {
+                showAuthStatus(authErrorMessage(error.code));
+            } finally {
+                loginBtn.disabled = false;
+            }
+        });
+
+        // Logout handler
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await authManager.logout();
+            } catch (error) {
+                showAuthStatus('Sign-out failed. Try again.');
+            }
+        });
+
         // Sync toggle handler
         syncToggle.addEventListener('change', (e) => {
-            if (!authManager.isUserAuthorized()) {
+            if (!permissionsFor(this.role).isAdmin) {
                 e.preventDefault();
                 syncToggle.checked = false;
                 return;

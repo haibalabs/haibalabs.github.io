@@ -95,7 +95,7 @@ Defined in `.github/workflows/ci.yml`. Triggers on push and PR to `main`/`master
 
 ### Jobs
 
-Two parallel jobs, both using Node.js 20 with `working-directory: ./history`:
+Three parallel jobs, all using Node.js 20:
 
 **`unit-tests`** (fast, ~5s)
 1. `npm ci`
@@ -105,7 +105,12 @@ Two parallel jobs, both using Node.js 20 with `working-directory: ./history`:
 **`e2e-tests`** (~30s)
 1. `npm ci`
 2. `npx playwright install --with-deps chromium`
-3. `npm run test:e2e`
+3. `npm run test:e2e` (the sign-in tests in `auth-flow.spec.js` skip here; they need the emulators)
+
+**`firebase-tests`** (Java 21, Firebase emulators; see [firebase/README.md](firebase/README.md))
+1. `npm ci` in `history/` and `history/firebase/`
+2. `npx playwright install --with-deps chromium`
+3. `npm run test:rules` and `npm run test:auth-flow` in `history/firebase/`
 
 ### What CI Catches
 
@@ -114,3 +119,5 @@ Two parallel jobs, both using Node.js 20 with `working-directory: ./history`:
 - Regressions in location key generation
 - App initialization failures (module loading, data fetching, event rendering)
 - Uncaught JavaScript exceptions during page load
+- Firestore rules changes that widen access (role-by-role allow/deny tests)
+- Sign-in regressions: session restore on reload, role-based controls, uninvited accounts
