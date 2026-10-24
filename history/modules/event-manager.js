@@ -1,7 +1,7 @@
 // event-manager.js
 import { PlaceEventIndex } from './place-event-index.js';
 import { parseTimeToSortableValue } from './date-handlers.js';
-import { incomingProblem, mergeDecision, newEventId, pushDecision, syncTarget, toSyncDoc } from './sync-identity.js';
+import { acknowledgement, incomingProblem, mergeDecision, newEventId, pushDecision, syncTarget, toSyncDoc } from './sync-identity.js';
 
 import { initializeApp as firebaseInit } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getFirestore, connectFirestoreEmulator, collection, doc, getDoc, query, runTransaction, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
@@ -97,6 +97,8 @@ export class EventManager {
         const errors = [];
         for (const event of this.getUnpushedEvents()) {
             const ref = doc(this.db, collectionName, event.event_id);
+            const sent = toSyncDoc(event);
+            const writeId = crypto.randomUUID();
             try {
                 const conflict = await runTransaction(this.db, async (tx) => {
                     const snap = await tx.get(ref);
@@ -104,7 +106,7 @@ export class EventManager {
                     if (pushDecision(event, serverRevision) === 'conflict') {
                         return { server: snap.data(), revision: serverRevision };
                     }
-                    tx.set(ref, { ...toSyncDoc(event), lastModified: serverTimestamp(), userId: user.uid });
+                    tx.set(ref, { ...sent, writeId, lastModified: serverTimestamp(), userId: user.uid });
                     return null;
                 });
                 if (conflict) {
@@ -112,10 +114,9 @@ export class EventManager {
                     conflicts++;
                     continue;
                 }
-                // the server revision of this write becomes the base for the next local edit
-                const written = await getDoc(ref);
-                event.syncedRevision = written.data()?.lastModified?.toMillis?.() ?? event.syncedRevision;
-                event.dirty = false;
+                const written = (await getDoc(ref)).data();
+                Object.assign(event, acknowledgement(event, sent, writeId,
+                    { data: written, revision: written?.lastModified?.toMillis?.() ?? null }));
                 event.isNew = false;
                 saved++;
             } catch (error) {

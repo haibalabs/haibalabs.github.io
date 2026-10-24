@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { EVENT_ID_PATTERN, WORLD_COLLECTION, newEventId, syncTarget, toSyncDoc, mergeDecision, pushDecision, incomingProblem } from '../../modules/sync-identity.js';
+import { EVENT_ID_PATTERN, WORLD_COLLECTION, newEventId, syncTarget, toSyncDoc, mergeDecision, pushDecision, incomingProblem, acknowledgement } from '../../modules/sync-identity.js';
 
 const id = (n) => `evt_${String(n).padStart(8, '0')}-0000-4000-8000-000000000000`;
 const events = (...ids) => ids.map((event_id, i) => ({ event_id, name: `Event ${i}` }));
@@ -54,7 +54,7 @@ describe('toSyncDoc — fields written to Firestore', () => {
     const doc = toSyncDoc({
       event_id: id(1), name: 'A', locations: [{ name: 'X' }],
       dirty: true, syncedRevision: 5, isNew: true, localTimestamp: 1, remoteTimestamp: 2,
-      sourceTimestamp: 3, lastModified: 4, userId: 'u',
+      sourceTimestamp: 3, lastModified: 4, userId: 'u', writeId: 'w',
     });
     assert.deepEqual(doc, { event_id: id(1), name: 'A', locations: [{ name: 'X' }] });
   });
@@ -110,5 +110,51 @@ describe('incomingProblem — server documents that cannot be merged', () => {
   it('rejects a document whose stored event_id differs from its key', () => {
     assert.match(incomingProblem(id(1), { event_id: id(2) }), /different event_id/);
     assert.match(incomingProblem(id(1), {}), /different event_id/);
+  });
+});
+
+describe('acknowledgement — local state after a push commits', () => {
+  const pushed = (extra = {}) => ({ event_id: id(1), name: 'Mine', dirty: true, syncedRevision: 100, ...extra });
+
+  it('adopts the revision of its own write and clears the dirty flag', () => {
+    const local = pushed();
+    const sent = toSyncDoc(local);
+    const ack = acknowledgement(local, sent, 'wA', { data: { ...sent, writeId: 'wA' }, revision: 200 });
+    assert.deepEqual(ack, { syncedRevision: 200, dirty: false });
+  });
+
+  it('keeps the old base when another write replaced this one before the read-back', () => {
+    // A writes at 200, B writes different content at 300, then A reads back B's document.
+    const local = pushed();
+    const sent = toSyncDoc(local);
+    const ack = acknowledgement(local, sent, 'wA', { data: { event_id: id(1), name: 'Theirs', writeId: 'wB' }, revision: 300 });
+    assert.deepEqual(ack, { syncedRevision: 100, dirty: false });
+    const after = { ...local, ...ack };
+    // the next pull takes B's content instead of treating it as already applied
+    assert.equal(mergeDecision(after, 300), 'accept');
+    // and a further local edit cannot silently overwrite B
+    assert.equal(pushDecision({ ...after, dirty: true }, 300), 'conflict');
+  });
+
+  it('keeps an event that was never synced unsynced when another write replaced it', () => {
+    const local = pushed({ syncedRevision: null });
+    const ack = acknowledgement(local, toSyncDoc(local), 'wA', { data: { event_id: id(1), writeId: 'wB' }, revision: 300 });
+    assert.equal(ack.syncedRevision, null);
+    assert.equal(mergeDecision({ ...local, ...ack }, 300), 'accept');
+  });
+
+  it('keeps the old base when the document is gone or has no revision', () => {
+    const local = pushed();
+    assert.equal(acknowledgement(local, toSyncDoc(local), 'wA', { data: undefined, revision: null }).syncedRevision, 100);
+    assert.equal(acknowledgement(local, toSyncDoc(local), 'wA', { data: { writeId: 'wA' }, revision: null }).syncedRevision, 100);
+  });
+
+  it('stays dirty when the event changed while the push was in flight', () => {
+    const local = pushed();
+    const sent = toSyncDoc(local);
+    local.name = 'Edited during push';
+    const ack = acknowledgement(local, sent, 'wA', { data: { ...sent, writeId: 'wA' }, revision: 200 });
+    assert.deepEqual(ack, { syncedRevision: 200, dirty: true });
+    assert.equal(pushDecision({ ...local, ...ack }, 200), 'write');
   });
 });

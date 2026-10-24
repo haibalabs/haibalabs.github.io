@@ -10,9 +10,10 @@ export const WORLD_COLLECTION = 'events_main';
 export const WORLD_DATASET_ID = 'world-history';
 export const WORLD_DATASET_FILES = ['canonical-t2.json'];
 
-// Fields that describe local sync state; they are never written to Firestore.
+// Fields that describe local sync state; they are never written to Firestore. writeId is set
+// fresh on each push (see acknowledgement) and is not copied from an earlier server version.
 const LOCAL_FIELDS = ['dirty', 'syncedRevision', 'isNew', 'localTimestamp', 'remoteTimestamp',
-    'sourceTimestamp', 'lastModified', 'userId'];
+    'sourceTimestamp', 'lastModified', 'userId', 'writeId'];
 
 export function newEventId() {
     return `evt_${crypto.randomUUID()}`;
@@ -89,6 +90,27 @@ export function mergeDecision(local, revision) {
 export function pushDecision(local, serverRevision) {
     if (serverRevision == null) return 'write';
     return local.syncedRevision != null && serverRevision <= local.syncedRevision ? 'write' : 'conflict';
+}
+
+/**
+ * The local sync state after a push, from the document read back once its transaction committed.
+ * The server assigns the write's revision, so it is only known from that read. If the read finds
+ * another writer's writeId, a later write replaced this one: the base stays where it was, so the
+ * next pull takes that write and a further local edit conflicts with it. Local changes made
+ * while the push was in flight keep the event dirty.
+ *
+ * @param {object} local - the local event now
+ * @param {object} sent - the toSyncDoc() payload this push wrote
+ * @param {string} writeId - the writeId this push wrote
+ * @param {{ data: object|undefined, revision: number|null }} readBack
+ * @returns {{ syncedRevision: number|null, dirty: boolean }}
+ */
+export function acknowledgement(local, sent, writeId, readBack) {
+    const ours = readBack.data?.writeId === writeId && readBack.revision != null;
+    return {
+        syncedRevision: ours ? readBack.revision : local.syncedRevision,
+        dirty: JSON.stringify(toSyncDoc(local)) !== JSON.stringify(sent),
+    };
 }
 
 /**
