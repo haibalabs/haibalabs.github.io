@@ -1,16 +1,16 @@
 # Personal timeline images (U1 follow-up)
 
-Status: design, written 2026-10-24 for Rachid's approval before any implementation. Nothing here is built yet.
+Status: design written 2026-10-24; Rachid's decisions recorded below the same day. Implementation starts after the independent design review. Nothing here is built yet.
 
-Editors add photos to events in their personal timelines (see [PERSONAL-TIMELINES.md](PERSONAL-TIMELINES.md)). Photos are as private as the timeline: only its owner and listed members can see or add them. World-event images are unchanged; they keep coming from the image pipeline as public URLs.
+Editors add a photo to an event in their personal timelines (see [PERSONAL-TIMELINES.md](PERSONAL-TIMELINES.md)). Photos are as private as the timeline: only its owner and listed members can see or add them. World-event images are unchanged; they keep coming from the image pipeline as public URLs.
 
 ## Goals and limits
 
-- Upload from the event form, shown on the event's card like a world image.
+- One photo per event, uploaded from the event form and shown on the event's card like a world image. The event itself is the caption: no separate caption or credit.
 - Private: no public or shareable link to a photo.
-- Storage-agnostic: resizing, the form, the card and the stored record do not depend on Firebase. One small adapter module talks to the storage service, so it can be replaced (S3/R2, Supabase, a link-only adapter) without touching the rest.
-- Cheap: photos are resized in the browser before upload, and the originals are not kept.
-- Out of scope: albums or galleries, video, editing photos, face recognition, sharing outside the timeline, and importing from photo services.
+- Storage-agnostic: resizing, the form, the card and the stored record do not depend on Firebase. One small adapter module talks to the storage service, so it can be replaced (S3/R2, Supabase) without touching the rest.
+- Cheap: photos are resized in the browser before upload; only the copies that are displayed are stored, never the original.
+- Out of scope: several photos per event, captions and credits, linking to photos hosted elsewhere, albums or galleries, video, editing photos, face recognition, sharing outside the timeline, and importing from photo services.
 
 ## Cost (Firebase Storage)
 
@@ -18,12 +18,12 @@ Storage requires the Blaze plan. This project's bucket is a `*.firebasestorage.a
 
 ## Data model
 
-A personal event gains an optional `images` list. Display fields use the same names as the image pipeline's display data (`image_role`, `caption`, `credit`), so one card renderer serves both kinds.
+A personal event gains an optional `image`. Its role field uses the image pipeline's display name (`image_role`), so one card renderer serves both kinds.
 
 ```
 timelines/{timelineId}/events/{eventId}
   ...existing fields
-  images   list, at most 4 (proposed), in display order
+  image    optional; absent when the event has no photo
     ref         string  opaque; only the image adapter interprets it
     thumb_ref   string  opaque; a smaller version for cards
     width       number  pixels of the stored full image
@@ -31,9 +31,9 @@ timelines/{timelineId}/events/{eventId}
     mime        string  image/webp or image/jpeg
     bytes       number  size of the stored full image
     image_role  string  "personal_photo" (role vocabulary shared with the image pipeline)
-    caption     string  optional, at most 300 characters, rendered as text
-    credit      string  optional, for example "Photo: Aunt Leila"; rendered as text
 ```
+
+The card uses the event's name as the image's alternative text.
 
 With the Firebase adapter, `ref` is the Storage path, which carries the timeline's generation so files from a deleted timeline can never surface in a new one with the same ID (the same idea as `timelineCreatedAt` for events):
 
@@ -54,8 +54,7 @@ Files are immutable: replacing a photo uploads a new file and deletes the old on
 | `image-resize.js` | browser canvas only | Decodes the chosen file with its camera orientation applied, re-encodes it as WebP (JPEG where WebP encoding is unavailable) at most 1600 px on the long edge, makes a 400 px thumbnail, and drops all metadata, including GPS location |
 | `image-store.js` | nothing | The adapter contract below, and the in-memory adapter used by tests |
 | `firebase-image-store.js` | Firebase Storage SDK | The Firebase adapter; the only module that knows about Storage |
-| `link-image-store.js` | nothing | Optional adapter for testing without billing: `ref` is an https URL the user pastes; no uploads. **Not private**: anyone with the link can see the image, so the form labels it as test input |
-| form and card code | the contract only | Choosing, previewing, captioning, reordering and removing photos; showing the thumbnail on the card and the full image when opened |
+| form and card code | the contract only | Choosing, previewing, replacing and removing the photo; showing the thumbnail on the card and the full image when opened |
 
 ### Adapter contract
 
@@ -76,12 +75,13 @@ The Firebase adapter reads files through the signed-in SDK (`getBlob`), not down
 - Read and delete: the caller is signed in with a role, is the timeline's owner or a listed member, and the path's generation equals that timeline's current `createdAt` in the seconds-and-nanoseconds encoding above. The rules read the timeline and the caller's role from Firestore (cross-service rules).
 - Create: as above, plus a size limit (2 MB full, 200 KB thumbnail), content type `image/webp` or `image/jpeg`, and a file name of the form `img_<uuid>.webp` or `img_<uuid>_thumb.webp` (or `.jpg`). There are no updates.
 - Everything else is denied.
-- Firestore rules for timeline events add an `images` check: a list of at most 4 entries, each `ref` under that same event's path and generation, with typed fields and length limits. A stray ref could not be read anyway, but the check keeps the records clean.
+- Firestore rules for timeline events add an `image` check: when present, a map with exactly the fields above, typed, with `ref` and `thumb_ref` under that same event's path and generation and `image_role` equal to `personal_photo`. A stray ref could not be read anyway, but the check keeps the records clean.
 
 ## Flows
 
-- Add: choose files (jpeg, png, webp; HEIC where the browser can decode it, otherwise a message) → resize and preview in the form → on save, upload each new photo, then save the event with its `images`. If an upload fails, the event is not saved, and photos already uploaded in that attempt are removed.
-- Edit: removing a photo deletes its files after the event saves without it; reordering and captions only change the event record.
+- Add: choose one file (jpeg, png, webp; HEIC where the browser can decode it, otherwise a message) → resize and preview in the form → on save, upload the photo, then save the event with its `image`. If the upload fails, the event is not saved; if the event save fails, the just-uploaded files are removed.
+- Replace: choosing another file uploads the new photo, saves the event with it, then deletes the old files.
+- Remove: the event saves without `image`, then the old files are deleted.
 - Delete event: delete its files, then the event.
 - Delete timeline: delete its files, then its events, then the timeline. Files that a failed cleanup leaves behind are unreachable, because the generation no longer matches. They cost storage until removed by hand; an admin cleanup tool is left for later.
 - Display: cards load thumbnails lazily as they scroll into view, and opening the image loads the full one.
@@ -98,7 +98,7 @@ Image loads follow the same guards as other timeline reads (see the session and 
 
 A photo is treated as personal because of where it comes from, never because license fields are missing:
 
-- Personal photos are the images of an event from a personal timeline (`timelines/...`), recorded by the app with `image_role: "personal_photo"`. For these, the card shows the optional `credit` and no license line; no `rights_basis` such as "personal" and no ownership claim is recorded.
+- A personal photo is the image of an event in a personal timeline (`timelines/...`), recorded by the app with `image_role: "personal_photo"`. For these, the card shows no credit or license line; no `rights_basis` such as "personal" and no ownership claim is recorded.
 - World-event images keep the image pipeline's fields. A world image without rights fields stays "rights unknown"; it is never treated as personal.
 
 ## Testing
@@ -106,18 +106,18 @@ A photo is treated as personal because of where it comes from, never because lic
 - The adapter contract test suite runs against the in-memory adapter, and against the Firebase adapter on the Storage emulator.
 - Storage rules tests on the emulator (`@firebase/rules-unit-testing`): owner, member and outsider access; generation mismatch after a timeline is recreated, including two generations within the same millisecond (same `toMillis()`, different nanoseconds); size, type and name limits; no updates.
 - Unit tests for image loading with deferred adapter results: a late load after close, sign-out or account switch shows nothing and revokes its object URL; closing clears the cache.
-- Firestore rules tests for the `images` field.
-- Browser tests on the emulators: add, caption, reorder, remove, delete an event, delete a timeline; private reads (no download URLs requested); metadata stripped from the stored file.
+- Firestore rules tests for the `image` field.
+- Browser tests on the emulators: add, replace, remove, delete an event, delete a timeline; private reads (no download URLs requested); metadata stripped from the stored file.
 
 ## Effect on other work
 
-- Image pipeline (Iris): no change to world-image collection or acceptance. Shared surface: the display field names (`image_role`, `caption`, `credit`) and adding the role `personal_photo`. Personal photos never enter the pipeline, the canonical dataset or the review queue.
+- Image pipeline (Iris): no change to world-image collection or acceptance. Shared surface: the `image_role` field name and adding the role `personal_photo`; personal photos use no caption, credit or license fields. Personal photos never enter the pipeline, the canonical dataset or the review queue.
 - Data pipeline (Atlas): none; personal data stays in Firestore and Storage.
-- Firebase: a new Storage bucket, `storage.rules`, a `deploy:storage` script, the Storage emulator in `firebase.json` and CI, and the `images` check in `firestore.rules`.
+- Firebase: the Storage bucket (created), `storage.rules`, a `deploy:storage` script, the Storage emulator in `firebase.json` and CI, and the `image` check in `firestore.rules`.
 
-## Decisions for Rachid
+## Decisions (Rachid, 2026-10-24)
 
-1. Maximum photos per event: 4 proposed.
-2. Keep only resized copies (1600 px), not originals: proposed, to keep costs and privacy exposure low.
-3. Captions and credits: optional fields on each photo, as above.
-4. Build the link-only adapter as well, for testing before billing is enabled (not private; labelled as test input), or only the Firebase adapter.
+1. One photo per event.
+2. Store only the copies that are displayed (1600 px and a 400 px thumbnail), never the original.
+3. No caption or credit: the event is the caption.
+4. Upload only; no option to link to photos hosted elsewhere.
