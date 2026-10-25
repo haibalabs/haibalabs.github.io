@@ -103,3 +103,8 @@
 }
 @keyframes photo-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .photo-viewer.loading::after { animation: none; } }
+
+/* mid-width windows: the pill gives up room so the search box stays usable */
+@media (min-width: 761px) and (max-width: 1100px) {
+    #timeline-pill-btn { max-width: 150px; }
+}

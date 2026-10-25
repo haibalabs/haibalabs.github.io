@@ -22,7 +22,8 @@
     align-items: center;
     gap: .55rem;
     flex: 1 1 0;
-    min-width: 0;
+    /* never narrower than the logo and name; otherwise they draw under the search box */
+    min-width: max-content;
     color: var(--ink);
     text-decoration: none;
     font-weight: 600;
@@ -38,7 +39,7 @@
     filter: var(--logo-filter, none);
 }
 
-.search-box { flex: 0 1 460px; }
+.search-box { flex: 0 1 460px; min-width: 140px; }
 .action-buttons { flex: 1 1 0; display: flex; justify-content: flex-end; gap: 2px; }
 
 .filters {
@@ -49,6 +50,12 @@
 }
 
 .current-year { display: none; }
+
+/* between the phone layout and a wide window, the logo alone leaves the search box room */
+@media (min-width: 761px) and (max-width: 1100px) {
+    .bar { gap: .5rem; }
+    .brand span { display: none; }
+}
 
 @media (max-width: 760px) {
     .header {
