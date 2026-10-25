@@ -5,6 +5,7 @@ import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, fa
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
+import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, sha256Hex } from './world-images.js';
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -139,7 +140,11 @@ export class UIManager {
 
         debugAddEvent.addEventListener('change', (e) => {
             addEventBtn.style.display = e.target.checked ? 'block' : 'none';
-        });    
+        });
+
+        // preview of independently reviewed world images (previews/README.md)
+        const worldImagesToggle = document.getElementById('debug-world-images');
+        worldImagesToggle.addEventListener('change', (e) => this.setWorldImagePreview(e.target.checked));
 
         // Auth setup
         const authManager = new AuthManager();
@@ -181,11 +186,16 @@ export class UIManager {
             debugSettings.hidden = !isAdmin;
             syncToggle.disabled = !isAdmin;
             debugAddEvent.disabled = !isAdmin;
+            worldImagesToggle.disabled = !isAdmin;
             if (!isAdmin) {
                 syncToggle.checked = false;
                 syncControls.style.display = 'none';
                 debugAddEvent.checked = false;
                 addEventBtn.style.display = 'none';
+                if (worldImagesToggle.checked) {
+                    worldImagesToggle.checked = false;
+                    this.setWorldImagePreview(false);
+                }
                 if (debugScroll.checked) {
                     debugScroll.checked = false;
                     this.hideScrollMetrics();
@@ -827,6 +837,90 @@ export class UIManager {
         document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
     }
 
+    /**
+     * Debug: shows or hides the independently reviewed world images (previews/README.md). They are
+     * attached only when the loaded data file is the exact one they were reviewed against.
+     *
+     * @param {boolean} on
+     */
+    async setWorldImagePreview(on) {
+        const toggle = document.getElementById('debug-world-images');
+        const ticket = this.worldPreviewTicket = (this.worldPreviewTicket ?? 0) + 1;
+        const changed = this.worldPreview ?? [];
+        detachPreviewImages(changed);
+        this.worldPreview = null;
+        if (on) {
+            try {
+                const [preview, bytes] = await Promise.all([
+                    fetch(PREVIEW_URL).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
+                    fetch(this.eventManager.currentFile).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.arrayBuffer(); }),
+                ]);
+                // turned off or on again while loading
+                if (ticket !== this.worldPreviewTicket) return;
+                const worldEvents = this.eventManager.events.filter(event => !event.personal);
+                const problem = previewProblem(preview, await sha256Hex(bytes), worldEvents.length);
+                if (ticket !== this.worldPreviewTicket) return;
+                if (problem) {
+                    toggle.checked = false;
+                    this.showToast(`${problem} No preview images are shown.`);
+                } else {
+                    const { attached, skipped } = attachPreviewImages(worldEvents, preview.records);
+                    this.worldPreview = attached;
+                    changed.push(...attached);
+                    this.showToast(`Showing ${attached.length} reviewed images${skipped.length ? ` (${skipped.length} did not match their event)` : ''}.`);
+                }
+            } catch (error) {
+                console.error('Could not load the image preview:', error);
+                if (ticket !== this.worldPreviewTicket) return;
+                toggle.checked = false;
+                this.showToast('Could not load the image preview.');
+            }
+        }
+        for (const event of changed) this.eventHeights.delete(this.eventManager.placeIndex.idFor(event));
+        this.resetLayout();
+    }
+
+    // The full-window viewer's text for a preview image: caption, role, credit, license and source.
+    previewImageDetails(event) {
+        const info = event.image_preview;
+        const details = document.createElement('div');
+        const caption = document.createElement('p');
+        caption.className = 'viewer-caption';
+        if (info.role === 'event_aftermath') {
+            const role = document.createElement('span');
+            role.className = 'viewer-role';
+            role.textContent = 'Aftermath';
+            caption.append(role, ' ');
+        }
+        caption.append(info.caption);
+        const credit = document.createElement('p');
+        credit.className = 'viewer-credit';
+        credit.append(info.credit);
+        // the license as a link when it has one (public domain has none), then the source page
+        for (const [label, url] of [[info.license_name, info.license_url], ['Source', info.source_url]]) {
+            const safe = sanitizeUrl(url);
+            if (!label || (!safe && label === 'Source')) continue;
+            if (!safe) {
+                credit.append(' · ', label);
+                continue;
+            }
+            const link = document.createElement('a');
+            link.href = safe;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = label;
+            credit.append(' · ', link);
+        }
+        details.append(caption, credit);
+        if (info.under_review) {
+            const hold = document.createElement('p');
+            hold.className = 'viewer-hold';
+            hold.textContent = 'Some details of this event are still being reviewed.';
+            details.append(hold);
+        }
+        return details;
+    }
+
     showToast(message) {
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -875,12 +969,31 @@ export class UIManager {
         this.addFigureHandlers(eventDiv, event);
         if (event.personal) this.addPersonalMarks(eventDiv, event);
         if (event.personal && event.image) this.timelineUI.decoratePhoto(eventDiv, event);
+        if (event.image_preview) this.addPreviewImageHandler(eventDiv, event);
 
         return eventDiv;
     }
 
     // An event from the open personal timeline: an accent line, a "Personal" label, and edit and
     // delete buttons (see TimelineUI).
+    // Clicking a reviewed preview image opens it full size, with its caption, role, credit,
+    // license and source, which the card leaves out.
+    addPreviewImageHandler(eventDiv, event) {
+        const img = eventDiv.querySelector('.event-image img');
+        if (!img) return;
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const original = sanitizeUrl(event.image_url);
+            this.timelineUI.openViewer({
+                alt: event.name,
+                // a large Commons thumbnail, or the original file if there is none that size
+                src: sanitizeUrl(getOptimizedImageUrl(original, 1280)),
+                fallbackSrc: original,
+                details: this.previewImageDetails(event),
+            });
+        });
+    }
+
     addPersonalMarks(eventDiv, event) {
         eventDiv.classList.add('personal');
         eventDiv.style.borderLeft = '3px solid var(--accent)';
@@ -937,8 +1050,13 @@ export class UIManager {
             // Once loaded, the onload handler caches the URL so subsequent virtual-scroll
             // re-renders skip the shimmer entirely.
             const loadingClass = alreadyLoaded ? '' : ' loading';
+            // a reviewed preview image opens full size with its credits; the card keeps a one-line caption
+            const zoomClass = event.image_preview ? ' zoomable' : '';
+            const caption = event.image_preview
+                ? `<p class="event-image-caption">${escapeHtml(event.image_preview.caption)}</p>`
+                : '';
             imageSection = `
-            <div class="event-image${loadingClass}">
+            <div class="event-image${loadingClass}${zoomClass}">
                 <img src="${escapeHtml(optimizedUrl)}"
                     data-original="${escapeHtml(originalUrl)}"
                     alt="${escapeHtml(event.name)}"
@@ -946,6 +1064,7 @@ export class UIManager {
                     onload="window._onEventImageLoad(this)"
                     onerror="window._onEventImageError(this)"/>
             </div>
+            ${caption}
         `;
         }
 

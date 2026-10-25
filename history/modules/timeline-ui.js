@@ -79,7 +79,10 @@ export class TimelineUI {
             this.toggleMenu(false);
             this.closePhoto();
         });
-        this.viewer.addEventListener('click', () => this.closePhoto());
+        // a click anywhere closes the viewer, except on a link in its details
+        this.viewer.addEventListener('click', (e) => {
+            if (!e.target.closest('a')) this.closePhoto();
+        });
     }
 
     // Called once the world events have loaded, since loading them replaces every event.
@@ -469,13 +472,37 @@ export class TimelineUI {
     }
 
     openPhoto(event) {
+        this.openViewer({ alt: event.name, ref: event.image.ref });
+    }
+
+    /**
+     * Opens the full-window viewer on a photo: a private one by ref, loaded through the image
+     * adapter, or a public one by src (world images). details, a DOM node, appears under it.
+     *
+     * @param {{ alt: string, ref?: string, src?: string, fallbackSrc?: string, details?: Node|null }} photo
+     *     fallbackSrc replaces src if it fails to load
+     */
+    openViewer({ alt, ref = null, src = null, fallbackSrc = null, details = null }) {
         const img = this.viewer.querySelector('img');
-        img.dataset.photoRef = event.image.ref;
-        img.alt = event.name;
+        if (ref) img.dataset.photoRef = ref;
+        else delete img.dataset.photoRef;
+        img.alt = alt;
         img.removeAttribute('src');
+        const area = this.viewer.querySelector('.photo-viewer-details');
+        area.replaceChildren(...(details ? [details] : []));
+        area.hidden = !details;
         this.viewer.classList.add('loading');
         this.viewer.hidden = false;
-        const url = this.images.url(event.image.ref);
+        if (src) {
+            img.onload = () => this.viewer.classList.remove('loading');
+            img.onerror = fallbackSrc && fallbackSrc !== src ? () => {
+                img.onerror = null;
+                img.src = fallbackSrc;
+            } : null;
+            img.src = src;
+            return;
+        }
+        const url = this.images.url(ref);
         if (url) this.setPhotoSource(img, url);
     }
 
@@ -484,6 +511,9 @@ export class TimelineUI {
         this.viewer.hidden = true;
         const img = this.viewer.querySelector('img');
         delete img.dataset.photoRef;
+        img.onload = null;
+        img.onerror = null;
         img.removeAttribute('src');
+        this.viewer.querySelector('.photo-viewer-details').replaceChildren();
     }
 }
