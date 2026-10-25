@@ -65,7 +65,7 @@ Never edit rules in the console: the next deploy from this directory overwrites 
 
    Each deploy prints `rules file ... compiled successfully` and ends with `Deploy complete!`. Deploy only the file that changed; deploying an unchanged file is harmless. Deploying needs no Java (only the emulators do).
 
-   The first `deploy:storage` asks: "Cloud Storage for Firebase needs an IAM Role to use cross-service rules. Grant the new role?" Answer **Y**: the Storage rules read Firestore to learn who owns a timeline, and without the role every photo request is denied. It is asked once per project.
+   The Storage rules read Firestore to learn who owns a timeline, which needs a one-time IAM role for Storage. The first `deploy:storage` may ask "Cloud Storage for Firebase needs an IAM Role to use cross-service rules. Grant the new role?"; answer **Y**. It may also not ask (it did not on 2026-10-24); then grant the role by hand as in [Cloud Storage](#cloud-storage-personal-timeline-images), step 6. Without it, every photo upload and read fails with a 403 `storage/unauthorized`.
 4. Check: Firebase console → **Firestore Database → Rules** and **Storage → Rules** show the deployed text, with the deploy time in their history.
 
 Publishing the site to GitHub Pages does not deploy rules.
@@ -94,7 +94,20 @@ One-time setup by the project owner:
       It ends with `Updating gs://historytimeline-81f70.firebasestorage.app/...` and `Completed 1`. Keep the JSON in the first line the same as [cors.json](cors.json). To check it later: `gcloud storage buckets describe gs://historytimeline-81f70.firebasestorage.app --format="default(cors_config)"`.
 
    Without CORS, uploads work but photos do not display: the app reads them with the Storage SDK's `getBlob`, which needs CORS, instead of shareable download URLs.
-5. Deploy both rules files as in [Change the rules](#change-the-rules), step 3: `npm run deploy:rules` (the photo check on timeline events), then `npm run deploy:storage`, answering **Y** to the one-time IAM role question.
+5. Deploy both rules files as in [Change the rules](#change-the-rules), step 3: `npm run deploy:rules` (the photo check on timeline events), then `npm run deploy:storage`. Done 2026-10-24 from `main` at `bd05991`.
+6. Let Storage's rules read Firestore. Done 2026-10-24 by hand, because the deploy did not ask. In Cloud Shell (as in step 4):
+
+   ```
+   gcloud projects describe historytimeline-81f70 --format="value(projectNumber)"
+   ```
+
+   This prints the project number, `276751184860`. Then, with that number:
+
+   ```
+   gcloud projects add-iam-policy-binding historytimeline-81f70 --member="serviceAccount:service-276751184860@gcp-sa-firebasestorage.iam.gserviceaccount.com" --role="roles/firebaserules.firestoreServiceAgent"
+   ```
+
+   It prints `Updated IAM policy for project [historytimeline-81f70].` and a policy that lists `roles/firebaserules.firestoreServiceAgent` for that service account. It can take a minute or two to take effect. The symptom when it is missing: "Could not upload the photo" in the event form, and a 403 `storage/unauthorized` on `firebasestorage.googleapis.com` in the browser console.
 
 As with Firestore, never edit Storage rules in the console: they live in this directory and are deployed from here.
 
