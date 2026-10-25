@@ -108,3 +108,20 @@
 @media (min-width: 761px) and (max-width: 1100px) {
     #timeline-pill-btn { max-width: 150px; }
 }
+
+/* ---------- reviewed world images (debug preview): one-line caption on the card, details in the viewer ---------- */
+.event-image.zoomable img { cursor: zoom-in; }
+.event-image-caption {
+    margin: .4rem 0 0; font-size: .78rem; color: var(--ink-3);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.photo-viewer { flex-direction: column; gap: 12px; }
+.photo-viewer img { max-height: calc(100% - 120px); }
+.photo-viewer-details { max-width: 720px; color: #eee; font-size: .85rem; line-height: 1.5; text-align: center; cursor: default; }
+.photo-viewer-details[hidden] { display: none; }
+.photo-viewer-details p { margin: 0; }
+.photo-viewer-details .viewer-role { font-size: .66rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #fff; margin-right: .2rem; }
+.photo-viewer-details .viewer-credit { margin-top: .25rem; color: #aaa; font-size: .75rem; }
+.photo-viewer-details .viewer-hold { margin-top: .35rem; color: #c9c9c9; font-size: .75rem; font-style: italic; }
+.photo-viewer-details a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.photo-viewer-details a:hover { color: #fff; }
