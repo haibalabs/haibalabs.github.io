@@ -11,11 +11,9 @@ const CSV = readFileSync(new URL('./fixtures/date-scoring-working-set.csv', impo
 // Rows the parser does not handle yet, with the value it currently returns noted in the reason.
 const NOT_YET_SUPPORTED = {
   '21st of an unspecified month in 764': 'natural-language day without a month',
-  'Spring and Summer 934': 'compound season',
   'Winter 1069-1070': 'winter spanning a year boundary',
   'Late summer/early autumn 1161': 'compound season',
   '1970-05': 'YYYY-MM ignores the month',
-  '15 44 BC': '"day year BC"',
   'September, 2004': '"Month, Year" with a comma',
 };
 

@@ -203,18 +203,20 @@ function extractRangeOrDayRange(inputText) {
       }
     }*/
 
+    // A season followed by a negative year ("spring -119") is BC; a season followed by a dash and
+    // another word ("spring - summer 934", from "spring and summer") is a span, not BC.
     let isBC = false;
-    if (inputText.match(/\s*(bc|bce)\b/i) || 
-        inputText.startsWith('-') || 
-        inputText.match(/(spring|summer|autumn|fall|winter)\s+-/i)) {
+    if (inputText.match(/\s*(bc|bce)\b/i) ||
+        inputText.startsWith('-') ||
+        inputText.match(/(spring|summer|autumn|fall|winter)\s+-\d/i)) {
         isBC = true;
         inputText = inputText.replace(/\s*(bc|bce)\b/i, '').trim();
         if (inputText.startsWith('-')) {
             inputText = inputText.substring(1);
-        } else if (inputText.match(/(spring|summer|autumn|fall|winter)\s+-/i)) {
-            inputText = inputText.replace(/\s+-/, ' ');
+        } else if (inputText.match(/(spring|summer|autumn|fall|winter)\s+-\d/i)) {
+            inputText = inputText.replace(/\s+-(?=\d)/, ' ');
         }
-    }   
+    }
 
     // 1) If it matches a full ISO date
     if (/^\d{1,4}-\d{1,2}-\d{1,2}$/.test(inputText)) {
@@ -532,6 +534,11 @@ function extractRangeOrDayRange(inputText) {
           parsed.year = -Math.abs(parsed.year);
         }
         return adjustForApproxWords(parsed);
+        }
+        // "15 44 bc": a day of an unnamed month; keep only the year, claiming no month or day
+        if (monthNumber >= 13 && monthNumber <= 31) {
+          parsed.year = isBC ? -Math.abs(yearNumber) : yearNumber;
+          return adjustForApproxWords(parsed);
         }
     }
 

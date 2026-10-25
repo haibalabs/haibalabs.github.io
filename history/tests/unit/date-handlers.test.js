@@ -60,7 +60,7 @@ describe('parseTimeToSortableValue — BCE/BC', () => {
   it('parses "-0002"', () => assertSortValue("-0002", -1.913934426));
   it('parses "-0381"', () => assertSortValue("-0381", -380.9139344));
   it('parses "-206"', () => assertSortValue("-206", -205.9139344));
-  it.todo('parses "15 44 BC"'); // expected: -43.91393443 — "day year BC" format not yet supported
+  it('parses "15 44 BC"', () => assertSortValue("15 44 BC", -43.91393443));
   it('parses "spring -0119"', () => assertSortValue("spring -0119", -118.6639344));
   it('parses "c. -0510 to -0430"', () => assertSortValue("c. -0510 to -0430", -509.9139344));
   it('parses "-0780-01-01/-0560-01-01"', () => assertSortValue("-0780-01-01/-0560-01-01", -779.9139344));
@@ -122,7 +122,7 @@ describe('parseTimeToSortableValue — Special Formats', () => {
   it('parses "March\u2013April 878"', () => assertSortValue("March\u2013April 878", 878.2527322));
   it('parses "February - March 902"', () => assertSortValue("February - March 902", 902.1693989));
   it('parses "March or April 914"', () => assertSortValue("March or April 914", 914.2527322));
-  it.todo('parses "Spring and Summer 934"'); // expected: 934.3360656 — compound season format not yet supported
+  it('parses "Spring and Summer 934"', () => assertSortValue("Spring and Summer 934", 934.3360656));
   it('parses "Summer to Autumn 1006"', () => assertSortValue("Summer to Autumn 1006", 1006.586066));
   it.todo('parses "Winter 1069-1070"'); // expected: 1070.084699 — winter spanning year boundary not yet supported
   it('parses "Approx. 1091"', () => assertSortValue("Approx. 1091", 1091.086066));
@@ -251,5 +251,19 @@ describe('numericDateParts — the shared month/day/year reading', () => {
     for (const text of ['1/25/76', '1/25/19760', 'early 1/25/1976', '2/30/1976', '2/29/1900', '13/13/1976', '0/5/1976', '1976-01-25']) {
       assert.equal(numericDateParts(text), null, text);
     }
+  });
+});
+
+describe('world dates that used to fall back to year 0', () => {
+  it('a day of an unnamed month keeps only its year', () => {
+    assert.equal(formatHistoricalDate('15 44 BC'), '44 BC');
+    assert.equal(parseTimeToSortableValue('15 44 BC').hasDay, false);
+  });
+  it('a pair of seasons is shown and sorted at its first season', () => {
+    assert.equal(formatHistoricalDate('Spring and Summer 934'), 'spring 934');
+  });
+  it('a season followed by a negative year is still BC', () => {
+    assert.equal(formatHistoricalDate('spring -0119'), 'spring 119 BC');
+    assert.equal(formatHistoricalDate('Spring and Summer 934 BC'), 'spring 934 BC');
   });
 });
