@@ -6,12 +6,22 @@ import { attachPreviewImages, detachPreviewImages, previewProblem, sha256Hex } f
 const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-v1.json', import.meta.url), 'utf8'));
 const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url));
 
-// A small dataset whose events sit at the positions the records name.
+// A small file whose records sit at the positions the preview records name, and the events the app
+// would load from it: copies, plus the fields the app adds or normalizes at load.
 function dataset(records) {
-  const events = [];
-  for (const r of records) events[r.record_index] = { name: r.event_name, enhanced_time: r.enhanced_time };
-  for (let i = 0; i < events.length; i++) events[i] ??= { name: `Filler ${i}`, enhanced_time: '1900' };
-  return events;
+  const originals = [];
+  for (const r of records) {
+    originals[r.record_index] = {
+      name: r.event_name, enhanced_time: r.enhanced_time, enhanced_description: 'What happened.',
+      wikipedia_url: 'https://en.wikipedia.org/wiki/X', lastModified: 1, locations: [{ name: 'Kansas City', country: 'United States' }],
+    };
+  }
+  for (let i = 0; i < originals.length; i++) originals[i] ??= { name: `Filler ${i}`, enhanced_time: '1900' };
+  const events = originals.map(o => ({
+    ...structuredClone(o), dirty: false, syncedRevision: null, lastModified: 1729800000000, sourceTimestamp: 1729800000000,
+    locations: (o.locations ?? []).map(l => ({ ...l, verified: true, corrected: null })),
+  }));
+  return { events, originals };
 }
 const record = (index, extra = {}) => ({
   record_index: index, event_name: `Event ${index}`, enhanced_time: '1933', image_url: `https://upload.wikimedia.org/x/${index}.jpg`,
@@ -51,13 +61,13 @@ describe('previewProblem — attach only to the exact data file reviewed', () =>
   });
 });
 
-describe('attachPreviewImages and detachPreviewImages', () => {
+describe('attachPreviewImages and detachPreviewImages — all reviewed records or none', () => {
   it('attaches each image and its display details to the event at its position', () => {
     const records = [record(1), record(3, { image_role: 'event_aftermath', event_issue_ids: ['hold'] })];
-    const events = dataset(records);
-    const { attached, skipped } = attachPreviewImages(events, records);
+    const { events, originals } = dataset(records);
+    const { attached, problems } = attachPreviewImages(events, records, originals);
     assert.equal(attached.length, 2);
-    assert.deepEqual(skipped, []);
+    assert.deepEqual(problems, []);
     assert.equal(events[1].image_url, records[0].image_url);
     assert.deepEqual(events[3].image_preview, {
       caption: 'Caption 3', role: 'event_aftermath', credit: 'Someone', license_name: 'Public domain',
@@ -65,23 +75,54 @@ describe('attachPreviewImages and detachPreviewImages', () => {
     });
     assert.equal(events[0].image_url, undefined);
   });
-  it('skips a position holding a different event, a personal event, or one that already has an image', () => {
+  it('tolerates what the app adds at load: the timestamp and the location verifier\'s annotations', () => {
+    const records = [record(1)];
+    const { events, originals } = dataset(records);
+    assert.notEqual(events[1].lastModified, originals[1].lastModified);
+    assert.equal(events[1].locations[0].verified, true);
+    assert.deepEqual(attachPreviewImages(events, records, originals).problems, []);
+  });
+  const refusals = [
+    ['a different event at that position', (e) => { e.name = 'Renamed'; }],
+    ['a different date at that position', (e) => { e.enhanced_time = '1934'; }],
+    ['a personal event', (e) => { e.personal = true; }, /no world event at that position/],
+    ['an event edited in this session', (e) => { e.dirty = true; }, /changed after loading/],
+    ['an event replaced by a synced revision', (e) => { e.syncedRevision = 2; }, /changed after loading/],
+    ['an event that already has an image', (e) => { e.image_url = 'https://example.com/existing.jpg'; }, /already has an image/],
+    ['a changed description', (e) => { e.enhanced_description = 'Something else.'; }, /enhanced_description differs/],
+    ['a changed Wikipedia link', (e) => { e.wikipedia_url = 'https://en.wikipedia.org/wiki/Y'; }, /wikipedia_url differs/],
+    ['a removed file field', (e) => { delete e.enhanced_description; }, /enhanced_description differs/],
+    ['a moved location', (e) => { e.locations[0].name = 'Topeka'; }, /locations differ/],
+    ['an added location', (e) => { e.locations.push({ name: 'Topeka' }); }, /locations differ/],
+  ];
+  for (const [what, change, reason = /a different event at that position/] of refusals) {
+    it('refuses ' + what + ', and then attaches nothing at all', () => {
+      const records = [record(1), record(3)];
+      const { events, originals } = dataset(records);
+      change(events[3]);
+      const { attached, problems } = attachPreviewImages(events, records, originals);
+      assert.deepEqual(attached, []);
+      assert.equal(problems.length, 1);
+      assert.equal(problems[0].record_index, 3);
+      assert.match(problems[0].reason, reason);
+      assert.equal(events[1].image_url, undefined);
+      assert.equal(events[1].image_preview, undefined);
+    });
+  }
+  it('reports every record that no longer matches', () => {
     const records = [record(0), record(1), record(2)];
-    const events = dataset(records);
+    const { events, originals } = dataset(records);
     events[0].name = 'Renamed';
-    events[1].personal = true;
-    events[2].image_url = 'https://example.com/existing.jpg';
-    const { attached, skipped } = attachPreviewImages(events, records);
-    assert.equal(attached.length, 0);
-    assert.deepEqual(skipped.map(s => s.reason), ['a different event at that position', 'no world event at that position', 'the event already has an image']);
-    assert.equal(events[2].image_url, 'https://example.com/existing.jpg');
+    events[2].dirty = true;
+    const { problems } = attachPreviewImages(events, records, originals);
+    assert.deepEqual(problems.map(p => p.record_index), [0, 2]);
   });
   it('detaching removes exactly what was attached', () => {
     const records = [record(1)];
-    const events = dataset(records);
-    const { attached } = attachPreviewImages(events, records);
+    const { events, originals } = dataset(records);
+    const before = structuredClone(events);
+    const { attached } = attachPreviewImages(events, records, originals);
     detachPreviewImages(attached);
-    assert.equal(events[1].image_url, undefined);
-    assert.equal(events[1].image_preview, undefined);
+    assert.deepEqual(events, before);
   });
 });

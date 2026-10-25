@@ -1,12 +1,18 @@
 // world-images.js
 // Debug-only preview of independently reviewed world-event images (previews/README.md). Each
 // preview record names the position of its event in one exact events.json, identified by its
-// SHA-256. Images are attached only when the loaded data file has that hash, every index is valid
-// and unique, and the event at each position still has the recorded name and date; otherwise
-// nothing is attached and the reason is reported. There is no fallback matching by title. The
-// default site data carries no images, and nothing here runs unless an admin turns it on.
+// SHA-256. Images are attached only when the bytes the page loaded have that hash, every index is
+// valid and unique, and every target event is still the record loaded from the file: not
+// replaced, not edited, with its file fields unchanged. If any check fails, nothing is attached
+// and the reason is reported. There is no fallback matching by title. The default site data
+// carries no images, and nothing here runs unless an admin turns it on.
 
 export const PREVIEW_URL = 'previews/reviewed-images-v1.json';
+
+// Fields the app itself changes after loading: the timestamp it sets, and locations, which the
+// location verifier annotates. Locations are compared by their identity fields instead.
+const NORMALIZED_FIELDS = new Set(['lastModified', 'locations']);
+const LOCATION_FIELDS = ['name', 'city', 'region', 'country', 'historical_name', 'place_id'];
 
 /**
  * SHA-256 of some bytes, as lowercase hex.
@@ -23,7 +29,7 @@ export async function sha256Hex(bytes) {
  * Why the preview cannot be attached to the loaded data, or null if it can.
  *
  * @param {object} preview - the parsed preview file
- * @param {string} loadedSha256 - SHA-256 of the loaded data file's bytes
+ * @param {string} loadedSha256 - SHA-256 of the bytes the loaded events were parsed from
  * @param {number} eventCount - number of world events loaded from that file
  * @returns {string|null}
  */
@@ -37,27 +43,39 @@ export function previewProblem(preview, loadedSha256, eventCount) {
     return null;
 }
 
+// Why a loaded event is no longer the file record a preview image was reviewed for, or null.
+function eventProblem(event, record, original) {
+    if (!event || event.personal) return 'no world event at that position';
+    if (event.name !== record.event_name || event.enhanced_time !== record.enhanced_time) return 'a different event at that position';
+    if (event.dirty || event.syncedRevision != null) return 'the event was changed after loading';
+    if (event.image_url) return 'the event already has an image';
+    for (const [key, value] of Object.entries(original)) {
+        if (NORMALIZED_FIELDS.has(key)) continue;
+        if (JSON.stringify(event[key]) !== JSON.stringify(value)) return `its ${key} differs from the reviewed file`;
+    }
+    const identity = (locations) => JSON.stringify((locations ?? []).map(l => LOCATION_FIELDS.map(f => (typeof l === 'string' && f === 'name' ? l : l?.[f]) ?? null)));
+    if (identity(event.locations) !== identity(original.locations)) return 'its locations differ from the reviewed file';
+    return null;
+}
+
 /**
- * Attaches preview images to the events they were reviewed for. Call only when previewProblem()
- * returns null.
+ * Attaches every preview image to the event it was reviewed for, or none. Call only when
+ * previewProblem() returns null.
  *
  * @param {object[]} events - the loaded world events, in file order
  * @param {object[]} records - preview records (previews/reviewed-images-v1.json)
- * @returns {{ attached: object[], skipped: { record_index: number, reason: string }[] }}
+ * @param {object[]} originals - the records of the reviewed file, as parsed from its bytes
+ * @returns {{ attached: object[], problems: { record_index: number, reason: string }[] }}
  */
-export function attachPreviewImages(events, records) {
-    const attached = [];
-    const skipped = [];
+export function attachPreviewImages(events, records, originals) {
+    const problems = [];
     for (const record of records) {
+        const reason = eventProblem(events[record.record_index], record, originals[record.record_index]);
+        if (reason) problems.push({ record_index: record.record_index, reason });
+    }
+    if (problems.length) return { attached: [], problems };
+    const attached = records.map((record) => {
         const event = events[record.record_index];
-        let reason = null;
-        if (!event || event.personal) reason = 'no world event at that position';
-        else if (event.name !== record.event_name || event.enhanced_time !== record.enhanced_time) reason = 'a different event at that position';
-        else if (event.image_url) reason = 'the event already has an image';
-        if (reason) {
-            skipped.push({ record_index: record.record_index, reason });
-            continue;
-        }
         event.image_url = record.image_url;
         event.image_preview = {
             caption: record.caption,
@@ -68,9 +86,9 @@ export function attachPreviewImages(events, records) {
             source_url: record.source_url,
             under_review: (record.event_issue_ids ?? []).length > 0,
         };
-        attached.push(event);
-    }
-    return { attached, skipped };
+        return event;
+    });
+    return { attached, problems };
 }
 
 // Removes the images attachPreviewImages added.

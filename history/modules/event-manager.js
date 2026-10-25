@@ -2,6 +2,7 @@
 import { PlaceEventIndex } from './place-event-index.js';
 import { parseTimeToSortableValue } from './date-handlers.js';
 import { acknowledgement, incomingProblem, mergeDecision, newEventId, pushDecision, syncTarget, toSyncDoc } from './sync-identity.js';
+import { sha256Hex } from './world-images.js';
 
 import { initializeApp as firebaseInit } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getFirestore, connectFirestoreEmulator, collection, doc, getDoc, query, runTransaction, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
@@ -240,7 +241,12 @@ export class EventManager {
                 throw new Error(`Could not load data file: ${dataFile}`);
             }
     
-            const data = await response.json();
+            const bytes = await response.arrayBuffer();
+            // The hash of the exact bytes these events were parsed from, and a count of loads.
+            // Previews bound to one reviewed file check both (world-images.js).
+            this.loadedSha256 = sha256Hex(bytes);
+            this.loadGeneration = (this.loadGeneration ?? 0) + 1;
+            const data = JSON.parse(new TextDecoder().decode(bytes));
             let eventsArray;
             let baseTimestamp;
     

@@ -839,35 +839,58 @@ export class UIManager {
 
     /**
      * Debug: shows or hides the independently reviewed world images (previews/README.md). They are
-     * attached only when the loaded data file is the exact one they were reviewed against.
+     * attached, all or none, only when the bytes the events were loaded from are the exact file
+     * they were reviewed against and every target event is still that file's record.
      *
      * @param {boolean} on
      */
     async setWorldImagePreview(on) {
         const toggle = document.getElementById('debug-world-images');
         const ticket = this.worldPreviewTicket = (this.worldPreviewTicket ?? 0) + 1;
+        const generation = this.eventManager.loadGeneration;
+        // turned off or on again, or other events loaded, while waiting
+        const stale = () => ticket !== this.worldPreviewTicket || generation !== this.eventManager.loadGeneration;
         const changed = this.worldPreview ?? [];
         detachPreviewImages(changed);
         this.worldPreview = null;
         if (on) {
             try {
-                const [preview, bytes] = await Promise.all([
-                    fetch(PREVIEW_URL).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }),
-                    fetch(this.eventManager.currentFile).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.arrayBuffer(); }),
+                const fetchOk = (url) => fetch(url).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r; });
+                const [preview, loadedSha256] = await Promise.all([
+                    fetchOk(PREVIEW_URL).then(r => r.json()),
+                    this.eventManager.loadedSha256,
                 ]);
-                // turned off or on again while loading
-                if (ticket !== this.worldPreviewTicket) return;
+                if (stale()) return;
                 const worldEvents = this.eventManager.events.filter(event => !event.personal);
-                const problem = previewProblem(preview, await sha256Hex(bytes), worldEvents.length);
-                if (ticket !== this.worldPreviewTicket) return;
+                let problem = previewProblem(preview, loadedSha256, worldEvents.length);
+                let attached = [];
+                if (!problem) {
+                    // the reviewed records themselves, from a copy of the same bytes
+                    const bytes = await fetchOk(this.eventManager.currentFile).then(r => r.arrayBuffer());
+                    if (await sha256Hex(bytes) !== loadedSha256) {
+                        problem = 'The events file changed on the server since this page loaded.';
+                    } else {
+                        const data = JSON.parse(new TextDecoder().decode(bytes));
+                        if (stale()) return;
+                        const result = attachPreviewImages(worldEvents, preview.records, data.events ?? data);
+                        if (result.problems.length) {
+                            const first = result.problems[0];
+                            problem = `${result.problems.length} preview image${result.problems.length === 1 ? '' : 's'} no longer match their event (position ${first.record_index}: ${first.reason}).`;
+                        }
+                        attached = result.attached;
+                    }
+                }
+                if (stale()) {
+                    detachPreviewImages(attached);
+                    return;
+                }
                 if (problem) {
                     toggle.checked = false;
                     this.showToast(`${problem} No preview images are shown.`);
                 } else {
-                    const { attached, skipped } = attachPreviewImages(worldEvents, preview.records);
                     this.worldPreview = attached;
                     changed.push(...attached);
-                    this.showToast(`Showing ${attached.length} reviewed images${skipped.length ? ` (${skipped.length} did not match their event)` : ''}.`);
+                    this.showToast(`Showing ${attached.length} reviewed images.`);
                 }
             } catch (error) {
                 console.error('Could not load the image preview:', error);
