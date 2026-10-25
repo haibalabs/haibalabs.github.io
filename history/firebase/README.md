@@ -50,14 +50,23 @@ The console bypasses the rules, so the owner can always repair roles there, incl
 
 Never edit rules in the console: the next deploy from this directory overwrites console changes.
 
-1. Edit `firestore.rules` and add or update tests in `tests/rules.test.js`.
+1. Edit `firestore.rules` or `storage.rules`, and add or update tests in `tests/rules.test.js` or `tests/storage.test.js`.
 2. Run the tests (below). CI runs them on every pull request to `main`.
-3. Deploy, once the change is merged:
+3. Deploy, once the change is merged. Deploy from an up-to-date `main`, so only reviewed rules go live:
 
    ```
-   npx firebase login        # once, with an account that has access to the project
-   npm run deploy:rules
+   git switch main && git pull           # in the repository root
+   cd history/firebase
+   npm ci                                # once per checkout; installs the Firebase CLI used below
+   npx firebase login                    # once per computer, as an account with access to the project
+   npm run deploy:rules                  # firestore.rules
+   npm run deploy:storage                # storage.rules
    ```
+
+   Each deploy prints `rules file ... compiled successfully` and ends with `Deploy complete!`. Deploy only the file that changed; deploying an unchanged file is harmless. Deploying needs no Java (only the emulators do).
+
+   The first `deploy:storage` asks: "Cloud Storage for Firebase needs an IAM Role to use cross-service rules. Grant the new role?" Answer **Y**: the Storage rules read Firestore to learn who owns a timeline, and without the role every photo request is denied. It is asked once per project.
+4. Check: Firebase console → **Firestore Database → Rules** and **Storage → Rules** show the deployed text, with the deploy time in their history.
 
 Publishing the site to GitHub Pages does not deploy rules.
 
@@ -85,7 +94,7 @@ One-time setup by the project owner:
       It ends with `Updating gs://historytimeline-81f70.firebasestorage.app/...` and `Completed 1`. Keep the JSON in the first line the same as [cors.json](cors.json). To check it later: `gcloud storage buckets describe gs://historytimeline-81f70.firebasestorage.app --format="default(cors_config)"`.
 
    Without CORS, uploads work but photos do not display: the app reads them with the Storage SDK's `getBlob`, which needs CORS, instead of shareable download URLs.
-5. Deploy the rules, once the change is merged: `npm run deploy:rules` (the photo check on timeline events) and `npm run deploy:storage`. The first Storage deploy asks to grant Storage an IAM role so its rules can read Firestore (who owns a timeline); answer yes.
+5. Deploy both rules files as in [Change the rules](#change-the-rules), step 3: `npm run deploy:rules` (the photo check on timeline events), then `npm run deploy:storage`, answering **Y** to the one-time IAM role question.
 
 As with Firestore, never edit Storage rules in the console: they live in this directory and are deployed from here.
 
