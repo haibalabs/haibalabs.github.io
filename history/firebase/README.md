@@ -50,14 +50,23 @@ The console bypasses the rules, so the owner can always repair roles there, incl
 
 Never edit rules in the console: the next deploy from this directory overwrites console changes.
 
-1. Edit `firestore.rules` and add or update tests in `tests/rules.test.js`.
+1. Edit `firestore.rules` or `storage.rules`, and add or update tests in `tests/rules.test.js` or `tests/storage.test.js`.
 2. Run the tests (below). CI runs them on every pull request to `main`.
-3. Deploy, once the change is merged:
+3. Deploy, once the change is merged. Deploy from an up-to-date `main`, so only reviewed rules go live:
 
    ```
-   npx firebase login        # once, with an account that has access to the project
-   npm run deploy:rules
+   git switch main && git pull           # in the repository root
+   cd history/firebase
+   npm ci                                # once per checkout; installs the Firebase CLI used below
+   npx firebase login                    # once per computer, as an account with access to the project
+   npm run deploy:rules                  # firestore.rules
+   npm run deploy:storage                # storage.rules
    ```
+
+   Each deploy prints `rules file ... compiled successfully` and ends with `Deploy complete!`. Deploy only the file that changed; deploying an unchanged file is harmless. Deploying needs no Java (only the emulators do).
+
+   The first `deploy:storage` asks: "Cloud Storage for Firebase needs an IAM Role to use cross-service rules. Grant the new role?" Answer **Y**: the Storage rules read Firestore to learn who owns a timeline, and without the role every photo request is denied. It is asked once per project.
+4. Check: Firebase console → **Firestore Database → Rules** and **Storage → Rules** show the deployed text, with the deploy time in their history.
 
 Publishing the site to GitHub Pages does not deploy rules.
 
@@ -72,15 +81,20 @@ One-time setup by the project owner:
 1. Firebase console → **Spark plan → Upgrade** (bottom left) → **Blaze**, and link a Cloud Billing account. A new billing account starts as a Google Cloud free trial ($300 credit for 90 days; done 2026-10-24). Before the trial ends, upgrade the billing account to paid (Google Cloud console → **Billing → Account overview → Upgrade**): otherwise Firebase moves the project back to Spark, Storage stops, and trial resources, including stored photos, can be deleted after a 30-day grace period. Firestore and Auth keep working on Spark.
 2. Google Cloud console → **Billing → Budgets & alerts → Create budget**: scope `historytimeline-81f70`, amount $5, email alerts at 50%, 90% and 100%. A budget alerts; it does not cap spending.
 3. Firebase console → **Build → Storage → Get started** → **Start in production mode** (denies everything until the repository's rules are deployed) → a no-cost location: `us-central1`, `us-east1` or `us-west1`. It cannot be changed later. Done 2026-10-24: `gs://historytimeline-81f70.firebasestorage.app` in `us-east1`.
-4. Allow the site to read photos (CORS, from [cors.json](cors.json)). Open Google Cloud Shell (the `>_` icon at the top of the Google Cloud console, with project `historytimeline-81f70` selected) and run:
+4. Allow the site to read photos (CORS, from [cors.json](cors.json)). Done 2026-10-24. To redo it, for example after adding another site address to `cors.json`:
+   1. Open the Google Cloud console at https://console.cloud.google.com, signed in as the project owner, with the project picker (top left) set to `historytimeline-81f70`. A direct link: https://console.cloud.google.com/home/dashboard?project=historytimeline-81f70. From the Firebase console, **Project settings → Usage and billing → Details & settings** also leads there.
+   2. Click **Activate Cloud Shell** (the `>_` icon, top right). A terminal opens at the bottom of the page, already signed in; the first time, click **Authorize**. Its prompt ends with `(historytimeline-81f70)$`.
+   3. Run:
 
-   ```
-   echo '[{"origin":["https://haibalabs.github.io"],"method":["GET"],"maxAgeSeconds":3600}]' > cors.json
-   gcloud storage buckets update gs://historytimeline-81f70.firebasestorage.app --cors-file=cors.json
-   ```
+      ```
+      echo '[{"origin":["https://haibalabs.github.io"],"method":["GET"],"maxAgeSeconds":3600}]' > cors.json
+      gcloud storage buckets update gs://historytimeline-81f70.firebasestorage.app --cors-file=cors.json
+      ```
 
-   Without it, uploads work but photos do not display: the app reads them with the Storage SDK's `getBlob`, which needs CORS, instead of shareable download URLs.
-5. Deploy the rules, once the change is merged: `npm run deploy:rules` (the photo check on timeline events) and `npm run deploy:storage`. The first Storage deploy asks to grant Storage an IAM role so its rules can read Firestore (who owns a timeline); answer yes.
+      It ends with `Updating gs://historytimeline-81f70.firebasestorage.app/...` and `Completed 1`. Keep the JSON in the first line the same as [cors.json](cors.json). To check it later: `gcloud storage buckets describe gs://historytimeline-81f70.firebasestorage.app --format="default(cors_config)"`.
+
+   Without CORS, uploads work but photos do not display: the app reads them with the Storage SDK's `getBlob`, which needs CORS, instead of shareable download URLs.
+5. Deploy both rules files as in [Change the rules](#change-the-rules), step 3: `npm run deploy:rules` (the photo check on timeline events), then `npm run deploy:storage`, answering **Y** to the one-time IAM role question.
 
 As with Firestore, never edit Storage rules in the console: they live in this directory and are deployed from here.
 
