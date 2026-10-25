@@ -67,6 +67,26 @@ test('reviewed images show on their events with a one-line caption, and open ful
   await expect(card(page, 'Black Sunday Dust Bowl storm').locator('.event-image')).toHaveCount(0);
 });
 
+test('when the full-size image and its original both fail, the viewer says so and keeps the credits', async ({ page }) => {
+  test.setTimeout(120000);
+  await openSite(page);
+  // the card's thumbnail loads; the viewer's 1280px thumbnail and the original do not
+  await page.route('https://upload.wikimedia.org/**', route =>
+    (route.request().url().includes('/thumb/') && !route.request().url().includes('1280px-') ? route.fallback() : route.abort()));
+  await turnPreview(page, true);
+  await page.fill('#searchInput', 'Union Station massacre');
+  await card(page, 'Union Station massacre').locator('.event-image img').click();
+  const viewer = page.locator('#photo-viewer');
+  await expect(viewer.locator('.photo-viewer-error')).toBeVisible();
+  await expect(viewer.locator('.photo-viewer-error')).toHaveText('This image could not be loaded.');
+  await expect(viewer).not.toHaveClass(/loading/);
+  await expect(viewer.locator('img')).toBeHidden();
+  await expect(viewer.locator('.viewer-credit')).toContainText('Public domain');
+  await page.keyboard.press('Escape');
+  await expect(viewer).toBeHidden();
+  await expect(viewer.locator('.photo-viewer-error')).toBeHidden();
+});
+
 test('a different events file gets no preview images and says why', async ({ page }) => {
   await openSite(page, '?file=events_sample.json');
   await turnPreview(page, true);

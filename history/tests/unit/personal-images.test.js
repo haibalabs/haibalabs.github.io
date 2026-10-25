@@ -109,6 +109,27 @@ describe('PersonalImages — loading and caching photos', () => {
     assert.equal(loads.get('broken').length, 2);
   });
 
+  it('a failed load is reported for the open timeline, and not after the timeline changed', async () => {
+    const { images, loads, state } = harness();
+    const failed = [];
+    images.onFailed = (ref) => failed.push(ref);
+    const original = console.error;
+    console.error = () => {};
+    images.url('broken');
+    loads.get('broken')[0].reject(new Error('denied'));
+    await new Promise(setImmediate);
+    assert.deepEqual(failed, ['broken']);
+    assert.equal(images.hasFailed('broken'), true);
+    images.url('late');
+    state.selection += 1;
+    loads.get('late')[0].reject(new Error('denied'));
+    await new Promise(setImmediate);
+    console.error = original;
+    assert.deepEqual(failed, ['broken']);
+    state.generation = '200_1';
+    assert.equal(images.hasFailed('broken'), false);
+  });
+
   it('forget() drops and revokes one photo after it is replaced', async () => {
     const { images, settle } = harness();
     images.url('old');
