@@ -299,3 +299,44 @@ describe('personal timelines: events', () => {
     }
   });
 });
+
+// An event's photo record. SEEDED_AT is 1,700,000,000 s and 0 ns, so t1's generation is "1700000000_0".
+const PHOTO_ID = '0a0b0c0d-0000-4000-8000-000000000001';
+const photoPath = (eventId, suffix = '', generation = '1700000000_0') =>
+  `timelines/t1/${generation}/events/${eventId}/img_${PHOTO_ID}${suffix}.webp`;
+const photo = (eventId, extra = {}) => ({
+  ref: photoPath(eventId), thumb_ref: photoPath(eventId, '_thumb'),
+  width: 1600, height: 1200, mime: 'image/webp', bytes: 312000, image_role: 'personal_photo', ...extra,
+});
+
+describe('personal timelines: event photos', () => {
+  beforeEach(() => seedTimeline('viewer', ['reviewer']));
+
+  it('owners and members can save an event with a photo under its own path and generation, or without one', async () => {
+    await assertSucceeds(setDoc(tlEvent(as('viewer'), EVT_B), timelineEvent('viewer', EVT_B, { image: photo(EVT_B) })));
+    await assertSucceeds(setDoc(tlEvent(as('reviewer'), EVT_C), timelineEvent('reviewer', EVT_C, { image: photo(EVT_C) })));
+    await assertSucceeds(setDoc(tlEvent(as('viewer'), EVT_B), timelineEvent('viewer', EVT_B)));
+  });
+  it('photo paths must belong to this event and the timeline\'s current generation', async () => {
+    const db = as('viewer');
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { image: photo(EVT_B, { ref: photoPath(EVT_C) }) })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { image: photo(EVT_B, { thumb_ref: photoPath(EVT_B) }) })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, {
+      image: photo(EVT_B, { ref: photoPath(EVT_B, '', '1700000000_1'), thumb_ref: photoPath(EVT_B, '_thumb', '1700000000_1') }),
+    })));
+    await assertFails(setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, {
+      image: photo(EVT_B, { ref: 'https://example.com/photo.webp' }),
+    })));
+  });
+  it('photo records have exactly the expected, typed fields', async () => {
+    const db = as('viewer');
+    const save = (image) => setDoc(tlEvent(db, EVT_B), timelineEvent('viewer', EVT_B, { image }));
+    await assertFails(save(photo(EVT_B, { caption: 'x' })));
+    await assertFails(save((({ bytes, ...rest }) => rest)(photo(EVT_B))));
+    await assertFails(save(photo(EVT_B, { mime: 'image/png' })));
+    await assertFails(save(photo(EVT_B, { width: 2000 })));
+    await assertFails(save(photo(EVT_B, { bytes: 3 * 1024 * 1024 })));
+    await assertFails(save(photo(EVT_B, { image_role: 'event_photo' })));
+    await assertFails(save('timelines/t1/x.webp'));
+  });
+});

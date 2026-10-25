@@ -78,7 +78,31 @@ service cloud.firestore {
         && data.name is string && data.name.size() > 0 && data.name.size() <= 300
         && data.enhanced_time is string
         && data.userId == request.auth.uid
-        && data.lastModified == request.time;
+        && data.lastModified == request.time
+        && validImage(timelineId);
+    }
+
+    // An event's optional photo (see ../PERSONAL-IMAGES.md): both Storage paths must sit under
+    // this event and the timeline's current generation, as storage.rules requires for the files.
+    function validImage(timelineId) {
+      let data = request.resource.data;
+      // the generation "<Unix seconds>_<nanoseconds>"; a timestamp's own seconds() is the second
+      // within the minute, so both parts come from its duration since the Unix epoch
+      let sinceEpoch = currentTimeline(timelineId).createdAt - timestamp.value(0);
+      let prefix = 'timelines/' + timelineId + '/' + string(sinceEpoch.seconds()) + '_'
+        + string(sinceEpoch.nanos()) + '/events/' + data.event_id
+        + '/img_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+      return !('image' in data) || (
+        data.image is map
+        && data.image.keys().hasOnly(['ref', 'thumb_ref', 'width', 'height', 'mime', 'bytes', 'image_role'])
+        && data.image.keys().hasAll(['ref', 'thumb_ref', 'width', 'height', 'mime', 'bytes', 'image_role'])
+        && data.image.ref is string && data.image.ref.matches(prefix + '[.](webp|jpg)')
+        && data.image.thumb_ref is string && data.image.thumb_ref.matches(prefix + '_thumb[.](webp|jpg)')
+        && data.image.width is int && data.image.width > 0 && data.image.width <= 1600
+        && data.image.height is int && data.image.height > 0 && data.image.height <= 1600
+        && data.image.mime in ['image/webp', 'image/jpeg']
+        && data.image.bytes is int && data.image.bytes > 0 && data.image.bytes <= 2097152
+        && data.image.image_role == 'personal_photo');
     }
 
     function canUseTimeline(timeline) {

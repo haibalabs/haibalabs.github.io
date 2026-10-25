@@ -2,9 +2,10 @@
 // Personal timelines in the page (see PERSONAL-TIMELINES.md): "My timelines" in the settings
 // panel, the open timeline's pill in the top bar, and saving its events as they change. The UI
 // hides what an account cannot use; the Firestore rules decide what it can reach.
+import { PersonalImages } from './personal-images.js';
 import { permissionsFor } from './roles.js';
 import { newEventId } from './sync-identity.js';
-import { eventProblem, timelineIdFromSearch, titleProblem } from './timeline-model.js';
+import { eventProblem, PERSONAL_PHOTO_ROLE, timelineGeneration, timelineIdFromSearch, titleProblem } from './timeline-model.js';
 
 // Every Firestore call here is awaited while the user can still sign out, open another timeline
 // or close this one. Each call notes the session (bumped on every account change) and the
@@ -15,11 +16,20 @@ export class TimelineUI {
      * @param {object} eventManager
      * @param {object} uiManager
      * @param {import('./timeline-store.js').TimelineStore} store
+     * @param {object} imageStore - the personal-photo adapter (see image-store.js)
      */
-    constructor(eventManager, uiManager, store) {
+    constructor(eventManager, uiManager, store, imageStore) {
         this.eventManager = eventManager;
         this.uiManager = uiManager;
         this.store = store;
+        this.imageStore = imageStore;
+        // photos load under the same account and timeline guards as everything else here
+        this.images = new PersonalImages(imageStore, {
+            token: () => this.token(),
+            isCurrent: (token) => this.isCurrent(token),
+            generation: () => (this.current ? timelineGeneration(this.current.createdAt) : null),
+        });
+        this.images.onReady = (ref, url) => this.showPhoto(ref, url);
         // the open timeline document ({ id, title, createdAt, ... }), or null
         this.current = null;
         this.user = null;
@@ -37,6 +47,7 @@ export class TimelineUI {
         this.pillButton = document.getElementById('timeline-pill-btn');
         this.menu = document.getElementById('timeline-menu');
         this.addEventBtn = document.getElementById('add-event');
+        this.viewer = document.getElementById('photo-viewer');
 
         this.setupListeners();
         uiManager.personalEventActions = {
@@ -64,8 +75,11 @@ export class TimelineUI {
             if (!this.pill.contains(e.target)) this.toggleMenu(false);
         });
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') this.toggleMenu(false);
+            if (e.key !== 'Escape') return;
+            this.toggleMenu(false);
+            this.closePhoto();
         });
+        this.viewer.addEventListener('click', () => this.closePhoto());
     }
 
     // Called once the world events have loaded, since loading them replaces every event.
@@ -229,6 +243,10 @@ export class TimelineUI {
         this.showStatus('');
         const token = this.token();
         try {
+            // photos first, then events and the timeline (see PERSONAL-IMAGES.md, Flows)
+            for (const event of await this.store.loadEvents(timeline)) {
+                if (event.image) await this.removePhotoFiles(event.image);
+            }
             await this.store.remove(timeline);
             if (!this.isCurrent(token, { selection: false })) return;
             if (this.current?.id === timeline.id) this.close();
@@ -283,6 +301,8 @@ export class TimelineUI {
         this.selection++;
         this.current = null;
         this.uiManager.modalManager?.discardPersonal();
+        this.closePhoto();
+        this.images.clear();
         this.eventManager.clearPersonalEvents();
         if (!keepAddress) this.setAddress(null);
         this.pill.hidden = true;
@@ -346,21 +366,47 @@ export class TimelineUI {
         if (!target || !this.isCurrent(target.token)) {
             return 'The timeline was closed or the account changed, so this event was not saved.';
         }
-        const problem = eventProblem(fields);
+        // photo: { action: 'keep' } (the default), { action: 'remove' } or { action: 'add', resized }
+        const { photo = { action: 'keep' }, ...eventFields } = fields;
+        const problem = eventProblem(eventFields);
         if (problem) return problem;
         const { timeline, token } = target;
-        const event = { ...fields, event_id: editing?.event_id ?? newEventId() };
+        const event = { ...eventFields, event_id: editing?.event_id ?? newEventId() };
+        const previous = editing?.image ?? null;
+        let uploaded = null;
+        if (photo.action === 'add') {
+            const { full, width, height, mime } = photo.resized;
+            const where = { timelineId: timeline.id, generation: timelineGeneration(timeline.createdAt), eventId: event.event_id };
+            try {
+                uploaded = await this.imageStore.upload(where, photo.resized);
+            } catch (error) {
+                console.error('Could not upload photo:', error);
+                if (!this.isCurrent(token)) return null;
+                return 'Could not upload the photo. Try again.';
+            }
+            event.image = { ...uploaded, width, height, mime, bytes: full.size, image_role: PERSONAL_PHOTO_ROLE };
+        } else if (photo.action === 'keep' && previous) {
+            event.image = previous;
+        }
         try {
             await this.store.saveEvent(timeline, event);
         } catch (error) {
             console.error('Could not save event:', error);
+            if (uploaded) await this.removePhotoFiles(uploaded);
             if (!this.isCurrent(token)) return null;
             return error.code === 'permission-denied'
                 ? 'This account can no longer edit this timeline.'
                 : 'Could not save the event. Try again.';
         }
+        // the event no longer points at its previous photo, whatever is on screen now
+        const replaced = previous && event.image !== previous;
+        if (replaced) await this.removePhotoFiles(previous);
         // saved to its timeline, but that timeline is no longer the one on screen
         if (!this.isCurrent(token)) return null;
+        if (replaced) {
+            this.images.forget(previous.ref);
+            this.images.forget(previous.thumb_ref);
+        }
         const id = this.eventManager.placeIndex.idFor(editing ?? event);
         this.uiManager.eventHeights.delete(id);
         this.eventManager.upsertPersonalEvent(timeline.id, event);
@@ -374,6 +420,8 @@ export class TimelineUI {
         if (!timeline || !confirm(`Delete "${event.name}" from this timeline?`)) return;
         const token = this.token();
         try {
+            // the photo first, then the event (see PERSONAL-IMAGES.md, Flows)
+            if (event.image) await this.removePhotoFiles(event.image);
             await this.store.deleteEvent(timeline, event.event_id);
         } catch (error) {
             console.error('Could not delete event:', error);
@@ -383,5 +431,59 @@ export class TimelineUI {
         if (!this.isCurrent(token)) return;
         this.eventManager.removePersonalEvent(event.event_id);
         this.uiManager.resetLayout();
+    }
+
+    // Deletes a photo's two files. A failure is logged, not raised: the event no longer points at
+    // them, so they are unreachable garbage at worst.
+    async removePhotoFiles(image) {
+        for (const ref of [image.ref, image.thumb_ref]) {
+            try {
+                await this.imageStore.remove(ref);
+            } catch (error) {
+                console.error('Could not delete photo file:', error);
+            }
+        }
+    }
+
+    // Fills a personal card's photo from the cache, or when it loads; clicking opens it full size.
+    decoratePhoto(eventDiv, event) {
+        const img = eventDiv.querySelector('img[data-photo-ref]');
+        const url = this.images.url(event.image.thumb_ref);
+        if (url) this.setPhotoSource(img, url);
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.openPhoto(event);
+        });
+    }
+
+    setPhotoSource(img, url) {
+        img.src = url;
+        img.parentElement.classList.remove('loading');
+    }
+
+    // A photo arrived for the open timeline: show it wherever it is waiting.
+    showPhoto(ref, url) {
+        for (const img of document.querySelectorAll('img[data-photo-ref]')) {
+            if (img.dataset.photoRef === ref) this.setPhotoSource(img, url);
+        }
+    }
+
+    openPhoto(event) {
+        const img = this.viewer.querySelector('img');
+        img.dataset.photoRef = event.image.ref;
+        img.alt = event.name;
+        img.removeAttribute('src');
+        this.viewer.classList.add('loading');
+        this.viewer.hidden = false;
+        const url = this.images.url(event.image.ref);
+        if (url) this.setPhotoSource(img, url);
+    }
+
+    closePhoto() {
+        if (this.viewer.hidden) return;
+        this.viewer.hidden = true;
+        const img = this.viewer.querySelector('img');
+        delete img.dataset.photoRef;
+        img.removeAttribute('src');
     }
 }

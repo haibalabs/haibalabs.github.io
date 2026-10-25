@@ -500,7 +500,8 @@ export class UIManager {
             Math.ceil(event.figures.join(' ').length / charsPerLine) * lineHeight + 16 : 0;
                 
         // Add image height if present
-        const hasImage = event.image_url && !failedImageUrls.has(sanitizeUrl(event.image_url));
+        const hasImage = (event.personal && event.image)
+            || (event.image_url && !failedImageUrls.has(sanitizeUrl(event.image_url)));
         const imageHeight = hasImage ? parseInt(getComputedStyle(document.documentElement)
             .getPropertyValue('--event-image-height')) : 0;
                 
@@ -873,6 +874,7 @@ export class UIManager {
         this.addWikiHandler(eventDiv, event);
         this.addFigureHandlers(eventDiv, event);
         if (event.personal) this.addPersonalMarks(eventDiv, event);
+        if (event.personal && event.image) this.timelineUI.decoratePhoto(eventDiv, event);
 
         return eventDiv;
     }
@@ -919,7 +921,14 @@ export class UIManager {
     getEventHTML(event, formattedDate, confidenceBadge) {
         let imageSection = '';
         const originalUrl = sanitizeUrl(event.image_url);
-        if (originalUrl && !failedImageUrls.has(originalUrl)) {
+        if (event.personal && event.image) {
+            // a private photo: TimelineUI fills in the src through the signed-in session
+            imageSection = `
+            <div class="event-image personal-photo loading">
+                <img data-photo-ref="${escapeHtml(event.image.thumb_ref)}" alt="${escapeHtml(event.name)}"/>
+            </div>
+        `;
+        } else if (originalUrl && !failedImageUrls.has(originalUrl)) {
             const optimizedUrl = thumbFailedUrls.has(originalUrl)
                 ? originalUrl
                 : sanitizeUrl(getOptimizedImageUrl(originalUrl));

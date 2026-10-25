@@ -155,6 +155,15 @@
                 <div class="form-group"><label>Event name</label><input type="text" name="name" required placeholder="This has to be a unique name"></div>
                 <div class="form-group"><label>Time</label><input type="text" name="enhanced_time" required placeholder="e.g. 1/25/1976, 750, 15 BC, March 982, Late Spring 1204"></div>
                 <div class="form-group"><label>Description</label><textarea name="enhanced_description" required rows="3"></textarea></div>
+                <div class="form-group photo-group" id="photo-group" hidden>
+                    <label for="photo-input">Photo</label>
+                    <div class="photo-preview" hidden><img alt="Photo preview"></div>
+                    <div class="photo-actions">
+                        <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif">
+                        <button type="button" class="btn btn-secondary photo-remove" hidden>Remove photo</button>
+                    </div>
+                    <p class="photo-note">Stored privately at up to 1600 px; the original and its location data are not kept.</p>
+                </div>
                 <div class="form-group">
                     <label>Location</label>
                     <div class="location-fields">
@@ -175,6 +184,7 @@
             </form>
         </div>
     </div>
+    <div class="photo-viewer" id="photo-viewer" role="dialog" aria-label="Photo" hidden><img alt=""></div>
     <script type="module" src="script.js"></script>
 </body>
 </html>

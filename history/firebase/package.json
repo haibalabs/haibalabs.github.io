@@ -3,9 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test:rules": "firebase emulators:exec --only firestore --project demo-historiline \"node --test tests/*.test.js\"",
-    "test:auth-flow": "firebase emulators:exec --only auth,firestore --project demo-historiline \"npm --prefix .. run test:e2e -- tests/e2e/auth-flow.spec.js tests/e2e/sync-flow.spec.js tests/e2e/timelines-flow.spec.js --workers=1\"",
-    "deploy:rules": "firebase deploy --only firestore:rules --project historytimeline-81f70"
+    "test:rules": "firebase emulators:exec --only firestore,storage --project demo-historiline \"node --test --test-concurrency=1 tests/*.test.js\"",
+    "test:auth-flow": "firebase emulators:exec --only auth,firestore,storage --project demo-historiline \"npm --prefix .. run test:e2e -- tests/e2e/auth-flow.spec.js tests/e2e/sync-flow.spec.js tests/e2e/timelines-flow.spec.js tests/e2e/photos-flow.spec.js --workers=1\"",
+    "deploy:rules": "firebase deploy --only firestore:rules --project historytimeline-81f70",
+    "deploy:storage": "firebase deploy --only storage --project historytimeline-81f70"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "5.0.2",

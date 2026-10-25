@@ -1,0 +1,59 @@
+rules_version = '2';
+
+// Photos in personal timelines (see ../PERSONAL-IMAGES.md). A photo is readable and deletable
+// only by the timeline's owner and listed members with an invited role, and only under the
+// timeline's current generation: the seconds and nanoseconds of its createdAt. A timeline
+// recreated under the same ID has a new generation, so files left from an earlier one stay
+// unreachable. Files are immutable; everything else is denied.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function userPath() {
+      return /databases/(default)/documents/users/$(request.auth.uid);
+    }
+
+    function timelinePath(timelineId) {
+      return /databases/(default)/documents/timelines/$(timelineId);
+    }
+
+    function isMember() {
+      return request.auth != null
+        && firestore.exists(userPath())
+        && firestore.get(userPath()).data.role in ['viewer', 'editor', 'reviewer', 'admin'];
+    }
+
+    // "<Unix seconds>_<nanoseconds>" of a timestamp. A timestamp's own seconds() is the second
+    // within the minute, so both parts come from its duration since the Unix epoch.
+    function generationOf(t) {
+      let sinceEpoch = t - timestamp.value(0);
+      return string(sinceEpoch.seconds()) + '_' + string(sinceEpoch.nanos());
+    }
+
+    function canUse(timelineId, generation) {
+      let timeline = firestore.get(timelinePath(timelineId)).data;
+      return isMember()
+        && firestore.exists(timelinePath(timelineId))
+        && (timeline.owner == request.auth.uid || request.auth.uid in timeline.members)
+        && generation == generationOf(timeline.createdAt);
+    }
+
+    // img_<uuid>.webp is the displayed photo (at most 2 MB); img_<uuid>_thumb.webp its card
+    // thumbnail (at most 200 KB); .jpg where the browser cannot encode WebP.
+    function validUpload(file) {
+      let thumb = file.matches('img_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_thumb[.](webp|jpg)');
+      let full = file.matches('img_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}[.](webp|jpg)');
+      return (full || thumb)
+        && request.resource.contentType in ['image/webp', 'image/jpeg']
+        && request.resource.size <= (thumb ? 200 * 1024 : 2 * 1024 * 1024);
+    }
+
+    match /timelines/{timelineId}/{generation}/events/{eventId}/{file} {
+      allow get, delete: if canUse(timelineId, generation);
+      // an upload over an existing file also counts as create, hence resource == null
+      allow create: if canUse(timelineId, generation)
+        && resource == null
+        && eventId.matches('evt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        && validUpload(file);
+    }
+  }
+}
