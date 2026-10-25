@@ -5,18 +5,24 @@ import { eventProblem } from './timeline-model.js';
 // The event form's photo field, shown only in forms for a personal timeline (one photo per event;
 // see PERSONAL-IMAGES.md). A chosen file is resized right away, so the preview shows what will be
 // stored. choice is what saving does with the photo: keep it, remove it, or add the resized one.
+// Resizing is asynchronous: each reset, removal and new choice takes a new ticket, and a resize
+// result applies only if its ticket is still the latest, so a slow resize never lands in a form
+// that was reopened or discarded, never overrides a newer choice and never undoes a removal.
 export class PhotoField {
     /**
      * @param {HTMLElement} root - the field's container (#photo-group)
-     * @param {{ images: () => import('./personal-images.js').PersonalImages, onError: (message: string) => void }} hooks
+     * @param {{ images: () => import('./personal-images.js').PersonalImages, onError: (message: string) => void,
+     *     resize?: (file: Blob) => Promise<object> }} hooks - resize defaults to resizePhoto
      */
     constructor(root, hooks) {
         this.root = root;
         this.hooks = hooks;
+        this.resize = hooks.resize ?? resizePhoto;
         this.input = root.querySelector('input[type="file"]');
         this.preview = root.querySelector('.photo-preview');
         this.previewImg = this.preview.querySelector('img');
         this.removeButton = root.querySelector('.photo-remove');
+        this.ticket = 0;
         this.choice = { action: 'keep' };
         this.pending = Promise.resolve();
         this.input.addEventListener('change', () => this.choose(this.input.files[0]));
@@ -25,6 +31,8 @@ export class PhotoField {
 
     // Shows the field (or hides it for world events), with the event's current photo if any.
     reset(visible, event = null) {
+        this.ticket++;
+        this.pending = Promise.resolve();
         this.release();
         this.choice = { action: 'keep' };
         this.root.hidden = !visible;
@@ -38,12 +46,15 @@ export class PhotoField {
 
     choose(file) {
         if (!file) return;
-        this.pending = resizePhoto(file).then((resized) => {
+        const ticket = ++this.ticket;
+        this.pending = this.resize(file).then((resized) => {
+            if (ticket !== this.ticket) return;
             this.release();
             this.choice = { action: 'add', resized };
             this.objectUrl = URL.createObjectURL(resized.thumb);
             this.showPreview(this.objectUrl);
         }, (error) => {
+            if (ticket !== this.ticket) return;
             this.input.value = '';
             this.hooks.onError(error.message);
         });
@@ -51,15 +62,21 @@ export class PhotoField {
     }
 
     remove() {
+        this.ticket++;
+        this.pending = Promise.resolve();
         this.release();
         this.choice = { action: 'remove' };
         this.input.value = '';
         this.showPreview(null);
     }
 
-    // The choice once any resizing in progress has finished.
+    // The current choice, once the latest resize (if any) has finished.
     async settled() {
-        await this.pending;
+        let pending;
+        do {
+            pending = this.pending;
+            await pending;
+        } while (pending !== this.pending);
         return this.choice;
     }
 
