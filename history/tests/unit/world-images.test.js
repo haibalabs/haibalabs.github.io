@@ -9,12 +9,20 @@ const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-
 const SAMPLE = JSON.parse(readFileSync(new URL('../fixtures/released-images-sample.json', import.meta.url), 'utf8'));
 const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url));
 
+// A number as the file writes it. JSON.parse turns 45.0 into 45, which Python prints as 45.0, so
+// fingerprints are computed from the number's source text (the files are written by Python).
+class SourceNumber {
+  constructor(source) { this.source = source; }
+}
+const parseKeepingNumbers = (bytes) => JSON.parse(bytes, (key, value, context) => (typeof value === 'number' ? new SourceNumber(context.source) : value));
+
 // SHA256 of a record as the sidecar export fingerprints it: Python's json.dumps(record,
 // sort_keys=True, ensure_ascii=False), so sorted keys with ", " and ": " separators.
 function recordSha256(value) {
-  const canonical = (v) => (Array.isArray(v) ? `[${v.map(canonical).join(', ')}]`
-    : v && typeof v === 'object' ? `{${Object.keys(v).sort().map(k => `${JSON.stringify(k)}: ${canonical(v[k])}`).join(', ')}}`
-      : JSON.stringify(v));
+  const canonical = (v) => (v instanceof SourceNumber ? v.source
+    : Array.isArray(v) ? `[${v.map(canonical).join(', ')}]`
+      : v && typeof v === 'object' ? `{${Object.keys(v).sort().map(k => `${JSON.stringify(k)}: ${canonical(v[k])}`).join(', ')}}`
+        : JSON.stringify(v));
   return createHash('sha256').update(canonical(value)).digest('hex');
 }
 
@@ -22,7 +30,7 @@ function recordSha256(value) {
 async function checkRelease(release) {
   assert.equal(release.version, 1);
   assert.equal(await sha256Hex(EVENTS_BYTES), release.source.events_sha256);
-  const events = JSON.parse(EVENTS_BYTES);
+  const events = parseKeepingNumbers(EVENTS_BYTES);
   assert.equal(previewProblem(release, release.source.events_sha256, events.length), null);
   for (const r of release.records) {
     const event = events[r.record_index];
