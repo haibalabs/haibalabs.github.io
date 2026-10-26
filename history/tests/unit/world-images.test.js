@@ -16,7 +16,44 @@ const CANONICAL_BYTES = readFileSync(new URL('../../canonical-t2.json', import.m
 class SourceNumber {
   constructor(source) { this.source = source; }
 }
-const parseKeepingNumbers = (bytes) => JSON.parse(bytes, (key, value, context) => (typeof value === 'number' ? new SourceNumber(context.source) : value));
+// A JSON reader that keeps each number's source text, on any Node version (JSON.parse's source
+// text access needs Node 22, and CI runs Node 20). Strings go through JSON.parse for their escapes.
+function parseKeepingNumbers(bytes) {
+  const text = bytes.toString('utf8');
+  const token = /\s*(?:("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|(true|false|null)|([{}[\],:]))/y;
+  let match;
+  const next = () => {
+    match = token.exec(text);
+    if (!match) throw new SyntaxError(`Unexpected JSON at ${token.lastIndex}`);
+    return match;
+  };
+  const value = () => {
+    const [, string, number, literal, punct] = next();
+    if (string) return JSON.parse(string);
+    if (number) return new SourceNumber(number);
+    if (literal) return JSON.parse(literal);
+    if (punct === '[') {
+      const list = [];
+      if (text[token.lastIndex] !== ']' && !/^\s*\]/.test(text.slice(token.lastIndex, token.lastIndex + 64))) {
+        do list.push(value()); while (next()[4] === ',');
+      } else next();
+      return list;
+    }
+    if (punct === '{') {
+      const object = {};
+      if (!/^\s*\}/.test(text.slice(token.lastIndex, token.lastIndex + 64))) {
+        do {
+          const key = JSON.parse(next()[1]);
+          next();
+          object[key] = value();
+        } while (next()[4] === ',');
+      } else next();
+      return object;
+    }
+    throw new SyntaxError(`Unexpected ${punct} at ${token.lastIndex}`);
+  };
+  return value();
+}
 
 // SHA256 of a record as the sidecar export fingerprints it: Python's json.dumps(record,
 // sort_keys=True, ensure_ascii=False), so sorted keys with ", " and ": " separators.
@@ -109,6 +146,18 @@ describe('released-images-v1.json, the images every visitor sees', () => {
         assert.equal(r[field], reviewed[field], `record ${r.record_index} ${field}`);
       }
     }
+  });
+});
+
+describe('record fingerprints — numbers as the file writes them', () => {
+  it('keeps 45.0 distinct from 45, and reads strings, nesting and empty containers like JSON.parse', () => {
+    const bytes = Buffer.from('{"b": [-45.0, 2, 1e-05], "a": "caf\\u00e9 \\"x\\"", "c": {}, "d": [], "e": [true, null]}');
+    assert.equal(recordSha256(parseKeepingNumbers(bytes)), createHash('sha256')
+      .update('{"a": "café \\"x\\"", "b": [-45.0, 2, 1e-05], "c": {}, "d": [], "e": [true, null]}').digest('hex'));
+    const plain = JSON.parse(bytes);
+    const kept = parseKeepingNumbers(bytes);
+    assert.equal(kept.a, plain.a);
+    assert.deepEqual([kept.c, kept.d, kept.e], [plain.c, plain.d, plain.e]);
   });
 });
 
