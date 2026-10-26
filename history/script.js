@@ -50,7 +50,10 @@ async function initializeApp() {
 
     try {
         document.body.classList.add('hide-low-confidence');
-        await eventManager.loadEvents(dataFile);
+        // the released images' records are kept as loaded, so their checks need no second download
+        const release = uiManager.fetchReleasedImages();
+        await eventManager.loadEvents(dataFile, { keepRecords: release.then(r => (r?.records ?? []).map(record => record.record_index)) });
+        await uiManager.showReleasedImages(await release);
         uiManager.mapBrowser = new MapBrowser(eventManager, uiManager, panelManager);
         uiManager.renderFilters();
         initControls();

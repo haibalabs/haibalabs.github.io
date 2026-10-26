@@ -1,10 +1,41 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { attachPreviewImages, detachPreviewImages, previewProblem, sha256Hex } from '../../modules/world-images.js';
 
 const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-v1.json', import.meta.url), 'utf8'));
+const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
+const SAMPLE = JSON.parse(readFileSync(new URL('../fixtures/released-images-sample.json', import.meta.url), 'utf8'));
 const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url));
+
+// SHA256 of a record as the sidecar export fingerprints it: Python's json.dumps(record,
+// sort_keys=True, ensure_ascii=False), so sorted keys with ", " and ": " separators.
+function recordSha256(value) {
+  const canonical = (v) => (Array.isArray(v) ? `[${v.map(canonical).join(', ')}]`
+    : v && typeof v === 'object' ? `{${Object.keys(v).sort().map(k => `${JSON.stringify(k)}: ${canonical(v[k])}`).join(', ')}}`
+      : JSON.stringify(v));
+  return createHash('sha256').update(canonical(value)).digest('hex');
+}
+
+// The checks every release file must pass against the repository's events.json.
+async function checkRelease(release) {
+  assert.equal(release.version, 1);
+  assert.equal(await sha256Hex(EVENTS_BYTES), release.source.events_sha256);
+  const events = JSON.parse(EVENTS_BYTES);
+  assert.equal(previewProblem(release, release.source.events_sha256, events.length), null);
+  for (const r of release.records) {
+    const event = events[r.record_index];
+    assert.equal(recordSha256(event), r.baseline_record_sha256, `record ${r.record_index}`);
+    assert.equal(event.name, r.event_name, `record ${r.record_index}`);
+    assert.equal(event.enhanced_time, r.enhanced_time, `record ${r.record_index}`);
+    assert.equal(event.image_url, undefined, `record ${r.record_index} already has an image`);
+    for (const url of [r.image_url, r.source_url, r.license_url].filter(Boolean)) assert.match(url, /^https:\/\//);
+    assert.ok(['event_photo', 'event_aftermath'].includes(r.image_role));
+    assert.ok(r.caption && r.credit && r.license_name);
+    assert.deepEqual(r.event_issue_ids, [], `record ${r.record_index} has open issues`);
+  }
+}
 
 // A small file whose records sit at the positions the preview records name, and the events the app
 // would load from it: copies, plus the fields the app adds or normalizes at load.
@@ -45,6 +76,24 @@ describe('reviewed-images-v1.json, the preview fixture', () => {
       for (const url of [r.image_url, r.source_url, r.license_url].filter(Boolean)) assert.match(url, /^https:\/\//);
       assert.ok(['event_photo', 'event_aftermath'].includes(r.image_role));
       assert.ok(r.caption && r.credit && r.license_name);
+    }
+  });
+});
+
+describe('released-images-v1.json, the images every visitor sees', () => {
+  it('is bound to the repository\'s events.json, and every record matches its event exactly', () => checkRelease(RELEASE));
+  it('the release check accepts the sample cohort and refuses a record whose fingerprint differs', async () => {
+    await checkRelease(SAMPLE);
+    const altered = structuredClone(SAMPLE);
+    altered.records[0].baseline_record_sha256 = '0'.repeat(64);
+    await assert.rejects(checkRelease(altered));
+  });
+  it('the sample cohort keeps the reviewed display fields of the preview records', () => {
+    for (const r of SAMPLE.records) {
+      const reviewed = PREVIEW.records.find(p => p.record_index === r.record_index);
+      for (const field of ['image_url', 'source_url', 'image_role', 'caption', 'credit', 'license_name', 'license_url']) {
+        assert.equal(r[field], reviewed[field], `record ${r.record_index} ${field}`);
+      }
     }
   });
 });

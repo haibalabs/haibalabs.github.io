@@ -1,13 +1,15 @@
 // world-images.js
-// Debug-only preview of independently reviewed world-event images (previews/README.md). Each
-// preview record names the position of its event in one exact events.json, identified by its
-// SHA-256. Images are attached only when the bytes the page loaded have that hash, every index is
-// valid and unique, and every target event is still the record loaded from the file: not
-// replaced, not edited, with its file fields unchanged. If any check fails, nothing is attached
-// and the reason is reported. There is no fallback matching by title. The default site data
-// carries no images, and nothing here runs unless an admin turns it on.
+// Independently reviewed world-event images: the released set every visitor sees
+// (releases/README.md) and the admin-only preview (previews/README.md). Each record names the
+// position of its event in one exact events.json, identified by its SHA-256. Images are attached
+// only when the bytes the page loaded have that hash, every index is valid and unique, and every
+// target event is still the record loaded from the file: not replaced, not edited, with its file
+// fields unchanged. If any check fails, nothing is attached and the reason is reported. There is no
+// fallback matching by title. events.json itself carries no images.
 
 export const PREVIEW_URL = 'previews/reviewed-images-v1.json';
+// Reviewed images every visitor sees, with the same binding (releases/README.md).
+export const RELEASE_URL = 'releases/released-images-v1.json';
 
 // Fields the app itself changes after loading: the timestamp it sets, and locations, which the
 // location verifier annotates. Locations are compared by their identity fields instead.

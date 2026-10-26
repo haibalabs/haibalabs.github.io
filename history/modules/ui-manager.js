@@ -5,7 +5,7 @@ import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, fa
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
-import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, sha256Hex } from './world-images.js';
+import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, RELEASE_URL, sha256Hex } from './world-images.js';
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -837,10 +837,59 @@ export class UIManager {
         document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
     }
 
+    // The released image file, or null if it cannot be read. A slow request must not hold up
+    // loading the events, so it gives up after five seconds.
+    fetchReleasedImages() {
+        const request = fetch(RELEASE_URL).then(r => (r.ok ? r.json() : null)).catch(() => null);
+        const timeout = new Promise(resolve => setTimeout(() => resolve(null), 5000));
+        return Promise.race([request, timeout]);
+    }
+
+    /**
+     * Attaches the released images (releases/README.md) to the loaded events, all or none, with
+     * the same checks as the preview. Called once the events have loaded, before they are drawn.
+     * Visitors see no message when they do not match; the reason goes to the console.
+     *
+     * @param {object|null} release - the released image file
+     */
+    async showReleasedImages(release) {
+        this.release = null;
+        this.worldReleased = [];
+        if (!Array.isArray(release?.records) || !release.records.length) return;
+        // a malformed file must not stop the timeline from loading
+        try {
+            const worldEvents = this.eventManager.events.filter(event => !event.personal);
+            const problem = previewProblem(release, await this.eventManager.loadedSha256, worldEvents.length);
+            if (problem) {
+                console.info(`Released images not shown: ${problem}`);
+                return;
+            }
+            this.release = release;
+            this.attachReleased();
+        } catch (error) {
+            this.release = null;
+            console.error('Could not show the released images:', error);
+        }
+    }
+
+    // Attaches the released images to the events they were reviewed for; returns the events changed.
+    attachReleased() {
+        if (!this.release) return [];
+        const worldEvents = this.eventManager.events.filter(event => !event.personal);
+        const result = attachPreviewImages(worldEvents, this.release.records, this.eventManager.keptRecords ?? []);
+        if (result.problems.length) {
+            const first = result.problems[0];
+            console.warn(`Released images not shown: ${result.problems.length} no longer match their event (position ${first.record_index}: ${first.reason}).`);
+        }
+        this.worldReleased = result.attached;
+        return result.attached;
+    }
+
     /**
      * Debug: shows or hides the independently reviewed world images (previews/README.md). They are
      * attached, all or none, only when the bytes the events were loaded from are the exact file
-     * they were reviewed against and every target event is still that file's record.
+     * they were reviewed against and every target event is still that file's record. The preview
+     * replaces the released images while it is on.
      *
      * @param {boolean} on
      */
@@ -850,9 +899,10 @@ export class UIManager {
         const generation = this.eventManager.loadGeneration;
         // turned off or on again, or other events loaded, while waiting
         const stale = () => ticket !== this.worldPreviewTicket || generation !== this.eventManager.loadGeneration;
-        const changed = this.worldPreview ?? [];
+        const changed = [...(this.worldPreview ?? []), ...(this.worldReleased ?? [])];
         detachPreviewImages(changed);
         this.worldPreview = null;
+        this.worldReleased = [];
         if (on) {
             try {
                 const fetchOk = (url) => fetch(url).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r; });
@@ -899,6 +949,7 @@ export class UIManager {
                 this.showToast('Could not load the image preview.');
             }
         }
+        if (!this.worldPreview) changed.push(...this.attachReleased());
         for (const event of changed) this.eventHeights.delete(this.eventManager.placeIndex.idFor(event));
         this.resetLayout();
     }

@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "purpose": "Reviewed world-event images shown to every visitor, bound to one exact events.json (releases/README.md).",
+  "source": {
+    "events_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933"
+  },
+  "records": []
+}
