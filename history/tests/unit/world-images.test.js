@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { attachPreviewImages, detachPreviewImages, previewProblem, sha256Hex } from '../../modules/world-images.js';
+import { attachPreviewImages, detachPreviewImages, previewProblem, ROLE_LABELS, sha256Hex } from '../../modules/world-images.js';
 
 const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-v1.json', import.meta.url), 'utf8'));
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
@@ -31,7 +31,9 @@ async function checkRelease(release) {
     assert.equal(event.enhanced_time, r.enhanced_time, `record ${r.record_index}`);
     assert.equal(event.image_url, undefined, `record ${r.record_index} already has an image`);
     for (const url of [r.image_url, r.source_url, r.license_url].filter(Boolean)) assert.match(url, /^https:\/\//);
-    assert.ok(['event_photo', 'event_aftermath'].includes(r.image_role));
+    assert.ok(Object.hasOwn(ROLE_LABELS, r.image_role), `record ${r.record_index} role ${r.image_role}`);
+    // an image that is not a photo of the event or its aftermath says what it shows and when
+    if (!['event_photo', 'event_aftermath'].includes(r.image_role)) assert.ok(r.date_qualification?.trim(), `record ${r.record_index} needs a date qualification`);
     assert.ok(r.caption && r.credit && r.license_name);
     assert.deepEqual(r.event_issue_ids, [], `record ${r.record_index} has open issues`);
   }
@@ -108,6 +110,14 @@ describe('previewProblem — attach only to the exact data file reviewed', () =>
     assert.match(previewProblem({ ...preview, records: [record(7)] }, 'abc', 5), /invalid or repeated/);
     assert.match(previewProblem({ ...preview, records: [record(-1)] }, 'abc', 5), /invalid or repeated/);
   });
+  it('accepts the contextual roles the review assigns, and refuses a role the site cannot label', () => {
+    for (const role of ['portrait', 'site', 'map', 'symbol', 'retrospective_illustration']) {
+      assert.equal(previewProblem({ ...preview, records: [record(1, { image_role: role })] }, 'abc', 5), null, role);
+    }
+    for (const role of ['unknown', 'contemporary_event', undefined]) {
+      assert.match(previewProblem({ ...preview, records: [record(1, { image_role: role })] }, 'abc', 5), /role the site cannot label/);
+    }
+  });
 });
 
 describe('attachPreviewImages and detachPreviewImages — all reviewed records or none', () => {
@@ -120,7 +130,7 @@ describe('attachPreviewImages and detachPreviewImages — all reviewed records o
     assert.equal(events[1].image_url, records[0].image_url);
     assert.deepEqual(events[3].image_preview, {
       caption: 'Caption 3', role: 'event_aftermath', credit: 'Someone', license_name: 'Public domain',
-      license_url: null, source_url: records[1].source_url, under_review: true,
+      license_url: null, source_url: records[1].source_url, date_qualification: null, under_review: true,
     });
     assert.equal(events[0].image_url, undefined);
   });

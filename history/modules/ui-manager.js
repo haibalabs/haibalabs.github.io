@@ -5,7 +5,7 @@ import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, fa
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
-import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, RELEASE_URL, sha256Hex } from './world-images.js';
+import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, RELEASE_URL, ROLE_LABELS, sha256Hex } from './world-images.js';
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -954,19 +954,29 @@ export class UIManager {
         this.resetLayout();
     }
 
-    // The full-window viewer's text for a preview image: caption, role, credit, license and source.
+    // The full-window viewer's text for a reviewed image: role, caption, date qualification, credit,
+    // license and source.
     previewImageDetails(event) {
         const info = event.image_preview;
         const details = document.createElement('div');
         const caption = document.createElement('p');
         caption.className = 'viewer-caption';
-        if (info.role === 'event_aftermath') {
+        const label = ROLE_LABELS[info.role];
+        if (label) {
             const role = document.createElement('span');
             role.className = 'viewer-role';
-            role.textContent = 'Aftermath';
+            role.textContent = label;
             caption.append(role, ' ');
         }
         caption.append(info.caption);
+        details.append(caption);
+        // when the image is not a photo of the event at its time, what it shows and when
+        if (info.date_qualification) {
+            const qualification = document.createElement('p');
+            qualification.className = 'viewer-qualification';
+            qualification.textContent = info.date_qualification;
+            details.append(qualification);
+        }
         const credit = document.createElement('p');
         credit.className = 'viewer-credit';
         credit.append(info.credit);
@@ -985,7 +995,7 @@ export class UIManager {
             link.textContent = label;
             credit.append(' · ', link);
         }
-        details.append(caption, credit);
+        details.append(credit);
         if (info.under_review) {
             const hold = document.createElement('p');
             hold.className = 'viewer-hold';

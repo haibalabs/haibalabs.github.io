@@ -54,6 +54,27 @@ test('released images show to every visitor without any setting, with credits in
   await expect(card(page, 'Union Station massacre').locator('.event-image')).toHaveCount(0);
 });
 
+test('a contextual image is labeled with its role and says what it shows and when', async ({ page }) => {
+  test.setTimeout(120000);
+  const release = JSON.parse(SAMPLE);
+  const roerich = release.records.find(r => r.record_index === 26337);
+  Object.assign(roerich, { image_role: 'site', date_qualification: 'The White House photographed in 2008, long after the signing.' });
+  await openSite(page, { release: JSON.stringify(release) });
+  await page.fill('#searchInput', 'Roerich Pact');
+  await card(page, 'The Roerich Pact signed').locator('.event-image img').click();
+  const viewer = page.locator('#photo-viewer');
+  await expect(viewer.locator('.viewer-role')).toHaveText('Site');
+  await expect(viewer.locator('.viewer-qualification')).toHaveText('The White House photographed in 2008, long after the signing.');
+  await expect(viewer.locator('.viewer-credit')).toContainText('Public domain');
+  await page.keyboard.press('Escape');
+
+  // a role the site cannot label keeps the whole release off
+  roerich.image_role = 'unknown';
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
+  await openSite(page, { release: JSON.stringify(release) });
+  await expect(page.locator('#timeline-content .event-image')).toHaveCount(0);
+});
+
 test('the admin preview replaces the released images while on, and they return when it is off', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page);
