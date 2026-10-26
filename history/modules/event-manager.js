@@ -233,7 +233,12 @@ export class EventManager {
         this.invalidateCache();
         this.refreshSyncTarget();
     }
-    async loadEvents(dataFile) {
+    /**
+     * @param {string} dataFile
+     * @param {{ keepRecords?: Promise<number[]>|number[] }} [options] - positions of records to keep
+     *     untouched copies of in keptRecords, before loading normalizes and annotates the events
+     */
+    async loadEvents(dataFile, { keepRecords = [] } = {}) {
         try {
             this.currentFile = dataFile;
             const response = await fetch(dataFile);
@@ -264,6 +269,14 @@ export class EventManager {
     
             // Store the file timestamp
             this.fileTimestamp = baseTimestamp;
+
+            // Copies of the requested records as the file has them: normalizing annotates nested
+            // fields such as locations in place. Released images compare against these (world-images.js).
+            const keep = await Promise.resolve(keepRecords).catch(() => []);
+            this.keptRecords = [];
+            for (const index of keep) {
+                if (Number.isInteger(index) && index >= 0 && index < eventsArray.length) this.keptRecords[index] = structuredClone(eventsArray[index]);
+            }
 
             // Events from the file are untouched and have never been synced
             this.events = eventsArray.map(event => {

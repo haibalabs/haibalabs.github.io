@@ -125,6 +125,7 @@
 .photo-viewer-details p { margin: 0; }
 .photo-viewer-details .viewer-role { font-size: .66rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #fff; margin-right: .2rem; }
 .photo-viewer-details .viewer-credit { margin-top: .25rem; color: #aaa; font-size: .75rem; }
+.photo-viewer-details .viewer-qualification { margin-top: .15rem; color: #ddd; font-size: .8rem; }
 .photo-viewer-details .viewer-hold { margin-top: .35rem; color: #c9c9c9; font-size: .75rem; font-style: italic; }
 .photo-viewer-details a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .photo-viewer-details a:hover { color: #fff; }

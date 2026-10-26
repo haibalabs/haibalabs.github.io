@@ -1,13 +1,27 @@
 // world-images.js
-// Debug-only preview of independently reviewed world-event images (previews/README.md). Each
-// preview record names the position of its event in one exact events.json, identified by its
-// SHA-256. Images are attached only when the bytes the page loaded have that hash, every index is
-// valid and unique, and every target event is still the record loaded from the file: not
-// replaced, not edited, with its file fields unchanged. If any check fails, nothing is attached
-// and the reason is reported. There is no fallback matching by title. The default site data
-// carries no images, and nothing here runs unless an admin turns it on.
+// Independently reviewed world-event images: the released set every visitor sees
+// (releases/README.md) and the admin-only preview (previews/README.md). Each record names the
+// position of its event in one exact events.json, identified by its SHA-256. Images are attached
+// only when the bytes the page loaded have that hash, every index is valid and unique, and every
+// target event is still the record loaded from the file: not replaced, not edited, with its file
+// fields unchanged. If any check fails, nothing is attached and the reason is reported. There is no
+// fallback matching by title. events.json itself carries no images.
 
 export const PREVIEW_URL = 'previews/reviewed-images-v1.json';
+// Reviewed images every visitor sees, with the same binding (releases/README.md).
+export const RELEASE_URL = 'releases/released-images-v1.json';
+
+// The image roles a record may have, with the label the viewer shows before the caption. A photo of
+// the event itself needs none; every other role says what the image is. Other roles are refused.
+export const ROLE_LABELS = {
+    event_photo: null,
+    event_aftermath: 'Aftermath',
+    portrait: 'Portrait',
+    site: 'Site',
+    map: 'Map',
+    symbol: 'Symbol',
+    retrospective_illustration: 'Later illustration',
+};
 
 // Fields the app itself changes after loading: the timestamp it sets, and locations, which the
 // location verifier annotates. Locations are compared by their identity fields instead.
@@ -40,6 +54,7 @@ export function previewProblem(preview, loadedSha256, eventCount) {
     const indexes = preview.records.map(r => r.record_index);
     const valid = indexes.every(i => Number.isInteger(i) && i >= 0 && i < eventCount);
     if (!valid || new Set(indexes).size !== indexes.length) return 'The preview file has invalid or repeated event positions.';
+    if (!preview.records.every(r => Object.hasOwn(ROLE_LABELS, r.image_role))) return 'The preview file has an image role the site cannot label.';
     return null;
 }
 
@@ -84,6 +99,7 @@ export function attachPreviewImages(events, records, originals) {
             license_name: record.license_name,
             license_url: record.license_url,
             source_url: record.source_url,
+            date_qualification: record.date_qualification ?? null,
             under_review: (record.event_issue_ids ?? []).length > 0,
         };
         return event;
