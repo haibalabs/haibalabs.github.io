@@ -5,7 +5,7 @@ import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, fa
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
-import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, RELEASE_URL, ROLE_LABELS, sha256Hex } from './world-images.js';
+import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, RELEASE_URL, ROLE_LABELS, sha256Hex, shortCredit } from './world-images.js';
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -979,7 +979,12 @@ export class UIManager {
         }
         const credit = document.createElement('p');
         credit.className = 'viewer-credit';
-        credit.append(info.credit);
+        // a long credit is shortened; the full text is on hover and on the source page
+        const { text, shortened } = shortCredit(info.credit);
+        const creditText = document.createElement('span');
+        creditText.textContent = text;
+        if (shortened) creditText.title = info.credit;
+        credit.append(creditText);
         // the license as a link when it has one (public domain has none), then the source page
         for (const [label, url] of [[info.license_name, info.license_url], ['Source', info.source_url]]) {
             const safe = sanitizeUrl(url);

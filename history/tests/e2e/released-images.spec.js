@@ -104,6 +104,15 @@ test('the repository release attaches to events.json: contextual roles labeled, 
   await expect(viewer.locator('.viewer-hold')).toHaveText('Some details of this event are still being reviewed.');
   await page.keyboard.press('Escape');
 
+  // a credit thousands of characters long is shortened, and the license and source links stay visible
+  await page.fill('#searchInput', 'Eric of Pomerania is deposed');
+  await card(page, 'Eric of Pomerania is deposed from the Swedish throne').locator('.event-image img').click();
+  const creditText = viewer.locator('.viewer-credit > span');
+  expect((await creditText.textContent()).length).toBeLessThanOrEqual(281);
+  await expect(creditText).toHaveAttribute('title', /Southerly Clubs/);
+  await expect(viewer.locator('.viewer-credit a', { hasText: 'Source' })).toBeInViewport();
+  await page.keyboard.press('Escape');
+
   // events outside the release keep no image
   await page.fill('#searchInput', 'Roerich Pact');
   await expect(card(page, 'The Roerich Pact signed').locator('.event-image')).toHaveCount(0);

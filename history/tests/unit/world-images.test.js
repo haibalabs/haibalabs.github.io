@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { attachPreviewImages, detachPreviewImages, previewProblem, ROLE_LABELS, sha256Hex } from '../../modules/world-images.js';
+import { attachPreviewImages, CREDIT_LIMIT, detachPreviewImages, previewProblem, ROLE_LABELS, sha256Hex, shortCredit } from '../../modules/world-images.js';
 
 const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-v1.json', import.meta.url), 'utf8'));
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
@@ -98,6 +98,21 @@ describe('released-images-v1.json, the images every visitor sees', () => {
         assert.equal(r[field], reviewed[field], `record ${r.record_index} ${field}`);
       }
     }
+  });
+});
+
+describe('shortCredit — keep the viewer\'s credit line short', () => {
+  it('leaves a short credit alone', () => {
+    assert.deepEqual(shortCredit('Bundesarchiv, Bild 183'), { text: 'Bundesarchiv, Bild 183', shortened: false });
+  });
+  it('ends a long credit at a word, within the limit, with an ellipsis', () => {
+    const long = 'word '.repeat(200).trim();
+    const { text, shortened } = shortCredit(long);
+    assert.ok(shortened && text.endsWith('…') && text.length <= CREDIT_LIMIT + 1);
+    assert.ok(!text.slice(0, -1).endsWith(' ') && long.startsWith(text.slice(0, -1)));
+  });
+  it('cuts a long credit with no spaces at the limit', () => {
+    assert.equal(shortCredit('x'.repeat(1000)).text, `${'x'.repeat(CREDIT_LIMIT)}…`);
   });
 });
 
