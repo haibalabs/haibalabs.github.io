@@ -8,6 +8,8 @@ const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
 const SAMPLE = JSON.parse(readFileSync(new URL('../fixtures/released-images-sample.json', import.meta.url), 'utf8'));
 const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url));
+// the default world dataset the release is bound to: an envelope { metadata, events }
+const CANONICAL_BYTES = readFileSync(new URL('../../canonical-t2.json', import.meta.url));
 
 // SHA256 of a record as the sidecar export fingerprints it: Python's json.dumps(record,
 // sort_keys=True, ensure_ascii=False), so sorted keys with ", " and ": " separators.
@@ -18,11 +20,12 @@ function recordSha256(value) {
   return createHash('sha256').update(canonical(value)).digest('hex');
 }
 
-// The checks every release file must pass against the repository's events.json.
-async function checkRelease(release) {
+// The checks every release file must pass against the data file it is bound to.
+async function checkRelease(release, bytes) {
   assert.equal(release.version, 1);
-  assert.equal(await sha256Hex(EVENTS_BYTES), release.source.events_sha256);
-  const events = JSON.parse(EVENTS_BYTES);
+  assert.equal(await sha256Hex(bytes), release.source.events_sha256);
+  const data = JSON.parse(bytes);
+  const events = data.events ?? data;
   assert.equal(previewProblem(release, release.source.events_sha256, events.length), null);
   for (const r of release.records) {
     const event = events[r.record_index];
@@ -84,12 +87,12 @@ describe('reviewed-images-v1.json, the preview fixture', () => {
 });
 
 describe('released-images-v1.json, the images every visitor sees', () => {
-  it('is bound to the repository\'s events.json, and every record matches its event exactly', () => checkRelease(RELEASE));
+  it('is bound to the default canonical-t2.json, and every record matches its event exactly', () => checkRelease(RELEASE, CANONICAL_BYTES));
   it('the release check accepts the sample cohort and refuses a record whose fingerprint differs', async () => {
-    await checkRelease(SAMPLE);
+    await checkRelease(SAMPLE, EVENTS_BYTES);
     const altered = structuredClone(SAMPLE);
     altered.records[0].baseline_record_sha256 = '0'.repeat(64);
-    await assert.rejects(checkRelease(altered));
+    await assert.rejects(checkRelease(altered, EVENTS_BYTES));
   });
   it('the sample cohort keeps the reviewed display fields of the preview records', () => {
     for (const r of SAMPLE.records) {

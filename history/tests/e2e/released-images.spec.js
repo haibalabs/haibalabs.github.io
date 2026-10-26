@@ -2,12 +2,13 @@ import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { stubFirebase } from './firebase-stub.js';
 
-// The released images every visitor sees (releases/README.md), served here from a four-record
-// sample cohort; the repository's release file holds none yet. Commons images are served locally.
+// The released images every visitor sees (releases/README.md). Most cases serve a four-record sample
+// cohort bound to the legacy events.json; one uses the repository's release on the default canonical
+// file. Commons images are served locally.
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 const SAMPLE = readFileSync(new URL('../fixtures/released-images-sample.json', import.meta.url), 'utf8');
 
-async function openSite(page, { query = '', release = SAMPLE } = {}) {
+async function openSite(page, { query = '?file=events.json', release = SAMPLE } = {}) {
   await stubFirebase(page);
   await page.route('https://upload.wikimedia.org/**', route => route.fulfill({ contentType: 'image/png', body: PNG }));
   if (release !== null) await page.route('**/releases/released-images-v1.json', route => route.fulfill({ contentType: 'application/json', body: release }));
@@ -88,9 +89,9 @@ test('the admin preview replaces the released images while on, and they return w
   await expect(card(page, 'The Roerich Pact signed').locator('.event-image-caption')).toHaveCount(1);
 });
 
-test('the repository release attaches to events.json: contextual roles labeled, open issues noted', async ({ page }) => {
+test('the repository release attaches to the default canonical file: contextual roles labeled, open issues noted', async ({ page }) => {
   test.setTimeout(120000);
-  await openSite(page, { release: null });
+  await openSite(page, { query: '', release: null });
   const viewer = page.locator('#photo-viewer');
   await page.fill('#searchInput', 'Tokhtamysh');
   await card(page, 'Khan Tokhtamysh overruns Muscovy').locator('.event-image img').click();

@@ -55,7 +55,9 @@ test('initial load applies a manual correction and uses its coordinates', async 
 test('full canonical snapshot loads in the actual timeline', async ({ page }) => {
   test.skip(!snapshot, 'Set CANONICAL_SNAPSHOT to the generated events.json for full-data acceptance');
   test.setTimeout(90000);
-  const events = JSON.parse(fs.readFileSync(path.resolve(snapshot), 'utf8'));
+  const parsed = JSON.parse(fs.readFileSync(path.resolve(snapshot), 'utf8'));
+  // a bare event list, or the frontend envelope { metadata, events }
+  const events = parsed.events ?? parsed;
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.route('**/*', route => {

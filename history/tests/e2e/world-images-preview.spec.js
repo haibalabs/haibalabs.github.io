@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { stubFirebase } from './firebase-stub.js';
 
-// The debug preview of reviewed world images (previews/README.md), on the default events.json.
+// The debug preview of reviewed world images (previews/README.md), bound to the legacy events.json.
 // Commons images are served locally so the test needs no network.
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 
-async function openSite(page, query = '') {
+async function openSite(page, query = '?file=events.json') {
   await stubFirebase(page);
   await page.route('https://upload.wikimedia.org/**', route => route.fulfill({ contentType: 'image/png', body: PNG }));
   await page.goto(`/history/index.html${query}`);

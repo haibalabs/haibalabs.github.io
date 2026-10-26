@@ -46,7 +46,8 @@ async function initializeApp() {
 
     // Get data file from URL params
     const params = new URLSearchParams(window.location.search);
-    const dataFile = params.get('file') || 'events.json';
+    // the canonical world dataset, with stable event IDs; ?file=events.json still opens the legacy file
+    const dataFile = params.get('file') || 'canonical-t2.json';
 
     try {
         document.body.classList.add('hide-low-confidence');
