@@ -4,7 +4,7 @@ Reviewed data that every visitor sees, kept beside `events.json` rather than in 
 
 ## released-images-v1.json
 
-World-event images whose association with their event was independently reviewed and accepted for release. It currently holds no records, so the site shows no world images.
+World-event images whose association with their event was reviewed and accepted for release. It holds 61 images for 61 events: Atlas's sidecar export (history-dp PR 34, `first_public_images.py`) of Iris's processed image review, byte for byte (SHA256 `7aa5ce9a…`), with the export's two reviewed exceptions applied (Vancouver excluded; the Clement VIII image recorded as a site). Seven of the events have open data-issue references, and their viewer says details are still being reviewed.
 
 - `source.events_sha256` is the hash of the `events.json` the records are bound to. `records` are the sidecar export's records unchanged. Each record's `record_index` is its event's position in that file, and `baseline_record_sha256` is the SHA256 of that record as Python's `json.dumps(record, sort_keys=True, ensure_ascii=False)` writes it; `evidence_event_id` is its canonical ID, for cross-reference only.
 - The site loads this file with the events and attaches all records or none, with the same checks as the admin preview (`previews/README.md`): the loaded bytes must have `events_sha256`, positions must be valid and unique, and every target event must still be that file's record. If anything differs, for example after `events.json` is regenerated, visitors see no world images and the reason goes to the browser console. Rebind the records to the new file before deploying it.

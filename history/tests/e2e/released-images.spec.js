@@ -88,7 +88,29 @@ test('the admin preview replaces the released images while on, and they return w
   await expect(card(page, 'The Roerich Pact signed').locator('.event-image-caption')).toHaveCount(1);
 });
 
-test('another events file, a malformed release or the empty repository release shows no world images and no message', async ({ page }) => {
+test('the repository release attaches to events.json: contextual roles labeled, open issues noted', async ({ page }) => {
+  test.setTimeout(120000);
+  await openSite(page, { release: null });
+  const viewer = page.locator('#photo-viewer');
+  await page.fill('#searchInput', 'Tokhtamysh');
+  await card(page, 'Khan Tokhtamysh overruns Muscovy').locator('.event-image img').click();
+  await expect(viewer.locator('.viewer-role')).toHaveText('Later illustration');
+  await expect(viewer.locator('.viewer-qualification')).toContainText('not the depicted event date');
+  await expect(viewer.locator('.viewer-hold')).toHaveCount(0);
+  await page.keyboard.press('Escape');
+
+  await page.fill('#searchInput', 'Centennial Exposition');
+  await card(page, 'Centennial Exposition').locator('.event-image img').first().click();
+  await expect(viewer.locator('.viewer-hold')).toHaveText('Some details of this event are still being reviewed.');
+  await page.keyboard.press('Escape');
+
+  // events outside the release keep no image
+  await page.fill('#searchInput', 'Roerich Pact');
+  await expect(card(page, 'The Roerich Pact signed').locator('.event-image')).toHaveCount(0);
+  await expect(page.locator('.toast')).toHaveCount(0);
+});
+
+test('another events file or a malformed release shows no world images and no message', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page, { query: '?file=events_sample.json' });
   await expect(page.locator('#timeline-content .event-image')).toHaveCount(0);
@@ -96,11 +118,5 @@ test('another events file, a malformed release or the empty repository release s
 
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await openSite(page, { release: '{"version":1,"source":{},"records":"not a list"}' });
-  await expect(page.locator('#timeline-content .event-image')).toHaveCount(0);
-
-  await page.unrouteAll({ behavior: 'ignoreErrors' });
-  await openSite(page, { release: null });
-  await page.fill('#searchInput', 'Roerich Pact');
-  await expect(card(page, 'The Roerich Pact signed')).toHaveCount(1);
   await expect(page.locator('#timeline-content .event-image')).toHaveCount(0);
 });

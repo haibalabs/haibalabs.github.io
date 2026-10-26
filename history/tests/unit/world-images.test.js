@@ -35,7 +35,8 @@ async function checkRelease(release) {
     // an image that is not a photo of the event or its aftermath says what it shows and when
     if (!['event_photo', 'event_aftermath'].includes(r.image_role)) assert.ok(r.date_qualification?.trim(), `record ${r.record_index} needs a date qualification`);
     assert.ok(r.caption && r.credit && r.license_name);
-    assert.deepEqual(r.event_issue_ids, [], `record ${r.record_index} has open issues`);
+    // events with open data issues may be released; the viewer notes they are still being reviewed
+    assert.ok(Array.isArray(r.event_issue_ids) && r.event_issue_ids.every(id => /^issue_[0-9a-f]+$/.test(id)), `record ${r.record_index} issue ids`);
   }
 }
 
