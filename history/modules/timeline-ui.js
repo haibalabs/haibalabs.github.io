@@ -30,6 +30,9 @@ export class TimelineUI {
             generation: () => (this.current ? timelineGeneration(this.current.createdAt) : null),
         });
         this.images.onReady = (ref, url) => this.showPhoto(ref, url);
+        this.images.onFailed = (ref) => {
+            if (!this.viewer.hidden && this.viewer.querySelector('img').dataset.photoRef === ref) this.showViewerError();
+        };
         // the open timeline document ({ id, title, createdAt, ... }), or null
         this.current = null;
         this.user = null;
@@ -491,19 +494,32 @@ export class TimelineUI {
         const area = this.viewer.querySelector('.photo-viewer-details');
         area.replaceChildren(...(details ? [details] : []));
         area.hidden = !details;
+        this.viewer.classList.remove('failed');
+        this.viewer.querySelector('.photo-viewer-error').hidden = true;
         this.viewer.classList.add('loading');
         this.viewer.hidden = false;
+        const fail = () => this.showViewerError();
         if (src) {
             img.onload = () => this.viewer.classList.remove('loading');
             img.onerror = fallbackSrc && fallbackSrc !== src ? () => {
-                img.onerror = null;
+                img.onerror = fail;
                 img.src = fallbackSrc;
-            } : null;
+            } : fail;
             img.src = src;
             return;
         }
+        img.onload = null;
+        img.onerror = fail;
         const url = this.images.url(ref);
         if (url) this.setPhotoSource(img, url);
+        else if (this.images.hasFailed(ref)) fail();
+    }
+
+    // Replaces the viewer's spinner with a message once the photo cannot load.
+    showViewerError() {
+        this.viewer.classList.remove('loading');
+        this.viewer.classList.add('failed');
+        this.viewer.querySelector('.photo-viewer-error').hidden = false;
     }
 
     closePhoto() {
@@ -514,6 +530,8 @@ export class TimelineUI {
         img.onload = null;
         img.onerror = null;
         img.removeAttribute('src');
+        this.viewer.classList.remove('failed');
+        this.viewer.querySelector('.photo-viewer-error').hidden = true;
         this.viewer.querySelector('.photo-viewer-details').replaceChildren();
     }
 }

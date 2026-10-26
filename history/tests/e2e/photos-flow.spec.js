@@ -119,6 +119,27 @@ test('a photo is resized, stripped of metadata, stored privately under the event
   }
 });
 
+test('a full-size photo that cannot be read shows a message in the viewer instead of loading forever', async ({ page, request }) => {
+  await openWorld(page);
+  await signIn(page, 'editor@example.test');
+  const id = await createTimeline(page, 'Family history');
+  await addEventWithPhoto(page, 'Beach day');
+  const doc = await eventDoc(request, id);
+  const ref = doc.fields.image.mapValue.fields.ref.stringValue;
+  // a missing file fails at once; an aborted request would be retried by the SDK
+  await page.route(`**/v0/b/**/o/${encodeURIComponent(ref)}?*`, route => route.fulfill({ status: 404, json: { error: { code: 404, message: 'Not Found.' } } }));
+
+  await card(page, 'Beach day').locator('.personal-photo img').click();
+  await expect(page.locator('#photo-viewer .photo-viewer-error')).toBeVisible();
+  await expect(page.locator('#photo-viewer .photo-viewer-error')).toHaveText('This image could not be loaded.');
+  await expect(page.locator('#photo-viewer')).not.toHaveClass(/loading/);
+  await page.keyboard.press('Escape');
+  await expect(page.locator('#photo-viewer')).toBeHidden();
+  // the failure is remembered: opening it again shows the message rather than a spinner
+  await card(page, 'Beach day').locator('.personal-photo img').click();
+  await expect(page.locator('#photo-viewer .photo-viewer-error')).toBeVisible();
+});
+
 test('a photo can be replaced and removed, and its old files are deleted', async ({ page, request }) => {
   await openWorld(page);
   await signIn(page, 'editor@example.test');

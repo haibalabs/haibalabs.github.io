@@ -22,6 +22,8 @@ export class PersonalImages {
         this.failed = new Set();
         /** @type {((ref: string, url: string) => void)|null} */
         this.onReady = null;
+        /** @type {((ref: string) => void)|null} */
+        this.onFailed = null;
     }
 
     /**
@@ -40,6 +42,12 @@ export class PersonalImages {
         return null;
     }
 
+    // Whether this photo failed to load for the open timeline (it is not retried until clear()).
+    hasFailed(ref) {
+        const generation = this.guard.generation();
+        return Boolean(generation && ref) && this.failed.has(`${generation} ${ref}`);
+    }
+
     async load(ref, key, generation) {
         const ticket = {};
         this.loading.set(key, ticket);
@@ -52,6 +60,7 @@ export class PersonalImages {
             if (this.loading.get(key) === ticket) {
                 this.loading.delete(key);
                 this.failed.add(key);
+                if (this.guard.isCurrent(token) && this.guard.generation() === generation) this.onFailed?.(ref);
             }
             return;
         }
