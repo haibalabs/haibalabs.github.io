@@ -23,6 +23,23 @@ export const ROLE_LABELS = {
     retrospective_illustration: 'Later illustration',
 };
 
+// Credits come from source metadata and can run to thousands of characters. The viewer shows at most
+// this many, ending at a word, so the image, license and source link stay on screen.
+export const CREDIT_LIMIT = 280;
+
+/**
+ * A credit short enough for the viewer, or the credit itself when it already is.
+ *
+ * @param {string} credit
+ * @returns {{ text: string, shortened: boolean }}
+ */
+export function shortCredit(credit) {
+    if (credit.length <= CREDIT_LIMIT) return { text: credit, shortened: false };
+    const cut = credit.slice(0, CREDIT_LIMIT);
+    const space = cut.lastIndexOf(' ');
+    return { text: `${(space > CREDIT_LIMIT / 2 ? cut.slice(0, space) : cut).trimEnd()}…`, shortened: true };
+}
+
 // Fields the app itself changes after loading: the timestamp it sets, and locations, which the
 // location verifier annotates. Locations are compared by their identity fields instead.
 const NORMALIZED_FIELDS = new Set(['lastModified', 'locations']);
