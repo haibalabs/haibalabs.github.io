@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { attachPreviewImages, detachPreviewImages, previewProblem, ROLE_LABELS, sha256Hex } from '../../modules/world-images.js';
+import { attachPreviewImages, CREDIT_LIMIT, detachPreviewImages, previewProblem, ROLE_LABELS, sha256Hex, shortCredit } from '../../modules/world-images.js';
 
 const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-v1.json', import.meta.url), 'utf8'));
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
@@ -11,12 +11,20 @@ const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url))
 // the default world dataset the release is bound to: an envelope { metadata, events }
 const CANONICAL_BYTES = readFileSync(new URL('../../canonical-t2.json', import.meta.url));
 
+// A number as the file writes it. JSON.parse turns 45.0 into 45, which Python prints as 45.0, so
+// fingerprints are computed from the number's source text (the files are written by Python).
+class SourceNumber {
+  constructor(source) { this.source = source; }
+}
+const parseKeepingNumbers = (bytes) => JSON.parse(bytes, (key, value, context) => (typeof value === 'number' ? new SourceNumber(context.source) : value));
+
 // SHA256 of a record as the sidecar export fingerprints it: Python's json.dumps(record,
 // sort_keys=True, ensure_ascii=False), so sorted keys with ", " and ": " separators.
 function recordSha256(value) {
-  const canonical = (v) => (Array.isArray(v) ? `[${v.map(canonical).join(', ')}]`
-    : v && typeof v === 'object' ? `{${Object.keys(v).sort().map(k => `${JSON.stringify(k)}: ${canonical(v[k])}`).join(', ')}}`
-      : JSON.stringify(v));
+  const canonical = (v) => (v instanceof SourceNumber ? v.source
+    : Array.isArray(v) ? `[${v.map(canonical).join(', ')}]`
+      : v && typeof v === 'object' ? `{${Object.keys(v).sort().map(k => `${JSON.stringify(k)}: ${canonical(v[k])}`).join(', ')}}`
+        : JSON.stringify(v));
   return createHash('sha256').update(canonical(value)).digest('hex');
 }
 
@@ -24,7 +32,7 @@ function recordSha256(value) {
 async function checkRelease(release, bytes) {
   assert.equal(release.version, 1);
   assert.equal(await sha256Hex(bytes), release.source.events_sha256);
-  const data = JSON.parse(bytes);
+  const data = parseKeepingNumbers(bytes);
   const events = data.events ?? data;
   assert.equal(previewProblem(release, release.source.events_sha256, events.length), null);
   for (const r of release.records) {
@@ -101,6 +109,21 @@ describe('released-images-v1.json, the images every visitor sees', () => {
         assert.equal(r[field], reviewed[field], `record ${r.record_index} ${field}`);
       }
     }
+  });
+});
+
+describe('shortCredit — keep the viewer\'s credit line short', () => {
+  it('leaves a short credit alone', () => {
+    assert.deepEqual(shortCredit('Bundesarchiv, Bild 183'), { text: 'Bundesarchiv, Bild 183', shortened: false });
+  });
+  it('ends a long credit at a word, within the limit, with an ellipsis', () => {
+    const long = 'word '.repeat(200).trim();
+    const { text, shortened } = shortCredit(long);
+    assert.ok(shortened && text.endsWith('…') && text.length <= CREDIT_LIMIT + 1);
+    assert.ok(!text.slice(0, -1).endsWith(' ') && long.startsWith(text.slice(0, -1)));
+  });
+  it('cuts a long credit with no spaces at the limit', () => {
+    assert.equal(shortCredit('x'.repeat(1000)).text, `${'x'.repeat(CREDIT_LIMIT)}…`);
   });
 });
 
