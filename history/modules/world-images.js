@@ -68,8 +68,13 @@ export function previewProblem(preview, loadedSha256, eventCount) {
     return null;
 }
 
+// The identity of an event's locations: their names and places, without the coordinates and
+// annotations the app or a location release adds.
+export const locationIdentity = (locations) => JSON.stringify((locations ?? []).map(l => LOCATION_FIELDS.map(f => (typeof l === 'string' && f === 'name' ? l : l?.[f]) ?? null)));
+
 // Why a loaded event is no longer the file record a preview image was reviewed for, or null.
-function eventProblem(event, record, original) {
+// locations are the event's locations as loaded, before a location release changed any place.
+function eventProblem(event, record, original, locations) {
     if (!event || event.personal) return 'no world event at that position';
     if (event.name !== record.event_name || event.enhanced_time !== record.enhanced_time) return 'a different event at that position';
     if (event.dirty || event.syncedRevision != null) return 'the event was changed after loading';
@@ -78,8 +83,7 @@ function eventProblem(event, record, original) {
         if (NORMALIZED_FIELDS.has(key)) continue;
         if (JSON.stringify(event[key]) !== JSON.stringify(value)) return `its ${key} differs from the reviewed file`;
     }
-    const identity = (locations) => JSON.stringify((locations ?? []).map(l => LOCATION_FIELDS.map(f => (typeof l === 'string' && f === 'name' ? l : l?.[f]) ?? null)));
-    if (identity(event.locations) !== identity(original.locations)) return 'its locations differ from the reviewed file';
+    if (locationIdentity(locations) !== locationIdentity(original.locations)) return 'its locations differ from the reviewed file';
     return null;
 }
 
@@ -90,12 +94,14 @@ function eventProblem(event, record, original) {
  * @param {object[]} events - the loaded world events, in file order
  * @param {object[]} records - preview records (previews/reviewed-images-v1.json)
  * @param {object[]} originals - the records of the reviewed file, as parsed from its bytes
+ * @param {(event: object) => object[]} [locationsOf] - an event's locations as loaded (world-locations.js)
  * @returns {{ attached: object[], problems: { record_index: number, reason: string }[] }}
  */
-export function attachPreviewImages(events, records, originals) {
+export function attachPreviewImages(events, records, originals, locationsOf = (event) => event.locations) {
     const problems = [];
     for (const record of records) {
-        const reason = eventProblem(events[record.record_index], record, originals[record.record_index]);
+        const event = events[record.record_index];
+        const reason = eventProblem(event, record, originals[record.record_index], event && locationsOf(event));
         if (reason) problems.push({ record_index: record.record_index, reason });
     }
     if (problems.length) return { attached: [], problems };

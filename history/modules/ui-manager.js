@@ -6,6 +6,7 @@ import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
 import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, RELEASE_URL, sha256Hex, shortCredit } from './world-images.js';
+import { applyLocations, LOCATION_RELEASE_URL, locationProblem } from './world-locations.js';
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -837,12 +838,61 @@ export class UIManager {
         document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
     }
 
-    // The released image file, or null if it cannot be read. A slow request must not hold up
-    // loading the events, so it gives up after five seconds.
-    fetchReleasedImages() {
-        const request = fetch(RELEASE_URL).then(r => (r.ok ? r.json() : null)).catch(() => null);
+    // A release file (images or locations), or null if it cannot be read. A slow request must not
+    // hold up loading the events, so it gives up after five seconds.
+    fetchRelease(url) {
+        const request = fetch(url).then(r => (r.ok ? r.json() : null)).catch(() => null);
         const timeout = new Promise(resolve => setTimeout(() => resolve(null), 5000));
         return Promise.race([request, timeout]);
+    }
+
+    fetchReleasedImages() {
+        return this.fetchRelease(RELEASE_URL);
+    }
+
+    fetchReleasedLocations() {
+        return this.fetchRelease(LOCATION_RELEASE_URL);
+    }
+
+    /**
+     * Applies the released locations (releases/README.md), all or none, after the released images.
+     * Visitors see no message when they do not match; the reason goes to the console.
+     *
+     * @param {object|null} release - the released location file
+     */
+    async showReleasedLocations(release) {
+        this.locationsBefore = new Map();
+        if (!Array.isArray(release?.records) || !release.records.length) return;
+        // a malformed file must not stop the timeline from loading
+        try {
+            const worldEvents = this.eventManager.events.filter(event => !event.personal);
+            const problem = locationProblem(release, await this.eventManager.loadedSha256, worldEvents.length);
+            if (problem) {
+                console.info(`Released locations not shown: ${problem}`);
+                return;
+            }
+            const { applied, kept, problems } = applyLocations(worldEvents, release, this.eventManager.keptRecords ?? []);
+            if (problems.length) {
+                const first = problems[0];
+                console.warn(`Released locations not shown: ${problems.length} no longer match their event (position ${first.record_index}: ${first.reason}).`);
+                return;
+            }
+            if (kept.length) {
+                console.info(`Released locations: ${kept.length} kept their manual correction, which differs from the released place (position ${kept[0].record_index}).`);
+            }
+            this.locationsBefore = new Map(applied.map(({ event, before }) => [event, before]));
+            // the place index and map points come from event locations
+            this.eventManager.sortEvents();
+            this.eventManager.invalidateCache();
+        } catch (error) {
+            this.locationsBefore = new Map();
+            console.error('Could not show the released locations:', error);
+        }
+    }
+
+    // An event's locations as loaded, before the location release changed any place.
+    locationsAsLoaded(event) {
+        return this.locationsBefore?.get(event) ?? event.locations;
     }
 
     /**
@@ -876,7 +926,8 @@ export class UIManager {
     attachReleased() {
         if (!this.release) return [];
         const worldEvents = this.eventManager.events.filter(event => !event.personal);
-        const result = attachPreviewImages(worldEvents, this.release.records, this.eventManager.keptRecords ?? []);
+        const result = attachPreviewImages(worldEvents, this.release.records, this.eventManager.keptRecords ?? [],
+            (event) => this.locationsAsLoaded(event));
         if (result.problems.length) {
             const first = result.problems[0];
             console.warn(`Released images not shown: ${result.problems.length} no longer match their event (position ${first.record_index}: ${first.reason}).`);
@@ -922,7 +973,8 @@ export class UIManager {
                     } else {
                         const data = JSON.parse(new TextDecoder().decode(bytes));
                         if (stale()) return;
-                        const result = attachPreviewImages(worldEvents, preview.records, data.events ?? data);
+                        const result = attachPreviewImages(worldEvents, preview.records, data.events ?? data,
+                            (event) => this.locationsAsLoaded(event));
                         if (result.problems.length) {
                             const first = result.problems[0];
                             problem = `${result.problems.length} preview image${result.problems.length === 1 ? '' : 's'} no longer match their event (position ${first.record_index}: ${first.reason}).`;
@@ -1211,7 +1263,7 @@ export class UIManager {
             const location = event.locations[0];
             const geography = location?.geography;
             const canMap = this.mapBrowser ? this.eventManager.placeIndex.eventPoints.get(this.eventManager.placeIndex.idFor(event))?.length > 0 : geography
-                ? ['reused', 'corrected'].includes(geography.status) &&
+                ? ['reused', 'corrected', 'resolved'].includes(geography.status) &&
                   (Array.isArray(geography.coordinates) || Boolean(location.corrected))
                 : location?.verified !== false;
             locationSpan.className = `event-location ${canMap ? 'clickable' : 'unverified'}`;
@@ -1228,7 +1280,9 @@ export class UIManager {
                     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); locationSpan.click(); }
                 });
             }
-            if (geography?.precision === 'approximate') {
+            if (geography?.status === 'resolved') {
+                locationSpan.title = `Reviewed location (${geography.precision} precision)`;
+            } else if (geography?.precision === 'approximate') {
                 locationSpan.title = 'Approximate cached location; not independently verified';
             } else if (geography?.status === 'ambiguous') {
                 locationSpan.title = 'Location needs review before mapping';

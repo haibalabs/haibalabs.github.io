@@ -15,3 +15,14 @@ World-event images whose association with their event was reviewed and accepted 
 - The admin preview replaces these images while it is on.
 
 To withdraw a release, remove its records (or revert the commit that added them); events and user data are unaffected. `tests/unit/world-images.test.js` checks every record against `canonical-t2.json`.
+
+## released-locations-v1.json
+
+Accepted location batches, exported by history-dp `location_sidecar.py` (format and rules in its `docs/location-sidecar.md`). It currently holds no records, so every event shows its own locations.
+
+- `source.events_sha256` binds the file to `canonical-t2.json` (`4160e58f…`). Each record names an event by `record_index` and `event_id`, and lists the event locations it changes: each gets a new `place_id` (different when duplicate places were merged) and that place's reviewed geography from `places`.
+- The site applies all records or none (`modules/world-locations.js`): the loaded bytes must have `events_sha256`, positions must be valid and unique, and each target event must still be that file's record, with the same ID, name, date and location identity, not personal, edited or synced. Places must be `resolved` with valid coordinates and a known precision (`site`, `settlement`, `region`, `country`, `polity`, `approximate`). If anything differs, no location changes and the reason goes to the browser console. The browser relies on the byte hash for record and location fingerprints (`baseline_record_sha256`, `before_sha256`); `tests/unit/world-locations.test.js` checks those fingerprints.
+- Locations are applied after the released images, and image checks compare each event's places as loaded, so a merged place never turns an image off.
+- The map shows a point for a `resolved` place, as for `reused` and `corrected`; anything less precise than `site` counts as approximate in the map's area filter. The location's tooltip says "Reviewed location" with its precision. A manual correction from the site's own corrections file still takes precedence: a location whose manual point differs from its released place keeps its loaded values (reported in the console), so the map never labels the manual point with the release's precision; one whose manual point agrees is updated.
+
+To withdraw a release, empty its records or revert the commit that added them; the events' own locations come back.

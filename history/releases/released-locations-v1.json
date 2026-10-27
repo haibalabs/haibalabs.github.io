@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "kind": "world_location_sidecar",
+  "source": {
+    "events_sha256": "4160e58fb915960bd156dbb0de57b16bc4396d1f296ae32eba31d16a7019d622",
+    "batches": []
+  },
+  "places": {},
+  "records": []
+}
