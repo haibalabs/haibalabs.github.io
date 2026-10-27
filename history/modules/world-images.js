@@ -48,7 +48,8 @@ const YEAR_SHAPES = [
 const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th');
 
 // A date with its qualifier ("c. ", "before ", "after "), or null when the text is not one of the
-// shapes above or a century.
+// shapes above or a century. "before" and "after" take only a year or a century, since reducing
+// "before March 2007" to "before 2007" would move the bound.
 function datePart(text) {
     const q = text.match(/^(circa|c\.|ca\.|about|before|after)\s*(.*)$/i);
     const qualifier = !q ? '' : /^(before|after)$/i.test(q[1]) ? `${q[1].toLowerCase()} ` : 'c. ';
@@ -57,7 +58,7 @@ function datePart(text) {
     if (century) {
         return { qualifier, when: `${(century[1] ?? '').toLowerCase()}${ordinal(Number(century[2]))} century${century[3] ? ` ${century[3].toUpperCase()}` : ''}` };
     }
-    for (const shape of YEAR_SHAPES) {
+    for (const shape of /^(before|after)/.test(qualifier) ? YEAR_SHAPES.slice(0, 1) : YEAR_SHAPES) {
         const m = rest.match(shape);
         if (m) return { qualifier, when: m.groups.y + (m.groups.era ? ` ${m.groups.era.toUpperCase()}` : '') };
     }

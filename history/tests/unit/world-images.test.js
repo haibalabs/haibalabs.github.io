@@ -167,7 +167,8 @@ describe('displayDate and displayCaption — the image date, plainly', () => {
     const unsafe = [null, undefined, '', 'Unknown date', '06.11.06', '-0085-01-01', 'Since 1966', 'Ming Dynasty (1368-1644)',
       'Unknown date, photoshopped: 2010-04-16', 'Sommer 1945 oder Folgejahre', 'Late 2nd, early 3rd century AD',
       '1 August 2008 (original upload date)', '20:36, 12 April 2010 (UTC)', 'Published in London. by T. Cadel in 1786.',
-      'circa 1505 date QS:P,+1505-00-00T00:00:00Z/9,P1480,Q5727902 (1893 facsimile) .'];
+      'circa 1505 date QS:P,+1505-00-00T00:00:00Z/9,P1480,Q5727902 (1893 facsimile) .',
+      'before March 2007', 'after 1 July 2007', 'before 1925-05'];
     for (const raw of unsafe) assert.equal(displayDate(raw), null, String(raw));
   });
   it('the release records Iris checked keep their meaning: era kept, no editing date, no lost "or later"', () => {
