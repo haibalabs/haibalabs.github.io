@@ -41,13 +41,22 @@ test('released images show to every visitor without any setting, with credits in
 
   await roerich.locator('.event-image img').click();
   const viewer = page.locator('#photo-viewer');
+  // credit, license and source sit behind the (i) button; opening them keeps the viewer open
+  await expect(viewer.locator('.viewer-credit')).toBeHidden();
+  await viewer.locator('.viewer-info').click();
+  await expect(viewer).toBeVisible();
+  await expect(viewer.locator('.viewer-info')).toHaveAttribute('aria-expanded', 'true');
   await expect(viewer.locator('.viewer-credit')).toContainText('United States Department of State; via Wikimedia Commons · Public domain · Source');
+  await viewer.locator('.viewer-info').click();
+  await expect(viewer.locator('.viewer-credit')).toBeHidden();
   await expect(viewer.locator('.viewer-hold')).toHaveCount(0);
   await page.keyboard.press('Escape');
 
+  // no role label: the caption says what the image shows
   await page.fill('#searchInput', 'Fox Vault Fire');
   await card(page, '1937 Fox Vault Fire').locator('.event-image img').click();
-  await expect(viewer.locator('.viewer-role')).toHaveText('Aftermath');
+  await expect(viewer.locator('.viewer-caption')).toBeVisible();
+  await expect(viewer.locator('.viewer-role')).toHaveCount(0);
   await page.keyboard.press('Escape');
 
   // events not in the release keep no image
@@ -55,7 +64,7 @@ test('released images show to every visitor without any setting, with credits in
   await expect(card(page, 'Union Station massacre').locator('.event-image')).toHaveCount(0);
 });
 
-test('a contextual image is labeled with its role and says what it shows and when', async ({ page }) => {
+test('a contextual image says what it shows and when, without a role label', async ({ page }) => {
   test.setTimeout(120000);
   const release = JSON.parse(SAMPLE);
   const roerich = release.records.find(r => r.record_index === 26337);
@@ -64,12 +73,13 @@ test('a contextual image is labeled with its role and says what it shows and whe
   await page.fill('#searchInput', 'Roerich Pact');
   await card(page, 'The Roerich Pact signed').locator('.event-image img').click();
   const viewer = page.locator('#photo-viewer');
-  await expect(viewer.locator('.viewer-role')).toHaveText('Site');
+  await expect(viewer.locator('.viewer-role')).toHaveCount(0);
   await expect(viewer.locator('.viewer-qualification')).toHaveText('The White House photographed in 2008, long after the signing.');
+  await viewer.locator('.viewer-info').click();
   await expect(viewer.locator('.viewer-credit')).toContainText('Public domain');
   await page.keyboard.press('Escape');
 
-  // a role the site cannot label keeps the whole release off
+  // a role the site does not know keeps the whole release off
   roerich.image_role = 'unknown';
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await openSite(page, { release: JSON.stringify(release) });
@@ -89,13 +99,13 @@ test('the admin preview replaces the released images while on, and they return w
   await expect(card(page, 'The Roerich Pact signed').locator('.event-image-caption')).toHaveCount(1);
 });
 
-test('the repository release attaches to the default canonical file: contextual roles labeled, open issues noted', async ({ page }) => {
+test('the repository release attaches to the default canonical file: date qualifications shown, open issues noted', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page, { query: '', release: null });
   const viewer = page.locator('#photo-viewer');
   await page.fill('#searchInput', 'Tokhtamysh');
   await card(page, 'Khan Tokhtamysh overruns Muscovy').locator('.event-image img').click();
-  await expect(viewer.locator('.viewer-role')).toHaveText('Later illustration');
+  await expect(viewer.locator('.viewer-role')).toHaveCount(0);
   await expect(viewer.locator('.viewer-qualification')).toContainText('not the depicted event date');
   await expect(viewer.locator('.viewer-hold')).toHaveCount(0);
   await page.keyboard.press('Escape');
@@ -108,6 +118,7 @@ test('the repository release attaches to the default canonical file: contextual 
   // a credit thousands of characters long is shortened, and the license and source links stay visible
   await page.fill('#searchInput', 'Eric of Pomerania is deposed');
   await card(page, 'Eric of Pomerania is deposed from the Swedish throne').locator('.event-image img').click();
+  await viewer.locator('.viewer-info').click();
   const creditText = viewer.locator('.viewer-credit > span');
   expect((await creditText.textContent()).length).toBeLessThanOrEqual(281);
   await expect(creditText).toHaveAttribute('title', /Southerly Clubs/);

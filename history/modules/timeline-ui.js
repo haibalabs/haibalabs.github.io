@@ -82,9 +82,9 @@ export class TimelineUI {
             this.toggleMenu(false);
             this.closePhoto();
         });
-        // a click anywhere closes the viewer, except on a link in its details
+        // a click anywhere closes the viewer, except on a link or button in its details
         this.viewer.addEventListener('click', (e) => {
-            if (!e.target.closest('a')) this.closePhoto();
+            if (!e.target.closest('a, button')) this.closePhoto();
         });
     }
 

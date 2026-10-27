@@ -11,17 +11,10 @@ export const PREVIEW_URL = 'previews/reviewed-images-v1.json';
 // Reviewed images every visitor sees, with the same binding (releases/README.md).
 export const RELEASE_URL = 'releases/released-images-v1.json';
 
-// The image roles a record may have, with the label the viewer shows before the caption. A photo of
-// the event itself needs none; every other role says what the image is. Other roles are refused.
-export const ROLE_LABELS = {
-    event_photo: null,
-    event_aftermath: 'Aftermath',
-    portrait: 'Portrait',
-    site: 'Site',
-    map: 'Map',
-    symbol: 'Symbol',
-    retrospective_illustration: 'Later illustration',
-};
+// The image roles a record may have; any other role is refused. The viewer shows no role label: the
+// caption and the date qualification say what the image is and when (Rachid, 2026-10-26).
+export const IMAGE_ROLES = new Set(['event_photo', 'event_aftermath', 'portrait', 'site', 'map', 'symbol',
+    'retrospective_illustration']);
 
 // Credits come from source metadata and can run to thousands of characters. The viewer shows at most
 // this many, ending at a word, so the image, license and source link stay on screen.
@@ -71,7 +64,7 @@ export function previewProblem(preview, loadedSha256, eventCount) {
     const indexes = preview.records.map(r => r.record_index);
     const valid = indexes.every(i => Number.isInteger(i) && i >= 0 && i < eventCount);
     if (!valid || new Set(indexes).size !== indexes.length) return 'The preview file has invalid or repeated event positions.';
-    if (!preview.records.every(r => Object.hasOwn(ROLE_LABELS, r.image_role))) return 'The preview file has an image role the site cannot label.';
+    if (!preview.records.every(r => IMAGE_ROLES.has(r.image_role))) return 'The preview file has an image role the site does not know.';
     return null;
 }
 
