@@ -33,6 +33,85 @@ export function shortCredit(credit) {
     return { text: `${(space > CREDIT_LIMIT / 2 ? cut.slice(0, space) : cut).trimEnd()}…`, shortened: true };
 }
 
+const MONTH = String.raw`(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\.?`;
+const DAYS = String.raw`\d{1,2}(?:\s?[-–~]\s?\d{1,2})?`;
+// One date, reduced to its year: 1864, 1880s, 500 BC, 1925-05, 1960/06/23, 7/4/2015, 5 October 2007,
+// October 1907, August 14, 1976, 27 - 29 September 1981
+const YEAR_SHAPES = [
+    String.raw`(?<y>\d{3,4}s?)(?:\s?(?<era>BCE?|AD|CE))?`,
+    String.raw`(?<y>\d{4})[-/]\d{2}(?:[-/]\d{2})?`,
+    String.raw`\d{1,2}[/.-]\d{1,2}[/.-](?<y>\d{4})`,
+    String.raw`(?:${DAYS}\s)?${MONTH},?\s(?<y>\d{4})`,
+    String.raw`${MONTH}\s${DAYS},?\s(?<y>\d{4})`,
+].map(shape => new RegExp(`^${shape}$`, 'i'));
+
+const ordinal = n => n + (n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] ?? 'th');
+
+// A date with its qualifier ("c. ", "before ", "after "), or null when the text is not one of the
+// shapes above or a century. "before" and "after" take only a year or a century, since reducing
+// "before March 2007" to "before 2007" would move the bound.
+function datePart(text) {
+    const q = text.match(/^(circa|c\.|ca\.|about|before|after)\s*(.*)$/i);
+    const qualifier = !q ? '' : /^(before|after)$/i.test(q[1]) ? `${q[1].toLowerCase()} ` : 'c. ';
+    const rest = q ? q[2] : text;
+    const century = rest.match(/^(early |mid-|late )?(\d{1,2})\s?(?:st|nd|rd|th) century(?:\s(BCE?|AD|CE))?$/i);
+    if (century) {
+        return { qualifier, when: `${(century[1] ?? '').toLowerCase()}${ordinal(Number(century[2]))} century${century[3] ? ` ${century[3].toUpperCase()}` : ''}` };
+    }
+    for (const shape of /^(before|after)/.test(qualifier) ? YEAR_SHAPES.slice(0, 1) : YEAR_SHAPES) {
+        const m = rest.match(shape);
+        if (m) return { qualifier, when: m.groups.y + (m.groups.era ? ` ${m.groups.era.toUpperCase()}` : '') };
+    }
+    return null;
+}
+
+/**
+ * An image's date as the viewer shows it after the caption, with no label, or null when the source
+ * metadata has no date it can safely summarize. A full ISO date is shown as is; a date in one of a
+ * few known shapes is reduced to its year or century, keeping its era, "c.", "before", "after" and
+ * ranges. Wikidata qualifiers, Exif notes, times of day and "Taken on" or "Published in" are dropped
+ * first, and so are upload dates and signature timestamps, which are not the image's date. Anything
+ * else, such as "Unknown date, photoshopped: 2010-04-16" or "Sommer 1945 oder Folgejahre", shows
+ * nothing rather than a year that changes its meaning (Rachid, 2026-10-26; Iris's review of PR 25).
+ *
+ * @param {string|null|undefined} raw - the record's image_date
+ * @returns {string|null}
+ */
+export function displayDate(raw) {
+    if (typeof raw !== 'string') return null;
+    const text = raw
+        .replace(/\s*date QS:\S*/gi, '')
+        .replace(new RegExp(String.raw`(?:${DAYS}\s)?${MONTH},?\s\d{4}\s\((?:original )?upload date\)`, 'gi'), '')
+        .replace(/^\d{1,2}:\d{2},.*\(UTC\)$/, '')
+        .replace(/\(according to Exif data\)|\[\s*\d+\s*\]|\(\s*\)/gi, '')
+        .replace(/(?:,?\s|T)\d{1,2}:\d{2}(?::\d{2})?(?:\s[A-Z]{2,4})?(?:\s\(UTC[+-]\d+\))?/g, '')
+        .replace(/^[\s.,;:]*(?:[–-]\s+)?|[\s.,;:–-]+$/g, '')
+        .replace(/^(?:taken (?:on|in)|(?:first )?published(?: in| on)?)\s+/i, '')
+        .trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+    const circaAfter = /\s+circa$/i.test(text);
+    const body = text.replace(/\s+circa$/i, '').replace(/^between\s+/i, '');
+    const one = datePart(body);
+    if (one) return (one.qualifier || (circaAfter ? 'c. ' : '')) + one.when;
+    for (const sep of body.matchAll(/\s+(?:and|to)\s+|\s*[–/]\s*|\s+-\s+/gi)) {
+        const a = datePart(body.slice(0, sep.index));
+        const b = datePart(body.slice(sep.index + sep[0].length));
+        if (!a || !b || /before|after/.test(a.qualifier + b.qualifier)) continue;
+        return (a.qualifier || b.qualifier || (circaAfter ? 'c. ' : '')) + (a.when === b.when ? a.when : `${a.when}–${b.when}`);
+    }
+    return null;
+}
+
+// The date shown for a record: a reviewed display_date as written, where an explicit null means the
+// review found no supported date; the raw image_date only when the export has no display_date.
+export const recordDisplayDate = (record) => ('display_date' in record
+    ? (typeof record.display_date === 'string' && record.display_date.trim()) || null
+    : displayDate(record.image_date));
+
+// A caption as the viewer shows it: without a trailing "Image date: …" sentence, since the viewer
+// shows the date itself.
+export const displayCaption = (caption) => caption.replace(/\s*Image date:[^.]*\.?\s*$/i, '').trim();
+
 // Fields the app itself changes after loading: the timestamp it sets, and locations, which the
 // location verifier annotates. Locations are compared by their identity fields instead.
 const NORMALIZED_FIELDS = new Set(['lastModified', 'locations']);
@@ -109,13 +188,13 @@ export function attachPreviewImages(events, records, originals, locationsOf = (e
         const event = events[record.record_index];
         event.image_url = record.image_url;
         event.image_preview = {
-            caption: record.caption,
+            caption: displayCaption(record.caption),
             role: record.image_role,
             credit: record.credit,
             license_name: record.license_name,
             license_url: record.license_url,
             source_url: record.source_url,
-            date_qualification: record.date_qualification ?? null,
+            date: recordDisplayDate(record),
             under_review: (record.event_issue_ids ?? []).length > 0,
         };
         return event;

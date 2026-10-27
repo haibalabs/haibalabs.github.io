@@ -64,17 +64,21 @@ test('released images show to every visitor without any setting, with credits in
   await expect(card(page, 'Union Station massacre').locator('.event-image')).toHaveCount(0);
 });
 
-test('a contextual image says what it shows and when, without a role label', async ({ page }) => {
+test('a contextual image shows its caption and its date, without a role label or a date note', async ({ page }) => {
   test.setTimeout(120000);
   const release = JSON.parse(SAMPLE);
   const roerich = release.records.find(r => r.record_index === 26337);
-  Object.assign(roerich, { image_role: 'site', date_qualification: 'The White House photographed in 2008, long after the signing.' });
+  Object.assign(roerich, { image_role: 'site', image_date: 'Taken on 4 June 2008, 10:21',
+    caption: 'The White House in 2008. Image date: 2008-06-04.', date_qualification: 'Photographed in 2008, long after the signing.' });
   await openSite(page, { release: JSON.stringify(release) });
   await page.fill('#searchInput', 'Roerich Pact');
   await card(page, 'The Roerich Pact signed').locator('.event-image img').click();
   const viewer = page.locator('#photo-viewer');
   await expect(viewer.locator('.viewer-role')).toHaveCount(0);
-  await expect(viewer.locator('.viewer-qualification')).toHaveText('The White House photographed in 2008, long after the signing.');
+  await expect(viewer.locator('.viewer-qualification')).toHaveCount(0);
+  await expect(viewer.locator('.viewer-caption')).toContainText('The White House in 2008. · 2008');
+  await expect(viewer.locator('.viewer-caption')).not.toContainText('Image date');
+  await expect(viewer.locator('.viewer-date')).toHaveText('2008');
   await viewer.locator('.viewer-info').click();
   await expect(viewer.locator('.viewer-credit')).toContainText('Public domain');
   await page.keyboard.press('Escape');
@@ -99,14 +103,15 @@ test('the admin preview replaces the released images while on, and they return w
   await expect(card(page, 'The Roerich Pact signed').locator('.event-image-caption')).toHaveCount(1);
 });
 
-test('the repository release attaches to the default canonical file: date qualifications shown, open issues noted', async ({ page }) => {
+test('the repository release attaches to the default canonical file: image dates shown, open issues noted', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page, { query: '', release: null });
   const viewer = page.locator('#photo-viewer');
   await page.fill('#searchInput', 'Tokhtamysh');
   await card(page, 'Khan Tokhtamysh overruns Muscovy').locator('.event-image img').click();
   await expect(viewer.locator('.viewer-role')).toHaveCount(0);
-  await expect(viewer.locator('.viewer-qualification')).toContainText('not the depicted event date');
+  await expect(viewer.locator('.viewer-date')).toHaveText('2012-04-03');
+  await expect(viewer.locator('.viewer-qualification')).toHaveCount(0);
   await expect(viewer.locator('.viewer-hold')).toHaveCount(0);
   await page.keyboard.press('Escape');
 
