@@ -46,7 +46,7 @@ export class PlaceEventIndex {
                 this.places.get(placeId).add(id);
                 const geography = location.geography;
                 const coordinates = isValidCoordinates(location.corrected) ? location.corrected
-                    : ['reused', 'corrected'].includes(geography?.status) && isValidCoordinates(geography.coordinates)
+                    : ['reused', 'corrected', 'resolved'].includes(geography?.status) && isValidCoordinates(geography.coordinates)
                         ? geography.coordinates : null;
                 if (!coordinates) continue;
                 const precision = geography?.precision || 'unknown';
