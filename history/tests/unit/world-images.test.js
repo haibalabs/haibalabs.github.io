@@ -8,13 +8,52 @@ const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
 const SAMPLE = JSON.parse(readFileSync(new URL('../fixtures/released-images-sample.json', import.meta.url), 'utf8'));
 const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url));
+// the default world dataset the release is bound to: an envelope { metadata, events }
+const CANONICAL_BYTES = readFileSync(new URL('../../canonical-t2.json', import.meta.url));
 
 // A number as the file writes it. JSON.parse turns 45.0 into 45, which Python prints as 45.0, so
 // fingerprints are computed from the number's source text (the files are written by Python).
 class SourceNumber {
   constructor(source) { this.source = source; }
 }
-const parseKeepingNumbers = (bytes) => JSON.parse(bytes, (key, value, context) => (typeof value === 'number' ? new SourceNumber(context.source) : value));
+// A JSON reader that keeps each number's source text, on any Node version (JSON.parse's source
+// text access needs Node 22, and CI runs Node 20). Strings go through JSON.parse for their escapes.
+function parseKeepingNumbers(bytes) {
+  const text = bytes.toString('utf8');
+  const token = /\s*(?:("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)|(true|false|null)|([{}[\],:]))/y;
+  let match;
+  const next = () => {
+    match = token.exec(text);
+    if (!match) throw new SyntaxError(`Unexpected JSON at ${token.lastIndex}`);
+    return match;
+  };
+  const value = () => {
+    const [, string, number, literal, punct] = next();
+    if (string) return JSON.parse(string);
+    if (number) return new SourceNumber(number);
+    if (literal) return JSON.parse(literal);
+    if (punct === '[') {
+      const list = [];
+      if (text[token.lastIndex] !== ']' && !/^\s*\]/.test(text.slice(token.lastIndex, token.lastIndex + 64))) {
+        do list.push(value()); while (next()[4] === ',');
+      } else next();
+      return list;
+    }
+    if (punct === '{') {
+      const object = {};
+      if (!/^\s*\}/.test(text.slice(token.lastIndex, token.lastIndex + 64))) {
+        do {
+          const key = JSON.parse(next()[1]);
+          next();
+          object[key] = value();
+        } while (next()[4] === ',');
+      } else next();
+      return object;
+    }
+    throw new SyntaxError(`Unexpected ${punct} at ${token.lastIndex}`);
+  };
+  return value();
+}
 
 // SHA256 of a record as the sidecar export fingerprints it: Python's json.dumps(record,
 // sort_keys=True, ensure_ascii=False), so sorted keys with ", " and ": " separators.
@@ -26,11 +65,12 @@ function recordSha256(value) {
   return createHash('sha256').update(canonical(value)).digest('hex');
 }
 
-// The checks every release file must pass against the repository's events.json.
-async function checkRelease(release) {
+// The checks every release file must pass against the data file it is bound to.
+async function checkRelease(release, bytes) {
   assert.equal(release.version, 1);
-  assert.equal(await sha256Hex(EVENTS_BYTES), release.source.events_sha256);
-  const events = parseKeepingNumbers(EVENTS_BYTES);
+  assert.equal(await sha256Hex(bytes), release.source.events_sha256);
+  const data = parseKeepingNumbers(bytes);
+  const events = data.events ?? data;
   assert.equal(previewProblem(release, release.source.events_sha256, events.length), null);
   for (const r of release.records) {
     const event = events[r.record_index];
@@ -92,12 +132,12 @@ describe('reviewed-images-v1.json, the preview fixture', () => {
 });
 
 describe('released-images-v1.json, the images every visitor sees', () => {
-  it('is bound to the repository\'s events.json, and every record matches its event exactly', () => checkRelease(RELEASE));
+  it('is bound to the default canonical-t2.json, and every record matches its event exactly', () => checkRelease(RELEASE, CANONICAL_BYTES));
   it('the release check accepts the sample cohort and refuses a record whose fingerprint differs', async () => {
-    await checkRelease(SAMPLE);
+    await checkRelease(SAMPLE, EVENTS_BYTES);
     const altered = structuredClone(SAMPLE);
     altered.records[0].baseline_record_sha256 = '0'.repeat(64);
-    await assert.rejects(checkRelease(altered));
+    await assert.rejects(checkRelease(altered, EVENTS_BYTES));
   });
   it('the sample cohort keeps the reviewed display fields of the preview records', () => {
     for (const r of SAMPLE.records) {
@@ -106,6 +146,18 @@ describe('released-images-v1.json, the images every visitor sees', () => {
         assert.equal(r[field], reviewed[field], `record ${r.record_index} ${field}`);
       }
     }
+  });
+});
+
+describe('record fingerprints — numbers as the file writes them', () => {
+  it('keeps 45.0 distinct from 45, and reads strings, nesting and empty containers like JSON.parse', () => {
+    const bytes = Buffer.from('{"b": [-45.0, 2, 1e-05], "a": "caf\\u00e9 \\"x\\"", "c": {}, "d": [], "e": [true, null]}');
+    assert.equal(recordSha256(parseKeepingNumbers(bytes)), createHash('sha256')
+      .update('{"a": "café \\"x\\"", "b": [-45.0, 2, 1e-05], "c": {}, "d": [], "e": [true, null]}').digest('hex'));
+    const plain = JSON.parse(bytes);
+    const kept = parseKeepingNumbers(bytes);
+    assert.equal(kept.a, plain.a);
+    assert.deepEqual([kept.c, kept.d, kept.e], [plain.c, plain.d, plain.e]);
   });
 });
 
