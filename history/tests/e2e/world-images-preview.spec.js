@@ -45,8 +45,9 @@ test('reviewed images show on their events with a one-line caption, and open ful
   const viewer = page.locator('#photo-viewer');
   await expect(viewer).toBeVisible();
   await expect(viewer.locator('img')).toHaveAttribute('src', /1280px-Kansas_City_Union_Station_Massacre\.jpg/);
-  await expect(viewer.locator('.viewer-role')).toHaveText('Aftermath');
+  await expect(viewer.locator('.viewer-role')).toHaveCount(0);
   await expect(viewer.locator('.viewer-caption')).toContainText('Aftermath of the Kansas City Union Station massacre');
+  await viewer.locator('.viewer-info').click();
   await expect(viewer.locator('.viewer-credit')).toContainText('United States Bureau of Investigation (FBI); photographer unspecified · Public domain · Source');
   await expect(viewer.locator('.viewer-credit a', { hasText: 'Source' })).toHaveAttribute('href', 'https://commons.wikimedia.org/wiki/File:Kansas_City_Union_Station_Massacre.jpg');
   await expect(viewer.locator('.viewer-hold')).toHaveText('Some details of this event are still being reviewed.');
@@ -56,6 +57,7 @@ test('reviewed images show on their events with a one-line caption, and open ful
   // an event without holds shows no review note; a licensed image links its license
   await page.fill('#searchInput', 'Boycott of Jewish-owned businesses');
   await card(page, 'Boycott of Jewish-owned businesses in Germany').locator('.event-image img').click();
+  await viewer.locator('.viewer-info').click();
   await expect(viewer.locator('.viewer-credit a', { hasText: 'CC BY-SA 3.0 de' })).toHaveAttribute('href', 'https://creativecommons.org/licenses/by-sa/3.0/de/deed.en');
   await page.keyboard.press('Escape');
   await page.fill('#searchInput', 'Black Sunday Dust Bowl');
@@ -81,6 +83,7 @@ test('when the full-size image and its original both fail, the viewer says so an
   await expect(viewer.locator('.photo-viewer-error')).toHaveText('This image could not be loaded.');
   await expect(viewer).not.toHaveClass(/loading/);
   await expect(viewer.locator('img')).toBeHidden();
+  await viewer.locator('.viewer-info').click();
   await expect(viewer.locator('.viewer-credit')).toContainText('Public domain');
   await page.keyboard.press('Escape');
   await expect(viewer).toBeHidden();
