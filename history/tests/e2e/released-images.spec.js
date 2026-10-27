@@ -111,6 +111,7 @@ test('the repository release attaches to the default canonical file: image dates
   await card(page, 'Khan Tokhtamysh overruns Muscovy').locator('.event-image img').click();
   await expect(viewer.locator('.viewer-role')).toHaveCount(0);
   await expect(viewer.locator('.viewer-date')).toHaveText('2012-04-03');
+  await expect(viewer.locator('.viewer-caption')).not.toContainText('not a contemporary');
   await expect(viewer.locator('.viewer-qualification')).toHaveCount(0);
   await expect(viewer.locator('.viewer-hold')).toHaveCount(0);
   await page.keyboard.press('Escape');
