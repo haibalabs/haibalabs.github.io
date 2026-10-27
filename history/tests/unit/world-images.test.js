@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { attachPreviewImages, CREDIT_LIMIT, detachPreviewImages, IMAGE_ROLES, previewProblem, sha256Hex, shortCredit } from '../../modules/world-images.js';
+import { attachPreviewImages, CREDIT_LIMIT, detachPreviewImages, displayCaption, displayDate, IMAGE_ROLES, previewProblem, sha256Hex, shortCredit } from '../../modules/world-images.js';
 
 const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-v1.json', import.meta.url), 'utf8'));
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
@@ -144,6 +144,35 @@ describe('previewProblem — attach only to the exact data file reviewed', () =>
   });
 });
 
+describe('displayDate and displayCaption — the image date, plainly', () => {
+  it('cleans the date shapes the source metadata uses', () => {
+    const cases = [
+      ['2023-04-29', '2023-04-29'], ['2014-06-28 13:40:57', '2014-06-28'], ['1864', '1864'], ['1925-05', '1925'],
+      ['18 th century date QS:P,+1750-00-00T00:00:00Z/7', '18th century'], ['late 19th century', 'late 19th century'],
+      ['circa 1550 date QS:P,+1550-00-00T00:00:00Z/9,P1480,Q5727902', 'c. 1550'], ['c. 1880s', 'c. 1880s'],
+      ['between 1890 and 1900 date QS:P,+1890-00-00T00:00:00Z/9', '1890–1900'], ['1810/1867', '1810–1867'],
+      ['before 1900 date QS:P,+1900-00-00T00:00:00Z/9', 'before 1900'],
+      ['Taken on 5 October 2007, 10:21 (according to Exif data)', '2007'], ['20:36, 12 April 2010 (UTC)', '2010'],
+      ['Taken in October 1907', '1907'], ['7/4/2015', '2015'], ['Sommer 1945 oder Folgejahre', '1945'],
+      ['Published in London. by T. Cadel in 1785', '1785'],
+    ];
+    for (const [raw, shown] of cases) assert.equal(displayDate(raw), shown, raw);
+  });
+  it('shows nothing for a missing, unknown or yearless value', () => {
+    for (const raw of [null, undefined, '', 'Unknown date', '06.11.06']) assert.equal(displayDate(raw), null, String(raw));
+  });
+  it('the repository release has no shown date longer than a date', () => {
+    for (const r of RELEASE.records) {
+      const shown = displayDate(r.image_date);
+      assert.ok(shown === null || (shown.length <= 32 && !/QS:|\d{2}:\d{2}/.test(shown)), `${r.record_index}: ${shown}`);
+    }
+  });
+  it('drops a trailing "Image date" sentence from a caption, and nothing else', () => {
+    assert.equal(displayCaption('Map showing Cherchen among Tarim mummy sites. Image date: 2023-04-29.'), 'Map showing Cherchen among Tarim mummy sites.');
+    assert.equal(displayCaption('Engraving of the opening ceremony, 1876.'), 'Engraving of the opening ceremony, 1876.');
+  });
+});
+
 describe('attachPreviewImages and detachPreviewImages — all reviewed records or none', () => {
   it('attaches each image and its display details to the event at its position', () => {
     const records = [record(1), record(3, { image_role: 'event_aftermath', event_issue_ids: ['hold'] })];
@@ -154,7 +183,7 @@ describe('attachPreviewImages and detachPreviewImages — all reviewed records o
     assert.equal(events[1].image_url, records[0].image_url);
     assert.deepEqual(events[3].image_preview, {
       caption: 'Caption 3', role: 'event_aftermath', credit: 'Someone', license_name: 'Public domain',
-      license_url: null, source_url: records[1].source_url, date_qualification: null, under_review: true,
+      license_url: null, source_url: records[1].source_url, date: null, under_review: true,
     });
     assert.equal(events[0].image_url, undefined);
   });

@@ -1006,7 +1006,7 @@ export class UIManager {
         this.resetLayout();
     }
 
-    // The full-window viewer's text for a reviewed image: the caption and date qualification, with the
+    // The full-window viewer's text for a reviewed image: the caption and the image's date, with the
     // credit, license and source behind a small (i) button.
     previewImageDetails(event) {
         const info = event.image_preview;
@@ -1019,15 +1019,16 @@ export class UIManager {
         toggle.textContent = 'i';
         toggle.setAttribute('aria-label', 'Credit and license');
         toggle.setAttribute('aria-expanded', 'false');
-        caption.append(info.caption, ' ', toggle);
-        details.append(caption);
-        // when the image is not a photo of the event at its time, what it shows and when
-        if (info.date_qualification) {
-            const qualification = document.createElement('p');
-            qualification.className = 'viewer-qualification';
-            qualification.textContent = info.date_qualification;
-            details.append(qualification);
+        caption.append(info.caption);
+        // the image's date, unlabeled: readers compare it with the event's own date
+        if (info.date) {
+            const date = document.createElement('span');
+            date.className = 'viewer-date';
+            date.textContent = info.date;
+            caption.append(' · ', date);
         }
+        caption.append(' ', toggle);
+        details.append(caption);
         const credit = document.createElement('p');
         credit.className = 'viewer-credit';
         credit.id = 'viewer-credit';

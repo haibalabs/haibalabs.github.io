@@ -132,7 +132,7 @@
 .photo-viewer-details .viewer-info:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .photo-viewer-details .viewer-credit { margin-top: .25rem; color: #aaa; font-size: .75rem; }
 .photo-viewer-details .viewer-credit[hidden] { display: none; }
-.photo-viewer-details .viewer-qualification { margin-top: .15rem; color: #ddd; font-size: .8rem; }
+.photo-viewer-details .viewer-date { color: #aaa; white-space: nowrap; }
 .photo-viewer-details .viewer-hold { margin-top: .35rem; color: #c9c9c9; font-size: .75rem; font-style: italic; }
 .photo-viewer-details a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .photo-viewer-details a:hover { color: #fff; }

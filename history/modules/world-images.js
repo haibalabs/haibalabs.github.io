@@ -33,6 +33,35 @@ export function shortCredit(credit) {
     return { text: `${(space > CREDIT_LIMIT / 2 ? cut.slice(0, space) : cut).trimEnd()}…`, shortened: true };
 }
 
+/**
+ * An image's date as the viewer shows it after the caption, with no label, or null when the source
+ * metadata has no usable date. A full ISO date is shown as is; anything else is summarized to its
+ * year or century, keeping "c.", "before", "after" and ranges, since source dates come in dozens of
+ * forms ("Taken on 5 October 2007, 10:21", "18 th century date QS:…", "7/4/2015"). The caption and
+ * the event's own date make clear that it is the image's date (Rachid, 2026-10-26).
+ *
+ * @param {string|null|undefined} raw - the record's display_date or image_date
+ * @returns {string|null}
+ */
+export function displayDate(raw) {
+    if (typeof raw !== 'string') return null;
+    const text = raw.replace(/\s*date QS:.*$/i, '').trim();  // Wikidata qualifier
+    const iso = text.match(/^(\d{4}-\d{2}-\d{2})(?:$|[ T]\d{2}:\d{2})/);
+    if (iso) return iso[1];
+    const prefix = /\b(circa|c\.|ca\.|about|approximately)\s/i.test(text) ? 'c. '
+        : /^\s*before\b/i.test(text) ? 'before ' : /^\s*after\b/i.test(text) ? 'after ' : '';
+    const century = text.match(/\b(early |mid-|late )?(\d{1,2})\s?(?:st|nd|rd|th) century\b/i);
+    if (century) return `${prefix}${century[1] ?? ''}${century[2]}th century`.replace(/\b(1)th\b/, '1st').replace(/\b(2)th\b/, '2nd').replace(/\b(3)th\b/, '3rd');
+    const years = [...text.matchAll(/\b(1\d{3}|20\d{2})(s?)\b/g)].map(m => m[1] + m[2]);
+    if (!years.length) return null;
+    const range = years.length > 1 && /\bbetween\b|[–/-]|\bto\b|\band\b/i.test(text) && years[0] !== years[1];
+    return `${prefix}${range ? `${years[0]}–${years[1]}` : years[0]}`;
+}
+
+// A caption as the viewer shows it: without a trailing "Image date: …" sentence, since the viewer
+// shows the date itself.
+export const displayCaption = (caption) => caption.replace(/\s*Image date:[^.]*\.?\s*$/i, '').trim();
+
 // Fields the app itself changes after loading: the timestamp it sets, and locations, which the
 // location verifier annotates. Locations are compared by their identity fields instead.
 const NORMALIZED_FIELDS = new Set(['lastModified', 'locations']);
@@ -109,13 +138,13 @@ export function attachPreviewImages(events, records, originals, locationsOf = (e
         const event = events[record.record_index];
         event.image_url = record.image_url;
         event.image_preview = {
-            caption: record.caption,
+            caption: displayCaption(record.caption),
             role: record.image_role,
             credit: record.credit,
             license_name: record.license_name,
             license_url: record.license_url,
             source_url: record.source_url,
-            date_qualification: record.date_qualification ?? null,
+            date: displayDate(record.display_date ?? record.image_date),
             under_review: (record.event_issue_ids ?? []).length > 0,
         };
         return event;
