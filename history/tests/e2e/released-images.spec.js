@@ -115,6 +115,14 @@ test('the repository release attaches to the default canonical file: image dates
   await expect(viewer.locator('.viewer-hold')).toHaveCount(0);
   await page.keyboard.press('Escape');
 
+  // a rewritten caption says what the image shows, and its reviewed display_date follows it
+  await page.fill('#searchInput', 'Wenceslaus III crowned King of Hungary');
+  await card(page, 'Wenceslaus III crowned King of Hungary').locator('.event-image img').click();
+  await expect(viewer.locator('.viewer-caption')).toContainText('Seal of Wenceslaus III.');
+  await expect(viewer.locator('.viewer-caption')).not.toContainText('not a photograph');
+  await expect(viewer.locator('.viewer-date')).toHaveText('1896');
+  await page.keyboard.press('Escape');
+
   // a round 2 addition
   await page.fill('#searchInput', 'Hojo Morotoki becomes regent');
   await card(page, 'Hojo Morotoki becomes regent').locator('.event-image img').click();
