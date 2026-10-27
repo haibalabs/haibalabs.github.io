@@ -124,6 +124,14 @@ test('the repository release attaches to the default canonical file: image dates
   await expect(viewer.locator('.viewer-date')).toHaveText('1896');
   await page.keyboard.press('Escape');
 
+  // the Cherchen map caption Rachid flagged on 2026-10-26: what it shows, then the date, with no "not an image of"
+  await page.fill('#searchInput', 'Cherchen Man');
+  await card(page, 'Rough carbon-14 dating of the Cherchen Man').locator('.event-image img').click();
+  await expect(viewer.locator('.viewer-caption')).toContainText('Map of Tarim mummy sites, including Cherchen.');
+  await expect(viewer.locator('.viewer-caption')).not.toContainText('not an image');
+  await expect(viewer.locator('.viewer-date')).toHaveText('2023-04-29');
+  await page.keyboard.press('Escape');
+
   // a round 2 addition
   await page.fill('#searchInput', 'Hojo Morotoki becomes regent');
   await card(page, 'Hojo Morotoki becomes regent').locator('.event-image img').click();
