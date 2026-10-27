@@ -58,14 +58,22 @@ function eventProblem(event, record, original) {
     return null;
 }
 
+// A manual correction (location.corrected, from the site's corrections file) the map draws instead
+// of the geography, when it disagrees with the released place. Such a location keeps its loaded
+// values, so the map never shows the manual point with the release's precision or provenance.
+const conflictsWithManualPoint = (location, place) => validCoordinates(location.corrected)
+    && JSON.stringify(location.corrected) !== JSON.stringify(place.coordinates);
+
 /**
  * Applies every location change to the event it was reviewed for, or none. Call only when
- * locationProblem() returns null.
+ * locationProblem() returns null. A location whose manual correction disagrees with its released
+ * place is left as loaded and reported in kept.
  *
  * @param {object[]} events - the loaded world events, in file order
  * @param {object} release - the parsed released-locations file
  * @param {object[]} originals - the records of the reviewed file, as parsed from its bytes
- * @returns {{ applied: { event: object, before: object[] }[], problems: { record_index: number, reason: string }[] }}
+ * @returns {{ applied: { event: object, before: object[] }[], kept: { record_index: number, location_index: number }[],
+ *     problems: { record_index: number, reason: string }[] }}
  */
 export function applyLocations(events, release, originals) {
     const problems = [];
@@ -73,18 +81,37 @@ export function applyLocations(events, release, originals) {
         const reason = eventProblem(events[record.record_index], record, originals[record.record_index]);
         if (reason) problems.push({ record_index: record.record_index, reason });
     }
-    if (problems.length) return { applied: [], problems };
+    if (problems.length) return { applied: [], kept: [], problems };
+    const kept = [];
     const applied = release.records.map((record) => {
         const event = events[record.record_index];
         const before = event.locations;
         event.locations = before.map((location, index) => {
             const change = record.locations.find(c => c.location_index === index);
             if (!change) return location;
-            return { ...location, place_id: change.place_id, geography: structuredClone(release.places[change.place_id]) };
+            const place = release.places[change.place_id];
+            if (conflictsWithManualPoint(location, place)) {
+                kept.push({ record_index: record.record_index, location_index: index });
+                return location;
+            }
+            return { ...location, place_id: change.place_id, geography: structuredClone(place) };
         });
         return { event, before };
     });
-    return { applied, problems };
+    return { applied, kept, problems };
+}
+
+/**
+ * The event positions a release file names, ignoring malformed entries, so one bad entry in one
+ * release never costs the other release its kept records.
+ *
+ * @param {object|null} release
+ * @returns {number[]}
+ */
+export function releasePositions(release) {
+    return Array.isArray(release?.records)
+        ? release.records.filter(r => r && typeof r === 'object' && Number.isInteger(r.record_index)).map(r => r.record_index)
+        : [];
 }
 
 // Restores the locations applyLocations replaced.

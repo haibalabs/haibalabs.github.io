@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { applyLocations, locationProblem, revertLocations } from '../../modules/world-locations.js';
+import { applyLocations, locationProblem, releasePositions, revertLocations } from '../../modules/world-locations.js';
 import { attachPreviewImages, sha256Hex } from '../../modules/world-images.js';
 import { parseKeepingNumbers, recordSha256 } from './fingerprint.js';
 
@@ -102,12 +102,33 @@ describe('applyLocations and revertLocations — all reviewed changes or none', 
       assert.deepEqual(events[1], before);
     });
   }
+  it('keeps a location whose manual correction disagrees with the released place, and applies one that agrees', () => {
+    const { originals, events } = dataset();
+    events[1].locations[0].corrected = [10, 20];
+    events[2].locations[0].corrected = [48.8, 2.3];
+    const loaded1 = structuredClone(events[1].locations[0]);
+    const { applied, kept, problems } = applyLocations(events, release([change(1), change(2)]), originals);
+    assert.deepEqual(problems, []);
+    assert.equal(applied.length, 2);
+    assert.deepEqual(kept, [{ record_index: 1, location_index: 0 }]);
+    assert.deepEqual(events[1].locations[0], loaded1);
+    assert.equal(events[2].locations[0].place_id, 'plc_new');
+    assert.equal(events[2].locations[0].geography.status, 'resolved');
+  });
   it('reverting restores exactly the loaded locations', () => {
     const { originals, events } = dataset();
     const before = structuredClone(events);
     const { applied } = applyLocations(events, release([change(1), change(2)]), originals);
     revertLocations(applied);
     assert.deepEqual(events, before);
+  });
+});
+
+describe('releasePositions — one malformed entry never costs the other release its records', () => {
+  it('ignores entries that are not records, and files that are not releases', () => {
+    assert.deepEqual(releasePositions({ records: [null, { record_index: 4 }, 'x', { record_index: 'y' }, { record_index: 7 }] }), [4, 7]);
+    assert.deepEqual(releasePositions({ records: 'x' }), []);
+    assert.deepEqual(releasePositions(null), []);
   });
 });
 

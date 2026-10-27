@@ -871,11 +871,14 @@ export class UIManager {
                 console.info(`Released locations not shown: ${problem}`);
                 return;
             }
-            const { applied, problems } = applyLocations(worldEvents, release, this.eventManager.keptRecords ?? []);
+            const { applied, kept, problems } = applyLocations(worldEvents, release, this.eventManager.keptRecords ?? []);
             if (problems.length) {
                 const first = problems[0];
                 console.warn(`Released locations not shown: ${problems.length} no longer match their event (position ${first.record_index}: ${first.reason}).`);
                 return;
+            }
+            if (kept.length) {
+                console.info(`Released locations: ${kept.length} kept their manual correction, which differs from the released place (position ${kept[0].record_index}).`);
             }
             this.locationsBefore = new Map(applied.map(({ event, before }) => [event, before]));
             // the place index and map points come from event locations

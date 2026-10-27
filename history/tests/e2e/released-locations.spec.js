@@ -62,6 +62,12 @@ test('another events file or the empty repository release changes no locations, 
   await expect(card(page, 'Siege of Salvador').locator('.event-location')).not.toHaveAttribute('title', /Reviewed location/);
   await expect(page.locator('.toast')).toHaveCount(0);
 
+  // a malformed location file changes no locations and leaves the released images alone
+  await page.unrouteAll({ behavior: 'ignoreErrors' });
+  await openSite(page, { locations: '{"version":1,"kind":"world_location_sidecar","source":{},"places":{},"records":[null]}' });
+  await page.fill('#searchInput', 'Military agreement between Granada and Aragon');
+  await expect(card(page, 'Military agreement between Granada and Aragon').locator('.event-image img')).toHaveCount(1);
+
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await openSite(page, { locations: null });
   await page.fill('#searchInput', 'Siege of Salvador');

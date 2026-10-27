@@ -9,6 +9,7 @@ import { initTimelineNav } from './modules/timeline-nav.js';
 import { TimelineUI }   from './modules/timeline-ui.js';
 import { TimelineStore } from './modules/timeline-store.js';
 import { FirebaseImageStore } from './modules/firebase-image-store.js';
+import { releasePositions } from './modules/world-locations.js';
 
 // Initialize map globally since it's used across different modules
 const { map, markersLayer, geocodeCache } = initMap();
@@ -54,8 +55,7 @@ async function initializeApp() {
         // the released records are kept as loaded, so their checks need no second download
         const images = uiManager.fetchReleasedImages();
         const locations = uiManager.fetchReleasedLocations();
-        const positions = (release) => (Array.isArray(release?.records) ? release.records.map(record => record.record_index) : []);
-        await eventManager.loadEvents(dataFile, { keepRecords: Promise.all([images, locations]).then(([i, l]) => [...positions(i), ...positions(l)]) });
+        await eventManager.loadEvents(dataFile, { keepRecords: Promise.all([images, locations]).then(([i, l]) => [...releasePositions(i), ...releasePositions(l)]) });
         // images first: their checks compare each event's places as loaded
         await uiManager.showReleasedImages(await images);
         await uiManager.showReleasedLocations(await locations);
