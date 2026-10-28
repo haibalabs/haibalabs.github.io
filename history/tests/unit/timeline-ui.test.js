@@ -313,14 +313,14 @@ describe('ModalManager — the event form keeps the destination it was opened fo
     assert.equal(view.imageStore.files.size, 2);
   });
 
-  it('with no timeline open, the form still adds a world event (admin debug path)', async () => {
+  it('with no timeline open, the form adds no world event and stays open', async () => {
     const view = ui({});
     const manager = form(view);
     manager.open();
     Object.assign(manager.form.values, { name: 'Treaty signed', enhanced_time: '1648', enhanced_description: 'x' });
     await submit(manager);
-    assert.equal(manager.eventManager.added.length, 1);
-    assert.equal(manager.eventManager.added[0].name, 'Treaty signed');
+    assert.deepEqual(manager.eventManager.added, []);
+    assert.equal(manager.modal.style.display, 'flex');
   });
 
   it('a new event in a personal timeline starts in the People category; world events start with none', async () => {

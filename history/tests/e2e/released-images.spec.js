@@ -19,17 +19,6 @@ async function openSite(page, { query = '?file=events.json', release = SAMPLE } 
 const card = (page, name) => page.locator('#timeline-content .event')
   .filter({ has: page.locator('.event-header', { hasText: name }) });
 
-async function turnPreview(page, on) {
-  await page.evaluate(() => {
-    document.getElementById('debug-settings').hidden = false;
-    document.getElementById('debug-world-images').disabled = false;
-  });
-  await page.click('#settings-btn');
-  if (on) await page.check('#debug-world-images');
-  else await page.uncheck('#debug-world-images');
-  await page.click('.settings-close-btn');
-}
-
 test('released images show to every visitor without any setting, with credits in the viewer', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page);
@@ -88,19 +77,6 @@ test('a contextual image shows its caption and its date, without a role label or
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await openSite(page, { release: JSON.stringify(release) });
   await expect(page.locator('#timeline-content .event-image')).toHaveCount(0);
-});
-
-test('the admin preview replaces the released images while on, and they return when it is off', async ({ page }) => {
-  test.setTimeout(120000);
-  await openSite(page);
-  await turnPreview(page, true);
-  await expect(page.locator('.toast', { hasText: 'Showing 9 reviewed images.' })).toHaveCount(1);
-  await page.fill('#searchInput', 'Union Station massacre');
-  await expect(card(page, 'Union Station massacre').locator('.event-image')).toHaveCount(1);
-  await turnPreview(page, false);
-  await expect(card(page, 'Union Station massacre').locator('.event-image')).toHaveCount(0);
-  await page.fill('#searchInput', 'Roerich Pact');
-  await expect(card(page, 'The Roerich Pact signed').locator('.event-image-caption')).toHaveCount(1);
 });
 
 test('the repository release attaches to the default canonical file: image dates shown, open issues noted', async ({ page }) => {

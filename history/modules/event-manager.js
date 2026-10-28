@@ -1,11 +1,10 @@
 // event-manager.js
 import { PlaceEventIndex } from './place-event-index.js';
 import { eventSortableValue, eventTiebreak } from './date-handlers.js';
-import { acknowledgement, incomingProblem, mergeDecision, newEventId, pushDecision, syncTarget, toSyncDoc } from './sync-identity.js';
 import { sha256Hex } from './world-images.js';
 
 import { initializeApp as firebaseInit } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
-import { getFirestore, connectFirestoreEmulator, collection, doc, getDoc, query, runTransaction, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { getFirestore, connectFirestoreEmulator } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-analytics.js";
 import { getAuth, connectAuthEmulator } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
 
@@ -26,15 +25,6 @@ export class EventManager {
         this.geographicFilter = {};
         this.timeRange = {};
         this.currentFile = null;
-        // Firestore collection for this dataset, or null with the reason sync is unavailable
-        this.syncTarget = { collection: null, reason: 'No dataset loaded.', duplicateIds: [] };
-        // Highest server revision (lastModified, ms) applied or confirmed unchanged
-        this.syncCursor = 0;
-        // event_id -> { server, revision } for server changes that clash with local edits
-        this.conflicts = new Map();
-        // document key -> reason, for server documents that cannot be merged as events
-        this.quarantined = new Map();
-        this.datasetMetadata = null;
         this.timelineView = 'with-world';
 
         // Firebase Configuration
@@ -69,170 +59,6 @@ export class EventManager {
         console.log("Firebase initialized successfully!");
     }
 
-    // Re-checks whether the current events may sync; IDs can change after load (adds, pulls).
-    refreshSyncTarget() {
-        this.syncTarget = syncTarget(this.currentFile, this.datasetMetadata, this.events.filter(event => !event.personal));
-    }
-
-    // The dataset's collection; throws with the reason when this dataset cannot sync.
-    requireSyncCollection() {
-        this.refreshSyncTarget();
-        if (!this.syncTarget.collection) throw new Error(this.syncTarget.reason);
-        return this.syncTarget.collection;
-    }
-
-    // Events with local changes not yet pushed, excluding those in an unresolved conflict.
-    getUnpushedEvents() {
-        return this.events.filter(event => event.dirty && !this.conflicts.has(event.event_id));
-    }
-
-    /**
-     * Writes each unpushed event in a transaction that first reads the server revision. If another
-     * change landed after the revision the local edit was based on, nothing is written and the
-     * event joins this.conflicts with its local changes kept.
-     *
-     * @returns {Promise<{ saved: number, conflicts: number }>}
-     */
-    async pushChanges() {
-        const collectionName = this.requireSyncCollection();
-        const user = this.auth.currentUser;
-        if (!user) throw new Error('User must be authenticated to push events');
-
-        let saved = 0;
-        let conflicts = 0;
-        const errors = [];
-        for (const event of this.getUnpushedEvents()) {
-            const ref = doc(this.db, collectionName, event.event_id);
-            const sent = toSyncDoc(event);
-            const writeId = crypto.randomUUID();
-            try {
-                const conflict = await runTransaction(this.db, async (tx) => {
-                    const snap = await tx.get(ref);
-                    const serverRevision = snap.exists() ? (snap.data().lastModified?.toMillis?.() ?? 0) : null;
-                    if (pushDecision(event, serverRevision) === 'conflict') {
-                        return { server: snap.data(), revision: serverRevision };
-                    }
-                    tx.set(ref, { ...sent, writeId, lastModified: serverTimestamp(), userId: user.uid });
-                    return null;
-                });
-                if (conflict) {
-                    this.conflicts.set(event.event_id, conflict);
-                    conflicts++;
-                    continue;
-                }
-                const written = (await getDoc(ref)).data();
-                Object.assign(event, acknowledgement(event, sent, writeId,
-                    { data: written, revision: written?.lastModified?.toMillis?.() ?? null }));
-                event.isNew = false;
-                saved++;
-            } catch (error) {
-                errors.push({ event: event.name, error: error.message });
-            }
-        }
-
-        if (errors.length > 0) {
-            throw new Error(`Saved ${saved} events, but failed to save ${errors.length} events. First error: ${errors[0].error}`);
-        }
-        return { saved, conflicts };
-    }
-
-    getUnpushedCount() {
-        return this.getUnpushedEvents().length;
-    }
-
-    // A local event built from a server document at the given revision.
-    fromServer(data, revision) {
-        const { lastModified, userId, ...fields } = data;
-        return this.normalizeEvent({ ...fields, lastModified: revision, dirty: false, syncedRevision: revision });
-    }
-
-    /**
-     * Applies server revisions newer than the cursor. Untouched events take the server version;
-     * events with unsynced local changes are held in this.conflicts until resolveConflict().
-     *
-     * Documents whose key is not a valid event ID matching their event_id are set aside in
-     * this.quarantined and never merged.
-     *
-     * @returns {Promise<{ applied: number, conflicts: number, quarantined: number }>}
-     */
-    async pullChanges() {
-        try {
-            const collectionName = this.requireSyncCollection();
-            if (!this.auth.currentUser) throw new Error('User must be authenticated to pull events');
-
-            const snapshot = await getDocs(query(collection(this.db, collectionName),
-                where('lastModified', '>', new Date(this.syncCursor))));
-            const indexById = new Map(this.events.map((event, i) => [event.event_id, i]));
-            let applied = 0;
-            let maxSeen = this.syncCursor;
-
-            snapshot.forEach((snap) => {
-                const data = snap.data();
-                const revision = data.lastModified?.toMillis?.() ?? 0;
-                const id = snap.id;
-                const problem = incomingProblem(id, data);
-                if (problem) {
-                    this.quarantined.set(id, problem);
-                    maxSeen = Math.max(maxSeen, revision);
-                    return;
-                }
-                const index = indexById.get(id);
-                const decision = mergeDecision(this.events[index], revision);
-
-                if (decision === 'conflict') {
-                    this.conflicts.set(id, { server: data, revision });
-                    return;
-                }
-                maxSeen = Math.max(maxSeen, revision);
-                if (decision === 'unchanged') return;
-                if (decision === 'add') {
-                    indexById.set(id, this.events.length);
-                    this.events.push(this.fromServer(data, revision));
-                } else {
-                    this.events[index] = this.fromServer(data, revision);
-                }
-                applied++;
-            });
-
-            // never move the cursor past an unresolved conflict, so later pulls return it again
-            const conflictRevisions = [...this.conflicts.values()].map(c => c.revision);
-            this.syncCursor = conflictRevisions.length
-                ? Math.min(maxSeen, Math.min(...conflictRevisions) - 1)
-                : maxSeen;
-
-            if (applied > 0) {
-                this.sortEvents();
-                this.invalidateCache();
-                this.refreshSyncTarget();
-            }
-            return { applied, conflicts: this.conflicts.size, quarantined: this.quarantined.size };
-        } catch (error) {
-            console.error('Error syncing with Firestore:', error);
-            throw error;
-        }
-    }
-
-    /**
-     * Settles a conflict: 'server' takes the server version, 'local' keeps the local changes,
-     * which the next push writes over the server version.
-     *
-     * @param {string} eventId
-     * @param {'server'|'local'} keep
-     */
-    resolveConflict(eventId, keep) {
-        const conflict = this.conflicts.get(eventId);
-        if (!conflict) return;
-        const index = this.events.findIndex(event => event.event_id === eventId);
-        if (keep === 'server') {
-            this.events[index] = this.fromServer(conflict.server, conflict.revision);
-        } else {
-            this.events[index].syncedRevision = conflict.revision;
-        }
-        this.conflicts.delete(eventId);
-        this.sortEvents();
-        this.invalidateCache();
-        this.refreshSyncTarget();
-    }
     /**
      * @param {string} dataFile
      * @param {{ keepRecords?: Promise<number[]>|number[] }} [options] - positions of records to keep
@@ -278,26 +104,11 @@ export class EventManager {
                 if (Number.isInteger(index) && index >= 0 && index < eventsArray.length) this.keptRecords[index] = structuredClone(eventsArray[index]);
             }
 
-            // Events from the file are untouched and have never been synced
-            this.events = eventsArray.map(event => {
-                return this.normalizeEvent({
-                    ...event,
-                    dirty: false,
-                    syncedRevision: null
-                }, baseTimestamp);
-            });
-            this.datasetMetadata = data.metadata ?? null;
-            this.syncCursor = 0;
-            this.conflicts.clear();
-            this.quarantined.clear();
-            this.refreshSyncTarget();
+            this.events = eventsArray.map(event => this.normalizeEvent({ ...event }, baseTimestamp));
 
             this.sortEvents();
             this.invalidateCache();
-    
-            // Immediately pull any server changes
-            // await this.pullChanges(); // to enable later - right now you need to login to pull
-            
+
             return this.events;
         } catch (error) {
             console.error('Error loading events:', error);
@@ -336,23 +147,6 @@ export class EventManager {
         return event;
     }
 
-    // A new event gets its permanent ID here, once, and stays dirty until pushed.
-    addEvent(event) {
-        const normalizedEvent = this.normalizeEvent({
-            ...event,
-            event_id: event.event_id || newEventId(),
-            isNew: true,
-            dirty: true,
-            syncedRevision: null
-        });
-
-        this.events.push(normalizedEvent);
-        this.sortEvents();
-        this.invalidateCache();
-        // a supplied ID may duplicate an existing one, which turns sync off
-        this.refreshSyncTarget();
-    }
-
     setGeographicFilter(filter = {}) {
         this.geographicFilter = filter;
         this.invalidateCache();
@@ -364,7 +158,7 @@ export class EventManager {
     }
 
     // Personal timeline events live in this.events next to world events, marked personal: true.
-    // TimelineStore saves them as they change, so they are never dirty for world sync.
+    // TimelineStore saves them as they change.
     setPersonalEvents(timelineId, events) {
         this.events = this.events.filter(event => !event.personal);
         for (const event of events) this.events.push(this.toPersonal(timelineId, event));
@@ -396,7 +190,7 @@ export class EventManager {
 
     toPersonal(timelineId, event) {
         return this.normalizeEvent({ confidence: 'high', categories: [], figures: [], locations: [], ...event,
-            personal: true, timelineId, dirty: false });
+            personal: true, timelineId });
     }
 
     // 'with-world' shows personal events among world events; 'only' shows personal events alone.

@@ -1,14 +1,13 @@
 // world-images.js
 // Independently reviewed world-event images: the released set every visitor sees
-// (releases/README.md) and the admin-only preview (previews/README.md). Each record names the
-// position of its event in one exact events.json, identified by its SHA-256. Images are attached
+// (releases/README.md). Each record names the position of its event in one exact events file,
+// identified by its SHA-256. Images are attached
 // only when the bytes the page loaded have that hash, every index is valid and unique, and every
 // target event is still the record loaded from the file: not replaced, not edited, with its file
 // fields unchanged. If any check fails, nothing is attached and the reason is reported. There is no
 // fallback matching by title. events.json itself carries no images.
 
-export const PREVIEW_URL = 'previews/reviewed-images-v1.json';
-// Reviewed images every visitor sees, with the same binding (releases/README.md).
+// Reviewed images every visitor sees (releases/README.md).
 export const RELEASE_URL = 'releases/released-images-v1.json';
 
 // The image roles a record may have; any other role is refused. The viewer shows no role label: the
@@ -173,7 +172,7 @@ function eventProblem(event, record, original, locations) {
  * previewProblem() returns null.
  *
  * @param {object[]} events - the loaded world events, in file order
- * @param {object[]} records - preview records (previews/reviewed-images-v1.json)
+ * @param {object[]} records - reviewed image records (releases/released-images-v1.json)
  * @param {object[]} originals - the records of the reviewed file, as parsed from its bytes
  * @param {(event: object) => object[]} [locationsOf] - an event's locations as loaded (world-locations.js)
  * @returns {{ attached: object[], problems: { record_index: number, reason: string }[] }}

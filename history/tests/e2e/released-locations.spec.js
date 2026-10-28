@@ -20,17 +20,6 @@ async function openSite(page, { query = '', locations = SYNTHETIC } = {}) {
 const card = (page, name) => page.locator('#timeline-content .event')
   .filter({ has: page.locator('.event-header', { hasText: name }) });
 
-async function turnPreview(page, on) {
-  await page.evaluate(() => {
-    document.getElementById('debug-settings').hidden = false;
-    document.getElementById('debug-world-images').disabled = false;
-  });
-  await page.click('#settings-btn');
-  if (on) await page.check('#debug-world-images');
-  else await page.uncheck('#debug-world-images');
-  await page.click('.settings-close-btn');
-}
-
 test('a released location gives an event a point on the map, with its precision', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page);
@@ -43,17 +32,13 @@ test('a released location gives an event a point on the map, with its precision'
   await expect(page.locator('.map-selected-dot').first()).toBeVisible();
 });
 
-test('released images stay attached when their event\'s place changes, even after the preview toggles', async ({ page }) => {
+test('released images stay attached when their event\'s place changes', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page);
   await page.fill('#searchInput', 'Military agreement between Granada and Aragon');
   const granada = card(page, 'Military agreement between Granada and Aragon');
   await expect(granada.locator('.event-image img')).toHaveCount(1);
   await expect(granada.locator('.event-location')).toHaveAttribute('title', 'Reviewed location (region precision)');
-  // the legacy-bound preview refuses the canonical file, and the released images are attached again
-  await turnPreview(page, true);
-  await expect(page.locator('.toast', { hasText: 'not the one these preview images were reviewed against' })).toHaveCount(1);
-  await expect(granada.locator('.event-image img')).toHaveCount(1);
 });
 
 test('another events file or an empty release changes no locations, without a message', async ({ page }) => {

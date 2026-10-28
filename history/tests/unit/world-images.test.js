@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { attachPreviewImages, CREDIT_LIMIT, detachPreviewImages, displayCaption, displayDate, IMAGE_ROLES, previewProblem, recordDisplayDate, sha256Hex, shortCredit } from '../../modules/world-images.js';
 
-const PREVIEW = JSON.parse(readFileSync(new URL('../../previews/reviewed-images-v1.json', import.meta.url), 'utf8'));
+const PREVIEW = JSON.parse(readFileSync(new URL('../fixtures/reviewed-images-v1.json', import.meta.url), 'utf8'));
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
 const SAMPLE = JSON.parse(readFileSync(new URL('../fixtures/released-images-sample.json', import.meta.url), 'utf8'));
 const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url));
