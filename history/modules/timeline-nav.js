@@ -1,7 +1,7 @@
 // timeline-nav.js
 // Era crumbs and the spine scrubber. Reads events and positions from the managers and moves the
 // timeline with uiManager's jumpToDate / jumpToStart / jumpToEnd.
-import { parseTimeToSortableValue, extractYear } from './date-handlers.js';
+import { eventSortableValue, extractYear } from './date-handlers.js';
 
 // Conventional, mostly Western periodization.
 const ERAS = [
@@ -59,7 +59,7 @@ const yearCache = new WeakMap();
 function yearOf(ev) {
     let y = yearCache.get(ev);
     if (y === undefined) {
-        try { y = extractYear(parseTimeToSortableValue(ev.enhanced_time).sortableValue); } catch { y = NaN; }
+        try { y = extractYear(eventSortableValue(ev)); } catch { y = NaN; }
         yearCache.set(ev, y);
     }
     return y;

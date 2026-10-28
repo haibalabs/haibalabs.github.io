@@ -5,7 +5,11 @@ import {
   formatHistoricalDate,
   extractYear,
   extractDateComponents,
-  numericDateParts
+  numericDateParts,
+  eventDateLabel,
+  eventSortableValue,
+  eventTiebreak,
+  eventYear
 } from '../../modules/date-handlers.js';
 
 const TOLERANCE = 0.0001;
@@ -287,5 +291,35 @@ describe('deep time — thousands of years ago and five-digit BC years', () => {
   });
   it('leaves a comma followed by a space alone', () => {
     assert.equal(parseTimeToSortableValue('July 7, 756 AD').year, 756);
+  });
+});
+
+describe('navigation positions — deep-time records with labels the parser cannot read', () => {
+  // from Atlas's early-times date contract (opening-v2/date-contract.json)
+  const bigBang = { enhanced_time: 'c. 13.8 billion years ago', sort_years_ago: 13800000000, sort_tiebreak: 1 };
+  const nuclei = { enhanced_time: 'Within minutes after the Big Bang', sort_years_ago: 13800000000, sort_tiebreak: 2 };
+  const light = { enhanced_time: 'c. 380,000 years after the Big Bang', sort_years_ago: 13799620000, sort_tiebreak: 3 };
+  const reionization = { enhanced_time: 'c. 200 million–1 billion years after the Big Bang', sort_years_ago: 13200000000, sort_tiebreak: 6 };
+  const ediacaran = { enhanced_time: 'c. 580–542 million years ago', sort_years_ago: 561000000, sort_tiebreak: 14 };
+
+  it('shows the label as written', () => {
+    assert.equal(eventDateLabel(nuclei), 'Within minutes after the Big Bang');
+    assert.equal(eventDateLabel(ediacaran), 'c. 580–542 million years ago');
+  });
+  it('orders records at the same position by their tiebreak, and the rest by position', () => {
+    const shuffled = [ediacaran, light, nuclei, reionization, bigBang];
+    const ordered = shuffled.map(e => ({ e, time: eventSortableValue(e), tie: eventTiebreak(e) }))
+      .sort((a, b) => a.time - b.time || a.tie - b.tie).map(x => x.e);
+    assert.deepEqual(ordered, [bigBang, nuclei, light, reionization, ediacaran]);
+  });
+  it('gives a year from the position, counted back from 1950', () => {
+    assert.equal(eventYear(ediacaran), 1950 - 561000000);
+  });
+  it('leaves events without a position exactly as before', () => {
+    const plain = { enhanced_time: '1936-06-19' };
+    assert.equal(eventSortableValue(plain), parseTimeToSortableValue('1936-06-19').sortableValue);
+    assert.equal(eventYear(plain), 1936);
+    assert.equal(eventDateLabel(plain), formatHistoricalDate('1936-06-19'));
+    assert.equal(eventTiebreak(plain), 0);
   });
 });

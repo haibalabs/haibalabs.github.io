@@ -1,5 +1,5 @@
 import { isValidCoordinates } from './map-utils.js';
-import { parseTimeToSortableValue } from './date-handlers.js';
+import { eventYear } from './date-handlers.js';
 
 const longitude = value => ((value + 180) % 360 + 360) % 360 - 180;
 export function containsPoint(bounds, [lat, lng]) {
@@ -37,7 +37,7 @@ export class PlaceEventIndex {
                 : this.duplicateIds.has(event.event_id) ? `session-duplicate:${i}` : event.event_id;
             this.events.set(id, event);
             this.ids.set(event, id);
-            this.years.set(id, parseTimeToSortableValue(event.enhanced_time)?.year);
+            this.years.set(id, eventYear(event));
             const points = [];
             for (const location of event.locations || []) {
                 if (!location || typeof location !== 'object') continue;
