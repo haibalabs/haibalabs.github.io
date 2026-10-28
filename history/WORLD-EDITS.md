@@ -110,7 +110,13 @@ image
 
 For a Commons link, the form reads the file's metadata from the Commons API, fills in URLs, credit and license, and asks the author for a caption, role and optional date. The checker reads Commons again and flags any difference. For an upload, the author supplies caption, role, date, credit and the rights confirmation, and the URLs are set on approval.
 
-**`before` is the effective image when the author started:** the released image record, normalized to this shape with `source: "release"` and its `release_pair_id`; an image from an earlier approved edit; or `null` for none. Images are compared by identity, not field by field: the released pair ID, the Commons file page, or the upload's `sha256`. A caption change on the same picture is therefore an image edit whose `before` and `after` share an identity.
+**`before` is the effective image when the author started:** the released image record, normalized to this shape with `source: "release"` and its `release_pair_id`; an image from an earlier approved edit; or `null` for none.
+
+Two comparisons are kept apart:
+- **Record equality** decides whether a patch applies, whether two edits agree or conflict, and whether a change has been folded. It compares the whole normalized record: every display field (caption, display date, role, credit, license, URLs, rights statement) and the asset identity. A caption-only change on the same picture is therefore a real change. It's never treated as a no-op, never as agreement with an edit proposing a different caption, and counts as folded only when the dataset holds the same caption.
+- **Asset identity** tells whether two records show the same picture: the released pair ID, the Commons file page, or the upload's `sha256`. It's used only for display ("same picture, new caption" on the review page) and for the reuse check (one picture across several events). It never decides applicability.
+
+Normalization trims whitespace and uses Unicode NFC, and leaves out nothing displayed. Unit tests include metadata-only changes: caption only, credit only, date only, and a role change on the same asset.
 
 **Removing an image** (`after: null`) means visitors see no image and no credit, caption or license for that event. The overlay patch hides the released image as well. Removal is kept across folding and revert:
 - the history-dp export records it as an image suppression for that `release_pair_id`, so the next image release leaves the pair out instead of bringing it back;
