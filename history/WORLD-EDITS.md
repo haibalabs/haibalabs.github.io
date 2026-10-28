@@ -30,7 +30,7 @@ Invited editors and reviewers can fix any world event: its name, date, descripti
 | admin | Everything above; see all edits; approve, reject, send back, overrule an automatic rejection and revert. |
 | checker (agents' service account) | Read new edits and write check results and the resulting status. Never approves. |
 
-An admin may approve their own edit, whatever its status, including flagged or automatically rejected (Rachid, 2026-10-27). Such an approval is recorded with `review.self_approved: true`, shown in History, and exported with the same flag. An override still needs its note. Reviewers, if they're later allowed to approve, will never approve their own edits.
+An admin may approve their own edit while any of its fields is still open (pending, flagged or automatically rejected), Rachid, 2026-10-27. Fields already approved, published or merged keep their immutable receipts: self-approval never re-approves or replays them. Such an approval is recorded with `review.self_approved: true`, shown in History, and exported with the same flag. An override still needs its note. Reviewers, if they're later allowed to approve, will never approve their own edits.
 
 ## The edit
 
@@ -169,7 +169,7 @@ approved      rejected      sent_back          conflict
 published ──► merged (the pipeline folded it into the dataset)
 ```
 
-- **auto_rejected**: a hard rule failed, such as a date that doesn't parse, a dead Wikipedia link, or an image without a free license. The author sees the reason and can revise. **The edit still appears in the admin's queue under "Automatically rejected", where an admin can overrule it**: approve it anyway, with a required note recorded as `review.override: true`.
+- **auto_rejected**: a hard rule failed, such as a date that doesn't parse, a dead Wikipedia link, or a Commons image without a free license (uploads are permission-only by design and never fail on license). The author sees the reason and can revise. **The edit still appears in the admin's queue under "Automatically rejected", where an admin can overrule it**: approve it anyway, with a required note recorded as `review.override: true`.
 - **flagged**: a check couldn't decide, for example the source check found the article unclear, or no budget was available for a paid check. The edit goes to the admin with the warning shown.
 - **sent_back**: the admin asks the author for a change. It works like auto_rejected, but with the admin's note.
 - **conflict**: set automatically when an approval changes a field that a pending edit also changes, and the pending edit's `before` no longer matches. See Merging.
@@ -224,7 +224,7 @@ Each result is `{ check, outcome: pass | fail | unsure, detail, evidence_url? }`
 ### Sources can be wrong
 
 Wikipedia, Wikidata, GeoNames and Commons are evidence, not truth. Editors will sometimes be right where Wikipedia is wrong.
-- **No comparison with a source is a hard check.** Hard checks only cover things that are mechanically broken: a date that doesn't parse, a link to a missing page, an image without a free license, a malformed field. Disagreement with an article, a geocoder or a date in metadata is always a soft check. At worst it makes the edit `flagged`, never `auto_rejected`.
+- **No comparison with a source is a hard check.** Hard checks only cover things that are mechanically broken: a date that doesn't parse, a link to a missing page, a Commons image without a free license, a malformed field. Disagreement with an article, a geocoder or a date in metadata is always a soft check. At worst it makes the edit `flagged`, never `auto_rejected`.
 - **Agreement is not proof either.** A pass means "consistent with the cited source", and the review page says so. A popular error copied across sites can pass every check.
 - **The author can say a source is wrong.** The form has a "A source is wrong here" option (`source_conflict`). The reason must then explain it, and the author should cite the better source: a primary document, a scholarly work or an official record. Such edits always go to an admin as `flagged`, with the disagreement shown, and the checker runs its comparisons against the author's cited sources as well as Wikipedia.
 - **Several sources beat one.** Where a check can consult more than one independent source (Wikipedia plus Wikidata, or a cited source), its detail lists each with what it says. The admin sees the disagreement instead of a single verdict.
