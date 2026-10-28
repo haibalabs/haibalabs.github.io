@@ -57,8 +57,8 @@ edits/{editId}
   review        { by: { uid, email, role }, revision, content_sha256, decision, fields, note, override, at },
                 set by the admin; the rules require by.uid and by.email to be the signed-in admin's,
                 the server time, and revision/content_sha256 equal to the edit's current ones
-  source_conflict  true when the author says a cited source (often Wikipedia) is itself wrong;
-                the reason must then explain why, and sources should include the better source
+  source_conflict  true when the author says a source (often Wikipedia) is itself wrong; a note and
+                a better source help the reviewer but stay optional
   fields        map, field -> per-field disposition (see Field dispositions):
                 { status, receipt?: { by, revision, content_sha256, value, override, agreement_with?, at } }
   published     { overlay_version, at }, set when the edit's last approved field reaches visitors
@@ -251,7 +251,7 @@ Each result is `{ check, outcome: pass | fail | unsure, detail, evidence_url? }`
 Wikipedia, Wikidata, GeoNames and Commons are evidence, not truth. Editors will sometimes be right where Wikipedia is wrong.
 - **No comparison with a source is a hard check.** Hard checks only cover things that are mechanically broken: a date that doesn't parse, a link to a missing page, a Commons image without a free license, a malformed field. Disagreement with an article, a geocoder or a date in metadata is always a soft check. At worst it makes the edit `flagged`, never `auto_rejected`.
 - **Agreement is not proof either.** A pass means "consistent with the cited source", and the review page says so. A popular error copied across sites can pass every check.
-- **The author can say a source is wrong.** The form has a "A source is wrong here" option (`source_conflict`). The reason must then explain it, and the author should cite the better source: a primary document, a scholarly work or an official record. Such edits always go to an admin as `flagged`, with the disagreement shown, and the checker runs its comparisons against the author's cited sources as well as Wikipedia.
+- **The author can say a source is wrong.** The form has a "Wikipedia or another source is wrong here" option (`source_conflict`). A note and a better source (a primary document, a scholarly work or an official record) help the reviewer, but stay optional, like every note. Such edits always go to an admin as `flagged`, with the disagreement shown, and the checker runs its comparisons against the author's cited sources as well as Wikipedia.
 - **Several sources beat one.** Where a check can consult more than one independent source (Wikipedia plus Wikidata, or a cited source), its detail lists each with what it says. The admin sees the disagreement instead of a single verdict.
 - **The admin decides.** Whatever the checks say, the admin can approve, overruling an automatic rejection if needed. The approval note should name the source relied on.
 - **Wrong sources are worth recording.** When an approved edit contradicts Wikipedia, the history-dp export marks it, so the team can later suggest a correction to Wikipedia and doesn't re-import the error at the next rebuild.
@@ -399,7 +399,7 @@ Every change to what visitors see can be traced to a person, at every stage:
 
 - `edits`:
   - **Create:** an editor, reviewer or admin. The author must be the signed-in account, `status: submitted`, no `review`, `published` or `merged` fields, only known field names in `changes`, within the size limits.
-  - **Update by the author:** only while `submitted`, `auto_rejected`, `flagged`, `sent_back` or `rejected`, and only for fields not yet approved. The author may change `changes`, `reason` and `sources` (status back to `submitted`, `revision` + 1) or set `withdrawn`.
+  - **Update by the author:** while the edit shows Waiting for review (`submitted`, `flagged`, `ready`, `conflict`, or partly approved) or Rejected (`auto_rejected`, `sent_back`, `rejected`), and only for fields not yet approved. The author may change those fields' `changes`, `reason` and `sources` (status back to `submitted`, `revision` + 1, `checks.automatic` cleared) or withdraw them. Approved fields keep their receipts and can't be revised or withdrawn. An admin approval in flight against the old revision is refused by the revision check.
   - **Update by an admin:** the review fields and the transitions in Statuses only. On their own edit, `review.self_approved` must be `true`.
   - **The checker:** writes through the Admin SDK, which bypasses the rules; its key never leaves Rachid's machine.
   - **Read:** the author and admins only.
@@ -441,6 +441,7 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
   - a patch that targets a created event applies after the event is added;
   - image identity and removal: hiding a released image, a folded removal skipped, revert restoring the full record;
   - locations: editing the second of two locations, adding one to an event with none, removing one; a patch based on the post-release value applies after a location release; a later release changing the base is accepted as a prior base;
+  - people: a legacy string `"Joe Louis"` and `{ name: "Joe Louis" }` are equal and hash the same; `{ name, wikipedia_url }` differs from a name alone, so linking a person is a real change; URLs are compared in one normalized form (https, decoded title, underscores), with fixtures for each;
   - `content_sha256` normalization, the overlay size limit, and the field checks.
 - **Rules:** every create, update and read case above, including an admin approving their own edit (allowed only with `self_approved: true`), a 51st edit in a day (refused by the checker) and a visitor reading `edits` (denied).
 - **Emulator browser:**
@@ -450,6 +451,8 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
   - two edits on the same field produce a conflict;
   - an automatically rejected edit can be approved anyway;
   - an approval of a revision the author has since changed is refused;
+  - the author revises and withdraws a pending field of a `ready` edit and of a `conflict` edit, and can't revise or withdraw a field that is already approved;
+  - a rejected edit is revised into a new revision and checked again;
   - an upload is approved only after its public copy is verified, and a failed copy approves nothing;
   - revert restores the old value.
 - **history-dp:** checker unit tests per check, plus a replay over fixture edits.
