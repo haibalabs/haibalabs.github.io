@@ -123,6 +123,10 @@ function parseYear(yearStr) {
   
     let cleaned = time.toLowerCase().trim();
 
+    // "10,000 BC" or "300,000 years ago": thousands separators go first, before the leading-zero
+    // rule below turns ",000" into ",0". A comma followed by a space ("July 7, 756") is untouched.
+    cleaned = cleaned.replace(/\b\d{1,3}(?:,\d{3})+\b/g, m => m.replace(/,/g, ''));
+
     // Remove leading zeros from any number, keeping at least one digit
     cleaned = cleaned.replace(/\b0+(\d+)\b/g, '$1'); 
     cleaned = cleaned.replace(/[\(\)"]/g, '');
@@ -413,6 +417,14 @@ function extractRangeOrDayRange(inputText) {
       const val = parseFloat(dateStr.match(/\d+(\.\d+)?/)[0]);
       return { year: -val * 1000000, month: 1, day: 1 };
     }
+    // "300000 years ago", "70 thousand years ago": counted back from 1950, the "before present"
+    // convention, so "12,000 years ago" sorts next to "10,000 BC". Million and billion years ago
+    // above keep counting from year 0, where the difference is too small to show.
+    const yearsAgo = dateStr.match(/^(\d+(?:\.\d+)?)\s*(thousand\s+)?years?\s+ago$/);
+    if (yearsAgo) {
+      const years = parseFloat(yearsAgo[1]) * (yearsAgo[2] ? 1000 : 1);
+      return { year: Math.round(1950 - years), month: 1, day: 1 };
+    }
   
     // 6) ISO “YYYY-MM-DD”
   //  let isoMatch = dateStr.match(/^(\d{1,4})-(\d{1,2})-(\d{1,2})$/);
@@ -507,8 +519,8 @@ function extractRangeOrDayRange(inputText) {
       }
     }
   
-    // 12) “YYYY” => just a year
-    let yearOnlyMatch = dateStr.match(/^(\d{1,4})$/);
+    // 12) “YYYY” => just a year; a BC year may be longer ("10000 BC")
+    let yearOnlyMatch = dateStr.match(isBC ? /^(\d{1,7})$/ : /^(\d{1,4})$/);
     if (yearOnlyMatch) {
       parsed.year = parseInt(yearOnlyMatch[1]);
       if (isBC) {
@@ -649,8 +661,8 @@ export function extractDateComponents(sortableTime) {
 export function formatHistoricalDate(date) {
   // Handle special cases first
   if (!date) return "unknown date";
-  if (date.includes('billion years ago') || 
-      date.includes('million years ago')) {
+  // deep time is shown as written ("c. 300,000 years ago", "66 million years ago")
+  if (/\byears?\s+ago\b/i.test(date)) {
       return date;
   }
 
@@ -696,7 +708,9 @@ export function formatHistoricalDate(date) {
   }
 
   // Add year
-  const yearStr = Math.abs(parsed.year).toString();
+  // five-digit years and longer get a thousands separator ("10,000 BC"); 1936 stays 1936
+  const absYear = Math.abs(parsed.year);
+  const yearStr = absYear >= 10000 ? absYear.toLocaleString('en-US') : absYear.toString();
   if (result) {
       result += `, ${yearStr}`;
   } else {
