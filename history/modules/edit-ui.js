@@ -125,11 +125,15 @@ export class EditUI {
     }
 
     setEditing(on, { remember = true } = {}) {
-        this.editing = Boolean(on) && this.canEdit;
+        const editing = Boolean(on) && this.canEdit;
+        const changed = editing !== this.editing;
+        this.editing = editing;
         this.toggle.setAttribute('aria-pressed', String(this.editing));
         this.toggle.classList.toggle('on', this.editing);
         if (remember) writeEditingPreference(this.editing);
-        this.uiManager.resetLayout?.();
+        // re-render only to add or remove the pencils: every sign-in state change lands here,
+        // including the first one on page load
+        if (changed) this.uiManager.resetLayout?.();
     }
 
     async refresh(session = this.session) {
