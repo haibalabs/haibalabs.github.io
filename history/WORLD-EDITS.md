@@ -45,10 +45,13 @@ edits/{editId}
   created_at    server time
   revised_at    server time of the author's last revision
   revision      1, 2, …: incremented each time the author revises it
+  content_sha256  SHA-256 of the revision's normalized changes, reason, sources and source_conflict,
+                including any uploaded file's own SHA-256; recomputed on every revision
   status        see Statuses
-  checks        { browser: [...], automatic: { checker_version, ran_at, results: [...] } }
-  review        { by: { uid, email, role }, decision, fields, note, override, at }, set by the admin;
-                the rules require by.uid and by.email to be the signed-in admin's, and the server time
+  checks        { browser: [...], automatic: { revision, content_sha256, checker_version, ran_at, results: [...] } }
+  review        { by: { uid, email, role }, revision, content_sha256, decision, fields, note, override, at },
+                set by the admin; the rules require by.uid and by.email to be the signed-in admin's,
+                the server time, and revision/content_sha256 equal to the edit's current ones
   source_conflict  true when the author says a cited source (often Wikipedia) is itself wrong;
                 the reason must then explain why, and sources should include the better source
   published     { overlay_version, at }, set when the edit reaches visitors
@@ -56,6 +59,14 @@ edits/{editId}
 ```
 
 Each `changes` entry keeps the value the author saw (`before`) next to the proposed one (`after`). `before` is what lets several edits on one event be merged safely, and lets an edit outlive dataset rebuilds: an edit applies only to an event whose field still holds `before`.
+
+### Revisions are immutable once judged
+
+Checks and approval are tied to one exact revision of an edit and its file:
+- **A revision is a fixed snapshot.** Revising (author only, while allowed) increments `revision`, recomputes `content_sha256`, sets `status` back to `submitted` and clears `checks.automatic`. The rules enforce all four, so a passing check can never carry over to changed content.
+- **The checker records what it judged.** `checks.automatic.revision` and `content_sha256` name the snapshot. The checker writes its result only if the edit still has that revision and hash when it saves (a Firestore transaction). Otherwise it leaves the edit for its next run.
+- **Approval names the snapshot too.** The review page sends the `revision` and `content_sha256` it displayed. The approval transaction and the rules refuse the approval if the edit has changed since. Unless the approval is an override, they also refuse it if `checks.automatic` isn't for that same revision.
+- **Uploaded files are immutable.** An upload goes to `edit_uploads/{uid}/{editId}/r{revision}-{sha256}.webp`. Storage rules allow creating it but never overwriting it, so revising the image means uploading a new file under the new revision. The edit stores the file's `sha256`, `bytes`, `width` and `height`, and `content_sha256` covers them.
 
 ### Fields
 
@@ -67,9 +78,42 @@ Each `changes` entry keeps the value the author saw (`before`) next to the propo
 | `wikipedia_url` | an `https://*.wikipedia.org/wiki/…` URL, or `null` to remove it | |
 | `categories` | one or more of the timeline's categories | |
 | `location` | `{ name, city, region, country, historical_name, point?: [lat, lon] }`, or `null` | `point` is optional, placed by clicking the map in the form. It replaces the event's first location. |
-| `image` | `{ source: "commons", file_page }` or `{ source: "upload", path, credit, rights }`, or `null` to remove | One image per event. An approved image replaces the current one, released or not. |
+| `image` | a normalized image record (below), or `null` to remove the event's image | One image per event. An approved image replaces the current one, released or not. |
 
 A `create` edit carries every required field (name, date, description) in `changes`, with `before: null`.
+
+### The image record
+
+The `image` field stores the complete record the viewer will show, not just a link. What the admin approves is then exactly what visitors get:
+
+```
+image
+  source            "commons" | "upload" | "release" (the last only in `before`, for a released image)
+  image_url         full-size URL; for an upload, the public path it is copied to on approval
+  thumbnail_url     URL used in the timeline card
+  source_url        the Commons file page, or for an upload the site's own image page
+  caption           what the image shows (v2 caption policy: no negations, no dates)
+  display_date      the image's date as shown, or null
+  image_role        one of the released-image roles (event_photo, event_aftermath, portrait, site,
+                    map, symbol, retrospective_illustration)
+  credit            author or photographer as it must be credited
+  license_name      e.g. "CC BY-SA 4.0", "Public domain"
+  license_url       the license's URL, or null for public domain
+  rights_statement  for Commons, the file's license metadata as read; for an upload, the uploader's
+                    confirmation (open question 2)
+  file_page         Commons file page title (Commons only)
+  asset             { path, sha256, bytes, width, height } (uploads only; path is the private upload)
+  release_pair_id   the released record's pair_id ("release" only)
+```
+
+For a Commons link, the form reads the file's metadata from the Commons API, fills in URLs, credit and license, and asks the author for a caption, role and optional date. The checker reads Commons again and flags any difference. For an upload, the author supplies caption, role, date, credit and the rights confirmation, and the URLs are set on approval.
+
+**`before` is the effective image when the author started:** the released image record, normalized to this shape with `source: "release"` and its `release_pair_id`; an image from an earlier approved edit; or `null` for none. Images are compared by identity, not field by field: the released pair ID, the Commons file page, or the upload's `sha256`. A caption change on the same picture is therefore an image edit whose `before` and `after` share an identity.
+
+**Removing an image** (`after: null`) means visitors see no image and no credit, caption or license for that event. The overlay patch hides the released image as well. Removal is kept across folding and revert:
+- the history-dp export records it as an image suppression for that `release_pair_id`, so the next image release leaves the pair out instead of bringing it back;
+- the overlay keeps the null patch until the released record is gone from the loaded data, at which point it counts as folded and is skipped;
+- reverting a removal is an edit with `before: null` and `after` set to the removed record, which the removal edit kept in full as its `before`, so the exact image, caption and credit come back.
 
 ## Statuses
 
@@ -209,9 +253,14 @@ At load, after the released images and locations are attached, the site:
 3. reports a patch matching neither in the console, so the pipeline can reconcile it;
 4. adds approved new events, then re-sorts the timeline.
 
-An approved image is shown through the same viewer as released images, with credit and license.
+An approved image is shown through the same viewer as released images, from its image record (caption, date, credit and license). The image patch is applied after the released images are attached: it replaces the released image, or hides it when `after` is `null`.
 
-Uploaded images are stored under `edit_uploads/{uid}/{editId}/`, readable by the author and admins only. On approval, the admin's browser copies the file to `world_images/{event_id}/{editId}.webp`, which everyone can read.
+Uploaded images are stored under `edit_uploads/{uid}/{editId}/r{revision}-{sha256}.webp`, readable by the author and admins only. Approving an upload is staged so visitors never get a pointer to a missing or different file:
+1. The admin's browser copies the file to `world_images/{event_id}/{editId}-r{revision}-{sha256}.webp`, which everyone can read. Storage rules allow creating it but not overwriting it.
+2. It reads the public copy back and checks that its SHA-256 and size equal the edit's `asset`.
+3. Only then does it run the approval transaction, which writes the overlay with `image_url` and `thumbnail_url` pointing at the verified public copy.
+
+If the copy or the check fails, nothing is approved and the admin sees why. A public copy left behind by a failed transaction is never referenced. It is listed in the review page's History for an admin to delete.
 
 ## Folding into the dataset
 
@@ -227,7 +276,7 @@ The overlay is idempotent, so the order of these steps never shows visitors a wr
 Every change to what visitors see can be traced to a person, at every stage:
 - **The edit** records its author (`author.uid`, `author.email`, set at creation and checked by the rules), each revision's time, and the checker run that judged it.
 - **The approval** records the approver: `review.by` holds the admin's `uid`, `email` and `role` at that moment, with `review.at` (server time), the decision, the fields approved, the note, and `override: true` when an automatic rejection was overruled. The rules accept a review only when `review.by` is the signed-in admin and the time is the server's, so it can't be written on someone else's behalf. Approval fields are never edited afterwards. A change of mind is a revert, which records its own approver.
-- **The overlay** stores, with each patch, the edit IDs, `approved_by` (uid and email) and `approved_at`. The public overlay therefore names the approving admin's email, so open question 3 also covers whether that is acceptable, or whether the overlay should hold only the uid.
+- **The overlay** stores, with each patch, the edit IDs, `approved_by` and `approved_at`. `approved_by` is the approver's uid, with their email only if open question 3 allows it, since the overlay is public.
 - **The dataset export** (`event-edits.jsonl`) carries author, approver, approval time, override flag and edit IDs into history-data, so a folded change stays attributable after it leaves the overlay.
 - **The review page's History** lists each decision with its approver and can be filtered by approver.
 
@@ -245,8 +294,8 @@ Every change to what visitors see can be traced to a person, at every stage:
   - **Read:** the author and admins only.
   - **Delete:** nobody.
 - `world_overlay/current`: everyone reads; only admins write.
-- Storage `edit_uploads/{uid}/…`: the author writes and reads; admins read.
-- Storage `world_images/…`: everyone reads; only admins write.
+- Storage `edit_uploads/{uid}/…`: the author creates and reads, with no overwriting; admins read.
+- Storage `world_images/…`: everyone reads; only admins create, with no overwriting.
 
 Rules tests cover each line in `firebase/tests/rules.test.js` and `storage.test.js`.
 
@@ -265,7 +314,7 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
 
 ## Tests
 
-- **Unit:** merge cases 1–6, overlay application (applies, already folded, stale), and the field checks.
+- **Unit:** merge cases 1–6, overlay application (applies, already folded, stale), image identity and removal (hide a released image, folded removal skipped, revert restores the full record), `content_sha256` normalization, and the field checks.
 - **Rules:** every create, update and read case above, including an admin approving their own edit (denied) and a visitor reading `edits` (denied).
 - **Emulator browser:**
   - an editor suggests an edit, sees it in My edits, and a visitor doesn't see it;
@@ -273,6 +322,8 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
   - two edits on different fields both apply;
   - two edits on the same field produce a conflict;
   - an automatically rejected edit can be approved anyway;
+  - an approval of a revision the author has since changed is refused;
+  - an upload is approved only after its public copy is verified, and a failed copy approves nothing;
   - revert restores the old value.
 - **history-dp:** checker unit tests per check, plus a replay over fixture edits.
 
