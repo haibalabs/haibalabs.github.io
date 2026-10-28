@@ -1,8 +1,12 @@
 {
   "metadata": {
     "dataset_id": "world-history",
-    "snapshot_id": "world-history-canonical-v1",
-    "timestamp": "2026-10-26T05:32:01.819143+00:00"
+    "snapshot_id": "world-history-early-times-v1",
+    "timestamp": "2026-10-28T18:33:58+00:00",
+    "parent_snapshot_id": "world-history-canonical-v1",
+    "parent_sha256": "4160e58fb915960bd156dbb0de57b16bc4396d1f296ae32eba31d16a7019d622",
+    "early_times_draft_manifest_sha256": "177c3a2f709801c6dadfe022eae04cb60698511078e4525f713981e80a5b4745",
+    "release_status": "candidate_pending_public_release"
   },
   "events": [
     {
@@ -12,7 +16,7 @@
       "categories": [
         "science"
       ],
-      "enhanced_description": "The Big Bang theory posits that the universe began approximately 13.8 billion years ago from an extremely hot and dense state, leading to its continuous expansion. This event marks the origin of time and space as we understand them today.",
+      "enhanced_description": "The universe began its hot, dense early expansion about 13.8 billion years ago. As it expanded and cooled, the foundations of matter and cosmic structure took shape.",
       "enhanced_time": "c. 13.8 billion years ago",
       "confidence": "high",
       "event_id": "evt_14693f67-4ec3-5e1d-96b3-318224571c4c",
@@ -21,11 +25,32 @@
           "artifact_path": "haibalabs.github.io/history/events.json",
           "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
           "record_index": 0
+        },
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 0
         }
       ],
       "source_lineage": "original_acquisition_unknown",
       "wikipedia_url": "",
-      "article_reference_status": "missing"
+      "article_reference_status": "missing",
+      "sort_years_ago": 13800000000.0,
+      "sort_tiebreak": 1,
+      "temporal": {
+        "display_label": "c. 13.8 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 13800000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 1
+      },
+      "uncertainty": "The earliest state remains an active research subject; this does not assert an observed singularity or an established origin of time.",
+      "location_applicability": "not_applicable_cosmic",
+      "source_urls": [
+        "https://science.nasa.gov/universe/overview/"
+      ]
     },
     {
       "name": "Paleocene–Eocene Thermal Maximum",
@@ -2310038,6 +2310063,546 @@
       ],
       "source_lineage": "original_acquisition_unknown",
       "article_reference_status": "unverified_article"
+    },
+    {
+      "event_id": "evt_5acb0539-e862-5f76-912f-50bea792a50d",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 1
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "The first atomic nuclei form",
+      "enhanced_time": "Within minutes after the Big Bang",
+      "enhanced_description": "As the young universe cooled, protons and neutrons combined into light atomic nuclei. Helium formed in abundance, together with small amounts of other light elements; complete atoms came much later.",
+      "sort_years_ago": 13800000000.0,
+      "sort_tiebreak": 2,
+      "temporal": {
+        "display_label": "Within minutes after the Big Bang",
+        "axis": "elapsed_after_big_bang",
+        "elapsed_label": "Within minutes after the Big Bang",
+        "navigation_years_ago": 13800000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 2
+      },
+      "uncertainty": "",
+      "location_applicability": "not_applicable_cosmic",
+      "source_urls": [
+        "https://science.nasa.gov/universe/overview/"
+      ],
+      "article_reference_status": "external_scientific_source"
+    },
+    {
+      "event_id": "evt_7b07ab6e-5e38-5608-ba4e-78262f78f586",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 2
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "The universe becomes transparent",
+      "enhanced_time": "c. 380,000 years after the Big Bang",
+      "enhanced_description": "Atomic nuclei captured electrons to form neutral atoms, allowing light to travel freely through the universe. The cosmic microwave background preserves a view of this early era.",
+      "sort_years_ago": 13799620000.0,
+      "sort_tiebreak": 3,
+      "temporal": {
+        "display_label": "c. 380,000 years after the Big Bang",
+        "axis": "elapsed_after_big_bang",
+        "elapsed_label": "c. 380,000 years after the Big Bang",
+        "navigation_years_ago": 13799620000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 3
+      },
+      "uncertainty": "NASA gives about 380,000 years; the saved Wikipedia table gives a recombination interval of 290,000–370,000 years. This is an approximate era, not an exact instant.",
+      "location_applicability": "not_applicable_cosmic",
+      "source_urls": [
+        "https://science.nasa.gov/universe/overview/"
+      ],
+      "article_reference_status": "external_scientific_source"
+    },
+    {
+      "event_id": "evt_2a5cde22-4715-5cf4-8e5b-6ec2bfee29e6",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1381779941",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 3
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "The first stars light up",
+      "enhanced_time": "Within the first few hundred million years after the Big Bang",
+      "enhanced_description": "Gravity drew primordial gas into dense clouds until their centers became hot enough for nuclear fusion. The first stars lit up the young universe; exactly when they first appeared is still being studied.",
+      "sort_years_ago": 13600000000.0,
+      "sort_tiebreak": 4,
+      "temporal": {
+        "display_label": "Within the first few hundred million years after the Big Bang",
+        "axis": "elapsed_after_big_bang",
+        "elapsed_label": "Within the first few hundred million years after the Big Bang",
+        "navigation_years_ago": 13600000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 4
+      },
+      "uncertainty": "200 million years is a navigation proxy only. Saved image description says 200 million, article caption says 400 million; neither is adopted as a precise event date.",
+      "location_applicability": "not_applicable_cosmic",
+      "source_urls": [
+        "https://science.nasa.gov/universe/overview/",
+        "https://science.nasa.gov/mission/webb/early-universe/",
+        "https://en.wikipedia.org/w/index.php?oldid=1381779941"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_848b6603-6c20-5bf1-8006-85ad34023834",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 4
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early galaxies take shape",
+      "enhanced_time": "By c. 280 million years after the Big Bang",
+      "enhanced_description": "Stars gathered into the first galaxies during the universe’s early history. Observations reveal a galaxy already in existence about 280 million years after the Big Bang, giving a window into this formative era.",
+      "sort_years_ago": 13520000000.0,
+      "sort_tiebreak": 5,
+      "temporal": {
+        "display_label": "By c. 280 million years after the Big Bang",
+        "axis": "elapsed_after_big_bang",
+        "elapsed_label": "By c. 280 million years after the Big Bang",
+        "navigation_years_ago": 13520000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 5
+      },
+      "uncertainty": "The date describes evidence that galaxies already existed, not the exact formation of the first galaxy.",
+      "location_applicability": "not_applicable_cosmic",
+      "source_urls": [
+        "https://science.nasa.gov/universe/overview/",
+        "https://science.nasa.gov/mission/webb/early-universe/"
+      ],
+      "article_reference_status": "external_scientific_source"
+    },
+    {
+      "event_id": "evt_158f973e-c71f-5393-b762-ce5b2b385816",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1381779941",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 5
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Starlight transforms the gas between galaxies",
+      "enhanced_time": "c. 200 million–1 billion years after the Big Bang",
+      "enhanced_description": "Ultraviolet light from young stars and galaxies ionized surrounding hydrogen gas. Over hundreds of millions of years, this transformation allowed starlight to travel farther through the universe.",
+      "sort_years_ago": 13200000000.0,
+      "sort_tiebreak": 6,
+      "temporal": {
+        "display_label": "c. 200 million–1 billion years after the Big Bang",
+        "axis": "elapsed_after_big_bang",
+        "elapsed_label": "c. 200 million–1 billion years after the Big Bang",
+        "navigation_years_ago": 13200000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 6
+      },
+      "uncertainty": "Broad, overlapping process interval; 600 million years after the Big Bang is only a navigation midpoint.",
+      "location_applicability": "not_applicable_cosmic",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1381779941",
+        "https://science.nasa.gov/universe/overview/"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_847552ed-c452-5d3e-b76c-a23771d5bd14",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1376668251",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 6
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "The Sun and Solar System form",
+      "enhanced_time": "c. 4.6 billion years ago",
+      "enhanced_description": "A collapsing cloud of gas formed the young Sun. A surrounding disk of gas and dust supplied the material from which the planets and other bodies of the Solar System developed.",
+      "sort_years_ago": 4600000000.0,
+      "sort_tiebreak": 7,
+      "temporal": {
+        "display_label": "c. 4.6 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 4600000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 7
+      },
+      "uncertainty": "Rounded from saved source estimates of 4,567 ±3 and 4,566 ±2 million years; the sequence unfolded over time.",
+      "location_applicability": "not_applicable_cosmic",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1376668251",
+        "https://science.nasa.gov/mission/webb/early-universe/"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_3dbc48d3-f46f-5afe-b937-d399a1f29607",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 7
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Earth forms",
+      "enhanced_time": "c. 4.54 billion years ago",
+      "enhanced_description": "Material orbiting the young Sun accumulated into Earth. The growing planet became the setting for oceans, an atmosphere and, much later, life.",
+      "sort_years_ago": 4540000000.0,
+      "sort_tiebreak": 8,
+      "temporal": {
+        "display_label": "c. 4.54 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 4540000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 8
+      },
+      "uncertainty": "",
+      "location_applicability": "global_process_no_single_point",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+        "https://science.nasa.gov/mission/webb/early-universe/"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_3539a11d-0494-5a47-a69e-77c97c5c7637",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 8
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "The Moon forms",
+      "enhanced_time": "c. 4.5 billion years ago",
+      "enhanced_description": "In the giant-impact hypothesis, a collision between the young Earth and another planetary body threw material into orbit. That debris eventually came together to form the Moon.",
+      "sort_years_ago": 4500000000.0,
+      "sort_tiebreak": 9,
+      "temporal": {
+        "display_label": "c. 4.5 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 4500000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 9
+      },
+      "uncertainty": "Impact mechanism labelled as a hypothesis. Rounded date covers the saved sources’ differing 4.510 and 4.533 billion-year estimates.",
+      "location_applicability": "global_process_no_single_point",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+        "https://en.wikipedia.org/w/index.php?oldid=1376668251"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_6309ea23-dec9-5642-b062-679f0a79b760",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 9
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Evidence of liquid water on early Earth",
+      "enhanced_time": "c. 4.4 billion years ago",
+      "enhanced_description": "Ancient zircon crystals preserve evidence interpreted as signs of liquid water on the young Earth. They offer a glimpse of conditions long before the oldest surviving ecosystems.",
+      "sort_years_ago": 4400000000.0,
+      "sort_tiebreak": 10,
+      "temporal": {
+        "display_label": "c. 4.4 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 4400000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 10
+      },
+      "uncertainty": "Evidence age, not an exact date for the first ocean. Rounded from the source’s 4,404 million years.",
+      "location_applicability": "global_process_no_single_point",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_dbe6a538-bb4e-5b05-8c18-fa356e12c6c6",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 10
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early microbial life leaves traces",
+      "enhanced_time": "c. 3.48 billion years ago",
+      "enhanced_description": "Microbial mats left fossil traces in sandstone in what is now Western Australia. These remains provide evidence of early life, rather than an exact date for life’s origin.",
+      "sort_years_ago": 3480000000.0,
+      "sort_tiebreak": 11,
+      "temporal": {
+        "display_label": "c. 3.48 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 3480000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 11
+      },
+      "uncertainty": "Uses the explicitly dated microbial-mat evidence within the compound source row, not its 3,800 Ma heading or disputed older origin claims.",
+      "location_applicability": "terrestrial_evidence_region_pending_Hermes",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_a81d90d8-499f-585c-8e76-5a28b4733c78",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 11
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Oxygen builds up in the atmosphere",
+      "enhanced_time": "c. 2.5 billion years ago",
+      "enhanced_description": "Oxygen-producing photosynthetic microbes transformed Earth’s environment. The Great Oxidation Event marks a major rise of oxygen in the atmosphere, reshaping the conditions for life.",
+      "sort_years_ago": 2500000000.0,
+      "sort_tiebreak": 12,
+      "temporal": {
+        "display_label": "c. 2.5 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 2500000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 12
+      },
+      "uncertainty": "Approximate onset of an extended change, not an instantaneous event.",
+      "location_applicability": "global_process_no_single_point",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_174f2c24-72b9-5d55-9fc3-39c3f2cad148",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 12
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Complex cells emerge",
+      "enhanced_time": "By c. 1.85 billion years ago",
+      "enhanced_description": "Eukaryotic cells contained specialized structures enclosed by membranes. Their emergence was a major step in the development of complex life.",
+      "sort_years_ago": 1850000000.0,
+      "sort_tiebreak": 13,
+      "temporal": {
+        "display_label": "By c. 1.85 billion years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 1850000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 13
+      },
+      "uncertainty": "Retains the source’s “by” qualification; does not equate first evidence with an exact evolutionary origin.",
+      "location_applicability": "global_process_no_single_point",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_b60311f9-35e7-58c1-919e-9980c7695cff",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 13
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Large organisms flourish in Ediacaran seas",
+      "enhanced_time": "c. 580–542 million years ago",
+      "enhanced_description": "Ediacaran seas hosted large, complex multicellular organisms. Their remains record a distinctive chapter of life before the diversification of Cambrian animals.",
+      "sort_years_ago": 561000000.0,
+      "sort_tiebreak": 14,
+      "temporal": {
+        "display_label": "c. 580–542 million years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 561000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 14
+      },
+      "uncertainty": "Source interval retained as approximate; midpoint is only a navigation position.",
+      "location_applicability": "global_process_no_single_point",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_877df7e4-49c1-5a2e-aee1-09f6725ec46b",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1376668251",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+          "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+          "record_index": 14
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Animal life diversifies in the Cambrian",
+      "enhanced_time": "c. 539 million years ago",
+      "enhanced_description": "Near the start of the Cambrian, animal life diversified into many major groups. This transformation unfolded over an extended interval, leaving a rich fossil record of marine ecosystems.",
+      "sort_years_ago": 539000000.0,
+      "sort_tiebreak": 15,
+      "temporal": {
+        "display_label": "c. 539 million years ago",
+        "axis": "years_before_present",
+        "elapsed_label": null,
+        "navigation_years_ago": 539000000.0,
+        "navigation_only": true,
+        "exact_calendar_date": false,
+        "equal_coordinate_tiebreak": 15
+      },
+      "uncertainty": "Opening date rounded from Earth source’s 538.8 ±0.6 Ma boundary. Life table’s 580–500 Ma is a much broader interval, not the same boundary. Image shows a later Cambrian ecosystem, not the initial diversification.",
+      "location_applicability": "global_process_no_single_point",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1376668251",
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
     }
   ]
 }
