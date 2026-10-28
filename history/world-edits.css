@@ -5,32 +5,28 @@
     position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
 }
 
-/* the Editing switch in the top bar, shown to editors, reviewers and admins */
-.editing-toggle {
-    display: inline-flex; align-items: center; gap: .4rem; height: 34px; padding: 0 .8rem;
-    border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2);
-    font: inherit; font-size: .8125rem; font-weight: 500; cursor: pointer;
-}
-.editing-toggle[hidden] { display: none; }
-.editing-toggle.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.editing-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* the Editing switch, at the top of My edits in the profile drawer */
+.editing-toggle { margin-bottom: .35rem; }
 
-/* the pencil and the author's pending mark on a world event */
-.edit-bar { display: flex; align-items: center; gap: .5rem; margin-top: .35rem; }
+/* the pencil and the author's pending mark, in the event's date row; the pencil matches .wiki-link */
 .edit-pencil {
-    margin-left: auto; width: 32px; height: 32px; border: 0; border-radius: 8px;
-    background: var(--surface-2); color: var(--ink); cursor: pointer;
+    display: inline-flex; align-items: center; border: 0; background: none; font: inherit;
+    color: var(--ink-3); border-radius: 6px; padding: 2px 6px; margin: -2px -6px; cursor: pointer;
+    transition: background .12s, color .12s;
 }
-.edit-pencil:hover { filter: brightness(.95); }
+.edit-pencil i { font-size: .85em; opacity: .8; }
+.edit-pencil:hover { color: var(--ink); background: var(--surface-2); }
 .edit-pencil:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .edit-pending {
-    font-size: .75rem; font-weight: 600; border-radius: 999px; padding: .1rem .55rem;
+    font-size: .6875rem; font-weight: 600; border-radius: 999px; padding: 0 .5rem;
     color: #93370d; background: #fffaeb; border: 1px solid #fedf89;
 }
 .edit-pending.rejected { color: #912018; background: #fef3f2; border-color: #fecdca; }
 
 /* the form */
-.modal.suggest-edit { width: min(560px, calc(100vw - 32px)); }
+.modal.suggest-edit { width: min(640px, calc(100vw - 32px)); }
+/* longer text is written in the font and size the event card shows it in */
+.suggest-edit textarea.event-text { font-family: var(--font-body); font-size: .95rem; line-height: 1.6; resize: vertical; }
 .suggest-edit .field-head { display: flex; align-items: center; gap: .5rem; min-height: 22px; }
 .suggest-edit .field-head label, .suggest-edit .field-label { font-size: .75rem; font-weight: 600; color: var(--ink-2); }
 .changed-tag {
