@@ -41,7 +41,8 @@ edits/{editId}
   kind          "update" | "create"
   event_id      evt_… of the event being changed; for "create", a new ID assigned at submission
   event_name    the event's name when the edit was started, for display only
-  dataset       { id: "world-history", sha256 } of the data file the author was looking at
+  dataset       { id: "world-history", sha256, locations_release_sha256 } of the data file and the
+                released-locations file the author was looking at
   changes       map, field -> { before, after }, holding only the fields that change (see Fields)
   reason        string, 10–1000 characters, required: what was wrong and how the author knows
   sources       up to 5 URLs supporting the change; required when changing name, date or location
@@ -83,10 +84,20 @@ Checks and approval are tied to one exact revision of an edit and its file:
 | `enhanced_description` | string, up to 4000 characters | Plain text. |
 | `wikipedia_url` | an `https://*.wikipedia.org/wiki/…` URL, or `null` to remove it | |
 | `categories` | one or more of the timeline's categories | |
-| `location` | `{ name, city, region, country, historical_name, point?: [lat, lon] }`, or `null` | `point` is optional, placed by clicking the map in the form. It replaces the event's first location. |
+| `location[i]` | `{ name, city, region, country, historical_name, point?: [lat, lon] }`, or `null` to remove it | Keyed by the location's position in the event; `i` equal to the current count adds a location at the end. `before` carries the `place_id` and geography the author saw. See Location edits. |
 | `image` | a normalized image record (below), or `null` to remove the event's image | One image per event. An approved image replaces the current one, released or not. |
 
 A `create` edit carries every required field (name, date, description) in `changes`, with `before: null`.
+
+### Location edits
+
+Events can have several locations: 3,125 of 52,532 have two or more, and 2,727 have none. Many places are shared, with 5,424 places linked from several events. Location edits therefore work per event and per position:
+- **Per position.** Each changed location is its own field, `location[i]`. An edit can change the second place of a two-place event, remove one (`after: null`), or add one at the end. Positions are those of the event as the author saw it, and merging compares each position separately.
+- **Never a shared place.** An edit changes only this event's link to a place. It never edits the place record itself, which other events may share. Folding (phase 6) resolves each approved location through the T7 resolver: it links to an existing `place_id` that identifies the same place, or creates a new place record.
+- **Compared after the location release.** The site attaches `releases/released-locations-v1.json` before applying edits, so a location's `before`, its patch `base` and the loader's comparison all use the value **after** that release, which is what the author saw. The edit records the release file's SHA-256 in `dataset.locations_release_sha256`. When a later location release changes a base, the released value is accepted as a `prior_base`.
+- **Location releases respect approved edits.** history-dp treats an approved location receipt as an event-bound hold. `location_sidecar.prepare` already holds (event, place) pairs from plan holds and audit conflicts, so a later location batch never moves an event location an admin has approved. Hermes builds this in phase 4, so neither layer overrides the other.
+- **Provenance.** An approved pin lands as `geography.status: corrected`, with `precision: approximate`, or the precision of the resolved kind when the checker identifies the place. It is tagged `verification: community_edit:<edit_id>@r<revision>`, with the approval receipt as `correction_source`. T7's overlay already leaves `corrected` places alone.
+- **T7's view on the review page.** When an event location already has a T7 hold (namesake tie, region conflict, audit event conflict) or an approximate placement, the review page shows it next to the proposal. Those are the cases where a human edit helps most.
 
 ### The image record
 
@@ -203,7 +214,7 @@ This design assigns that work. It doesn't authorize spending, retrieval, a sched
 | `enhanced_time` | parses | agrees with the article's date; a shift of more than 10 years is flagged | Atlas |
 | `enhanced_description` | | supported by the Wikipedia article (model source check, paid) | Atlas |
 | `wikipedia_url` | resolves, not missing or disambiguation; the redirect target is recorded | the article is about this event | Atlas |
-| `location` | | the geocoded place is within the location margin (10 km at city scale); the pin lies in the named country | Hermes |
+| `location[i]` | | the named place geocodes, offline on the pinned T7 gazetteers (cities500, admin1, Pleiades, the GeoNames→Wikidata link table), to within `PLACEMENT_TOLERANCE_KM` of the pin (10 km for a settlement, Atlas's proposed starting value, not one Rachid chose); for a region or country, the pin lies inside the named area. Pins near borders and ancient sites with no modern match give `unsure`, never a failure. A Wikidata search counts against an approved budget, otherwise `unsure`. | Hermes |
 | `image`, Commons | file exists; license is free (CC0, CC BY, CC BY-SA, public domain); credit present | not used for another event; fits the event (caption and role, v2 caption policy) | Iris |
 | `image`, upload | rights confirmed; file type and size | fits the event; not a duplicate (hash). **Uploads are always flagged for a person to look at.** | Iris |
 | `create` | required fields present | not a duplicate of an existing event (name and date similarity) | Atlas |
@@ -377,7 +388,7 @@ Rules tests cover each line in `firebase/tests/rules.test.js` and `storage.test.
 | 1 | `edits` model and rules; Suggest an edit for name, date, description, Wikipedia link and category; browser checks; My edits | Maia, Atlas |
 | 2 | Review page; approve, reject, send back, overrule; merging and conflicts; overlay and visitor loading; revert | Maia, Atlas |
 | 3 | Agent checker and its schedule; service-account setup | Atlas, Maia |
-| 4 | Location proposals with map pin, checked by Hermes; image proposals from Commons and uploads, checked by Iris | Maia with Hermes and Iris |
+| 4 | Location proposals per position with map pin, checked by Hermes, with approved receipts held by `location_sidecar`; image proposals from Commons and uploads, checked by Iris | Maia with Hermes and Iris |
 | 5 | Suggest a new event; retire the admin Add event and Push debug tools | Maia, Atlas |
 | 6 | Folding into the dataset and overlay cleanup | Atlas, Maia |
 
@@ -400,6 +411,7 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
     - a page whose dataset isn't in `supported_datasets` reloads it, and shows the notice if the reload is still unsupported;
   - a patch that targets a created event applies after the event is added;
   - image identity and removal: hiding a released image, a folded removal skipped, revert restoring the full record;
+  - locations: editing the second of two locations, adding one to an event with none, removing one; a patch based on the post-release value applies after a location release; a later release changing the base is accepted as a prior base;
   - `content_sha256` normalization, the overlay size limit, and the field checks.
 - **Rules:** every create, update and read case above, including an admin approving their own edit (allowed only with `self_approved: true`), a 51st edit in a day (refused by the checker) and a visitor reading `edits` (denied).
 - **Emulator browser:**
