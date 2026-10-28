@@ -1,6 +1,5 @@
 import { PROMINENT_LABELS } from './config.js';
 import { resizePhoto } from './image-resize.js';
-import { eventProblem } from './timeline-model.js';
 
 // The event form's photo field, shown only in forms for a personal timeline (one photo per event;
 // see PERSONAL-IMAGES.md). A chosen file is resized right away, so the preview shows what will be
@@ -218,10 +217,8 @@ export class ModalManager {
             if (this.target !== target) return;
             if (problem) return this.showError(problem);
         } else {
-            const problem = eventProblem(newEvent);
-            if (problem) return this.showError(problem);
-            this.eventManager.addEvent(newEvent);
-            this.uiManager.resetLayout();
+            // world events are proposed through Suggest an edit, not added here
+            return this.showError('Open one of your timelines to add an event.');
         }
         this.close();
         this.form.reset();

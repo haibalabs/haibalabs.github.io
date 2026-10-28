@@ -10,42 +10,33 @@ test.beforeEach(async ({ request }) => {
   await resetEmulators(request);
 });
 
-test('an admin stays signed in after a reload and gets the sync and debug controls', async ({ page, request }) => {
+test('an admin stays signed in after a reload', async ({ page, request }) => {
   await createAccount(request, 'admin@example.test', 'admin');
   await page.goto(APP);
   await page.waitForSelector('#timeline-content .event');
-  await page.click('#settings-btn');
-  await expect(page.locator('#debug-settings')).toBeHidden();
-  await page.click('.settings-close-btn');
 
   await signIn(page, 'admin@example.test');
   await expect(page.locator('#user-email')).toHaveText('admin@example.test');
-  await expect(page.locator('#debug-settings')).toBeVisible();
-  await expect(page.locator('#debug-sync')).toBeEnabled();
-  await expect(page.locator('#debug-add-event')).toBeEnabled();
 
   await page.reload();
   await page.waitForSelector('#timeline-content .event');
   await expect(page.locator('#user-email')).toHaveText('admin@example.test');
   await expect(page.locator('#user-info')).toBeVisible();
-  await expect(page.locator('#debug-sync')).toBeEnabled();
 
   await page.click('#settings-btn');
   await page.click('#logout-btn');
   await expect(page.locator('#login-form')).toBeVisible();
-  await expect(page.locator('#debug-settings')).toBeHidden();
-  await expect(page.locator('#debug-sync')).toBeDisabled();
 });
 
-for (const role of ['editor', 'viewer']) {
-  test(`${role}s sign in without the sync and debug controls`, async ({ page, request }) => {
+// world events are proposed through Suggest an edit; Add event is only for one's own timelines
+for (const role of ['admin', 'editor', 'viewer']) {
+  test(`${role}s sign in with no Add event button on the world timeline`, async ({ page, request }) => {
     await createAccount(request, `${role}@example.test`, role);
     await page.goto(APP);
     await signIn(page, `${role}@example.test`);
     await expect(page.locator('#user-email')).toHaveText(`${role}@example.test`);
-    await expect(page.locator('#debug-settings')).toBeHidden();
-    await expect(page.locator('#debug-sync')).toBeDisabled();
-    await expect(page.locator('#debug-add-event')).toBeDisabled();
+    await page.click('.settings-close-btn');
+    await expect(page.locator('#add-event')).toBeHidden();
   });
 }
 

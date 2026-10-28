@@ -301,7 +301,7 @@ Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau, the "Phase 1" boards
   - A note for the reviewer and a source are **optional** (Rachid, 2026-10-28): a reason helps when the author can put it into words, but nobody should have to type "because it's wrong" for every fix.
   - The "Wikipedia or another source is wrong here" checkbox sets `source_conflict`.
   - No explanation of the review process inside the form.
-- **Suggest a new event**: the same form, empty. It replaces the admin-only Add event debug tool.
+- **Suggest a new event**: the same form, empty, behind the same Editing switch. It replaces the admin-only Add event debug tool, which was removed on 2026-10-28 along with Push and Pull (Rachid); Rachid asked for it next, ahead of phases 2–4.
 - **My edits** in the profile drawer (the settings panel where people sign in), and only there: events don't link to it (Rachid, 2026-10-28). Each edit shows its status, the checker's or admin's reason, and **Revise** or **Withdraw** while that's possible.
 - The author sees a small "Edit pending" mark on events they have pending edits for. Nobody else does.
 
@@ -419,7 +419,7 @@ Rules tests cover each line in `firebase/tests/rules.test.js` and `storage.test.
 | 2 | Review page; approve, reject, send back, overrule; merging and conflicts; overlay and visitor loading; revert | Maia, Atlas |
 | 3 | Agent checker and its schedule; service-account setup | Atlas, Maia |
 | 4 | Location proposals per position with map pin, checked by Hermes, with approved receipts held by `location_sidecar`; image proposals from Commons and uploads, checked by Iris | Maia with Hermes and Iris |
-| 5 | Suggest a new event; retire the admin Add event and Push debug tools | Maia, Atlas |
+| 5 | Suggest a new event, brought forward to follow phase 1 (the admin Add event and Push debug tools were already retired on 2026-10-28) | Maia, Atlas |
 | 6 | Folding into the dataset and overlay cleanup | Atlas, Maia |
 
 Until phase 3 is live, every edit is reviewed by hand: the checker's absence leaves edits `submitted`, and the review page shows them under Flagged. Rules changes are deployed by Rachid after each merge (`firebase/README.md`).

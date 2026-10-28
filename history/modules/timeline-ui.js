@@ -4,7 +4,7 @@
 // hides what an account cannot use; the Firestore rules decide what it can reach.
 import { PersonalImages } from './personal-images.js';
 import { permissionsFor } from './roles.js';
-import { newEventId } from './sync-identity.js';
+import { newEventId } from './event-id.js';
 import { eventProblem, PERSONAL_PHOTO_ROLE, timelineGeneration, timelineIdFromSearch, titleProblem } from './timeline-model.js';
 
 // Every Firestore call here is awaited while the user can still sign out, open another timeline
@@ -313,8 +313,8 @@ export class TimelineUI {
         if (!keepAddress) this.setAddress(null);
         this.pill.hidden = true;
         this.toggleMenu(false);
-        // back to whatever the admin debug toggle allows
-        this.addEventBtn.style.display = document.getElementById('debug-add-event').checked ? 'block' : 'none';
+        // Add event is for personal timelines; world events are proposed through Suggest an edit
+        this.addEventBtn.style.display = 'none';
         this.uiManager.setPersonalFiltersVisible(false);
         this.markCurrentInList();
         this.uiManager.resetLayout();

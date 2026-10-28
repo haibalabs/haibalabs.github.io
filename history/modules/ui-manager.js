@@ -5,7 +5,7 @@ import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, fa
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
-import { attachPreviewImages, detachPreviewImages, previewProblem, PREVIEW_URL, RELEASE_URL, sha256Hex, shortCredit } from './world-images.js';
+import { attachPreviewImages, previewProblem, RELEASE_URL, shortCredit } from './world-images.js';
 import { applyLocations, LOCATION_RELEASE_URL, locationProblem } from './world-locations.js';
 
 function escapeHtml(str) {
@@ -114,43 +114,18 @@ export class UIManager {
         const settingsBtn = document.getElementById('settings-btn');
         const settingsPanel = document.getElementById('settings-panel');
         const closeBtn = document.querySelector('.settings-close-btn');
-        const debugScroll = document.getElementById('debug-scroll');
 
         // Toggle settings panel
         settingsBtn.addEventListener('click', () => {
             settingsPanel.classList.add('open');
-            this.updateSettingsInfo();
         });
 
         closeBtn.addEventListener('click', () => {
             settingsPanel.classList.remove('open');
         });
 
-        // Debug scroll metrics
-        debugScroll.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                this.showScrollMetrics();
-            } else {
-                this.hideScrollMetrics();
-            }
-        });
-
-        // toggle adding events
-        const debugAddEvent = document.getElementById('debug-add-event');
-        const addEventBtn = document.getElementById('add-event');
-
-        debugAddEvent.addEventListener('change', (e) => {
-            addEventBtn.style.display = e.target.checked ? 'block' : 'none';
-        });
-
-        // preview of independently reviewed world images (previews/README.md)
-        const worldImagesToggle = document.getElementById('debug-world-images');
-        worldImagesToggle.addEventListener('change', (e) => this.setWorldImagePreview(e.target.checked));
-
         // Auth setup
         const authManager = new AuthManager();
-        const syncToggle = document.getElementById('debug-sync');
-        const debugSettings = document.getElementById('debug-settings');
         const loginBtn = document.getElementById('login-btn');
         const authStatus = document.getElementById('auth-status');
         const showAuthStatus = (message, { info = false } = {}) => {
@@ -159,16 +134,10 @@ export class UIManager {
             authStatus.classList.toggle('info', info);
         };
 
-        // Sync controls
-        const syncControls = document.querySelector('.sync-controls');
-        const pushBtn = document.getElementById('push-changes');
-        const pullBtn = document.getElementById('pull-changes');
-        const syncStatus = document.querySelector('.sync-status');
-
         // Runs on page load (restoring a saved session), sign-in and sign-out
         let rejectedUninvited = false;
         authManager.onChange(async (user, role) => {
-            const { member, isAdmin } = permissionsFor(role);
+            const { member } = permissionsFor(role);
             if (user && !member) {
                 // signed in to Firebase but not invited: no role document
                 rejectedUninvited = true;
@@ -184,25 +153,6 @@ export class UIManager {
             this.updateAuthUI(Boolean(user), user?.email ?? '');
             this.onAccountChange?.(user, role);
             this.onEditAccountChange?.(user, role);
-            // sync and debug controls are admin-only for now
-            debugSettings.hidden = !isAdmin;
-            syncToggle.disabled = !isAdmin;
-            debugAddEvent.disabled = !isAdmin;
-            worldImagesToggle.disabled = !isAdmin;
-            if (!isAdmin) {
-                syncToggle.checked = false;
-                syncControls.style.display = 'none';
-                debugAddEvent.checked = false;
-                addEventBtn.style.display = 'none';
-                if (worldImagesToggle.checked) {
-                    worldImagesToggle.checked = false;
-                    this.setWorldImagePreview(false);
-                }
-                if (debugScroll.checked) {
-                    debugScroll.checked = false;
-                    this.hideScrollMetrics();
-                }
-            }
         });
 
         // Login handler
@@ -247,70 +197,6 @@ export class UIManager {
                 showAuthStatus('Sign-out failed. Try again.');
             }
         });
-
-        // Sync toggle handler
-        syncToggle.addEventListener('change', (e) => {
-            if (!permissionsFor(this.role).isAdmin) {
-                e.preventDefault();
-                syncToggle.checked = false;
-                return;
-            }
-            syncControls.style.display = e.target.checked ? 'block' : 'none';
-            this.eventManager.refreshSyncTarget();
-            const { collection, reason } = this.eventManager.syncTarget;
-            syncStatus.textContent = e.target.checked && !collection ? reason : '';
-            pullBtn.disabled = !e.target.checked || !collection;
-            this.updateSettingsInfo();
-            this.renderConflicts();
-        });
-
-        // Push changes handler
-        pushBtn.addEventListener('click', async () => {
-            try {
-                pushBtn.disabled = true;
-                syncStatus.textContent = 'Pushing changes...';
-                const { saved, conflicts } = await this.eventManager.pushChanges();
-                if (saved > 0) this.resetWindow();
-                const pushed = `Pushed ${saved} events`;
-                syncStatus.textContent = conflicts > 0
-                    ? `${pushed}. ${conflicts} event${conflicts === 1 ? ' was' : 's were'} changed on the server first; resolve below.`
-                    : pushed;
-                this.renderConflicts();
-                if (!conflicts) setTimeout(() => syncStatus.textContent = '', 3000);
-            } catch (error) {
-                console.error('Push failed:', error);
-                syncStatus.textContent = 'Push failed: ' + error.message;
-            } finally {
-                this.updateSettingsInfo();
-            }
-        });
-
-        // Pull changes handler
-        pullBtn.addEventListener('click', async () => {
-            try {
-                pullBtn.disabled = true;
-                syncStatus.textContent = 'Pulling changes...';
-                const { applied, conflicts, quarantined } = await this.eventManager.pullChanges();
-                if (applied > 0) this.resetWindow();
-                const parts = [applied > 0 ? `Pulled ${applied} events` : 'No new changes to pull'];
-                if (conflicts > 0) parts.push(`${conflicts} conflicting change${conflicts === 1 ? '' : 's'} to resolve below`);
-                if (quarantined > 0) {
-                    parts.push(`${quarantined} server record${quarantined === 1 ? '' : 's'} ignored for an invalid event ID `
-                        + `(${[...this.eventManager.quarantined.keys()].slice(0, 3).join(', ')})`);
-                }
-                syncStatus.textContent = parts.join('. ') + '.';
-                this.updateSettingsInfo();
-                this.renderConflicts();
-                if (!conflicts && !quarantined) setTimeout(() => syncStatus.textContent = '', 3000);
-            } catch (error) {
-                console.error('Pull failed:', error);
-                syncStatus.textContent = 'Pull failed: ' + error.message;
-            } finally {
-                pullBtn.disabled = false;
-            }
-        });
-
-        this.updateSettingsInfo();
     }
 
     addFigureHandlers(eventDiv, event) {
@@ -336,55 +222,6 @@ export class UIManager {
         });
     }    
 
-    // One row per conflict, with buttons to keep the local change or take the server's.
-    renderConflicts() {
-        const list = document.querySelector('.sync-conflicts');
-        list.replaceChildren();
-        for (const [eventId, { server }] of this.eventManager.conflicts) {
-            const row = document.createElement('div');
-            row.className = 'sync-conflict';
-            row.dataset.eventId = eventId;
-            const name = document.createElement('span');
-            const local = this.eventManager.events.find(event => event.event_id === eventId);
-            name.textContent = local?.name === server.name ? local.name : `${local?.name ?? eventId} / ${server.name}`;
-            row.append(name);
-            for (const [keep, label] of [['local', 'Keep mine'], ['server', 'Take theirs']]) {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = 'settings-btn';
-                button.dataset.keep = keep;
-                button.textContent = label;
-                button.addEventListener('click', () => {
-                    this.eventManager.resolveConflict(eventId, keep);
-                    this.resetWindow();
-                    this.updateSettingsInfo();
-                    this.renderConflicts();
-                });
-                row.append(button);
-            }
-            list.append(row);
-        }
-    }
-
-    updateSettingsInfo() {
-        const unpushedCount = this.eventManager.syncTarget.collection ? this.eventManager.getUnpushedCount() : 0;
-        const pushChangesBtn = document.getElementById('push-changes');
-
-        if (unpushedCount > 0) {
-            pushChangesBtn.innerHTML = `
-                <i class="fa-light fa-cloud-arrow-up"></i> 
-                Push (${unpushedCount})
-            `;
-            pushChangesBtn.disabled = false;
-        } else {
-            pushChangesBtn.innerHTML = `
-                <i class="fa-light fa-cloud-arrow-up"></i> 
-                Push
-            `;
-            pushChangesBtn.disabled = true;
-        }
-    }    
-
     updateAuthUI(isLoggedIn, email = '') {
         const loginForm = document.getElementById('login-form');
         const userInfo = document.getElementById('user-info');
@@ -400,31 +237,6 @@ export class UIManager {
             loginForm.style.display = 'flex';
             userInfo.style.display = 'none';
             userEmail.textContent = '';
-        }
-    }
-
-    showScrollMetrics() {
-        // Add debug info to timeline
-        const debugDiv = document.createElement('div');
-        debugDiv.id = 'scroll-debug';
-        debugDiv.className = 'scroll-debug';
-        this.timelineContainer.appendChild(debugDiv);
-
-        // Update metrics on scroll
-        this.timelineContainer.addEventListener('scroll', () => {
-            debugDiv.innerHTML = `
-                Scroll: ${this.timelineContainer.scrollTop}<br>
-                Start: ${this.startIndex}<br>
-                End: ${this.endIndex}<br>
-                Height: ${Math.floor(this.totalHeight)}
-            `;
-        });
-    }
-
-    hideScrollMetrics() {
-        const debugDiv = document.getElementById('scroll-debug');
-        if (debugDiv) {
-            debugDiv.remove();
         }
     }
 
@@ -897,15 +709,14 @@ export class UIManager {
     }
 
     /**
-     * Attaches the released images (releases/README.md) to the loaded events, all or none, with
-     * the same checks as the preview. Called once the events have loaded, before they are drawn.
-     * Visitors see no message when they do not match; the reason goes to the console.
+     * Attaches the released images (releases/README.md) to the loaded events, all or none: the
+     * file must be bound to the exact bytes loaded, and every target event must still be that
+     * file's record. Called once the events have loaded, before they are drawn. Visitors see no
+     * message when they do not match; the reason goes to the console.
      *
      * @param {object|null} release - the released image file
      */
     async showReleasedImages(release) {
-        this.release = null;
-        this.worldReleased = [];
         if (!Array.isArray(release?.records) || !release.records.length) return;
         // a malformed file must not stop the timeline from loading
         try {
@@ -915,96 +726,15 @@ export class UIManager {
                 console.info(`Released images not shown: ${problem}`);
                 return;
             }
-            this.release = release;
-            this.attachReleased();
+            const result = attachPreviewImages(worldEvents, release.records, this.eventManager.keptRecords ?? [],
+                (event) => this.locationsAsLoaded(event));
+            if (result.problems.length) {
+                const first = result.problems[0];
+                console.warn(`Released images not shown: ${result.problems.length} no longer match their event (position ${first.record_index}: ${first.reason}).`);
+            }
         } catch (error) {
-            this.release = null;
             console.error('Could not show the released images:', error);
         }
-    }
-
-    // Attaches the released images to the events they were reviewed for; returns the events changed.
-    attachReleased() {
-        if (!this.release) return [];
-        const worldEvents = this.eventManager.events.filter(event => !event.personal);
-        const result = attachPreviewImages(worldEvents, this.release.records, this.eventManager.keptRecords ?? [],
-            (event) => this.locationsAsLoaded(event));
-        if (result.problems.length) {
-            const first = result.problems[0];
-            console.warn(`Released images not shown: ${result.problems.length} no longer match their event (position ${first.record_index}: ${first.reason}).`);
-        }
-        this.worldReleased = result.attached;
-        return result.attached;
-    }
-
-    /**
-     * Debug: shows or hides the independently reviewed world images (previews/README.md). They are
-     * attached, all or none, only when the bytes the events were loaded from are the exact file
-     * they were reviewed against and every target event is still that file's record. The preview
-     * replaces the released images while it is on.
-     *
-     * @param {boolean} on
-     */
-    async setWorldImagePreview(on) {
-        const toggle = document.getElementById('debug-world-images');
-        const ticket = this.worldPreviewTicket = (this.worldPreviewTicket ?? 0) + 1;
-        const generation = this.eventManager.loadGeneration;
-        // turned off or on again, or other events loaded, while waiting
-        const stale = () => ticket !== this.worldPreviewTicket || generation !== this.eventManager.loadGeneration;
-        const changed = [...(this.worldPreview ?? []), ...(this.worldReleased ?? [])];
-        detachPreviewImages(changed);
-        this.worldPreview = null;
-        this.worldReleased = [];
-        if (on) {
-            try {
-                const fetchOk = (url) => fetch(url).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r; });
-                const [preview, loadedSha256] = await Promise.all([
-                    fetchOk(PREVIEW_URL).then(r => r.json()),
-                    this.eventManager.loadedSha256,
-                ]);
-                if (stale()) return;
-                const worldEvents = this.eventManager.events.filter(event => !event.personal);
-                let problem = previewProblem(preview, loadedSha256, worldEvents.length);
-                let attached = [];
-                if (!problem) {
-                    // the reviewed records themselves, from a copy of the same bytes
-                    const bytes = await fetchOk(this.eventManager.currentFile).then(r => r.arrayBuffer());
-                    if (await sha256Hex(bytes) !== loadedSha256) {
-                        problem = 'The events file changed on the server since this page loaded.';
-                    } else {
-                        const data = JSON.parse(new TextDecoder().decode(bytes));
-                        if (stale()) return;
-                        const result = attachPreviewImages(worldEvents, preview.records, data.events ?? data,
-                            (event) => this.locationsAsLoaded(event));
-                        if (result.problems.length) {
-                            const first = result.problems[0];
-                            problem = `${result.problems.length} preview image${result.problems.length === 1 ? '' : 's'} no longer match their event (position ${first.record_index}: ${first.reason}).`;
-                        }
-                        attached = result.attached;
-                    }
-                }
-                if (stale()) {
-                    detachPreviewImages(attached);
-                    return;
-                }
-                if (problem) {
-                    toggle.checked = false;
-                    this.showToast(`${problem} No preview images are shown.`);
-                } else {
-                    this.worldPreview = attached;
-                    changed.push(...attached);
-                    this.showToast(`Showing ${attached.length} reviewed images.`);
-                }
-            } catch (error) {
-                console.error('Could not load the image preview:', error);
-                if (ticket !== this.worldPreviewTicket) return;
-                toggle.checked = false;
-                this.showToast('Could not load the image preview.');
-            }
-        }
-        if (!this.worldPreview) changed.push(...this.attachReleased());
-        for (const event of changed) this.eventHeights.delete(this.eventManager.placeIndex.idFor(event));
-        this.resetLayout();
     }
 
     // The full-window viewer's text for a reviewed image: the caption and the image's date, with the
@@ -1233,16 +963,11 @@ export class UIManager {
             event.enhanced_description || event.description, 
             this.currentSearch
         );
-        
-        const syncStatus = event.dirty
-            ? '<div class="event-sync-status"><i class="fa-sharp fa-light fa-sparkles"></i></div>' 
-            : '';
-        
+
         return `
             <div class="event-header">
                 ${highlightedName}
                 ${confidenceBadge}
-                ${syncStatus}
             </div>
             <div class="event-time">
                 <span class="event-date">${escapeHtml(formattedDate)}</span>

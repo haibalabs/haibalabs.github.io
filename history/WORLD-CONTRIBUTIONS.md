@@ -4,6 +4,8 @@ Status, checked on 2026-10-27 against `main` (`82450e5`) with the browser tests 
 
 Update, 2026-10-28: phase 1 of the reviewed-edit flow (`WORLD-EDITS.md`) now lets signed-in editors, reviewers and admins turn on **Editing** and suggest a fix to any world event's name, date, description, people, category or Wikipedia article. Their edits are stored for review and listed under My edits in the profile drawer. Visitors still see no change until phase 2 adds the review page and publishing.
 
+Update, 2026-10-28 (Rachid): the admin-only Add event, Push and Pull tools described below, and the rest of the Settings → Debug section, are removed. Their tests (`tests/e2e/sync-flow.spec.js`) went with them. The page below is kept as the record of what existed. Adding a world event returns as **Suggest a new event**, sent for review like any other edit (`WORLD-EDITS.md`).
+
 ## Reporting bad data
 
 Nothing in the app lets anyone, signed in or not, report a wrong date, name, description, location or image:
