@@ -267,3 +267,25 @@ describe('world dates that used to fall back to year 0', () => {
     assert.equal(formatHistoricalDate('Spring and Summer 934 BC'), 'spring 934 BC');
   });
 });
+
+describe('deep time — thousands of years ago and five-digit BC years', () => {
+  it('shows "years ago" dates as written', () => {
+    for (const t of ['c. 300,000 years ago', '70 thousand years ago', '66 million years ago', '13.8 billion years ago']) {
+      assert.equal(formatHistoricalDate(t), t);
+    }
+  });
+  it('puts a thousands separator in five-digit years only', () => {
+    assert.equal(formatHistoricalDate('10,000 BC'), '10,000 BC');
+    assert.equal(formatHistoricalDate('10000 BCE'), '10,000 BC');
+    assert.equal(formatHistoricalDate('9500 BC'), '9500 BC');
+    assert.equal(formatHistoricalDate('1936'), '1936');
+  });
+  it('orders deep time correctly against BC dates', () => {
+    const order = ['13.8 billion years ago', '66 million years ago', 'c. 300,000 years ago', '70 thousand years ago', 'c. 12,000 years ago', '10,000 BC', '9500 BC', '3200 BC']
+      .map(t => parseTimeToSortableValue(t).sortableValue);
+    assert.deepEqual(order, [...order].sort((a, b) => a - b));
+  });
+  it('leaves a comma followed by a space alone', () => {
+    assert.equal(parseTimeToSortableValue('July 7, 756 AD').year, 756);
+  });
+});

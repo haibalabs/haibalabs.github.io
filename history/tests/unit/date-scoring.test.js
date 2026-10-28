@@ -30,7 +30,7 @@ const close = (actual, expected) => Math.abs(actual - expected) < Math.max(0.000
 describe('date scoring sheet', () => {
   const rows = parseRows(CSV);
 
-  it('has every row of the sheet', () => assert.equal(rows.length, 95));
+  it('has every row of the sheet', () => assert.equal(rows.length, 102));
 
   for (const { input, sort } of rows) {
     if (NOT_YET_SUPPORTED[input]) {
