@@ -272,9 +272,11 @@ The merge logic lives in a small module (`modules/world-edits.js`) shared by the
 
 ## Admin review page
 
-`history/review.html`, reached from the settings panel and shown to admins only; the rules enforce access whatever the page shows.
+`history/review.html`, reached from the profile drawer and shown to admins only; the rules enforce access whatever the page shows.
 
-- **Queue tabs**: Ready, Flagged, Automatically rejected, Conflicts, Sent back, History. Each tab shows a count; Ready and Flagged are the default view.
+Mockup: the "Phase 2: admin review" board at https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau (shown to Rachid on 2026-10-28; built only after his sign-off).
+
+- **Queue tabs**: Ready, Needs a look (flagged), Auto-rejected, Conflicts, History. Each tab shows a count; Ready is the default view. Sending an edit back is a rejection with a reason, which the author can revise, so there is no separate Sent back tab.
 - **Grouped by event**: a card with the event's current values, then each pending edit for it.
 - **For each edit**:
   - author, age, reason and sources;
@@ -282,8 +284,7 @@ The merge logic lives in a small module (`modules/world-edits.js`) shared by the
   - check results with pass, warn or fail and their detail.
 - **Actions**:
   - **Approve**, either all fields or ticked fields only;
-  - **Reject** (reason required);
-  - **Send back** (note required);
+  - **Reject** (reason required; the author sees it and can revise);
   - on automatically rejected edits, **Approve anyway** (note required, recorded as an override);
   - **Approve all checked** for a selection of Ready edits whose checks all passed.
 - **History**: approved, rejected and overruled edits, newest first, each with **Revert**.
@@ -292,7 +293,7 @@ Approving runs in one Firestore transaction. The transaction sets the edit to `a
 
 ## Editor screens
 
-Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau (phase 1 screens, revised with Rachid's comments of 2026-10-28).
+Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau, the "Phase 1" boards (Editing switch and card, Suggest an edit, My edits), revised with Rachid's comments of 2026-10-28. The canvas is private to Rachid's account; share it from its Share menu for anyone else to open it.
 
 - **Editing switch.** Signed-in editors, reviewers and admins get an **Editing** switch in the top bar. It starts off, so they see the normal site, and the choice is remembered on that browser. Only while it's on does each world event show the pencil.
 - **Suggest an edit** (pencil) opens the event form filled with the current values: name, date, description, people, category and Wikipedia article. Location and image are collapsed rows that open their own sections; they appear in phase 4, when those edits exist, rather than as buttons that do nothing.
