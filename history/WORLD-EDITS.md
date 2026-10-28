@@ -154,7 +154,8 @@ published ──► merged (the pipeline folded it into the dataset)
 The edit-level status above summarizes a status kept **per field** in `fields`, because an admin can approve some fields of an edit and not others:
 - each changed field starts `pending` and ends `approved`, `rejected`, `conflict` or `withdrawn`;
 - approving a field writes an **approval receipt** for that field only: approver, the edit's `revision` and `content_sha256`, the exact approved `value`, the override flag and the server time. Receipts are immutable;
-- an edit is `published` once every field has a final disposition and at least one was approved, and `rejected` if none was. Fields not ticked in a partial approval get their own disposition (`rejected`, or left `pending` if the admin chooses "decide later"), never an implied approval;
+- fields not ticked in a partial approval get their own disposition: `rejected`, or left `pending` if the admin chooses "decide later". They are never implicitly approved;
+- while any field is still `pending`, the edit stays in the review queue, shown as "partly published" if some approved fields have already reached visitors. Once every field has a final disposition, the edit is `published` if at least one field was approved and `rejected` if none was;
 - the overlay and the export consume **approval receipts, not edits**, so only the exact approved fields and values ever reach visitors or the dataset.
 
 ## Automatic checks
@@ -270,10 +271,12 @@ Everyone can read it; only admins write it, inside the approval transaction.
 
 **Composing approvals.** The first approval of a field creates its patch with `base` set to the dataset's value and `value` set to the approved value. A later approval of the same field (B→C, judged against the effective value B) appends its receipt to `chain` and sets `value` to C, keeping `base` A. A fresh visitor loading A therefore gets C. A revert is an approval like any other: after A→B→C, reverting the C edit appends C→B and sets `value` back to B. When `value` equals `base` again, the patch is a no-op and is removed, with the chain kept in the edits' histories.
 
-**At load**, after the released images and locations are attached, the site goes through the patches:
-1. if the loaded value equals `base` or one of `prior_bases`, it applies `value`;
+**At load**, after the released images and locations are attached, the site first adds `created` events (below), then goes through the patches, which may also target created events:
+1. if the loaded value equals `base`, one of `prior_bases`, or **any value along the patch's `chain`** (an earlier approved state such as B in A→B→C), it applies `value`;
 2. if the loaded value already equals `value`, it skips the patch, because the change has been folded in;
 3. otherwise it reports the patch in the console as stale and leaves the loaded value, for the pipeline to reconcile.
+
+Rule 1 covers a dataset that already contains B going live before the overlay is cleaned up: the page loads B and still gets the newer C. Every value in a chain was approved, so moving forward from any of them to the latest approved value is safe.
 
 For each `created` entry, the site:
 1. adds the record if no loaded event has that `event_id`;
@@ -299,13 +302,19 @@ A history-dp job owned by Atlas folds approved edits into the dataset in four st
 1. **Freeze an export manifest.** It reads the overlay at one `version` and writes an immutable manifest (`manifest_id`, `overlay_version`, SHA-256). The manifest lists each patch with its `base`, `value` and the exact chain receipts (edit ID and revision) folded, and each created event with its `record_sha256`. Approval receipts, not edit statuses, are the input.
 2. **Rebuild.** The canonical rebuild applies the manifest's values and records the manifest ID.
 3. **Record deployment.** Once the rebuilt dataset is live, the usual live check records the served dataset's SHA-256 (the same receipt as for image releases today).
-4. **Clean up conditionally**, in one transaction against the overlay:
-   - **Patch unchanged since the manifest** (its last chain receipt is the manifest's): remove it.
-   - **Patch approved again since** (for example the manifest folded A→B and a later approval made it A→C): keep it and rebase it. `base` becomes the folded value B, the old base A moves to `prior_bases`, and `chain` keeps only the receipts after the manifest's.
-   - **Created event in the served dataset**, with an equal `record_sha256`: remove its entry. If the record differs, keep the entry and report it.
+4. **Clean up conditionally**, in one transaction against the overlay. Nothing is deleted at this step; folded entries are only marked:
+   - **Patch unchanged since the manifest** (its last chain receipt is the manifest's): mark it `folded: { manifest_id, dataset_sha256, at }`. Loading is unchanged: a page with the new dataset skips it (rule 2), and a page still on the old dataset applies it (rule 1).
+   - **Patch approved again since** (for example the manifest folded A→B and a later approval made it A→C): keep it active and rebase it. `base` becomes the folded value B, the old base A moves to `prior_bases`, and `chain` keeps the receipts after the manifest's plus a reference to the folded ones, so B and A still count as chain values for rule 1.
+   - **Created event in the served dataset**, with an equal `record_sha256`: mark its entry `folded` the same way. It is still added for a page whose dataset lacks the event, and skipped otherwise. If the record differs, keep the entry active and report it.
    - Finally, set `dataset` to the served SHA-256, and mark the folded fields `merged` on their edits.
+5. **Expire folded entries.** A later run removes `folded` patches, `created` entries and `prior_bases` values once two conditions hold. They must be at least 14 days old, and a newer dataset must have been deployed since their fold. Pages hold their dataset only for the session, and GitHub Pages caches for minutes, so a page on a dataset older than that retention window is not expected.
 
-**Older pages.** A visitor whose browser still has the previous dataset loads value A. A rebased patch still applies to them, because A is in `prior_bases`. `prior_bases` entries are dropped one deployment later.
+**Pages on an older dataset.** A visitor whose browser still has the previous dataset loads A, or lacks a new event N:
+- a folded A→B patch still gives them B, because the patch is kept, only marked;
+- a rebased patch still applies, because A is in `prior_bases`;
+- N is still added from its folded `created` entry.
+
+Nothing approved disappears for them during the retention window.
 
 Agents' own data-quality fixes can later go through the same bucket as edits authored by the checker account.
 
@@ -319,7 +328,7 @@ Every change to what visitors see can be traced to a person, at every stage:
   - the `users` collection;
   - a private intake file outside any public repository, `history-data-private/edit-identities.jsonl` or wherever Rachid chooses (open question 3), which maps each opaque reference to the person.
 
-  Everything public, meaning the overlay, the canonical dataset, releases and anything committed to a public repository, carries only **opaque references**: a stable `ref_` + hash per person, plus edit IDs, unless Rachid explicitly chooses to disclose names.
+  Everything public, meaning the overlay, the canonical dataset, releases and anything committed to a public repository, carries only **opaque references**, plus edit IDs, unless Rachid explicitly chooses to disclose names. Each person gets one stable reference, `ref_` followed by a random UUID, created on their first edit and stored only in the private mapping. It is random rather than a hash of the uid or email, so nobody can recompute it from public information.
 - **The overlay** stores, with each patch, the chain of approval receipts with `approved_by` as an opaque reference, edit IDs and times.
 - **The dataset export** carries the opaque author and approver references, approval times, override flags, edit IDs and revisions into the manifest and the rebuild. A folded change stays attributable after it leaves the overlay: the private intake file resolves each reference to a person.
 - **The review page's History** lists each decision with its approver and can be filtered by approver.
@@ -363,7 +372,13 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
   - composition: A→B then B→C loads as C from A, and reverting C after B gives B;
   - overlay application: applies, already folded, stale, and a prior base after a rebase;
   - created events: added once, skipped when folded, reported when different;
-  - folding races: an export of A→B followed by an approval B→C keeps C after cleanup; a deployment before cleanup doesn't duplicate a created event;
+  - folding races:
+    - an export of A→B followed by an approval B→C keeps C after cleanup;
+    - with the same overlay (base A, value C), a page loading the newly deployed B **before** cleanup still shows C;
+    - after cleanup marks an unchanged A→B patch folded, a page still loading the old A shows B;
+    - after a created event N is folded, a page still loading the old dataset without N shows N once, and a page with the new dataset shows it once;
+    - expiry removes folded entries only after the retention window and a newer deployment;
+  - a patch that targets a created event applies after the event is added;
   - image identity and removal: hiding a released image, a folded removal skipped, revert restoring the full record;
   - `content_sha256` normalization, the overlay size limit, and the field checks.
 - **Rules:** every create, update and read case above, including an admin approving their own edit (denied) and a visitor reading `edits` (denied).
