@@ -10,6 +10,8 @@ import { TimelineUI }   from './modules/timeline-ui.js';
 import { TimelineStore } from './modules/timeline-store.js';
 import { FirebaseImageStore } from './modules/firebase-image-store.js';
 import { releasePositions } from './modules/world-locations.js';
+import { EditUI } from './modules/edit-ui.js';
+import { EditStore } from './modules/edit-store.js';
 
 // Initialize map globally since it's used across different modules
 const { map, markersLayer, geocodeCache } = initMap();
@@ -44,6 +46,7 @@ async function initializeApp() {
     uiManager.timelineUI = new TimelineUI(eventManager, uiManager,
         new TimelineStore(eventManager.db, eventManager.auth),
         new FirebaseImageStore(eventManager.firebaseApp, { emulator: eventManager.usesEmulators }));
+    new EditUI(eventManager, uiManager, new EditStore(eventManager.db, eventManager.auth));
 
     // Get data file from URL params
     const params = new URLSearchParams(window.location.search);

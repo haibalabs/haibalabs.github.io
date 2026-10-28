@@ -183,6 +183,7 @@ export class UIManager {
             this.account = { user, role };
             this.updateAuthUI(Boolean(user), user?.email ?? '');
             this.onAccountChange?.(user, role);
+            this.onEditAccountChange?.(user, role);
             // sync and debug controls are admin-only for now
             debugSettings.hidden = !isAdmin;
             syncToggle.disabled = !isAdmin;
@@ -1118,6 +1119,8 @@ export class UIManager {
         if (event.personal) this.addPersonalMarks(eventDiv, event);
         if (event.personal && event.image) this.timelineUI.decoratePhoto(eventDiv, event);
         if (event.image_preview) this.addPreviewImageHandler(eventDiv, event);
+        // the pencil and pending mark, while an editor has Editing on (see EditUI)
+        this.worldEdits?.decorate(eventDiv, event);
 
         return eventDiv;
     }

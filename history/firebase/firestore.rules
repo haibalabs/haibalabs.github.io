@@ -52,6 +52,65 @@ service cloud.firestore {
       allow delete: if collection.matches('events_.+') && isAdmin();
     }
 
+    // Proposed edits to world events (../WORLD-EDITS.md). Editors, reviewers and admins write
+    // their own; only the author and admins read them. Authors never write review results:
+    // checks.automatic comes from the agents' checker (Admin SDK, outside these rules), and review
+    // fields, field dispositions and publication come from admins (phase 2). Nothing is deleted.
+    function editFieldNames() {
+      return ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url'];
+    }
+
+    function validEditContent(data) {
+      return data.keys().hasOnly(['edit_id', 'kind', 'event_id', 'event_name', 'dataset', 'changes',
+          'reason', 'sources', 'source_conflict', 'author', 'created_at', 'revised_at', 'revision',
+          'content_sha256', 'status', 'checks'])
+        && data.event_id is string
+        && data.event_id.matches('evt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        && data.event_name is string && data.event_name.size() <= 300
+        && data.dataset is map
+        && data.changes is map && data.changes.size() > 0
+        && data.changes.keys().hasOnly(editFieldNames())
+        && data.reason is string && data.reason.size() <= 1000
+        && data.sources is list && data.sources.size() <= 5
+        && data.source_conflict is bool
+        && data.content_sha256 is string && data.content_sha256.size() == 64
+        && data.revision is int
+        && data.checks is map && data.checks.keys().hasOnly(['browser']);
+    }
+
+    match /edits/{editId} {
+      allow read: if signedIn() && (resource.data.author.uid == request.auth.uid || isAdmin());
+      allow create: if isEditor()
+        && editId.matches('edt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        && request.resource.data.edit_id == editId
+        && validEditContent(request.resource.data)
+        && request.resource.data.kind == 'update'
+        && request.resource.data.status == 'submitted'
+        && request.resource.data.revision == 1
+        && request.resource.data.author.keys().hasOnly(['uid', 'email'])
+        && request.resource.data.author.uid == request.auth.uid
+        && request.resource.data.author.email == request.auth.token.email
+        && request.resource.data.created_at == request.time
+        && request.resource.data.revised_at == request.time;
+      // The author revises (a new revision, back to submitted) or withdraws an edit that is still
+      // waiting for review or rejected.
+      allow update: if isEditor()
+        && resource.data.author.uid == request.auth.uid
+        && resource.data.status in ['submitted', 'flagged', 'ready', 'conflict', 'auto_rejected', 'sent_back', 'rejected']
+        && request.resource.data.revised_at == request.time
+        && (
+          (request.resource.data.status == 'withdrawn'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'revised_at']))
+          || (request.resource.data.status == 'submitted'
+            && request.resource.data.revision == resource.data.revision + 1
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['changes', 'reason',
+                'sources', 'source_conflict', 'content_sha256', 'revision', 'revised_at', 'status',
+                'checks', 'dataset', 'event_name'])
+            && validEditContent(request.resource.data))
+        );
+      allow delete: if false;
+    }
+
     // Personal timelines: private to their owner and any listed members. Editors, reviewers and
     // admins may create timelines. Only the owner renames, shares or deletes one; members read it
     // and edit its events. Firestore does not cascade deletes, so clients delete a timeline's

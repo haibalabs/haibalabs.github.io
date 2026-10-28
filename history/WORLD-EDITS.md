@@ -1,6 +1,6 @@
 # Editing world history with review (U2)
 
-Status: design accepted by Atlas and Iris, location review (Hermes) pending; Rachid answered the open questions on 2026-10-27. New screens get a mockup for Rachid before implementation. Nothing here is built yet. The current, much smaller, contribution path is described in `WORLD-CONTRIBUTIONS.md`.
+Status: design approved by Rachid on 2026-10-28 (PR 31), after review by Atlas, Iris and Hermes; mockups signed off the same day. **Phase 1 is built**: the edits model and rules, the Editing switch, Suggest an edit (name, date, description, people with article links, category, Wikipedia article), browser checks and My edits (`modules/world-edits.js`, `edit-store.js`, `edit-ui.js`, `wikipedia-lookup.js`; tests in `tests/unit/world-edits.test.js`, `tests/e2e/edits-flow.spec.js` and `firebase/tests/rules.test.js`). Edits wait for review: nothing reaches visitors until phase 2's review page and overlay. The older admin-only contribution path is described in `WORLD-CONTRIBUTIONS.md`.
 
 Invited editors and reviewers can fix any world event: its name, date, description, Wikipedia link, category, location and image. They can also propose a new event. Every change is stored as an **edit** in a review bucket. An edit is first **checked automatically**, then **reviewed by an admin**, and only an approved edit changes the event that visitors see. One event can collect several edits from different people; edits to different fields merge on their own, and edits that clash are settled by the reviewer.
 
@@ -296,7 +296,7 @@ Approving runs in one Firestore transaction. The transaction sets the edit to `a
 Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau, the "Phase 1" boards (Editing switch and card, Suggest an edit, My edits), revised with Rachid's comments of 2026-10-28. The canvas is private to Rachid's account; share it from its Share menu for anyone else to open it.
 
 - **Editing switch.** Signed-in editors, reviewers and admins get an **Editing** switch in the top bar. It starts off, so they see the normal site, and the choice is remembered on that browser. Only while it's on does each world event show the pencil.
-- **Suggest an edit** (pencil) opens the event form filled with the current values: name, date, description, people, category and Wikipedia article. Location and image are collapsed rows that open their own sections.
+- **Suggest an edit** (pencil) opens the event form filled with the current values: name, date, description, people, category and Wikipedia article. Location and image are collapsed rows that open their own sections; they appear in phase 4, when those edits exist, rather than as buttons that do nothing.
   - A changed field shows a small "Changed" tag and an "Undo change" link. The old value isn't repeated on screen, and there is no summary box (Rachid: keep the form uncluttered).
   - A note for the reviewer and a source are **optional** (Rachid, 2026-10-28): a reason helps when the author can put it into words, but nobody should have to type "because it's wrong" for every fix.
   - The "Wikipedia or another source is wrong here" checkbox sets `source_conflict`.

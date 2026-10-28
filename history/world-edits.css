@@ -1,0 +1,112 @@
+/* Suggesting edits to world events (WORLD-EDITS.md): the Editing switch, the pencil and pending
+   mark on events, the Suggest an edit form and My edits. */
+
+.visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* the Editing switch in the top bar, shown to editors, reviewers and admins */
+.editing-toggle {
+    display: inline-flex; align-items: center; gap: .4rem; height: 34px; padding: 0 .8rem;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--ink-2);
+    font: inherit; font-size: .8125rem; font-weight: 500; cursor: pointer;
+}
+.editing-toggle[hidden] { display: none; }
+.editing-toggle.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.editing-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* the pencil and the author's pending mark on a world event */
+.edit-bar { display: flex; align-items: center; gap: .5rem; margin-top: .35rem; }
+.edit-pencil {
+    margin-left: auto; width: 32px; height: 32px; border: 0; border-radius: 8px;
+    background: var(--surface-2); color: var(--ink); cursor: pointer;
+}
+.edit-pencil:hover { filter: brightness(.95); }
+.edit-pencil:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.edit-pending {
+    font-size: .75rem; font-weight: 600; border-radius: 999px; padding: .1rem .55rem;
+    color: #93370d; background: #fffaeb; border: 1px solid #fedf89;
+}
+.edit-pending.rejected { color: #912018; background: #fef3f2; border-color: #fecdca; }
+
+/* the form */
+.modal.suggest-edit { width: min(560px, calc(100vw - 32px)); }
+.suggest-edit .field-head { display: flex; align-items: center; gap: .5rem; min-height: 22px; }
+.suggest-edit .field-head label, .suggest-edit .field-label { font-size: .75rem; font-weight: 600; color: var(--ink-2); }
+.changed-tag {
+    font-size: .6875rem; font-weight: 600; color: var(--accent); background: var(--accent-soft);
+    border-radius: 999px; padding: .05rem .5rem;
+}
+.changed-tag[hidden], .undo-change[hidden] { display: none; }
+.undo-change, .link-btn {
+    border: 0; background: none; padding: .2rem 0; color: var(--accent); font: inherit; font-size: .75rem; cursor: pointer;
+}
+.undo-change { margin-left: auto; }
+.link-btn[hidden] { display: none; }
+.form-group.changed input, .form-group.changed textarea, .form-group.changed select {
+    border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+@media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
+.wiki-check { margin: -.4rem 0 0; font-size: .75rem; color: var(--ink-2); }
+.wiki-check.ok { color: #067647; }
+.wiki-check.problem { color: #b42318; }
+.form-divider { border: 0; border-top: 1px solid var(--line); margin: .25rem 0; width: 100%; }
+.optional { font-weight: 400; }
+.sources { display: grid; gap: .4rem; }
+.source-input { padding: .55rem .7rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.checkbox-row { display: flex; align-items: center; gap: .55rem; font-size: .8125rem; color: var(--ink); cursor: pointer; }
+.checkbox-row input { width: 16px; height: 16px; margin: 0; }
+
+/* people */
+.people-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.person {
+    display: flex; align-items: center; gap: .6rem;
+    border: 1px solid var(--line); border-radius: 8px; padding: .35rem .5rem .35rem .7rem;
+}
+.person-details { display: flex; align-items: center; flex-wrap: wrap; gap: .1rem .6rem; flex: 1; min-width: 0; }
+.person-name { font-size: .875rem; font-weight: 500; }
+.person-link { font-size: .75rem; color: #93370d; }
+.person-link.linked { color: #067647; }
+.person-remove {
+    margin-left: auto; width: 30px; height: 30px; border: 0; border-radius: 6px; background: none;
+    color: var(--ink-2); font-size: 1.1rem; cursor: pointer;
+}
+.person-remove:hover { background: var(--surface-2); color: var(--ink); }
+.people-add { position: relative; }
+.people-add input { width: 100%; box-sizing: border-box; padding: .55rem .7rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.people-results {
+    position: absolute; z-index: 5; left: 0; right: 0; top: calc(100% + 4px); margin: 0; padding: .25rem;
+    list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: 0 12px 32px rgb(0 0 0 / .14); max-height: 260px; overflow-y: auto;
+}
+.people-results[hidden] { display: none; }
+.people-results button {
+    display: grid; gap: .1rem; width: 100%; text-align: left; padding: .5rem .6rem; border: 0; border-radius: 6px;
+    background: none; color: var(--ink); font: inherit; cursor: pointer;
+}
+.people-results button:hover, .people-results button:focus-visible { background: var(--surface-2); outline: none; }
+.result-title { font-size: .875rem; font-weight: 500; }
+.result-description { font-size: .75rem; color: var(--ink-2); }
+
+/* My edits, in the profile drawer */
+.my-edits-head { display: flex; align-items: baseline; justify-content: space-between; gap: .5rem; }
+.my-edits-count { font-size: .75rem; color: var(--ink-2); }
+.my-edits-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.my-edit {
+    display: grid; gap: .3rem; padding: .7rem .8rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+}
+.my-edit-head { display: flex; align-items: center; gap: .5rem; }
+.my-edit-title { font-size: .875rem; font-weight: 600; }
+.my-edit-fields { font-size: .8125rem; color: var(--ink-2); }
+.my-edit-reason { margin: 0; font-size: .8125rem; line-height: 1.45; color: #912018; }
+.my-edit-actions { display: flex; justify-content: flex-end; gap: .4rem; margin-top: .2rem; }
+.my-edit-actions .btn { height: 32px; padding: 0 12px; font-size: .8125rem; }
+.my-edits-empty { font-size: .8125rem; color: var(--ink-2); }
+.status-badge {
+    font-size: .6875rem; font-weight: 600; border-radius: 999px; padding: .1rem .55rem; border: 1px solid transparent;
+}
+.status-badge.waiting { color: var(--accent); background: var(--accent-soft); border-color: rgb(37 99 235 / .25); }
+.status-badge.rejected { color: #912018; background: #fef3f2; border-color: #fecdca; }
+.status-badge.accepted { color: #067647; background: #ecfdf3; border-color: #abefc6; }
+.status-badge.published { color: var(--ink-2); background: var(--surface-2); border-color: var(--line); }
