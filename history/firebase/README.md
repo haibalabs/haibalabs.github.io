@@ -25,6 +25,8 @@ Shared edits to the world dataset live in `events_main`, one document per event 
 
 A signed-in account without a `users` document can read and write nothing. Collections not listed in the rules are denied. The app hides controls by role, but the rules are what enforce access. For now the app shows its sync and debug controls (including adding events) to admins only, although the rules also allow editors to write.
 
+Proposed edits to world events live in `edits/{editId}` (see [../WORLD-EDITS.md](../WORLD-EDITS.md)). Editors, reviewers and admins create their own, attributed to their UID and email with the server time; only the author and admins can read one. The author can revise or withdraw an edit that is still waiting for review or was rejected. Authors can't write review results, and nobody deletes an edit. Phase 1 of the app writes these. Deploy the rules (below) after it is merged, or every edit is refused.
+
 Personal timelines (`timelines/{id}` and their `events` subcollection) are private to their owner and listed members, whatever the role; admins cannot read them through the app. See [../PERSONAL-TIMELINES.md](../PERSONAL-TIMELINES.md).
 
 ## Invite a user

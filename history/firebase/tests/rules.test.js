@@ -340,3 +340,108 @@ describe('personal timelines: event photos', () => {
     await assertFails(save('timelines/t1/x.webp'));
   });
 });
+
+describe('proposed edits to world events', () => {
+  const EDIT = 'edt_0a1b2c3d-0000-4000-8000-000000000001';
+  const OTHER_EDIT = 'edt_0a1b2c3d-0000-4000-8000-000000000002';
+  const WORLD_EVT = 'evt_0a1b2c3d-0000-4000-8000-0000000000aa';
+  const email = (uid) => `${uid}@example.test`;
+  const asUser = (uid) => env.authenticatedContext(uid, { email: email(uid) }).firestore();
+  const editDoc = (uid, id = EDIT, extra = {}) => ({
+    edit_id: id, kind: 'update', event_id: WORLD_EVT, event_name: 'Max Schmeling knocks out Joe Louis',
+    dataset: { id: 'world-history', sha256: 'a'.repeat(64), locations_release_sha256: null },
+    changes: { enhanced_description: { before: 'June 13', after: 'June 19' } },
+    reason: '', sources: [], source_conflict: false,
+    author: { uid, email: email(uid) }, created_at: serverTimestamp(), revised_at: serverTimestamp(),
+    revision: 1, content_sha256: 'b'.repeat(64), status: 'submitted', checks: { browser: [] }, ...extra,
+  });
+  const editRef = (db, id = EDIT) => doc(db, 'edits', id);
+  const seedEdit = (uid, extra = {}) => env.withSecurityRulesDisabled(async (ctx) => {
+    await setDoc(editRef(ctx.firestore()), { ...editDoc(uid), created_at: Timestamp.now(), revised_at: Timestamp.now(), ...extra });
+  });
+
+  for (const role of [ROLES.editor, ROLES.reviewer, ROLES.admin]) {
+    it(`${role}s can submit an edit attributed to themselves`, () => assertSucceeds(setDoc(editRef(asUser(role)), editDoc(role))));
+  }
+  it('viewers, accounts without a role and visitors cannot submit edits', async () => {
+    await assertFails(setDoc(editRef(asUser('viewer')), editDoc('viewer')));
+    await assertFails(setDoc(editRef(asUser('stranger')), editDoc('stranger')));
+    await assertFails(setDoc(editRef(anonymous()), editDoc('nobody')));
+  });
+  it('an edit must name its real author, with the server time', async () => {
+    const db = asUser('editor');
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { author: { uid: 'reviewer', email: email('reviewer') } })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { author: { uid: 'editor', email: 'someone@else.test' } })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { created_at: Timestamp.fromMillis(0) })));
+  });
+  it('a new edit starts submitted at revision 1, with no review results', async () => {
+    const db = asUser('editor');
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { status: 'approved' })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { revision: 2 })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { review: { decision: 'approved' } })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { fields: { enhanced_description: { status: 'approved' } } })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { checks: { browser: [], automatic: { results: [] } } })));
+  });
+  it('an edit changes only known fields, under its own ID', async () => {
+    const db = asUser('editor');
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { changes: { confidence: { before: 'high', after: 'low' } } })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { changes: {} })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', OTHER_EDIT)));
+    await assertFails(setDoc(doc(db, 'edits', 'not-an-edit-id'), editDoc('editor', 'not-an-edit-id')));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { event_id: 'evt_1' })));
+  });
+  it('only the author and admins can read an edit; nobody can delete one', async () => {
+    await seedEdit('editor');
+    await assertSucceeds(getDoc(editRef(asUser('editor'))));
+    await assertSucceeds(getDoc(editRef(asUser('admin'))));
+    await assertFails(getDoc(editRef(asUser('reviewer'))));
+    await assertFails(getDoc(editRef(asUser('viewer'))));
+    await assertFails(getDoc(editRef(anonymous())));
+    await assertFails(deleteDoc(editRef(asUser('editor'))));
+    await assertFails(deleteDoc(editRef(asUser('admin'))));
+  });
+  it('authors list only their own edits', async () => {
+    await seedEdit('editor');
+    await assertSucceeds(getDocs(query(collection(asUser('editor'), 'edits'), where('author.uid', '==', 'editor'))));
+    await assertFails(getDocs(collection(asUser('editor'), 'edits')));
+  });
+  it('the author can withdraw an open edit, changing nothing else', async () => {
+    await seedEdit('editor');
+    const db = asUser('editor');
+    const current = (await getDoc(editRef(db))).data();
+    await assertFails(setDoc(editRef(db), { ...current, status: 'withdrawn', revised_at: serverTimestamp(), reason: 'changed' }));
+    await assertSucceeds(setDoc(editRef(db), { ...current, status: 'withdrawn', revised_at: serverTimestamp() }));
+  });
+  it('the author can revise an open or rejected edit into the next revision', async () => {
+    for (const status of ['submitted', 'ready', 'conflict', 'rejected', 'auto_rejected']) {
+      await seedEdit('editor', { status });
+      const db = asUser('editor');
+      const current = (await getDoc(editRef(db))).data();
+      const revised = { ...current, status: 'submitted', revision: 2, revised_at: serverTimestamp(), content_sha256: 'c'.repeat(64),
+        changes: { enhanced_description: { before: 'June 13', after: 'June 19, 1936' } } };
+      await assertFails(setDoc(editRef(db), { ...revised, revision: 3 }));
+      await assertFails(setDoc(editRef(db), { ...revised, author: { uid: 'editor', email: 'x@y.test' } }));
+      await assertFails(setDoc(editRef(db), { ...revised, event_id: 'evt_0a1b2c3d-0000-4000-8000-0000000000bb' }));
+      await assertSucceeds(setDoc(editRef(db), revised), status);
+    }
+  });
+  it('a revision drops the automatic checks of the previous one', async () => {
+    await seedEdit('editor', { status: 'ready', checks: { browser: [], automatic: { revision: 1, results: [] } } });
+    const db = asUser('editor');
+    const current = (await getDoc(editRef(db))).data();
+    const revised = { ...current, status: 'submitted', revision: 2, revised_at: serverTimestamp() };
+    await assertFails(setDoc(editRef(db), revised));
+    await assertSucceeds(setDoc(editRef(db), { ...revised, checks: { browser: [] } }));
+  });
+  it('nobody else can revise or withdraw it, and a published or withdrawn edit is final', async () => {
+    await seedEdit('editor');
+    const current = (await getDoc(editRef(asUser('editor')))).data();
+    await assertFails(setDoc(editRef(asUser('reviewer')), { ...current, status: 'withdrawn', revised_at: serverTimestamp() }));
+    for (const status of ['withdrawn', 'published', 'merged']) {
+      await seedEdit('editor', { status });
+      const db = asUser('editor');
+      const final = (await getDoc(editRef(db))).data();
+      await assertFails(setDoc(editRef(db), { ...final, status: 'submitted', revision: 2, revised_at: serverTimestamp() }), status);
+    }
+  });
+});

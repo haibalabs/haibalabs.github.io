@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="map-browser.css">
     <link rel="stylesheet" href="timelines.css">
+    <link rel="stylesheet" href="world-edits.css">
 </head>
 <body>
     <div class="page-container">
@@ -69,6 +70,7 @@
                     <div class="action-buttons">
                         <button id="randomEvent" class="icon-btn" title="I'm feeling lucky"><i class="fa-light fa-dice"></i></button>
                         <button id="add-event" class="icon-btn" title="Add event"><i class="fa-light fa-plus"></i></button>
+                        <button id="editing-toggle" class="editing-toggle" type="button" aria-pressed="false" title="Suggest edits to events" hidden><i class="fa-light fa-pen" aria-hidden="true"></i><span>Editing</span></button>
                         <button id="settings-btn" class="icon-btn" title="Settings"><i class="fa-light fa-sliders"></i></button>
                     </div>
                 </div>
@@ -127,6 +129,11 @@
                 </form>
                 <p id="timeline-status" class="auth-status" role="status" hidden></p>
             </div>
+            <div class="settings-group" id="my-edits" hidden>
+                <div class="my-edits-head"><h4>My edits</h4><span class="my-edits-count" id="my-edits-count"></span></div>
+                <ul class="my-edits-list" id="my-edits-list"></ul>
+                <p id="my-edits-status" class="auth-status" role="status" hidden></p>
+            </div>
             <div class="settings-group" id="debug-settings" hidden>
                 <h4>Sync</h4>
                 <div class="sync-controls" style="display: none">
@@ -181,6 +188,61 @@
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" id="cancel-add">Cancel</button>
                     <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-overlay" id="suggest-edit-modal">
+        <div class="modal suggest-edit" role="dialog" aria-modal="true" aria-labelledby="suggest-edit-title">
+            <div class="modal-header"><h3 id="suggest-edit-title">Suggest an edit</h3></div>
+            <form id="suggest-edit-form" class="modal-form" novalidate>
+                <div class="form-group" data-field="name">
+                    <div class="field-head"><label for="se-name">Event name</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <input id="se-name" name="name" type="text" maxlength="300" autocomplete="off">
+                </div>
+                <div class="form-group" data-field="enhanced_time">
+                    <div class="field-head"><label for="se-time">Date</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <input id="se-time" name="enhanced_time" type="text" autocomplete="off" placeholder="e.g. June 19, 1936, 44 BC or Spring 1950">
+                </div>
+                <div class="form-group" data-field="enhanced_description">
+                    <div class="field-head"><label for="se-description">Description</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <textarea id="se-description" name="enhanced_description" rows="4" maxlength="4000"></textarea>
+                </div>
+                <div class="form-group" data-field="figures">
+                    <div class="field-head"><span class="field-label" id="se-people-label">People</span><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <ul class="people-list" aria-labelledby="se-people-label"></ul>
+                    <div class="people-add">
+                        <label for="se-person" class="visually-hidden">Add a person</label>
+                        <input id="se-person" type="text" autocomplete="off" placeholder="Add a person…" aria-controls="se-person-results" aria-expanded="false">
+                        <ul class="people-results" id="se-person-results" role="listbox" aria-label="Wikipedia articles" hidden></ul>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="form-group" data-field="categories">
+                        <div class="field-head"><label for="se-category">Category</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                        <select id="se-category" name="categories"></select>
+                    </div>
+                    <div class="form-group" data-field="wikipedia_url">
+                        <div class="field-head"><label for="se-wiki">Wikipedia article</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                        <input id="se-wiki" name="wikipedia_url" type="text" autocomplete="off" placeholder="en.wikipedia.org/wiki/…">
+                    </div>
+                </div>
+                <p class="wiki-check" id="se-wiki-check" role="status" hidden></p>
+                <hr class="form-divider">
+                <div class="form-group">
+                    <label for="se-reason">Note for the reviewer <span class="optional">(optional)</span></label>
+                    <textarea id="se-reason" name="reason" rows="2" maxlength="1000" placeholder="Anything that helps check this change"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="se-source">Source <span class="optional">(optional)</span></label>
+                    <div class="sources" id="se-sources"><input id="se-source" class="source-input" type="url" placeholder="https://…"></div>
+                    <button type="button" class="link-btn" id="se-add-source">+ Add another source</button>
+                </div>
+                <label class="checkbox-row"><input type="checkbox" id="se-source-conflict"> Wikipedia or another source is wrong here</label>
+                <p class="form-error" role="alert" hidden></p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="se-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="se-submit">Send for review</button>
                 </div>
             </form>
         </div>

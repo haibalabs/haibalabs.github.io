@@ -1,6 +1,8 @@
 # Reporting and contributing to world history
 
-Status, checked on 2026-10-27 against `main` (`82450e5`) with the browser tests below: **there is no way in the app to report bad data**, and **adding an event to the world dataset is an admin-only debug flow whose result visitors never see**. The reviewed-edit flow that would provide both (U2 in history-dp's task list) is not built yet. This page records what exists, exactly, so it can be changed deliberately.
+Status, checked on 2026-10-27 against `main` (`82450e5`) with the browser tests below: **there is no way in the app to report bad data**, and **adding an event to the world dataset is an admin-only debug flow whose result visitors never see**. This page records what existed then, exactly, so it can be changed deliberately.
+
+Update, 2026-10-28: phase 1 of the reviewed-edit flow (`WORLD-EDITS.md`) now lets signed-in editors, reviewers and admins turn on **Editing** and suggest a fix to any world event's name, date, description, people, category or Wikipedia article. Their edits are stored for review and listed under My edits in the profile drawer. Visitors still see no change until phase 2 adds the review page and publishing.
 
 ## Reporting bad data
 
