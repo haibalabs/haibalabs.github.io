@@ -121,7 +121,7 @@ image
   caption           what the image shows (v2 caption policy: no negations, no dates)
   display_date      the image's date as shown, or null
   image_role        one of the released-image roles (event_photo, event_aftermath, portrait, site,
-                    map, symbol, retrospective_illustration)
+                    map, symbol, retrospective_illustration, scientific_context)
   credit            author or photographer as it must be credited
   license_name      e.g. "CC BY-SA 4.0", "Public domain"; for an upload, "Used with permission"
   license_url       the license's URL, or null for public domain and uploads

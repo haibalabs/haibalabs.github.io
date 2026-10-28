@@ -135,7 +135,7 @@ describe('previewProblem — attach only to the exact data file reviewed', () =>
     assert.match(previewProblem({ ...preview, records: [record(-1)] }, 'abc', 5), /invalid or repeated/);
   });
   it('accepts the contextual roles the review assigns, and refuses a role the site does not know', () => {
-    for (const role of ['portrait', 'site', 'map', 'symbol', 'retrospective_illustration']) {
+    for (const role of ['portrait', 'site', 'map', 'symbol', 'retrospective_illustration', 'scientific_context']) {
       assert.equal(previewProblem({ ...preview, records: [record(1, { image_role: role })] }, 'abc', 5), null, role);
     }
     for (const role of ['unknown', 'contemporary_event', undefined]) {
