@@ -40,6 +40,13 @@ async function signInAs(page, email) {
   await page.click('.settings-close-btn');
 }
 
+// the Editing switch is in My edits, in the profile drawer
+async function setEditing(page, on) {
+  await page.click('#settings-btn');
+  await page.locator('#editing-toggle').setChecked(on);
+  await page.click('.settings-close-btn');
+}
+
 async function suggestDescriptionEdit(page, description) {
   await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
   await expect(page.locator('#suggest-edit-modal')).toBeVisible();
@@ -56,20 +63,23 @@ test('the Editing switch is for editors, starts off and is remembered', async ({
   await openWorld(page);
   await expect(page.locator('#editing-toggle')).toBeHidden();
   await signInAs(page, 'editor@example.test');
+  await page.click('#settings-btn');
   const toggle = page.locator('#editing-toggle');
   await expect(toggle).toBeVisible();
-  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  await expect(toggle).not.toBeChecked();
+  await page.click('.settings-close-btn');
   await expect(page.locator('.edit-pencil')).toHaveCount(0);
 
-  await toggle.click();
-  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
-  await expect(card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil')).toHaveCount(1);
+  await setEditing(page, true);
+  // the pencil sits in the date row, beside the Wikipedia icon
+  const row = card(page, 'Max Schmeling knocks out Joe Louis').locator('.event-time');
+  await expect(row.locator('.wiki-link + .edit-pencil')).toHaveCount(1);
 
   await page.reload();
   await page.waitForSelector('#timeline-content .event');
-  await expect(page.locator('#editing-toggle')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#editing-toggle')).toBeChecked();
   await expect(card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil')).toHaveCount(1);
-  await page.locator('#editing-toggle').click();
+  await setEditing(page, false);
   await expect(page.locator('.edit-pencil')).toHaveCount(0);
 });
 
@@ -85,7 +95,7 @@ test('viewers and visitors get no switch and no pencil', async ({ page }) => {
 test('an editor suggests an edit with linked people; it waits for review and only the author sees it', async ({ page, browser, request }) => {
   await openWorld(page);
   await signInAs(page, 'editor@example.test');
-  await page.click('#editing-toggle');
+  await setEditing(page, true);
 
   await suggestDescriptionEdit(page, 'Schmeling knocks out Louis on June 19, 1936.');
   const description = page.locator('.form-group[data-field="enhanced_description"]');
@@ -137,7 +147,7 @@ test('an editor suggests an edit with linked people; it waits for review and onl
 test('a Wikipedia link must be a real article, not a disambiguation page', async ({ page }) => {
   await openWorld(page);
   await signInAs(page, 'editor@example.test');
-  await page.click('#editing-toggle');
+  await setEditing(page, true);
   await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
   await page.fill('#se-wiki', 'en.wikipedia.org/wiki/Saar');
   await expect(page.locator('#se-wiki-check')).toHaveText(/disambiguation page/);
@@ -164,7 +174,7 @@ async function slowArticle(page) {
 test('sending twice while the Wikipedia check is pending writes one edit', async ({ page, request }) => {
   await openWorld(page);
   await signInAs(page, 'editor@example.test');
-  await page.click('#editing-toggle');
+  await setEditing(page, true);
   const release = await slowArticle(page);
   await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
   await page.fill('#se-wiki', 'en.wikipedia.org/wiki/Slow page');
@@ -183,7 +193,7 @@ test('sending twice while the Wikipedia check is pending writes one edit', async
 test('cancelling while the Wikipedia check is pending writes nothing', async ({ page, request }) => {
   await openWorld(page);
   await signInAs(page, 'editor@example.test');
-  await page.click('#editing-toggle');
+  await setEditing(page, true);
   const release = await slowArticle(page);
   await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
   await page.fill('#se-wiki', 'en.wikipedia.org/wiki/Slow page');
@@ -206,7 +216,7 @@ test('cancelling while the Wikipedia check is pending writes nothing', async ({ 
 test('the author revises and withdraws an edit from My edits', async ({ page, request }) => {
   await openWorld(page);
   await signInAs(page, 'editor@example.test');
-  await page.click('#editing-toggle');
+  await setEditing(page, true);
   await suggestDescriptionEdit(page, 'Schmeling knocks out Louis on June 19.');
   await page.click('#se-submit');
   await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);

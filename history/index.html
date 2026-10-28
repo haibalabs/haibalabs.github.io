@@ -70,7 +70,6 @@
                     <div class="action-buttons">
                         <button id="randomEvent" class="icon-btn" title="I'm feeling lucky"><i class="fa-light fa-dice"></i></button>
                         <button id="add-event" class="icon-btn" title="Add event"><i class="fa-light fa-plus"></i></button>
-                        <button id="editing-toggle" class="editing-toggle" type="button" aria-pressed="false" title="Suggest edits to events" hidden><i class="fa-light fa-pen" aria-hidden="true"></i><span>Editing</span></button>
                         <button id="settings-btn" class="icon-btn" title="Settings"><i class="fa-light fa-sliders"></i></button>
                     </div>
                 </div>
@@ -131,6 +130,7 @@
             </div>
             <div class="settings-group" id="my-edits" hidden>
                 <div class="my-edits-head"><h4>My edits</h4><span class="my-edits-count" id="my-edits-count"></span></div>
+                <label class="settings-toggle editing-toggle"><input type="checkbox" id="editing-toggle"> Show edit buttons on events</label>
                 <ul class="my-edits-list" id="my-edits-list"></ul>
                 <p id="my-edits-status" class="auth-status" role="status" hidden></p>
             </div>
@@ -206,7 +206,7 @@
                 </div>
                 <div class="form-group" data-field="enhanced_description">
                     <div class="field-head"><label for="se-description">Description</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
-                    <textarea id="se-description" name="enhanced_description" rows="4" maxlength="4000"></textarea>
+                    <textarea id="se-description" class="event-text" name="enhanced_description" rows="9" maxlength="4000"></textarea>
                 </div>
                 <div class="form-group" data-field="figures">
                     <div class="field-head"><span class="field-label" id="se-people-label">People</span><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
@@ -231,7 +231,7 @@
                 <hr class="form-divider">
                 <div class="form-group">
                     <label for="se-reason">Note for the reviewer <span class="optional">(optional)</span></label>
-                    <textarea id="se-reason" name="reason" rows="2" maxlength="1000" placeholder="Anything that helps check this change"></textarea>
+                    <textarea id="se-reason" class="event-text" name="reason" rows="5" maxlength="1000" placeholder="Anything that helps check this change"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="se-source">Source <span class="optional">(optional)</span></label>

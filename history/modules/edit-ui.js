@@ -1,7 +1,7 @@
 // edit-ui.js
 // The screens for suggesting edits to world events (WORLD-EDITS.md, Editor screens): the Editing
-// switch in the top bar, the pencil on each world event while it is on, the Suggest an edit form,
-// the author's "pending" mark on an event, and My edits in the profile drawer. Only signed-in
+// switch and My edits in the profile drawer, the pencil on each world event while it is on, the
+// Suggest an edit form, and the author's "pending" mark on an event. Only signed-in
 // editors, reviewers and admins see any of it; the rules decide what is actually allowed.
 import { PROMINENT_LABELS } from './config.js';
 import { permissionsFor } from './roles.js';
@@ -78,7 +78,7 @@ export class EditUI {
     }
 
     setupListeners() {
-        this.toggle.addEventListener('click', () => this.setEditing(!this.editing));
+        this.toggle.addEventListener('change', () => this.setEditing(this.toggle.checked));
         document.getElementById('se-cancel').addEventListener('click', () => this.close());
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -114,7 +114,7 @@ export class EditUI {
         const session = this.session;
         this.user = user;
         this.canEdit = Boolean(user) && permissionsFor(role).canEdit;
-        this.toggle.hidden = !this.canEdit;
+        // the Editing switch is in this section of the profile drawer
         this.section.hidden = !this.canEdit;
         this.edits = [];
         this.list.replaceChildren();
@@ -128,8 +128,7 @@ export class EditUI {
         const editing = Boolean(on) && this.canEdit;
         const changed = editing !== this.editing;
         this.editing = editing;
-        this.toggle.setAttribute('aria-pressed', String(this.editing));
-        this.toggle.classList.toggle('on', this.editing);
+        this.toggle.checked = this.editing;
         if (remember) writeEditingPreference(this.editing);
         // re-render only to add or remove the pencils: every sign-in state change lands here,
         // including the first one on page load
@@ -165,15 +164,8 @@ export class EditUI {
     // Called by UIManager for every world event it renders.
     decorate(eventDiv, event) {
         if (!this.editing || event.personal) return;
-        const bar = document.createElement('div');
-        bar.className = 'edit-bar';
-        const open = this.openEditFor(event.event_id);
-        if (open) {
-            const mark = document.createElement('span');
-            mark.className = `edit-pending ${editorStatus(open)}`;
-            mark.textContent = editorStatus(open) === 'rejected' ? 'Your edit was rejected' : 'Your edit is pending review';
-            bar.append(mark);
-        }
+        // in the date row, beside the Wikipedia icon
+        const row = eventDiv.querySelector('.event-time');
         const pencil = document.createElement('button');
         pencil.type = 'button';
         pencil.className = 'edit-pencil';
@@ -184,8 +176,14 @@ export class EditUI {
             e.stopPropagation();
             this.open(event);
         });
-        bar.append(pencil);
-        eventDiv.append(bar);
+        row.append(pencil);
+        const open = this.openEditFor(event.event_id);
+        if (open) {
+            const mark = document.createElement('span');
+            mark.className = `edit-pending ${editorStatus(open)}`;
+            mark.textContent = editorStatus(open) === 'rejected' ? 'Your edit was rejected' : 'Your edit is pending review';
+            row.append(mark);
+        }
     }
 
     // --- My edits ---
@@ -200,7 +198,7 @@ export class EditUI {
         if (!visible.length) {
             const empty = document.createElement('li');
             empty.className = 'my-edits-empty';
-            empty.textContent = 'No edits yet. Turn on Editing and use the pencil on an event.';
+            empty.textContent = 'No edits yet. Turn on edit buttons above and use the pencil on an event.';
             this.list.append(empty);
         }
     }
