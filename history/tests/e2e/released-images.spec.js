@@ -139,6 +139,13 @@ test('the repository release attaches to the default canonical file: image dates
   await expect(viewer.locator('.viewer-date')).toHaveText('1886');
   await page.keyboard.press('Escape');
 
+  // a round 3 addition, an event that had no image before
+  await page.fill('#searchInput', 'Siege of Algeciras');
+  await card(page, 'Siege of Algeciras').locator('.event-image img').first().click();
+  await expect(viewer.locator('.viewer-caption')).toContainText('Aerial view of part of Algeciras and its port.');
+  await expect(viewer.locator('.viewer-date')).toHaveText('2023-12-30');
+  await page.keyboard.press('Escape');
+
   await page.fill('#searchInput', 'Centennial Exposition');
   await card(page, 'Centennial Exposition').locator('.event-image img').first().click();
   await expect(viewer.locator('.viewer-hold')).toHaveText('Some details of this event are still being reviewed.');
