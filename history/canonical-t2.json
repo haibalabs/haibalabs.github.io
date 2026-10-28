@@ -1,12 +1,12 @@
 {
   "metadata": {
     "dataset_id": "world-history",
-    "snapshot_id": "world-history-early-times-v1-preview",
+    "snapshot_id": "world-history-early-times-v1",
     "timestamp": "2026-10-28T18:33:58+00:00",
     "parent_snapshot_id": "world-history-canonical-v1",
     "parent_sha256": "4160e58fb915960bd156dbb0de57b16bc4396d1f296ae32eba31d16a7019d622",
     "early_times_draft_manifest_sha256": "177c3a2f709801c6dadfe022eae04cb60698511078e4525f713981e80a5b4745",
-    "publication_authorized": false
+    "release_status": "candidate_pending_public_release"
   },
   "events": [
     {

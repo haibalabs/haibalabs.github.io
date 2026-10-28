@@ -43429,7 +43429,7 @@
       "image_date": null,
       "credit": "Oxygenation-atm.svg : Heinrich D. Holland derivative work: Loudubewe ( talk )",
       "license_name": "CC BY-SA 3.0",
-      "license_url": "http://creativecommons.org/licenses/by-sa/3.0/",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
       "source_url": "https://commons.wikimedia.org/wiki/File:Oxygenation-atm-2.svg",
       "rights_basis": "saved_source_metadata",
       "rights_statement": "LicenseShortName: CC BY-SA 3.0",
@@ -43439,7 +43439,8 @@
       "process_review_ref": {
         "handoff_sha256": "38691d907eb94039d992dfd0b6adf494b2759829924638d555c31e4b7a9cf714",
         "candidate_key": "early-opening/oxygen"
-      }
+      },
+      "license_url_as_received": "http://creativecommons.org/licenses/by-sa/3.0/"
     },
     {
       "record_index": 52544,
@@ -43690,7 +43691,7 @@
       "image_date": null,
       "credit": "Daderot",
       "license_name": "CC0",
-      "license_url": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/deed.en",
       "source_url": "https://commons.wikimedia.org/wiki/File:Stromatolite_-_National_Museum_of_Nature_and_Science,_Tokyo_-_DSC07686.JPG",
       "rights_basis": "saved_source_metadata",
       "rights_statement": "LicenseShortName: CC0",
@@ -43700,13 +43701,14 @@
       "process_review_ref": {
         "handoff_sha256": "38691d907eb94039d992dfd0b6adf494b2759829924638d555c31e4b7a9cf714",
         "candidate_key": "early-opening/microbial-life"
-      }
+      },
+      "license_url_as_received": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
     }
   ],
   "source": {
     "combination_recipe_sha256": "a5cd99e00f924bb7ea14c54b477e525033e279f4ff9a462b0b2af85068c44ab4",
     "event_count": 52546,
-    "events_sha256": "96539f5bd6c24542b5c5e71e6b9bf250691e29556a8e158be14aebc8f1413809",
+    "events_sha256": "49b8f43b83a89999960d6a02733edf876da42f27d5b38fdf4462f2ec9a6832f6",
     "prior_events_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
     "prior_release_sha256": "2b4920708f59784e2eb2f8941fe4206ce92a9a484807a75e6933ee047175ac0a",
     "prior_sidecar_sha256": "affb311ef3221be2ab3f90945e31e1e412693f01e1b6b1b1a1738e5e7ad997a4",
