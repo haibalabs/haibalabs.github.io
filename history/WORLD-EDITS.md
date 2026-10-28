@@ -44,8 +44,8 @@ edits/{editId}
   dataset       { id: "world-history", sha256, locations_release_sha256 } of the data file and the
                 released-locations file the author was looking at
   changes       map, field -> { before, after }, holding only the fields that change (see Fields)
-  reason        string, 10–1000 characters, required: what was wrong and how the author knows
-  sources       up to 5 URLs supporting the change; required when changing name, date or location
+  reason        optional note for the reviewer, up to 1000 characters
+  sources       optional, up to 5 URLs supporting the change
   author        { uid, email }; the email must equal the signed-in account's
   created_at    server time
   revised_at    server time of the author's last revision
@@ -84,10 +84,19 @@ Checks and approval are tied to one exact revision of an edit and its file:
 | `enhanced_description` | string, up to 4000 characters | Plain text. |
 | `wikipedia_url` | an `https://*.wikipedia.org/wiki/…` URL, or `null` to remove it | |
 | `categories` | one or more of the timeline's categories | |
+| `figures` | the event's people, in order: a list of `{ name, wikipedia_url? }` | The whole list is one field. Each person can be linked to their exact article; see People. |
 | `location[i]` | `{ name, city, region, country, historical_name, point?: [lat, lon] }`, or `null` to remove it | Keyed by the location's position in the event; `i` equal to the current count adds a location at the end. `before` carries the `place_id` and geography the author saw. See Location edits. |
 | `image` | a normalized image record (below), or `null` to remove the event's image | One image per event. An approved image replaces the current one, released or not. |
 
 A `create` edit carries every required field (name, date, description) in `changes`, with `before: null`.
+
+### People
+
+Today an event's people are plain names in `figures` (36,353 events have them, e.g. `["Virgin Mary", "St. James the Great"]`). Clicking one opens a Wikipedia page whose title is guessed from the name, so a namesake silently gets the wrong person. The issue log's Bill Lancaster case, the 1933 aviator shown as the 1947 actor, is one example. Wrong or missing people are often the main source of confusion in an event (Rachid, 2026-10-28), so editors can:
+- add, remove and rename people;
+- link each person to their exact Wikipedia article. The form searches Wikipedia as they type and shows the article's short description ("American boxer (1914–1981)") to tell namesakes apart. Unlinked people stay as plain names, marked "Not linked".
+
+`figures` entries become `{ name, wikipedia_url? }`. A plain string in the existing data is read as `{ name }`, so nothing breaks, and the site links a person with a `wikipedia_url` to that article instead of guessing. The whole list is one field for merging: two edits to the same event's people conflict, and the admin settles them. The checker (soft) compares each linked person's life dates with the event's date: a person born after the event, or long dead before it, is flagged, never rejected.
 
 ### Location edits
 
@@ -145,6 +154,21 @@ Normalization trims whitespace and uses Unicode NFC, and leaves out nothing disp
 
 ## Statuses
 
+### What editors see (Rachid, 2026-10-28)
+
+Editors see only four statuses, on My edits and on the event's pending badge. The detailed states below are internal: the checker and the review page use them.
+
+| Editors see | Internal states it covers | The author can |
+|---|---|---|
+| **Waiting for review** | `submitted`, checking, `flagged`, `ready`, `conflict`, and an edit with some fields still pending | Revise, Withdraw |
+| **Rejected** | `auto_rejected`, `sent_back`, `rejected`; the checker's or admin's reason is shown | **Revise** (back to Waiting for review as a new revision), Withdraw |
+| **Accepted** | `approved` / `published` (visitors see it, through the overlay) | nothing; a further change is a new edit |
+| **Published** | `merged` (folded into the main dataset): the edit is closed | nothing |
+
+An edit where some fields were accepted and others rejected shows **Accepted**, with the rejected fields listed under it. Rejection is not final for the author: revising a rejected edit makes a new revision, which is checked and reviewed again. Withdrawn edits disappear from the list.
+
+### Internal states
+
 ```
             author submits (browser checks pass)
                          │
@@ -173,7 +197,8 @@ published ──► merged (the pipeline folded it into the dataset)
 - **flagged**: a check couldn't decide, for example the source check found the article unclear, or no budget was available for a paid check. The edit goes to the admin with the warning shown.
 - **sent_back**: the admin asks the author for a change. It works like auto_rejected, but with the admin's note.
 - **conflict**: set automatically when an approval changes a field that a pending edit also changes, and the pending edit's `before` no longer matches. See Merging.
-- **withdrawn**, **rejected**, **published** and **merged** are final. A published edit can still be reverted, which creates a new edit restoring the earlier value (see Revert).
+- **rejected** can be revised by the author, which makes a new revision back in `submitted` (Rachid, 2026-10-28); the admin's earlier rejection stays in the history. Revising never reopens fields that were already approved: they keep their receipts.
+- **withdrawn**, **published** and **merged** are final. A published edit can still be reverted, which creates a new edit restoring the earlier value (see Revert).
 
 ### Field dispositions
 
@@ -188,7 +213,7 @@ The edit-level status above summarizes a status kept **per field** in `fields`, 
 
 ### In the browser, at submission (instant, free)
 
-- At least one field changed, and the reason is present.
+- At least one field changed.
 - Field rules from the Fields table: lengths, date parses, URL shape, category known.
 - No HTML or script in any text.
 - Wikipedia link: the article exists and is not a disambiguation page. The form shows the article title so the author can confirm it.
@@ -267,10 +292,14 @@ Approving runs in one Firestore transaction. The transaction sets the edit to `a
 
 ## Editor screens
 
-- **Suggest an edit** (pencil) on every world event, for signed-in editors, reviewers and admins.
-  - It opens the event form filled with the current values, plus the image (Commons link or upload) and location pin sections.
-  - Before submitting, a summary shows what changes ("Date: 1931 → March 1931").
-  - Reason is required; sources are required for name, date and location changes.
+Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau (phase 1 screens, revised with Rachid's comments of 2026-10-28).
+
+- **Editing switch.** Signed-in editors, reviewers and admins get an **Editing** switch in the top bar. It starts off, so they see the normal site, and the choice is remembered on that browser. Only while it's on does each world event show the pencil.
+- **Suggest an edit** (pencil) opens the event form filled with the current values: name, date, description, people, category and Wikipedia article. Location and image are collapsed rows that open their own sections.
+  - A changed field shows a small "Changed" tag and an "Undo change" link. The old value isn't repeated on screen, and there is no summary box (Rachid: keep the form uncluttered).
+  - A note for the reviewer and a source are **optional** (Rachid, 2026-10-28): a reason helps when the author can put it into words, but nobody should have to type "because it's wrong" for every fix.
+  - The "Wikipedia or another source is wrong here" checkbox sets `source_conflict`.
+  - No explanation of the review process inside the form.
 - **Suggest a new event**: the same form, empty. It replaces the admin-only Add event debug tool.
 - **My edits** in the settings panel: each edit with its status, the checker's or admin's reason, and **Revise** or **Withdraw** while that's possible.
 - The author sees a small "Edit pending" mark on events they have pending edits for. Nobody else does.
@@ -370,7 +399,7 @@ Every change to what visitors see can be traced to a person, at every stage:
 
 - `edits`:
   - **Create:** an editor, reviewer or admin. The author must be the signed-in account, `status: submitted`, no `review`, `published` or `merged` fields, only known field names in `changes`, within the size limits.
-  - **Update by the author:** only while `submitted`, `auto_rejected`, `flagged` or `sent_back`. The author may change `changes`, `reason` and `sources` (status back to `submitted`, `revision` + 1) or set `withdrawn`.
+  - **Update by the author:** only while `submitted`, `auto_rejected`, `flagged`, `sent_back` or `rejected`, and only for fields not yet approved. The author may change `changes`, `reason` and `sources` (status back to `submitted`, `revision` + 1) or set `withdrawn`.
   - **Update by an admin:** the review fields and the transitions in Statuses only. On their own edit, `review.self_approved` must be `true`.
   - **The checker:** writes through the Admin SDK, which bypasses the rules; its key never leaves Rachid's machine.
   - **Read:** the author and admins only.
@@ -385,7 +414,7 @@ Rules tests cover each line in `firebase/tests/rules.test.js` and `storage.test.
 
 | # | Delivers | Owner, reviewer |
 |---|---|---|
-| 1 | `edits` model and rules; Suggest an edit for name, date, description, Wikipedia link and category; browser checks; My edits | Maia, Atlas |
+| 1 | `edits` model and rules; Editing switch; Suggest an edit for name, date, description, people (with article links), Wikipedia link and category; browser checks; My edits | Maia, Atlas |
 | 2 | Review page; approve, reject, send back, overrule; merging and conflicts; overlay and visitor loading; revert | Maia, Atlas |
 | 3 | Agent checker and its schedule; service-account setup | Atlas, Maia |
 | 4 | Location proposals per position with map pin, checked by Hermes, with approved receipts held by `location_sidecar`; image proposals from Commons and uploads, checked by Iris | Maia with Hermes and Iris |
