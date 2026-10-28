@@ -4,9 +4,10 @@ import { stubFirebase } from './firebase-stub.js';
 
 // The released locations every visitor sees (releases/README.md), served here from a synthetic fixture
 // in location_sidecar.py's format: invented places for three real canonical events, one of which also
-// has a released image. The repository's location release holds none. Commons images are served locally.
+// has a released image. The real release is checked separately below. Commons images are served locally.
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 const SYNTHETIC = readFileSync(new URL('../fixtures/released-locations-synthetic.json', import.meta.url), 'utf8');
+const EMPTY = JSON.stringify({ ...JSON.parse(SYNTHETIC), records: [], places: {} });
 
 async function openSite(page, { query = '', locations = SYNTHETIC } = {}) {
   await stubFirebase(page);
@@ -55,7 +56,7 @@ test('released images stay attached when their event\'s place changes, even afte
   await expect(granada.locator('.event-image img')).toHaveCount(1);
 });
 
-test('another events file or the empty repository release changes no locations, without a message', async ({ page }) => {
+test('another events file or an empty release changes no locations, without a message', async ({ page }) => {
   test.setTimeout(120000);
   await openSite(page, { query: '?file=events.json' });
   await page.fill('#searchInput', 'Siege of Salvador');
@@ -69,7 +70,19 @@ test('another events file or the empty repository release changes no locations, 
   await expect(card(page, 'Military agreement between Granada and Aragon').locator('.event-image img')).toHaveCount(1);
 
   await page.unrouteAll({ behavior: 'ignoreErrors' });
-  await openSite(page, { locations: null });
+  await openSite(page, { locations: EMPTY });
   await page.fill('#searchInput', 'Siege of Salvador');
   await expect(card(page, 'Siege of Salvador').locator('.event-location')).toHaveClass(/unverified/);
+});
+
+// Exercise the actual release without substituting synthetic geography.
+test('the repository release shows accepted geography on a real event', async ({ page }) => {
+  test.setTimeout(120000);
+  await openSite(page, { locations: null });
+  await page.fill('#searchInput', 'Battle of Grunwald');
+  const location = card(page, 'Battle of Grunwald').locator('.event-location').first();
+  await expect(location).toHaveClass(/clickable/);
+  await expect(location).toHaveAttribute('title', /Reviewed location/);
+  await location.click();
+  await expect(page.locator('.map-selected-dot').first()).toBeVisible();
 });
