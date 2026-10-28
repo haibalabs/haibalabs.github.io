@@ -150,6 +150,59 @@ test('a Wikipedia link must be a real article, not a disambiguation page', async
   await expect(page.locator('#suggest-edit-form .form-error')).toHaveText(/not a date/);
 });
 
+// Holds Wikipedia's answer for "Slow_page" until release() is called.
+async function slowArticle(page) {
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  await page.route('https://en.wikipedia.org/api/rest_v1/page/summary/Slow_page', async (route) => {
+    await gate;
+    await route.fulfill({ json: { type: 'standard', title: 'Slow page', description: 'An article' } });
+  });
+  return release;
+}
+
+test('sending twice while the Wikipedia check is pending writes one edit', async ({ page, request }) => {
+  await openWorld(page);
+  await signInAs(page, 'editor@example.test');
+  await page.click('#editing-toggle');
+  const release = await slowArticle(page);
+  await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
+  await page.fill('#se-wiki', 'en.wikipedia.org/wiki/Slow page');
+  await page.evaluate(() => {
+    const form = document.getElementById('suggest-edit-form');
+    form.requestSubmit();
+    form.requestSubmit();
+  });
+  await expect(page.locator('#se-submit')).toBeDisabled();
+  release();
+  await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);
+  await expect(page.locator('#suggest-edit-modal')).toBeHidden();
+  expect(await listAsOwner(request, 'edits')).toHaveLength(1);
+});
+
+test('cancelling while the Wikipedia check is pending writes nothing', async ({ page, request }) => {
+  await openWorld(page);
+  await signInAs(page, 'editor@example.test');
+  await page.click('#editing-toggle');
+  const release = await slowArticle(page);
+  await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
+  await page.fill('#se-wiki', 'en.wikipedia.org/wiki/Slow page');
+  await page.evaluate(() => document.getElementById('suggest-edit-form').requestSubmit());
+  await page.click('#se-cancel');
+  await expect(page.locator('#suggest-edit-modal')).toBeHidden();
+  release();
+  await page.waitForTimeout(1500);
+  expect(await listAsOwner(request, 'edits')).toHaveLength(0);
+  await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(0);
+
+  // the cancelled send doesn't leave the form locked: the next one goes through
+  await suggestDescriptionEdit(page, 'Schmeling knocks out Louis on June 19, 1936.');
+  await expect(page.locator('#se-submit')).toBeEnabled();
+  await page.click('#se-submit');
+  await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);
+  expect(await listAsOwner(request, 'edits')).toHaveLength(1);
+});
+
 test('the author revises and withdraws an edit from My edits', async ({ page, request }) => {
   await openWorld(page);
   await signInAs(page, 'editor@example.test');

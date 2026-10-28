@@ -275,6 +275,8 @@ export class EditUI {
     // Opens the form for a world event, filled with its values, or with a revision's values when
     // revising one of the author's edits.
     open(event, edit = null) {
+        // a send still in flight from an earlier form must not land in this one
+        this.formSession = (this.formSession ?? 0) + 1;
         this.event = event;
         this.revising = edit;
         this.form.reset();
@@ -295,7 +297,7 @@ export class EditUI {
         this.resetSources(edit?.sources ?? []);
         document.getElementById('se-reason').value = edit?.reason ?? '';
         document.getElementById('se-source-conflict').checked = Boolean(edit?.source_conflict);
-        this.wikiCheck = null;
+        this.cancelWikiCheck();
         this.wikiCheckLine.hidden = true;
         for (const field of EDIT_FIELDS) this.markChanged(field);
         if (edit?.changes?.wikipedia_url) this.scheduleWikiCheck(0);
@@ -305,11 +307,12 @@ export class EditUI {
     }
 
     close() {
+        this.formSession = (this.formSession ?? 0) + 1;
         this.modal.style.display = 'none';
         this.event = null;
         this.revising = null;
         clearTimeout(this.searchTimer);
-        clearTimeout(this.wikiTimer);
+        this.cancelWikiCheck();
     }
 
     showError(message) {
@@ -349,7 +352,7 @@ export class EditUI {
             this.form.elements[field].value = original ?? '';
         }
         if (field === 'wikipedia_url') {
-            this.wikiCheck = null;
+            this.cancelWikiCheck();
             this.wikiCheckLine.hidden = true;
         }
         this.markChanged(field);
@@ -466,21 +469,29 @@ export class EditUI {
     // --- the Wikipedia link ---
 
     scheduleWikiCheck(delay = WIKI_CHECK_DELAY_MS) {
-        clearTimeout(this.wikiTimer);
+        this.cancelWikiCheck();
         const text = this.form.elements.wikipedia_url.value.trim();
         if (!text || sameValue(normalizeField('wikipedia_url', text), this.original.wikipedia_url)) {
-            this.wikiCheck = null;
             this.wikiCheckLine.hidden = true;
             return;
         }
-        const check = { text, done: null };
+        const check = { text, done: null, cancel: null };
         check.done = new Promise(resolve => {
+            // a replaced or abandoned check settles as cancelled instead of never settling, so a
+            // send waiting on it stops and the form can send again
+            check.cancel = () => resolve({ ok: null, cancelled: true, problem: 'The link changed before it was checked.' });
             this.wikiTimer = setTimeout(async () => resolve(await articleInfo(text)), delay);
         }).then(result => {
-            if (this.wikiCheck === check) this.showWikiCheck(result);
+            if (this.wikiCheck === check && !result.cancelled) this.showWikiCheck(result);
             return result;
         });
         this.wikiCheck = check;
+    }
+
+    cancelWikiCheck() {
+        clearTimeout(this.wikiTimer);
+        this.wikiCheck?.cancel?.();
+        this.wikiCheck = null;
     }
 
     showWikiCheck(result) {
@@ -518,46 +529,58 @@ export class EditUI {
 
     // --- sending ---
 
+    // One send at a time: the form locks before the first awaited check, so a second click while
+    // the Wikipedia lookup is pending can't write a second edit, and a send whose form was closed
+    // or replaced (or whose account changed) in the meantime writes nothing.
     async submit() {
+        if (this.submitting || !this.event) return;
+        const session = this.formSession;
+        const current = () => session === this.formSession;
         const event = this.event;
         const revising = this.revising;
-        if (!event) return;
-        const values = Object.fromEntries(EDIT_FIELDS.map(f => [f, this.value(f)]));
-        const changes = changesFor(event, values);
-        const reason = document.getElementById('se-reason').value.trim();
-        const sources = this.sources();
-        const sourceConflict = document.getElementById('se-source-conflict').checked;
-        const problem = editProblem({ changes, reason, sources });
-        if (problem) return this.showError(problem);
-        if (!revising && this.edits.filter(edit => isToday(edit.created_at)).length >= DAILY_LIMIT) {
-            return this.showError(`You've sent ${DAILY_LIMIT} edits today. You can send more tomorrow.`);
-        }
-        const browserChecks = [{ check: 'format', outcome: 'pass' }];
-        if (changes.wikipedia_url?.after) {
-            const result = await (this.wikiCheck?.done ?? articleInfo(changes.wikipedia_url.after));
-            if (result.ok === false) return this.showError(result.problem);
-            browserChecks.push({ check: 'wikipedia_article', outcome: result.ok ? 'pass' : 'unsure', detail: result.ok ? result.title : result.problem });
-        }
-
-        const buttons = this.form.querySelectorAll('.modal-actions button');
+        // only Send locks; Cancel stays available and cancels a send that is still checking
+        const buttons = [document.getElementById('se-submit')];
+        this.submitting = true;
         buttons.forEach(button => button.disabled = true);
         try {
+            const values = Object.fromEntries(EDIT_FIELDS.map(f => [f, this.value(f)]));
+            const changes = changesFor(event, values);
+            const reason = document.getElementById('se-reason').value.trim();
+            const sources = this.sources();
+            const sourceConflict = document.getElementById('se-source-conflict').checked;
+            const problem = editProblem({ changes, reason, sources });
+            if (problem) return this.showError(problem);
+            if (!revising && this.edits.filter(edit => isToday(edit.created_at)).length >= DAILY_LIMIT) {
+                return this.showError(`You've sent ${DAILY_LIMIT} edits today. You can send more tomorrow.`);
+            }
+            const browserChecks = [{ check: 'format', outcome: 'pass' }];
+            if (changes.wikipedia_url?.after) {
+                const result = await (this.wikiCheck?.done ?? articleInfo(changes.wikipedia_url.after));
+                // closed, or the link changed while it was being checked: send nothing
+                if (!current() || result.cancelled) return;
+                if (result.ok === false) return this.showError(result.problem);
+                browserChecks.push({ check: 'wikipedia_article', outcome: result.ok ? 'pass' : 'unsure', detail: result.ok ? result.title : result.problem });
+            }
             const contentSha = await contentSha256({ changes, reason, sources, source_conflict: sourceConflict });
             const datasetSha256 = await this.eventManager.loadedSha256 ?? null;
-            if (revising) {
-                await this.store.revise(revising, { changes, reason, sources, sourceConflict, contentSha, browserChecks, eventName: event.name, datasetSha256 });
-            } else {
-                await this.store.submit({ editId: newEditId(), event, changes, reason, sources, sourceConflict, datasetSha256, contentSha, browserChecks });
+            if (!current()) return;
+            try {
+                if (revising) {
+                    await this.store.revise(revising, { changes, reason, sources, sourceConflict, contentSha, browserChecks, eventName: event.name, datasetSha256 });
+                } else {
+                    await this.store.submit({ editId: newEditId(), event, changes, reason, sources, sourceConflict, datasetSha256, contentSha, browserChecks });
+                }
+            } catch (error) {
+                console.error('Could not send the edit:', error);
+                if (current()) this.showError('Could not send the edit. Check your connection and try again.');
+                return;
             }
-        } catch (error) {
-            console.error('Could not send the edit:', error);
-            this.showError('Could not send the edit. Check your connection and try again.');
-            return;
+            if (current()) this.close();
+            this.uiManager.showToast?.(revising ? 'Revision sent for review.' : 'Sent for review.');
         } finally {
+            this.submitting = false;
             buttons.forEach(button => button.disabled = false);
         }
-        this.close();
-        this.uiManager.showToast?.(revising ? 'Revision sent for review.' : 'Sent for review.');
         await this.refresh();
     }
 }

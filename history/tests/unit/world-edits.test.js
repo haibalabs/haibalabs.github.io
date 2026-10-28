@@ -26,6 +26,21 @@ describe('normalizeWikipediaUrl — one form for an article link', () => {
         ];
         for (const [raw, normalized] of cases) assert.equal(normalizeWikipediaUrl(raw), normalized, raw);
     });
+    it('keeps "?", "#" and "%" in a title as part of the title, and is stable when repeated', () => {
+        const cases = [
+            ['https://en.wikipedia.org/wiki/Who%3F', 'https://en.wikipedia.org/wiki/Who%3F'],
+            ['https://en.wikipedia.org/wiki/C%23_(programming_language)', 'https://en.wikipedia.org/wiki/C%23_(programming_language)'],
+            ['https://en.wikipedia.org/wiki/100%25_Pure', 'https://en.wikipedia.org/wiki/100%25_Pure'],
+            ['https://de.wikipedia.org/wiki/M%C3%BCnchen', 'https://de.wikipedia.org/wiki/München'],
+            [`https://en.wikipedia.org/wiki/${encodeURIComponent('Who?')}`, 'https://en.wikipedia.org/wiki/Who%3F'],
+        ];
+        for (const [raw, normalized] of cases) {
+            assert.equal(normalizeWikipediaUrl(raw), normalized, raw);
+            assert.equal(normalizeWikipediaUrl(normalizeWikipediaUrl(raw)), normalized, `${raw} twice`);
+            assert.equal(new URL(normalized).search, '', `${raw} has no query`);
+            assert.equal(new URL(normalized).hash, '', `${raw} has no fragment`);
+        }
+    });
     it('refuses links that are not Wikipedia articles', () => {
         for (const raw of ['', null, 'https://example.com/wiki/X', 'https://en.wikipedia.org/w/index.php?title=X', 'not a url at all']) {
             assert.equal(normalizeWikipediaUrl(raw), null, String(raw));

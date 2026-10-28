@@ -49,7 +49,9 @@ export function normalizeWikipediaUrl(text) {
     } catch {
         title = match[1];
     }
-    title = title.replace(/ /g, '_');
+    // decoded for one readable form, then "%", "?" and "#" encoded again: in an article title they
+    // are text ("Who?"), and left bare they would start a query or fragment and name another page
+    title = title.replace(/ /g, '_').replace(/%/g, '%25').replace(/\?/g, '%3F').replace(/#/g, '%23');
     return title ? `https://${host}/wiki/${title}` : null;
 }
 

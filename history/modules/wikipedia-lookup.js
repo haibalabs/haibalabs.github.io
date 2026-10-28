@@ -49,7 +49,8 @@ export async function searchArticles(text, host = 'en.wikipedia.org') {
         return pages.map(page => ({
             title: page.title,
             description: page.description ?? '',
-            url: `https://${host}/wiki/${page.key}`,
+            // keys are raw titles ("Who?"); encoded, a "?" or "#" stays part of the title
+            url: `https://${host}/wiki/${encodeURIComponent(page.key)}`,
         }));
     } catch {
         return [];
