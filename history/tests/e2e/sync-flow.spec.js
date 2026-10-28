@@ -92,6 +92,40 @@ test('a pushed event is stored under its event_id without local sync fields', as
   await expect(page.locator('#push-changes')).toBeDisabled();
 });
 
+test('a pushed event stays private: another admin sees it only after Pull, a visitor or an editor never', async ({ browser, request }) => {
+  await createAccount(request, 'admin2@example.test', 'admin');
+  await createAccount(request, 'editor@example.test', 'editor');
+  const author = await browser.newPage();
+  await openWorld(author);
+  await signIn(author, 'admin@example.test');
+  await addEvent(author, 'Pushed for review');
+  await author.click('#settings-btn');
+  await enableSync(author);
+  await author.click('#push-changes');
+  await expect(author.locator('.sync-status')).toHaveText(/Pushed 1 events/);
+  expect(await listAsOwner(request, 'events_main')).toHaveLength(1);
+
+  const visitor = await browser.newPage();
+  await openWorld(visitor);
+  await expect(card(visitor, 'Pushed for review')).toHaveCount(0);
+
+  const editor = await browser.newPage();
+  await openWorld(editor);
+  await signIn(editor, 'editor@example.test');
+  await expect(editor.locator('#user-email')).toHaveText('editor@example.test');
+  await expect(editor.locator('#debug-settings')).toBeHidden();
+  await expect(card(editor, 'Pushed for review')).toHaveCount(0);
+
+  const admin = await browser.newPage();
+  await openWorld(admin);
+  await signIn(admin, 'admin2@example.test');
+  await enableSync(admin);
+  await expect(card(admin, 'Pushed for review')).toHaveCount(0);
+  await admin.click('#pull-changes');
+  await expect(admin.locator('.sync-status')).toHaveText(/Pulled 1 events/);
+  await expect(card(admin, 'Pushed for review')).toHaveCount(1);
+});
+
 test('an untouched event takes a newer server revision, keeping its ID through a rename', async ({ page, request }) => {
   await openWorld(page);
   await writeAsOwner(request, `events_main/${id(2)}`, serverEvent({ ...WORLD[1], name: 'Museum renamed on the server' }));
