@@ -301,7 +301,7 @@ Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau (phase 1 screens, rev
   - The "Wikipedia or another source is wrong here" checkbox sets `source_conflict`.
   - No explanation of the review process inside the form.
 - **Suggest a new event**: the same form, empty. It replaces the admin-only Add event debug tool.
-- **My edits** in the settings panel: each edit with its status, the checker's or admin's reason, and **Revise** or **Withdraw** while that's possible.
+- **My edits** in the profile drawer (the settings panel where people sign in), and only there: events don't link to it (Rachid, 2026-10-28). Each edit shows its status, the checker's or admin's reason, and **Revise** or **Withdraw** while that's possible.
 - The author sees a small "Edit pending" mark on events they have pending edits for. Nobody else does.
 
 ## Publishing to visitors
