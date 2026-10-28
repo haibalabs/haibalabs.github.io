@@ -1,6 +1,6 @@
 # Editing world history with review (U2)
 
-Status: design draft for team review and Rachid's approval, 2026-10-27. Nothing here is built yet. The current, much smaller, contribution path is described in `WORLD-CONTRIBUTIONS.md`.
+Status: design accepted by Atlas and Iris, location review (Hermes) pending; Rachid answered the open questions on 2026-10-27. New screens get a mockup for Rachid before implementation. Nothing here is built yet. The current, much smaller, contribution path is described in `WORLD-CONTRIBUTIONS.md`.
 
 Invited editors and reviewers can fix any world event: its name, date, description, Wikipedia link, category, location and image. They can also propose a new event. Every change is stored as an **edit** in a review bucket. An edit is first **checked automatically**, then **reviewed by an admin**, and only an approved edit changes the event that visitors see. One event can collect several edits from different people; edits to different fields merge on their own, and edits that clash are settled by the reviewer.
 
@@ -10,11 +10,15 @@ Invited editors and reviewers can fix any world event: its name, date, descripti
 2. Process: automatic checks first, then a manual check; only approved edits reach the real event.
 3. Admins review and accept edits through a dedicated interface. **An admin can overrule an automatic rejection.**
 4. Approved edits are visible to every visitor on their next page load. The pipeline later folds them into the main dataset.
-5. Only admins approve, for now. Approval may open to reviewers later, never for their own edits.
+5. Only admins approve, for now. Approval may open to reviewers later, never for their own edits. **Admins may approve their own edits, at any status**, recorded as self-approved (see Roles).
 6. The automatic checks are run by the agents, on a schedule, with the existing pipeline tools.
 7. Images can be proposed as Wikimedia Commons links or as uploads.
 8. **Wikipedia and other online sources can be wrong too.** Disagreeing with Wikipedia never rejects an edit by itself (see Sources can be wrong).
 9. **Every approval stores who approved it**, and that identity follows the change to visitors' data and into the dataset (see Accountability).
+10. **Uploaded photos are shown with the uploader's permission for HistoriLine only.** They carry no open license (see The image record).
+11. **Visitors see no names**, only a small "community edited" mark. Identities stay in private records.
+12. **At most 50 edits per person per day**, raised on request.
+13. **New screens get a mockup first.** The Suggest an edit form, My edits and the review page are each shown to Rachid as a mockup before implementation.
 
 ## Roles
 
@@ -26,7 +30,7 @@ Invited editors and reviewers can fix any world event: its name, date, descripti
 | admin | Everything above; see all edits; approve, reject, send back, overrule an automatic rejection and revert. |
 | checker (agents' service account) | Read new edits and write check results and the resulting status. Never approves. |
 
-An admin cannot approve their own edit. While Rachid is the only admin, his own edits need a second admin, or the self-approval exception in open question 1.
+An admin may approve their own edit, whatever its status, including flagged or automatically rejected (Rachid, 2026-10-27). Such an approval is recorded with `review.self_approved: true`, shown in History, and exported with the same flag. An override still needs its note. Reviewers, if they're later allowed to approve, will never approve their own edits.
 
 ## The edit
 
@@ -99,16 +103,21 @@ image
   image_role        one of the released-image roles (event_photo, event_aftermath, portrait, site,
                     map, symbol, retrospective_illustration)
   credit            author or photographer as it must be credited
-  license_name      e.g. "CC BY-SA 4.0", "Public domain"
-  license_url       the license's URL, or null for public domain
+  license_name      e.g. "CC BY-SA 4.0", "Public domain"; for an upload, "Used with permission"
+  license_url       the license's URL, or null for public domain and uploads
   rights_statement  for Commons, the file's license metadata as read; for an upload, the uploader's
-                    confirmation (open question 2)
+                    grant as confirmed (below)
   file_page         Commons file page title (Commons only)
   asset             { path, sha256, bytes, width, height } (uploads only; path is the private upload)
   release_pair_id   the released record's pair_id ("release" only)
 ```
 
 For a Commons link, the form reads the file's metadata from the Commons API, fills in URLs, credit and license, and asks the author for a caption, role and optional date. The checker reads Commons again and flags any difference. For an upload, the author supplies caption, role, date, credit and the rights confirmation, and the URLs are set on approval.
+
+**Upload permission (Rachid, 2026-10-27).** Uploaders grant HistoriLine permission to display the photo; they don't release it under an open license. The form asks them to confirm: "I took this photo or have the right to share it, and I give HistoriLine permission to show it on the site with the credit below." The edit stores that statement and the time in `rights_statement`, and `license_name` is "Used with permission". The viewer shows the credit and "Used with permission" where a license usually goes. Such images:
+- are never exported anywhere that implies an open license: Commons, dataset releases meant for reuse, or third parties;
+- are marked `permission_only` in the history-dp export;
+- can be removed on the uploader's request, through an image-removal edit.
 
 **`before` is the effective image when the author started:** the released image record, normalized to this shape with `source: "release"` and its `release_pair_id`; an image from an earlier approved edit; or `null` for none.
 
@@ -173,7 +182,7 @@ The edit-level status above summarizes a status kept **per field** in `fields`, 
 - No HTML or script in any text.
 - Wikipedia link: the article exists and is not a disambiguation page. The form shows the article title so the author can confirm it.
 - Commons image: the file page exists and has a license. The form shows the image, its author and its license.
-- Upload: JPEG, PNG or WebP, resized in the browser to at most 1600 px and 2 MB, as personal photos are today. The author must give a credit name and confirm the rights statement (open question 2).
+- Upload: JPEG, PNG or WebP, resized in the browser to at most 1600 px and 2 MB, as personal photos are today. The author must give a credit name and confirm the upload permission.
 - Location point: valid coordinates. The form shows the pin on the map.
 
 An edit that fails these checks can't be submitted; the form says what to fix.
@@ -335,9 +344,9 @@ Every change to what visitors see can be traced to a person, at every stage:
 - **Private and public records are kept apart.** Hiding a name in the UI doesn't make a public document private. So identities (emails, uids) are kept only in private places:
   - the `edits` documents, readable by authors and admins;
   - the `users` collection;
-  - a private intake file outside any public repository, `history-data-private/edit-identities.jsonl` or wherever Rachid chooses (open question 3), which maps each opaque reference to the person.
+  - a private intake file outside any public repository, for example `history-data-private/edit-identities.jsonl` (location to confirm with Rachid when phase 6 is built), which maps each opaque reference to the person.
 
-  Everything public, meaning the overlay, the canonical dataset, releases and anything committed to a public repository, carries only **opaque references**, plus edit IDs, unless Rachid explicitly chooses to disclose names. Each person gets one stable reference, `ref_` followed by a random UUID, created on their first edit and stored only in the private mapping. It is random rather than a hash of the uid or email, so nobody can recompute it from public information.
+  Everything public, meaning the overlay, the canonical dataset, releases and anything committed to a public repository, carries only **opaque references**, plus edit IDs. Visitors see no names, only a small "community edited" mark in the event's details (Rachid, 2026-10-27). Each person gets one stable reference, `ref_` followed by a random UUID, created on their first edit and stored only in the private mapping. It is random rather than a hash of the uid or email, so nobody can recompute it from public information.
 - **The overlay** stores, with each patch, the chain of approval receipts with `approved_by` as an opaque reference, edit IDs and times.
 - **The dataset export** carries the opaque author and approver references, approval times, override flags, edit IDs and revisions into the manifest and the rebuild. A folded change stays attributable after it leaves the overlay: the private intake file resolves each reference to a person.
 - **The review page's History** lists each decision with its approver and can be filtered by approver.
@@ -351,7 +360,7 @@ Every change to what visitors see can be traced to a person, at every stage:
 - `edits`:
   - **Create:** an editor, reviewer or admin. The author must be the signed-in account, `status: submitted`, no `review`, `published` or `merged` fields, only known field names in `changes`, within the size limits.
   - **Update by the author:** only while `submitted`, `auto_rejected`, `flagged` or `sent_back`. The author may change `changes`, `reason` and `sources` (status back to `submitted`, `revision` + 1) or set `withdrawn`.
-  - **Update by an admin:** the review fields and the transitions in Statuses only, and never their own edit.
+  - **Update by an admin:** the review fields and the transitions in Statuses only. On their own edit, `review.self_approved` must be `true`.
   - **The checker:** writes through the Admin SDK, which bypasses the rules; its key never leaves Rachid's machine.
   - **Read:** the author and admins only.
   - **Delete:** nobody.
@@ -392,7 +401,7 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
   - a patch that targets a created event applies after the event is added;
   - image identity and removal: hiding a released image, a folded removal skipped, revert restoring the full record;
   - `content_sha256` normalization, the overlay size limit, and the field checks.
-- **Rules:** every create, update and read case above, including an admin approving their own edit (denied) and a visitor reading `edits` (denied).
+- **Rules:** every create, update and read case above, including an admin approving their own edit (allowed only with `self_approved: true`), a 51st edit in a day (refused by the checker) and a visitor reading `edits` (denied).
 - **Emulator browser:**
   - an editor suggests an edit, sees it in My edits, and a visitor doesn't see it;
   - an admin approves, and a visitor sees the change after a reload;
@@ -404,10 +413,13 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
   - revert restores the old value.
 - **history-dp:** checker unit tests per check, plus a replay over fixture edits.
 
-## Open questions for Rachid
+## Answered questions (Rachid, 2026-10-27)
 
-1. **Self-approval while there's one admin.** Rachid is the only admin. Should an admin's own edit be approvable by themselves once its automatic checks pass, until a second admin exists? Recommended: yes, recorded as self-approved.
-2. **Upload rights.** What do uploaders grant? Recommended: a confirmation that they took the photo or hold the rights, releasing it under CC BY-SA 4.0 with the credit name they give.
-3. **Contributor credit and public identities.** Should visitors see who changed an event, and where does the private identity file live? Recommended: the page shows no names for now, only a small "community edited" mark in the event's details. Public artifacts carry opaque references only, and the identity mapping stays in Firestore and in a private file outside any public repository.
-4. **Daily limit.** Recommended: 50 edits per author per day, raised on request.
-5. **Service account.** Rachid creates a Firebase service-account key in the console and stores it outside every repository (for example `~/.config/historiline/checker-key.json`), for the agents' checker only.
+1. **Self-approval:** admins may approve their own edits at any status, recorded as self-approved.
+2. **Upload rights:** permission for HistoriLine only, no open license.
+3. **Public identities:** no names for visitors, only a "community edited" mark; identities stay private.
+4. **Daily limit:** 50 edits per author per day.
+
+## Still to do before phase 3
+
+- **Service account.** Rachid creates a Firebase service-account key in the console and stores it outside every repository (for example `~/.config/historiline/checker-key.json`), for the agents' checker only.
