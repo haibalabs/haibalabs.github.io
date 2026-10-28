@@ -1,6 +1,6 @@
 // event-manager.js
 import { PlaceEventIndex } from './place-event-index.js';
-import { parseTimeToSortableValue } from './date-handlers.js';
+import { eventSortableValue, eventTiebreak } from './date-handlers.js';
 import { acknowledgement, incomingProblem, mergeDecision, newEventId, pushDecision, syncTarget, toSyncDoc } from './sync-identity.js';
 import { sha256Hex } from './world-images.js';
 
@@ -410,9 +410,12 @@ export class EventManager {
         this.sortedIndices = this.events
             .map((event, index) => ({
                 index,
-                time: parseTimeToSortableValue(event.enhanced_time).sortableValue
+                time: eventSortableValue(event),
+                tiebreak: eventTiebreak(event)
             }))
-            .sort((a, b) => a.time - b.time);
+            // deep-time records at one navigation position keep their sort_tiebreak order; a
+            // fraction added to the time would be lost to rounding at billions of years
+            .sort((a, b) => a.time - b.time || a.tiebreak - b.tiebreak);
     }
   
     getFilteredEvents(filter = null, searchTerm = '') {

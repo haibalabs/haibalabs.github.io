@@ -651,7 +651,48 @@ export function extractDateComponents(sortableTime) {
     const day = Math.floor(dayDecimal) + 1;
     
     return { year, month, day };
-}  
+}
+
+// Deep-time records whose label can't be parsed ("Within minutes after the Big Bang") carry a
+// navigation position instead: sort_years_ago, counted back from 1950, and sort_tiebreak for records
+// at the same position. These are ordering proxies, not exact dates; every other event is placed by
+// its enhanced_time as before.
+const hasNavigationPosition = (event) => Number.isFinite(event?.sort_years_ago);
+
+/**
+ * An event's position on the timeline.
+ *
+ * @param {{ enhanced_time?: string, sort_years_ago?: number }} event
+ * @returns {number}
+ */
+export function eventSortableValue(event) {
+    return hasNavigationPosition(event)
+        ? 1950 - event.sort_years_ago
+        : parseTimeToSortableValue(event?.enhanced_time).sortableValue;
+}
+
+// An event's year: from its navigation position when it has one, otherwise as parsed.
+export function eventYear(event) {
+    return hasNavigationPosition(event)
+        ? Math.floor(1950 - event.sort_years_ago)
+        : parseTimeToSortableValue(event?.enhanced_time)?.year;
+}
+
+// The order between events at the same position: sort_tiebreak first, then load order.
+export const eventTiebreak = (event) => (Number.isFinite(event?.sort_tiebreak) ? event.sort_tiebreak : 0);
+
+/**
+ * An event's date as the card shows it: a record with a navigation position shows its label as
+ * written; any other event is formatted from its enhanced_time.
+ *
+ * @param {{ enhanced_time?: string, sort_years_ago?: number }} event
+ * @returns {string}
+ */
+export function eventDateLabel(event) {
+    return hasNavigationPosition(event) && event.enhanced_time
+        ? event.enhanced_time
+        : formatHistoricalDate(event?.enhanced_time);
+}
 
 /**
  * Format a historical date string for display

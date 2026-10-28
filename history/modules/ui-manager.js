@@ -1,5 +1,5 @@
 // ui-manager.js
-import { formatHistoricalDate, parseTimeToSortableValue } from './date-handlers.js';
+import { eventDateLabel, eventSortableValue, parseTimeToSortableValue } from './date-handlers.js';
 import { formatLocations, getMapLocation } from './map-utils.js';
 import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, failedImageUrls, setImageFailureHandler } from './image-utils.js';
 import { PROMINENT_LABELS } from './config.js';
@@ -1109,7 +1109,7 @@ export class UIManager {
         eventDiv.style.borderLeft = `2px solid ${eventColor}`;
 
         const confidenceBadge = this.getConfidenceBadge(event);
-        const formattedDate = formatHistoricalDate(event.enhanced_time);
+        const formattedDate = eventDateLabel(event);
 
         eventDiv.innerHTML = this.getEventHTML(event, formattedDate, confidenceBadge);
         this.addLocationHandler(eventDiv, event);
@@ -1419,7 +1419,7 @@ export class UIManager {
         
         // Find the target index in our data rather than DOM
         const targetIndex = filteredEvents.findIndex(event => 
-            parseTimeToSortableValue(event.enhanced_time).sortableValue >= targetTime
+            eventSortableValue(event) >= targetTime
         );
 
         if (targetIndex !== -1) {
