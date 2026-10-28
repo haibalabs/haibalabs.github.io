@@ -264,12 +264,13 @@ world_overlay/current
                  chain        ordered approval receipts: [{ edit_id, revision, before, after, approved_by, approved_at }]
                } }
   created      map, event_id -> { record, record_sha256, edit_id, revision, approved_by, approved_at }
+  supported_datasets  SHA-256 values of the datasets this overlay may be applied to (see Folding)
                approved_by is an opaque reviewer reference (see Accountability)
 ```
 
 Everyone can read it; only admins write it, inside the approval transaction.
 
-**Composing approvals.** The first approval of a field creates its patch with `base` set to the dataset's value and `value` set to the approved value. A later approval of the same field (B→C, judged against the effective value B) appends its receipt to `chain` and sets `value` to C, keeping `base` A. A fresh visitor loading A therefore gets C. A revert is an approval like any other: after A→B→C, reverting the C edit appends C→B and sets `value` back to B. When `value` equals `base` again, the patch is a no-op and is removed, with the chain kept in the edits' histories.
+**Composing approvals.** The first approval of a field creates its patch with `base` set to the dataset's value and `value` set to the approved value. A later approval of the same field (B→C, judged against the effective value B) appends its receipt to `chain` and sets `value` to C, keeping `base` A. A fresh visitor loading A therefore gets C. A revert is an approval like any other: after A→B→C, reverting the C edit appends C→B and sets `value` back to B. A patch whose `value` equals its `base` is removed only when **every** value it still supports equals `value` as well, meaning its `base`, its `prior_bases` and the values along its `chain`. Otherwise it stays, marked `folded` if it has been folded, until expiry. Example: fold A→B (base B, prior base A), approve B→C, then revert C→B. The patch now has base B and value B but still prior base A, so it stays, and a page loading the old A still gets B.
 
 **At load**, after the released images and locations are attached, the site first adds `created` events (below), then goes through the patches, which may also target created events:
 1. if the loaded value equals `base`, one of `prior_bases`, or **any value along the patch's `chain`** (an earlier approved state such as B in A→B→C), it applies `value`;
@@ -307,7 +308,9 @@ A history-dp job owned by Atlas folds approved edits into the dataset in four st
    - **Patch approved again since** (for example the manifest folded A→B and a later approval made it A→C): keep it active and rebase it. `base` becomes the folded value B, the old base A moves to `prior_bases`, and `chain` keeps the receipts after the manifest's plus a reference to the folded ones, so B and A still count as chain values for rule 1.
    - **Created event in the served dataset**, with an equal `record_sha256`: mark its entry `folded` the same way. It is still added for a page whose dataset lacks the event, and skipped otherwise. If the record differs, keep the entry active and report it.
    - Finally, set `dataset` to the served SHA-256, and mark the folded fields `merged` on their edits.
-5. **Expire folded entries.** A later run removes `folded` patches, `created` entries and `prior_bases` values once two conditions hold. They must be at least 14 days old, and a newer dataset must have been deployed since their fold. Pages hold their dataset only for the session, and GitHub Pages caches for minutes, so a page on a dataset older than that retention window is not expected.
+5. **Expire folded entries.** A later run removes `folded` patches, `created` entries and `prior_bases` values once two conditions hold. They must be at least 14 days old, and a newer dataset must have been deployed since their fold. The overlay lists the datasets it still supports in `supported_datasets` (SHA-256 values), and the run drops expired ones from that list in the same transaction.
+
+**Unsupported dataset.** The page knows the SHA-256 of the dataset it loaded. If that SHA isn't in `supported_datasets`, for example a tab left open for weeks, the page doesn't apply the overlay to it. It reloads the dataset, bypassing the cache, and applies the overlay to the fresh copy. If the reload still yields an unsupported dataset, it shows the dataset without edits and says "Recent corrections couldn't be applied; reload the page", and reports it in the console. An old page is never assumed not to exist.
 
 **Pages on an older dataset.** A visitor whose browser still has the previous dataset loads A, or lacks a new event N:
 - a folded A→B patch still gives them B, because the patch is kept, only marked;
@@ -377,7 +380,9 @@ Until phase 3 is live, every edit is reviewed by hand: the checker's absence lea
     - with the same overlay (base A, value C), a page loading the newly deployed B **before** cleanup still shows C;
     - after cleanup marks an unchanged A→B patch folded, a page still loading the old A shows B;
     - after a created event N is folded, a page still loading the old dataset without N shows N once, and a page with the new dataset shows it once;
+    - fold A→B, approve B→C, then revert C→B: the patch stays, and a page loading the old A shows B;
     - expiry removes folded entries only after the retention window and a newer deployment;
+    - a page whose dataset isn't in `supported_datasets` reloads it, and shows the notice if the reload is still unsupported;
   - a patch that targets a created event applies after the event is added;
   - image identity and removal: hiding a released image, a folded removal skipped, revert restoring the full record;
   - `content_sha256` normalization, the overlay size limit, and the field checks.
