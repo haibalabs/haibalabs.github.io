@@ -32,7 +32,7 @@ Admins only. The Firestore rules let editors, reviewers and admins write to `eve
 ### Who sees a pushed event
 
 - **Visitors (signed out): never.** The site loads the world dataset from `canonical-t2.json` and does not read `events_main`.
-- **Editors, reviewers and viewers, signed in: never.** They have no Pull control.
+- **Editors, reviewers and viewers, signed in: never in the app.** They have no Pull control. This is not confidentiality: the Firestore rules let any signed-in member read `events_main`, so a member could read pushed events directly through the Firestore API.
 - **Admins: only after Pull.** Settings → **Enable sync events** → **Pull** merges server events into the open page. Pulled events are not kept: after a reload, an admin has to Pull again.
 - **The data pipeline: not yet.** Nothing exports `events_main` into `history-data` or a canonical rebuild, so pushed events do not reach a release. On 2026-10-26, `events_main` held no documents.
 
