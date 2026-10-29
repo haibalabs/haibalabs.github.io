@@ -365,6 +365,16 @@ export class UIManager {
         this.renderEvents();
     }
 
+    // After the timeline's width changed (a drawer opened or closed): lays it out again, keeping
+    // the card that was at the top of the screen there.
+    relayoutKeepingPlace() {
+        const top = this.timelineContainer.getBoundingClientRect().top;
+        const first = [...document.querySelectorAll('#timeline-content > .event')]
+            .find(card => card.getBoundingClientRect().bottom > top);
+        this.resetLayout();
+        if (first) this.scrollToEventId(first.dataset.eventId);
+    }
+
     resetWindow() {
         this.startIndex = 0;
         this.endIndex = 0;

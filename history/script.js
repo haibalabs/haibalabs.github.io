@@ -36,7 +36,7 @@ async function initializeApp() {
     const eventManager = new EventManager(locationVerifier);
 
     const panelManager = new PanelManager(map, markersLayer, geocodeCache, () => {
-        uiManager.resetLayout();
+        uiManager.relayoutKeepingPlace();
     });
     const uiManager = new UIManager(eventManager, panelManager);
 
