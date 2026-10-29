@@ -141,3 +141,33 @@ test('on a phone, closing the map drawer shows the cards that were on screen bef
   await page.locator('#toggle-map').click();
   await expect.poll(topCard).toBe(before);
 });
+
+for (const [width, height] of [[390, 844], [1440, 900]]) {
+  test(`at ${width}px, opening and closing a drawer again and again keeps the same card at the top`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await page.route('**/map-fixture.json', route => route.fulfill({ json: fixtures }));
+    await page.route('**/unverified-locations.json', route => route.fulfill({ json: [] }));
+    await stubFirebase(page);
+    await page.goto('/history/index.html?file=map-fixture.json');
+    await expect(page.locator('.event').first()).toBeVisible();
+    await page.locator('#timeline-wrapper').evaluate(el => { el.scrollTop = 3000; });
+    // the card at the top, ignoring a card above it that shows less than a pixel
+    const topCard = () => page.evaluate(() => {
+      const top = document.getElementById('timeline-wrapper').getBoundingClientRect().top;
+      return [...document.querySelectorAll('#timeline-content > .event')]
+        .find(card => card.getBoundingClientRect().width > 0 && card.getBoundingClientRect().bottom > top + 1)?.dataset.eventId ?? null;
+    });
+    await expect.poll(topCard).not.toBeNull();
+    const before = await topCard();
+    for (let i = 0; i < 3; i++) {
+      await page.locator('#toggle-info').evaluate(el => el.click());
+      await expect(page.locator('#timeline-wrapper')).toHaveClass(/panel-open/);
+      await page.waitForTimeout(400);
+      await page.locator('#toggle-info').evaluate(el => el.click());
+      await expect(page.locator('#timeline-wrapper')).not.toHaveClass(/panel-open/);
+      // the timeline is laid out again 300ms after the drawer closes
+      await page.waitForTimeout(400);
+      await expect.poll(topCard).toBe(before);
+    }
+  });
+}
