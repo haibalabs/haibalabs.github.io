@@ -60,10 +60,24 @@ service cloud.firestore {
       return ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url'];
     }
 
+    // A new event: the required fields filled in, and nothing it replaces.
+    function validNewEvent(changes) {
+      return changes.keys().hasAll(['name', 'enhanced_time', 'enhanced_description'])
+        && changes.name.before == null && changes.name.after is string && changes.name.after.size() > 0
+        && changes.enhanced_time.before == null && changes.enhanced_time.after is string
+        && changes.enhanced_time.after.size() > 0
+        && changes.enhanced_description.before == null && changes.enhanced_description.after is string
+        && changes.enhanced_description.after.size() > 0
+        && (!('figures' in changes) || changes.figures.before == null)
+        && (!('categories' in changes) || changes.categories.before == null)
+        && (!('wikipedia_url' in changes) || changes.wikipedia_url.before == null);
+    }
+
     function validEditContent(data) {
       return data.keys().hasOnly(['edit_id', 'kind', 'event_id', 'event_name', 'dataset', 'changes',
           'reason', 'sources', 'source_conflict', 'author', 'created_at', 'revised_at', 'revision',
           'content_sha256', 'status', 'checks'])
+        && (data.kind == 'update' || (data.kind == 'create' && validNewEvent(data.changes)))
         && data.event_id is string
         && data.event_id.matches('evt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
         && data.event_name is string && data.event_name.size() <= 300
@@ -84,7 +98,6 @@ service cloud.firestore {
         && editId.matches('edt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
         && request.resource.data.edit_id == editId
         && validEditContent(request.resource.data)
-        && request.resource.data.kind == 'update'
         && request.resource.data.status == 'submitted'
         && request.resource.data.revision == 1
         && request.resource.data.author.keys().hasOnly(['uid', 'email'])

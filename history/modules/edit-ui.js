@@ -1,13 +1,15 @@
 // edit-ui.js
 // The screens for suggesting edits to world events (WORLD-EDITS.md, Editor screens): the Editing
-// switch and My edits in the profile drawer, the pencil on each world event while it is on, the
-// Suggest an edit form, and the author's "pending" mark on an event. Only signed-in
-// editors, reviewers and admins see any of it; the rules decide what is actually allowed.
+// switch and My edits in the profile drawer, the pencil on each world event and the Suggest a new
+// event button while it is on, the Suggest an edit form (empty for a new event), and the author's
+// "pending" mark on an event. Only signed-in editors, reviewers and admins see any of it; the
+// rules decide what is actually allowed.
 import { PROMINENT_LABELS } from './config.js';
+import { newEventId } from './event-id.js';
 import { permissionsFor } from './roles.js';
 import {
     changesFor, contentSha256, DAILY_LIMIT, EDIT_FIELDS, editorStatus, EDITOR_STATUS_LABELS, editProblem,
-    FIELD_LABELS, isOpen, newEditId, normalizeField, normalizeFigures, normalizeWikipediaUrl, sameValue,
+    FIELD_LABELS, isOpen, newEditId, newEventChanges, normalizeField, normalizeFigures, normalizeWikipediaUrl, sameValue,
 } from './world-edits.js';
 import { articleInfo, searchArticles } from './wikipedia-lookup.js';
 
@@ -48,6 +50,7 @@ export class EditUI {
         this.session = 0;
 
         this.toggle = document.getElementById('editing-toggle');
+        this.newEventButton = document.getElementById('suggest-event');
         this.section = document.getElementById('my-edits');
         this.list = document.getElementById('my-edits-list');
         this.count = document.getElementById('my-edits-count');
@@ -79,6 +82,7 @@ export class EditUI {
 
     setupListeners() {
         this.toggle.addEventListener('change', () => this.setEditing(this.toggle.checked));
+        this.newEventButton.addEventListener('click', () => this.openNew());
         document.getElementById('se-cancel').addEventListener('click', () => this.close());
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -129,6 +133,7 @@ export class EditUI {
         const changed = editing !== this.editing;
         this.editing = editing;
         this.toggle.checked = this.editing;
+        this.newEventButton.hidden = !this.editing;
         if (remember) writeEditingPreference(this.editing);
         // re-render only to add or remove the pencils: every sign-in state change lands here,
         // including the first one on page load
@@ -198,7 +203,7 @@ export class EditUI {
         if (!visible.length) {
             const empty = document.createElement('li');
             empty.className = 'my-edits-empty';
-            empty.textContent = 'No edits yet. Turn on edit buttons above and use the pencil on an event.';
+            empty.textContent = 'No edits yet. Turn on edit buttons above, then use the pencil on an event or the new event button at the top.';
             this.list.append(empty);
         }
     }
@@ -220,7 +225,9 @@ export class EditUI {
         title.textContent = edit.event_name;
         const fields = document.createElement('span');
         fields.className = 'my-edit-fields';
-        fields.textContent = Object.keys(edit.changes ?? {}).map(f => FIELD_LABELS[f] ?? f).join(', ');
+        fields.textContent = edit.kind === 'create'
+            ? 'New event'
+            : Object.keys(edit.changes ?? {}).map(f => FIELD_LABELS[f] ?? f).join(', ');
         item.append(head, title, fields);
 
         const reason = status === 'rejected' ? (edit.review?.note || this.firstFailure(edit)) : '';
@@ -263,6 +270,11 @@ export class EditUI {
     }
 
     revise(edit) {
+        if (edit.kind === 'create') {
+            document.getElementById('settings-panel')?.classList.remove('open');
+            this.openNew(edit);
+            return;
+        }
         const event = this.eventManager.events.find(e => !e.personal && e.event_id === edit.event_id);
         if (!event) {
             this.showStatus("This event isn't in the timeline that's loaded, so the edit can't be revised here.");
@@ -274,13 +286,20 @@ export class EditUI {
 
     // --- the Suggest an edit form ---
 
+    // The same form, empty, for a new event, or filled with a revision's values when revising one.
+    openNew(edit = null) {
+        this.open({}, edit, { creating: true });
+    }
+
     // Opens the form for a world event, filled with its values, or with a revision's values when
     // revising one of the author's edits.
-    open(event, edit = null) {
+    open(event, edit = null, { creating = false } = {}) {
         // a send still in flight from an earlier form must not land in this one
         this.formSession = (this.formSession ?? 0) + 1;
         this.event = event;
         this.revising = edit;
+        this.creating = creating;
+        document.getElementById('suggest-edit-title').textContent = creating ? 'Suggest a new event' : 'Suggest an edit';
         this.form.reset();
         this.showError('');
         this.original = Object.fromEntries(EDIT_FIELDS.map(f => [f, normalizeField(f, event[f])]));
@@ -313,6 +332,7 @@ export class EditUI {
         this.modal.style.display = 'none';
         this.event = null;
         this.revising = null;
+        this.creating = false;
         clearTimeout(this.searchTimer);
         this.cancelWikiCheck();
     }
@@ -337,7 +357,8 @@ export class EditUI {
 
     markChanged(field) {
         const group = this.form.querySelector(`.form-group[data-field="${field}"]`);
-        const changed = !sameValue(normalizeField(field, this.value(field)), this.original[field]);
+        // every field of a new event is new, so none is marked
+        const changed = !this.creating && !sameValue(normalizeField(field, this.value(field)), this.original[field]);
         group.classList.toggle('changed', changed);
         group.querySelector('.changed-tag').hidden = !changed;
         group.querySelector('.undo-change').hidden = !changed;
@@ -540,17 +561,18 @@ export class EditUI {
         const current = () => session === this.formSession;
         const event = this.event;
         const revising = this.revising;
+        const kind = this.creating ? 'create' : 'update';
         // only Send locks; Cancel stays available and cancels a send that is still checking
         const buttons = [document.getElementById('se-submit')];
         this.submitting = true;
         buttons.forEach(button => button.disabled = true);
         try {
             const values = Object.fromEntries(EDIT_FIELDS.map(f => [f, this.value(f)]));
-            const changes = changesFor(event, values);
+            const changes = kind === 'create' ? newEventChanges(values) : changesFor(event, values);
             const reason = document.getElementById('se-reason').value.trim();
             const sources = this.sources();
             const sourceConflict = document.getElementById('se-source-conflict').checked;
-            const problem = editProblem({ changes, reason, sources });
+            const problem = editProblem({ kind, changes, reason, sources });
             if (problem) return this.showError(problem);
             if (!revising && this.edits.filter(edit => isToday(edit.created_at)).length >= DAILY_LIMIT) {
                 return this.showError(`You've sent ${DAILY_LIMIT} edits today. You can send more tomorrow.`);
@@ -566,11 +588,14 @@ export class EditUI {
             const contentSha = await contentSha256({ changes, reason, sources, source_conflict: sourceConflict });
             const datasetSha256 = await this.eventManager.loadedSha256 ?? null;
             if (!current()) return;
+            const eventName = kind === 'create' ? changes.name.after : event.name;
             try {
                 if (revising) {
-                    await this.store.revise(revising, { changes, reason, sources, sourceConflict, contentSha, browserChecks, eventName: event.name, datasetSha256 });
+                    await this.store.revise(revising, { changes, reason, sources, sourceConflict, contentSha, browserChecks, eventName, datasetSha256 });
                 } else {
-                    await this.store.submit({ editId: newEditId(), event, changes, reason, sources, sourceConflict, datasetSha256, contentSha, browserChecks });
+                    // a new event gets its ID now, and keeps it through revisions
+                    const target = kind === 'create' ? { event_id: newEventId(), name: eventName } : event;
+                    await this.store.submit({ editId: newEditId(), kind, event: target, changes, reason, sources, sourceConflict, datasetSha256, contentSha, browserChecks });
                 }
             } catch (error) {
                 console.error('Could not send the edit:', error);
