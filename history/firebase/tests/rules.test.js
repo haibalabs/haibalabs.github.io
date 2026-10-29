@@ -444,4 +444,46 @@ describe('proposed edits to world events', () => {
       await assertFails(setDoc(editRef(db), { ...final, status: 'submitted', revision: 2, revised_at: serverTimestamp() }), status);
     }
   });
+
+  const NEW_EVT = 'evt_0a1b2c3d-0000-4000-8000-0000000000cc';
+  const newEventDoc = (uid, changes = {}) => editDoc(uid, EDIT, {
+    kind: 'create', event_id: NEW_EVT, event_name: 'Founding of Example Town',
+    changes: {
+      name: { before: null, after: 'Founding of Example Town' },
+      enhanced_time: { before: null, after: 'May 1, 1820' },
+      enhanced_description: { before: null, after: 'The town is incorporated.' },
+      ...changes,
+    },
+  });
+  it('editors can suggest a new event with a name, a date and a description', async () => {
+    const db = asUser('editor');
+    await assertSucceeds(setDoc(editRef(db), newEventDoc('editor', {
+      figures: { before: null, after: [{ name: 'Ann Lee' }] }, categories: { before: null, after: ['politics'] },
+    })));
+    await assertFails(setDoc(editRef(asUser('viewer')), newEventDoc('viewer')));
+  });
+  it('a new event needs every required field, replaces nothing, and is only create or update', async () => {
+    const db = asUser('editor');
+    const { enhanced_description: _, ...withoutDescription } = newEventDoc('editor').changes;
+    await assertFails(setDoc(editRef(db), { ...newEventDoc('editor'), changes: withoutDescription }));
+    await assertFails(setDoc(editRef(db), newEventDoc('editor', { name: { before: null, after: '' } })));
+    await assertFails(setDoc(editRef(db), newEventDoc('editor', { name: { before: 'Old name', after: 'Founding of Example Town' } })));
+    await assertFails(setDoc(editRef(db), newEventDoc('editor', { figures: { before: ['Someone'], after: [] } })));
+    await assertFails(setDoc(editRef(db), newEventDoc('editor', { location: { before: null, after: 'X' } })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { kind: 'delete' })));
+  });
+  it('a revision of a new event keeps its kind, its ID and its required fields', async () => {
+    await env.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(editRef(ctx.firestore()), { ...newEventDoc('editor'), created_at: Timestamp.now(), revised_at: Timestamp.now() });
+    });
+    const db = asUser('editor');
+    const current = (await getDoc(editRef(db))).data();
+    const revised = { ...current, status: 'submitted', revision: 2, revised_at: serverTimestamp(), content_sha256: 'c'.repeat(64),
+      event_name: 'Founding of Example City',
+      changes: { ...current.changes, name: { before: null, after: 'Founding of Example City' } } };
+    await assertFails(setDoc(editRef(db), { ...revised, kind: 'update' }));
+    await assertFails(setDoc(editRef(db), { ...revised, event_id: WORLD_EVT }));
+    await assertFails(setDoc(editRef(db), { ...revised, changes: { name: revised.changes.name } }));
+    await assertSucceeds(setDoc(editRef(db), revised));
+  });
 });

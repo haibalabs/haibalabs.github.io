@@ -88,8 +88,59 @@ test('viewers and visitors get no switch and no pencil', async ({ page }) => {
   await signInAs(page, 'viewer@example.test');
   await expect(page.locator('#editing-toggle')).toBeHidden();
   await expect(page.locator('.edit-pencil')).toHaveCount(0);
+  await expect(page.locator('#suggest-event')).toBeHidden();
   await page.click('#settings-btn');
   await expect(page.locator('#my-edits')).toBeHidden();
+});
+
+test('an editor suggests a new event from the empty form, then revises it', async ({ page, request }) => {
+  await openWorld(page);
+  await signInAs(page, 'editor@example.test');
+  await expect(page.locator('#suggest-event')).toBeHidden();
+  await setEditing(page, true);
+
+  await page.click('#suggest-event');
+  await expect(page.locator('#suggest-edit-title')).toHaveText('Suggest a new event');
+  for (const field of ['#se-name', '#se-time', '#se-description', '#se-wiki']) await expect(page.locator(field)).toHaveValue('');
+  await expect(page.locator('.person')).toHaveCount(0);
+  await page.fill('#se-name', 'Founding of Example Town');
+  await expect(page.locator('.form-group[data-field="name"] .changed-tag')).toBeHidden();
+  await page.click('#se-submit');
+  await expect(page.locator('#suggest-edit-form .form-error')).toHaveText('The event needs a date.');
+  await page.fill('#se-time', 'May 1, 1820');
+  await page.fill('#se-description', 'The town is incorporated.');
+  await page.selectOption('#se-category', 'politics');
+  await page.click('#se-submit');
+  await expect(page.locator('#suggest-edit-modal')).toBeHidden();
+  await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);
+
+  const [created] = await listAsOwner(request, 'edits');
+  const fields = created.fields;
+  expect(fields.kind.stringValue).toBe('create');
+  expect(fields.event_id.stringValue).toMatch(/^evt_[0-9a-f-]{36}$/);
+  expect(fields.event_name.stringValue).toBe('Founding of Example Town');
+  const changes = fields.changes.mapValue.fields;
+  expect(Object.keys(changes).sort()).toEqual(['categories', 'enhanced_description', 'enhanced_time', 'name']);
+  for (const change of Object.values(changes)) expect(change.mapValue.fields.before.nullValue).toBe(null);
+
+  await page.click('#settings-btn');
+  const item = page.locator('.my-edit', { hasText: 'Founding of Example Town' });
+  await expect(item.locator('.my-edit-fields')).toHaveText('New event');
+  await item.getByRole('button', { name: 'Revise' }).click();
+  await expect(page.locator('#suggest-edit-title')).toHaveText('Suggest a new event');
+  await expect(page.locator('#se-description')).toHaveValue('The town is incorporated.');
+  await page.fill('#se-name', 'Founding of Example City');
+  await page.click('#se-submit');
+  await expect(page.locator('.toast', { hasText: 'Revision sent for review.' })).toHaveCount(1);
+  const revised = (await listAsOwner(request, 'edits'))[0].fields;
+  expect(revised.revision.integerValue).toBe('2');
+  expect(revised.event_id.stringValue).toBe(fields.event_id.stringValue);
+  expect(revised.event_name.stringValue).toBe('Founding of Example City');
+
+  // the pencil still opens the ordinary form afterwards
+  await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
+  await expect(page.locator('#suggest-edit-title')).toHaveText('Suggest an edit');
+  await expect(page.locator('#se-name')).toHaveValue('Max Schmeling knocks out Joe Louis');
 });
 
 test('an editor suggests an edit with linked people; it waits for review and only the author sees it', async ({ page, browser, request }) => {

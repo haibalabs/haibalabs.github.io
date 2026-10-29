@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-    canonicalJson, changesFor, contentSha256, editorStatus, editProblem, isOpen, newEditId,
+    canonicalJson, changesFor, contentSha256, editorStatus, editProblem, isOpen, newEditId, newEventChanges,
     normalizeFigures, normalizeField, normalizeWikipediaUrl, toEditDoc,
 } from '../../modules/world-edits.js';
 
@@ -99,6 +99,33 @@ describe('editProblem — browser checks before sending', () => {
     });
 });
 
+describe('a new event — the same form, empty', () => {
+    const values = {
+        name: ' Founding of Example Town ', enhanced_time: 'May 1, 1820', enhanced_description: 'The town is incorporated.',
+        figures: [], categories: [], wikipedia_url: '',
+    };
+    it('proposes every filled field with nothing before it', () => {
+        assert.deepEqual(newEventChanges(values), {
+            name: { before: null, after: 'Founding of Example Town' },
+            enhanced_time: { before: null, after: 'May 1, 1820' },
+            enhanced_description: { before: null, after: 'The town is incorporated.' },
+        });
+        const more = newEventChanges({ ...values, figures: [{ name: 'Ann Lee' }], categories: ['politics'] });
+        assert.deepEqual(more.figures, { before: null, after: [{ name: 'Ann Lee' }] });
+        assert.deepEqual(more.categories, { before: null, after: ['politics'] });
+    });
+    it('needs a name, a date and a description', () => {
+        assert.equal(editProblem({ kind: 'create', changes: newEventChanges(values) }), null);
+        assert.match(editProblem({ kind: 'create', changes: newEventChanges({ ...values, name: '' }) }), /needs a name/);
+        assert.match(editProblem({ kind: 'create', changes: newEventChanges({ ...values, enhanced_time: '' }) }), /needs a date/);
+        assert.match(editProblem({ kind: 'create', changes: newEventChanges({ ...values, enhanced_description: ' ' }) }), /needs a description/);
+        assert.match(editProblem({ kind: 'create', changes: {} }), /needs a name/);
+    });
+    it('checks the filled fields like any edit', () => {
+        assert.match(editProblem({ kind: 'create', changes: newEventChanges({ ...values, enhanced_time: 'sometime' }) }), /not a date/);
+    });
+});
+
 describe('contentSha256 — the same content always hashes the same', () => {
     it('ignores key order and changes with content', async () => {
         const a = await contentSha256({ changes: { name: { before: 'A', after: 'B' } }, reason: '', sources: [] });
@@ -139,5 +166,16 @@ describe('toEditDoc — the stored edit', () => {
         assert.equal(doc.revision, 1);
         assert.equal(doc.event_id, EVENT.event_id);
         for (const key of ['review', 'fields', 'published', 'merged']) assert.equal(key in doc, false, key);
+    });
+    it('stores a new event as a create edit under its own new ID', async () => {
+        const changes = newEventChanges({ name: 'Founding of Example Town', enhanced_time: '1820', enhanced_description: 'Incorporated.' });
+        const doc = toEditDoc({
+            editId: newEditId(), kind: 'create', event: { event_id: 'evt_0a1b2c3d-0000-4000-8000-0000000000cc', name: 'Founding of Example Town' },
+            changes, reason: '', sources: [], sourceConflict: false, author: { uid: 'u1', email: 'e@x.org' },
+            datasetSha256: 'abc', contentSha: await contentSha256({ changes }), browserChecks: [],
+        });
+        assert.equal(doc.kind, 'create');
+        assert.equal(doc.event_id, 'evt_0a1b2c3d-0000-4000-8000-0000000000cc');
+        assert.equal(doc.event_name, 'Founding of Example Town');
     });
 });

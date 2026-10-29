@@ -119,6 +119,27 @@ export function changesFor(event, values) {
     return changes;
 }
 
+// A new event needs these; the other fields are optional.
+export const REQUIRED_FIELDS = ['name', 'enhanced_time', 'enhanced_description'];
+const REQUIRED_MESSAGES = {
+    name: 'The event needs a name.', enhanced_time: 'The event needs a date.', enhanced_description: 'The event needs a description.',
+};
+
+/**
+ * The changes a new event proposes: every field the form fills in, each with before: null.
+ *
+ * @param {object} values - field -> the form's value, for any of EDIT_FIELDS
+ * @returns {Object<string, { before: null, after: * }>}
+ */
+export function newEventChanges(values) {
+    const changes = {};
+    for (const field of EDIT_FIELDS) {
+        const after = normalizeField(field, values[field]);
+        if (after !== null && !(Array.isArray(after) && !after.length)) changes[field] = { before: null, after };
+    }
+    return changes;
+}
+
 const HTML_TAG = /<\/?[a-z!][^>]*>/i;
 
 function isHttpUrl(text) {
@@ -133,10 +154,14 @@ function isHttpUrl(text) {
  * Why an edit can't be sent, or null. These are the checks that need no network; the Wikipedia
  * lookups are done by the form as the author types.
  *
- * @param {{ changes: object, reason?: string, sources?: string[] }} edit
+ * @param {{ kind?: 'update'|'create', changes: object, reason?: string, sources?: string[] }} edit
  * @returns {string|null}
  */
-export function editProblem({ changes, reason = '', sources = [] }) {
+export function editProblem({ kind = 'update', changes, reason = '', sources = [] }) {
+    if (kind === 'create') {
+        const missing = REQUIRED_FIELDS.find(field => !changes?.[field]);
+        if (missing) return REQUIRED_MESSAGES[missing];
+    }
     const fields = Object.keys(changes ?? {});
     if (!fields.length) return 'Change at least one field before sending.';
     const texts = [];
@@ -144,18 +169,18 @@ export function editProblem({ changes, reason = '', sources = [] }) {
         const after = changes[field].after;
         switch (field) {
             case 'name':
-                if (!after) return 'The event needs a name.';
+                if (!after) return REQUIRED_MESSAGES.name;
                 if (after.length > NAME_MAX) return `Keep the event name under ${NAME_MAX + 1} characters.`;
                 texts.push(after);
                 break;
             case 'enhanced_time': {
-                if (!after) return 'The event needs a date.';
+                if (!after) return REQUIRED_MESSAGES.enhanced_time;
                 const problem = eventProblem({ name: 'event', enhanced_time: after });
                 if (problem) return problem;
                 break;
             }
             case 'enhanced_description':
-                if (!after) return 'The event needs a description.';
+                if (!after) return REQUIRED_MESSAGES.enhanced_description;
                 if (after.length > DESCRIPTION_MAX) return `Keep the description under ${DESCRIPTION_MAX + 1} characters.`;
                 texts.push(after);
                 break;
@@ -211,15 +236,16 @@ export const isOpen = (edit) => ['waiting', 'rejected'].includes(editorStatus(ed
 
 /**
  * The document a new edit is stored as, without the server-set times, which edit-store.js adds.
+ * For a new event, event is { event_id, name } with the ID assigned at submission.
  *
- * @param {{ editId: string, event: object, changes: object, reason: string, sources: string[],
- *           sourceConflict: boolean, author: { uid: string, email: string }, datasetSha256: string|null,
- *           contentSha: string, browserChecks: object[] }} input
+ * @param {{ editId: string, kind?: 'update'|'create', event: object, changes: object, reason: string,
+ *           sources: string[], sourceConflict: boolean, author: { uid: string, email: string },
+ *           datasetSha256: string|null, contentSha: string, browserChecks: object[] }} input
  */
-export function toEditDoc({ editId, event, changes, reason, sources, sourceConflict, author, datasetSha256, contentSha, browserChecks }) {
+export function toEditDoc({ editId, kind = 'update', event, changes, reason, sources, sourceConflict, author, datasetSha256, contentSha, browserChecks }) {
     return {
         edit_id: editId,
-        kind: 'update',
+        kind,
         event_id: event.event_id,
         event_name: event.name,
         dataset: { id: 'world-history', sha256: datasetSha256 ?? null, locations_release_sha256: null },
