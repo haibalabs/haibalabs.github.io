@@ -113,6 +113,19 @@ export const recordDisplayDate = (record) => ('display_date' in record
 // shows the date itself.
 export const displayCaption = (caption) => caption.replace(/\s*Image date:[^.]*\.?\s*$/i, '').trim();
 
+/**
+ * A caption split into plain and italic runs: some captions mark a work's title *like this*
+ * (Rachid, 2026-10-28: show it in italics). A lone asterisk stays as text.
+ *
+ * @param {string} caption
+ * @returns {{ text: string, italic: boolean }[]}
+ */
+export function captionRuns(caption) {
+    return caption.split(/\*([^*\s](?:[^*]*[^*\s])?)\*/)
+        .map((text, i) => ({ text, italic: i % 2 === 1 }))
+        .filter(run => run.text);
+}
+
 // Fields the app itself changes after loading: the timestamp it sets, and locations, which the
 // location verifier annotates. Locations are compared by their identity fields instead.
 const NORMALIZED_FIELDS = new Set(['lastModified', 'locations']);

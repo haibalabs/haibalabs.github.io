@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { attachPreviewImages, CREDIT_LIMIT, detachPreviewImages, displayCaption, displayDate, IMAGE_ROLES, previewProblem, recordDisplayDate, sha256Hex, shortCredit } from '../../modules/world-images.js';
+import { attachPreviewImages, captionRuns, CREDIT_LIMIT, detachPreviewImages, displayCaption, displayDate, IMAGE_ROLES, previewProblem, recordDisplayDate, sha256Hex, shortCredit } from '../../modules/world-images.js';
 
 const PREVIEW = JSON.parse(readFileSync(new URL('../fixtures/reviewed-images-v1.json', import.meta.url), 'utf8'));
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-images-v1.json', import.meta.url), 'utf8'));
@@ -192,6 +192,18 @@ describe('displayDate and displayCaption — the image date, plainly', () => {
   it('drops a trailing "Image date" sentence from a caption, and nothing else', () => {
     assert.equal(displayCaption('Map showing Cherchen among Tarim mummy sites. Image date: 2023-04-29.'), 'Map showing Cherchen among Tarim mummy sites.');
     assert.equal(displayCaption('Engraving of the opening ceremony, 1876.'), 'Engraving of the opening ceremony, 1876.');
+  });
+  it('shows a title marked with asterisks in italics, and leaves a lone asterisk as text', () => {
+    assert.deepEqual(captionRuns('Title page of Hugo Grotius’s *Mare Liberum*, published in Leiden.'), [
+      { text: 'Title page of Hugo Grotius’s ', italic: false },
+      { text: 'Mare Liberum', italic: true },
+      { text: ', published in Leiden.', italic: false },
+    ]);
+    assert.deepEqual(captionRuns('*Othello* and *Hamlet*'), [
+      { text: 'Othello', italic: true }, { text: ' and ', italic: false }, { text: 'Hamlet', italic: true },
+    ]);
+    assert.deepEqual(captionRuns('A star * marks the site.'), [{ text: 'A star * marks the site.', italic: false }]);
+    assert.deepEqual(captionRuns('No marks here.'), [{ text: 'No marks here.', italic: false }]);
   });
 });
 

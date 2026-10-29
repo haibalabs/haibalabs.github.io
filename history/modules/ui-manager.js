@@ -5,7 +5,7 @@ import { getOptimizedImageUrl, sanitizeUrl, loadedImageUrls, thumbFailedUrls, fa
 import { PROMINENT_LABELS } from './config.js';
 import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
-import { attachPreviewImages, previewProblem, RELEASE_URL, shortCredit } from './world-images.js';
+import { attachPreviewImages, captionRuns, previewProblem, RELEASE_URL, shortCredit } from './world-images.js';
 import { applyLocations, LOCATION_RELEASE_URL, locationProblem } from './world-locations.js';
 
 function escapeHtml(str) {
@@ -758,7 +758,15 @@ export class UIManager {
         toggle.textContent = 'i';
         toggle.setAttribute('aria-label', 'Credit and license');
         toggle.setAttribute('aria-expanded', 'false');
-        caption.append(info.caption);
+        for (const run of captionRuns(info.caption)) {
+            if (!run.italic) {
+                caption.append(run.text);
+                continue;
+            }
+            const title = document.createElement('em');
+            title.textContent = run.text;
+            caption.append(title);
+        }
         // the image's date, unlabeled: readers compare it with the event's own date
         if (info.date) {
             const date = document.createElement('span');
@@ -942,7 +950,8 @@ export class UIManager {
             // a reviewed preview image opens full size with its credits; the card keeps a one-line caption
             const zoomClass = event.image_preview ? ' zoomable' : '';
             const caption = event.image_preview
-                ? `<p class="event-image-caption">${escapeHtml(event.image_preview.caption)}</p>`
+                ? `<p class="event-image-caption">${captionRuns(event.image_preview.caption)
+                    .map(run => (run.italic ? `<em>${escapeHtml(run.text)}</em>` : escapeHtml(run.text))).join('')}</p>`
                 : '';
             imageSection = `
             <div class="event-image${loadingClass}${zoomClass}">
