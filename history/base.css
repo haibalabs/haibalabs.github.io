@@ -367,6 +367,8 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2
     top: 0; right: -340px;
     width: 320px;
     height: 100vh;
+    /* on phones 100vh reaches under the browser's toolbar, which hid Close; dvh is the visible height */
+    height: 100dvh;
     background: var(--surface);
     border-left: 1px solid var(--line);
     box-shadow: -16px 0 48px rgb(0 0 0 / .08);
