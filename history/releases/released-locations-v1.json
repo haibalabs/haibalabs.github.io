@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_location_sidecar",
   "source": {
-    "events_sha256": "49b8f43b83a89999960d6a02733edf876da42f27d5b38fdf4462f2ec9a6832f6",
+    "events_sha256": "c425d62ac9e6af095c4bc21fe1598a3d98ef276079cdcb5fa519495c3d78ab8a",
     "snapshot": {
       "events_sha256": "6b7234e304f96654cc132bd82a3a413f918acd9df512f3f064c6e6255fc59669",
       "places_sha256": "3ae455e2da05dc41a63cc21977b0c5a97a36fd14407ceadb345f3cc0877c5c09",

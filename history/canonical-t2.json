@@ -1,11 +1,11 @@
 {
   "metadata": {
     "dataset_id": "world-history",
-    "snapshot_id": "world-history-early-times-v1",
-    "timestamp": "2026-10-28T18:33:58+00:00",
-    "parent_snapshot_id": "world-history-canonical-v1",
-    "parent_sha256": "4160e58fb915960bd156dbb0de57b16bc4396d1f296ae32eba31d16a7019d622",
-    "early_times_draft_manifest_sha256": "177c3a2f709801c6dadfe022eae04cb60698511078e4525f713981e80a5b4745",
+    "snapshot_id": "world-history-early-expansion-v1",
+    "timestamp": "2026-10-28T23:41:07+00:00",
+    "parent_snapshot_id": "world-history-early-times-v1",
+    "parent_sha256": "49b8f43b83a89999960d6a02733edf876da42f27d5b38fdf4462f2ec9a6832f6",
+    "early_times_draft_manifest_sha256": "1545ac4ba518c02dfc8cea8f4a903b9dcc8cbb3f4beba0bbf6c7862522e4923b",
     "release_status": "candidate_pending_public_release"
   },
   "events": [
@@ -59,8 +59,8 @@
       "categories": [
         "science"
       ],
-      "enhanced_description": "The Paleocene–Eocene Thermal Maximum (PETM) was a significant global warming event that occurred around 55 million years ago, resulting in drastic ecological changes and alterations in the carbon cycle. This period is characterized by a rapid increase in temperatures and a major shift in the distribution of flora and fauna.",
-      "enhanced_time": "c. 55 million years ago",
+      "enhanced_description": "Around 56 million years ago, a large release of carbon accompanied rapid global warming. This warm interval lasted roughly 200,000 years and brought major changes to marine and terrestrial ecosystems.",
+      "enhanced_time": "c. 56 million years ago",
       "confidence": "high",
       "event_id": "evt_4350d40d-8d28-55c2-945f-989326e83194",
       "source_refs": [
@@ -68,11 +68,24 @@
           "artifact_path": "haibalabs.github.io/history/events.json",
           "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
           "record_index": 1
+        },
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 41
         }
       ],
       "source_lineage": "original_acquisition_unknown",
       "wikipedia_url": "",
-      "article_reference_status": "missing"
+      "article_reference_status": "missing",
+      "sort_years_ago": 56000000.0,
+      "sort_tiebreak": 41,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Propose correcting legacy approximate55Ma to approximate56Ma, with explicit evidence; do not invent an exact calendar date.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1381901715"
+      ]
     },
     {
       "name": "Mid-Pleistocene Transition",
@@ -81,8 +94,8 @@
       "categories": [
         "science"
       ],
-      "enhanced_description": "The Mid-Pleistocene Transition refers to a significant change in glacial cycles occurring around 1 million years ago, shifting from 41,000-year cycles to 100,000-year cycles. This transition had profound implications for Earth's climate and the evolution of species.",
-      "enhanced_time": "c. 1 million years ago",
+      "enhanced_description": "Between roughly 1.25 and 0.7 million years ago, Earth’s glacial cycles changed from a predominantly 41,000-year rhythm toward longer, more asymmetric cycles averaging about 100,000 years.",
+      "enhanced_time": "c. 1.25–0.7 million years ago",
       "confidence": "high",
       "event_id": "evt_ecfb0490-96ee-5d19-8086-cf620e8e96e4",
       "source_refs": [
@@ -90,11 +103,24 @@
           "artifact_path": "haibalabs.github.io/history/events.json",
           "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
           "record_index": 2
+        },
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 42
         }
       ],
       "source_lineage": "original_acquisition_unknown",
       "wikipedia_url": "",
-      "article_reference_status": "missing"
+      "article_reference_status": "missing",
+      "sort_years_ago": 1250000.0,
+      "sort_tiebreak": 42,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Preserve interval instead of falsely precise single-year timing; timeline placement is only a navigation proxy.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1378646800"
+      ]
     },
     {
       "name": "birth of the Virgin Mary",
@@ -2310601,6 +2310627,1236 @@
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1376668251",
         "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_a43b0d60-673e-5d01-80ca-78a13aa212a0",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 0
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Ancient rocks of the Acasta Gneiss",
+      "enhanced_time": "c. 4 billion years ago",
+      "enhanced_description": "Rocks of the Acasta Gneiss in northwestern Canada preserve a record of Earth’s crust from roughly four billion years ago.",
+      "sort_years_ago": 4000000000.0,
+      "sort_tiebreak": 0,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Omit an absolute oldest-rock claim; distinguish formation from modern discovery.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_0926ac08-6e83-505c-91eb-3e800268d0ea",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 1
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Vredefort impact",
+      "enhanced_time": "c. 2.023 billion years ago",
+      "enhanced_description": "An impact formed the Vredefort structure about 2.023 billion years ago. Its original crater is estimated to have been roughly 170–300 kilometres across.",
+      "sort_years_ago": 2023000000.0,
+      "sort_tiebreak": 1,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_e95427ab-1bf6-5c4d-a63f-33c97a3375b3",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 2
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Widespread Cryogenian glaciation",
+      "enhanced_time": "c. 720–630 million years ago",
+      "enhanced_description": "Major glaciations affected Earth during the Cryogenian. Whether ice covered the entire planet remains uncertain.",
+      "sort_years_ago": 720000000.0,
+      "sort_tiebreak": 2,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Retain uncertainty about globally complete ice cover; do not substitute the saved Huronian illustration.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_37efec98-5070-546b-aeb0-bfaf5e75c226",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 3
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Burgess Shale fossils",
+      "enhanced_time": "c. 505 million years ago",
+      "enhanced_description": "The Burgess Shale preserves fossil evidence of marine life from roughly 505 million years ago.",
+      "sort_years_ago": 505000000.0,
+      "sort_tiebreak": 3,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_f61f4a97-c602-5c72-a511-816ca16a7ec4",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 4
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Tiktaalik and the transition toward tetrapods",
+      "enhanced_time": "c. 375 million years ago",
+      "enhanced_description": "Tiktaalik was a lobe-finned fish with anatomical features resembling those of early tetrapods. It provides evidence relevant to the transition between fish and four-limbed vertebrates.",
+      "sort_years_ago": 375000000.0,
+      "sort_tiebreak": 4,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Do not call it the first walking land animal; the saved figure caption overstates colonization.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_1adb2973-5d2b-5149-9915-ccd8bc939378",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 5
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Ferns in the fossil record",
+      "enhanced_time": "c. 360 million years ago",
+      "enhanced_description": "Ferns appear in the fossil record around 360 million years ago, during the late Devonian.",
+      "sort_years_ago": 360000000.0,
+      "sort_tiebreak": 5,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_3b0aa5c2-e576-5d35-bbdb-66d9be9eb1d9",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 6
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Carboniferous rainforest collapse",
+      "enhanced_time": "c. 305 million years ago",
+      "enhanced_description": "The Carboniferous rainforest collapse disrupted ecosystems and was accompanied by an extinction event. It helped reshape communities of land vertebrates and plants.",
+      "sort_years_ago": 305000000.0,
+      "sort_tiebreak": 6,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_7c38b06b-f4af-5a0e-bab4-1ade10c04222",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 7
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Permian–Triassic mass extinction",
+      "enhanced_time": "c. 251.9–251.4 million years ago",
+      "enhanced_description": "The Permian–Triassic extinction eliminated a very large proportion of marine species and severely disrupted life on Earth. Recovery unfolded over millions of years.",
+      "sort_years_ago": 251900000.0,
+      "sort_tiebreak": 7,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Retain source interval; omit its exact percentage and comparative claim about terrestrial impact.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_a6a09012-3d14-5657-9e7b-9282f8d0015e",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 8
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early ichthyosaurs",
+      "enhanced_time": "c. 245 million years ago",
+      "enhanced_description": "Ichthyosaurs appear in the fossil record during the Triassic, around 245 million years ago.",
+      "sort_years_ago": 245000000.0,
+      "sort_tiebreak": 8,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_7ec5501c-6a83-53ba-a897-c4b5f3bea665",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 9
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Archaeopteryx in the fossil record",
+      "enhanced_time": "c. 155 million years ago",
+      "enhanced_description": "Archaeopteryx appears in the fossil record during the Jurassic. Its relationship to the ancestry of birds remains a subject of interpretation.",
+      "sort_years_ago": 155000000.0,
+      "sort_tiebreak": 9,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Do not assert direct ancestry or merge with nineteenth-century discovery events.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_e1909ae3-360a-5d5d-8a2c-7518889f6cb5",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 10
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Rise of flowering plants",
+      "enhanced_time": "c. 135 million years ago",
+      "enhanced_description": "Flowering plants diversified during the Cretaceous. Some developed structures that attracted animals to transfer pollen, while others were pollinated by wind or water.",
+      "sort_years_ago": 135000000.0,
+      "sort_tiebreak": 10,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Caption must distinguish the depicted species or fossil from the entire evolutionary transition.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_cf082f20-5777-5be3-8f07-9b96050797a4",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 11
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Tyrannosaurus in western North America",
+      "enhanced_time": "c. 68–66 million years ago",
+      "enhanced_description": "Tyrannosaurus lived in western North America near the end of the Cretaceous, around 68–66 million years ago.",
+      "sort_years_ago": 68000000.0,
+      "sort_tiebreak": 11,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_a6a586f7-6eae-51e2-b51d-268b6165473c",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 12
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Cretaceous–Paleogene mass extinction",
+      "enhanced_time": "c. 66 million years ago",
+      "enhanced_description": "A mass extinction eliminated non-avian dinosaurs and many other groups about 66 million years ago. Birds survived.",
+      "sort_years_ago": 66000000.0,
+      "sort_tiebreak": 12,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "No exact extinction percentage needed; asteroid link is supported by the saved figure caption.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_b9edb863-d16c-5497-8bdd-3d9dcd7b39a7",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 13
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early bats",
+      "enhanced_time": "c. 52 million years ago",
+      "enhanced_description": "Bats appear in the fossil record around 52 million years ago. Early bats included Onychonycteris.",
+      "sort_years_ago": 52000000.0,
+      "sort_tiebreak": 13,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_b717e701-ce2c-5837-b7b9-9a2f3e65fbdb",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 14
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Basilosaurus, an early giant whale",
+      "enhanced_time": "c. 40 million years ago",
+      "enhanced_description": "Basilosaurus appears in the fossil record around 40 million years ago as one of the early giant whales.",
+      "sort_years_ago": 40000000.0,
+      "sort_tiebreak": 14,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_d6960edd-1639-5d69-9ac2-07a513f80386",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 15
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Expansion of grasslands",
+      "enhanced_time": "c. 35 million years ago",
+      "enhanced_description": "Grasses diversified and grasslands began to expand around 35 million years ago.",
+      "sort_years_ago": 35000000.0,
+      "sort_tiebreak": 15,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Distinguish initial expansion from the source’s later establishment around 10 Ma.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_2206c36e-ffe9-575c-9541-c2a45ff0e6ba",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1375997461",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 16
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Australopithecus",
+      "enhanced_time": "c. 4 million years ago",
+      "enhanced_description": "Australopithecus was present around four million years ago, forming part of the early history of hominins.",
+      "sort_years_ago": 4000000.0,
+      "sort_tiebreak": 16,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1375997461"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_ea3d3b85-a6f5-5798-8aa2-7afcbf084a3b",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 17
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Tools and exchange at Olorgesailie",
+      "enhanced_time": "c. 320,000–305,000 years ago",
+      "enhanced_description": "Populations at Olorgesailie in southern Kenya developed new toolmaking techniques and participated in long-distance exchange.",
+      "sort_years_ago": 320000,
+      "sort_tiebreak": 17,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_c5d3e784-4ec4-5abc-a032-1ba5af77ea5a",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 18
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early Homo sapiens at Jebel Irhoud",
+      "enhanced_time": "c. 315,000 years ago",
+      "enhanced_description": "Jebel Irhoud in Morocco provides evidence associated with early Homo sapiens around 315,000 years ago.",
+      "sort_years_ago": 315000,
+      "sort_tiebreak": 18,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "A dated occurrence, not an exact species-origin date.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_bc94203b-6ab2-5c16-b589-86a789bc9a70",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 19
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early Homo sapiens at Omo Kibish",
+      "enhanced_time": "Before c. 233,000 years ago",
+      "enhanced_description": "The Omo I fossils in Ethiopia are older than an overlying volcanic ash deposit dated to approximately 233,000 years ago, with an uncertainty of about 22,000 years.",
+      "sort_years_ago": 233000,
+      "sort_tiebreak": 19,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Navigation at 233,000 years is a proxy, not the fossil’s exact age; ±22,000-year ash-date uncertainty remains in description.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_a48cd388-ef4f-5baf-a2ef-159913b9421e",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 20
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Toba supereruption",
+      "enhanced_time": "c. 75,000 years ago",
+      "enhanced_description": "The Toba supervolcano erupted around 75,000 years ago. A proposed link to a severe human genetic bottleneck remains doubtful in the saved source.",
+      "sort_years_ago": 75000,
+      "sort_tiebreak": 20,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Use saved prehistory qualifier; do not carry forward the life timeline’s unqualified bottleneck assertion.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_54b84a3d-4681-5c1f-b8cd-c3c7e1bf0ec6",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 21
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Engraved patterns at Blombos Cave",
+      "enhanced_time": "c. 70,000 years ago",
+      "enhanced_description": "Stones from Blombos Cave in South Africa bear grid or cross-hatched engravings, providing evidence of early abstract or symbolic expression.",
+      "sort_years_ago": 70000,
+      "sort_tiebreak": 21,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Omit absolute earliest-art superlative.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_6687f85f-1f87-5aa7-97a4-2a81bb7a3d3c",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 22
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early occupation at Madjedbebe",
+      "enhanced_time": "c. 65,000–50,000 years ago",
+      "enhanced_description": "Madjedbebe preserves evidence of early human occupation in Australia, dated to roughly 65,000–50,000 years ago.",
+      "sort_years_ago": 65000,
+      "sort_tiebreak": 22,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_846d626e-3058-5ac5-91ce-700218abf21c",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 23
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Figurative painting at Leang Karampuang",
+      "enhanced_time": "At least 51,200 years ago",
+      "enhanced_description": "A cave painting at Leang Karampuang in Sulawesi depicts human-like figures interacting with a pig. Dating of overlying carbonate deposits gives it a minimum age of 51,200 years.",
+      "sort_years_ago": 51200,
+      "sort_tiebreak": 23,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Minimum age, not an exact painting date; avoid global oldest claim.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_0b4fd19c-a473-5ce1-9dca-813161298f85",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 24
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Paleolithic flutes in Germany",
+      "enhanced_time": "c. 42,000 years ago",
+      "enhanced_description": "Flutes from Paleolithic Germany provide evidence of music-making around 42,000 years ago.",
+      "sort_years_ago": 42000,
+      "sort_tiebreak": 24,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_2014066b-a561-58f6-a261-92864bf0f282",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 25
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Lion-man figurine",
+      "enhanced_time": "c. 40,000–35,000 years ago",
+      "enhanced_description": "The Lion-man figurine combines human and animal features. It dates to the Aurignacian, around 40,000–35,000 years ago.",
+      "sort_years_ago": 40000,
+      "sort_tiebreak": 25,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Interval supplied by saved figure caption; omit contradicted oldest-figurative-art superlative.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_0539fd9d-de53-5fc9-96c6-70d9b863d169",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 26
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Human footprints at White Sands",
+      "enhanced_time": "c. 23,000–21,000 years ago",
+      "enhanced_description": "Footprints at what is now White Sands National Park in New Mexico preserve evidence of human presence around 23,000–21,000 years ago.",
+      "sort_years_ago": 23000,
+      "sort_tiebreak": 26,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_49380b11-7247-57c5-b3d6-2f1b600a5e4e",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 27
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early pottery at Xianren Cave",
+      "enhanced_time": "c. 20,000–19,000 years ago",
+      "enhanced_description": "Pottery from Xianren Cave in China provides evidence of ceramic use around 20,000–19,000 years ago.",
+      "sort_years_ago": 20000,
+      "sort_tiebreak": 27,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Do not equate earliest surviving evidence with exact invention.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_e552528a-ea5b-5935-866e-384c0e8d52e7",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 28
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "The Bonn–Oberkassel dog",
+      "enhanced_time": "c. 14,200 years ago",
+      "enhanced_description": "A dog was buried with two humans at Bonn–Oberkassel. The remains provide early evidence of domesticated dogs.",
+      "sort_years_ago": 14200,
+      "sort_tiebreak": 28,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_2733fc82-43b3-5904-b74e-459319de6808",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 29
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Younger Dryas cooling",
+      "enhanced_time": "c. 12,900–11,700 years ago",
+      "enhanced_description": "The Younger Dryas was a period of abrupt cooling and a return toward glacial conditions near the end of the last ice age.",
+      "sort_years_ago": 12900,
+      "sort_tiebreak": 29,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_7524da33-3f94-5f58-92be-8aaaf6c391de",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 30
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Beginning of the Holocene",
+      "enhanced_time": "c. 9700 BCE",
+      "enhanced_description": "An abrupt warming around 9700 BCE marks the beginning of the Holocene geological epoch.",
+      "sort_years_ago": 11649,
+      "sort_tiebreak": 30,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_c994b90d-cb63-5f45-9344-ebacc3ea55fc",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 31
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early settlement at Jericho",
+      "enhanced_time": "c. 9600 BCE",
+      "enhanced_description": "Evidence at Jericho records settlement around 9600 BCE. Natufian hunter-gatherers used the area and left stone tools behind.",
+      "sort_years_ago": 11549,
+      "sort_tiebreak": 31,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_317ca17b-004b-5b39-bc7b-a398d5057d1f",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 32
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Ceremonial structures at Göbekli Tepe",
+      "enhanced_time": "c. 9000 BCE",
+      "enhanced_description": "Ceremonial structures were being built at Göbekli Tepe in southern Turkey around 9000 BCE.",
+      "sort_years_ago": 10949,
+      "sort_tiebreak": 32,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Omit oldest religion/site claim and do not claim this is the site’s first occupation.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_9edae061-1c74-5c2c-93ab-5b598d040f43",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 33
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Settlement at Çatalhöyük",
+      "enhanced_time": "c. 7500 BCE",
+      "enhanced_description": "The settlement at Çatalhöyük in Anatolia began around 7500 BCE.",
+      "sort_years_ago": 9449,
+      "sort_tiebreak": 33,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_9735dee4-785e-5a75-aa43-557dbc59925b",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 34
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Domestication of maize",
+      "enhanced_time": "c. 7000 BCE",
+      "enhanced_description": "People in southern Mexico domesticated maize from teosinte. It became a major staple of Mesoamerica.",
+      "sort_years_ago": 8949,
+      "sort_tiebreak": 34,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Approximate source date; do not infer one instantaneous domestication event.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_a5c6752a-1ffb-5349-baa0-c32f8f81e15f",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 35
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early agriculture at Kuk Swamp",
+      "enhanced_time": "c. 7000 BCE",
+      "enhanced_description": "Kuk Swamp in the highlands of Papua New Guinea became a centre of early agriculture. Farmers modified wet ground with drainage channels.",
+      "sort_years_ago": 8949,
+      "sort_tiebreak": 35,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Omit the compound row’s crop-by-crop domestication and cassowary chronology.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_cbb426c6-4789-545d-b48f-fa4d58fca3e3",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 36
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Farming and herding at Mehrgarh",
+      "enhanced_time": "c. 7000 BCE",
+      "enhanced_description": "Mehrgarh in present-day Pakistan provides early evidence of farming and herding in South Asia.",
+      "sort_years_ago": 8949,
+      "sort_tiebreak": 36,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_6fbab4e5-5140-55d8-8770-aa204f61aebd",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 37
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Copper smelting at Pločnik and Belovode",
+      "enhanced_time": "c. 5500 BCE",
+      "enhanced_description": "Evidence from Pločnik and Belovode records copper smelting around 5500 BCE.",
+      "sort_years_ago": 7449,
+      "sort_tiebreak": 37,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_4ebe00e1-7798-5478-ab25-bd26f700657a",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 38
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Gold at Varna Necropolis",
+      "enhanced_time": "c. 4500 BCE",
+      "enhanced_description": "A gold hoard was deposited at Varna Necropolis in present-day Bulgaria around 4500 BCE.",
+      "sort_years_ago": 6449,
+      "sort_tiebreak": 38,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Omit global oldest-hoard superlative.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_3c5b522e-b70d-59e3-a874-dfe5f5b1db20",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 39
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Construction of Newgrange",
+      "enhanced_time": "c. 3300 BCE",
+      "enhanced_description": "Newgrange was built in Ireland around 3300 BCE.",
+      "sort_years_ago": 5249,
+      "sort_tiebreak": 39,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Select Newgrange only from the compound Newgrange/Ness of Brodgar source row.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
+      ],
+      "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_7e2de068-cac3-5c7c-a20c-12f735744e6f",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1380967451",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+          "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+          "record_index": 40
+        }
+      ],
+      "source_lineage": "revision_or_retrieval_bound_source_collection",
+      "name": "Early Sumerian cuneiform",
+      "enhanced_time": "c. 3200 BCE",
+      "enhanced_description": "Sumerian cuneiform writing was in use around 3200 BCE, creating an enduring written record in Mesopotamia.",
+      "sort_years_ago": 5149,
+      "sort_tiebreak": 40,
+      "sort_anchor_year": 1950,
+      "navigation_only": true,
+      "uncertainty": "Do not present a universal worldwide end of prehistory.",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1380967451"
       ],
       "article_reference_status": "source_timeline"
     }
