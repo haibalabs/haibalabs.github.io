@@ -61,7 +61,9 @@
     max-width: 100%;
     background: none;
 }
-.event-image img { width: auto; max-width: 100%; border-radius: 8px; object-fit: cover; }
+/* diagrams and maps are often transparent and drawn in black, as for Wikipedia's white page: a white
+   ground keeps them readable on the dark theme, and a photo covers it */
+.event-image img { width: auto; max-width: 100%; border-radius: 8px; object-fit: cover; background: #fff; }
 .event-image.loading img { min-width: 280px; }
 
 .event:hover .event-header { color: var(--accent); }
