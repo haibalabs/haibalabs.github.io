@@ -64,7 +64,7 @@ export class PanelManager {
         this.mapPanel.classList.remove('top-panel');
         if (!this.infoPanel.classList.contains('open')) {
             this.timelineWrapper.classList.remove('panel-open');
-            this.onPanelStateChange?.(); // Trigger re-render when all panels close
+            this.layoutTimeline();
         }
         else {
             this.bringInfoToFront();
@@ -76,7 +76,7 @@ export class PanelManager {
         this.infoPanel.classList.remove('top-panel');
         if (!this.mapPanel.classList.contains('open')) {
             this.timelineWrapper.classList.remove('panel-open');
-            this.onPanelStateChange?.(); // Trigger re-render when all panels close
+            this.layoutTimeline();
         }
         else {
             this.bringMapToFront();
@@ -88,7 +88,7 @@ export class PanelManager {
         this.mapPanel.classList.add('top-panel');
         this.infoPanel.classList.remove('top-panel');
         this.timelineWrapper.classList.add('panel-open');
-        this.onPanelStateChange?.(); // Trigger re-render when panel opens
+        this.layoutTimeline();
     }
 
     openInfoPanel() {
@@ -96,7 +96,18 @@ export class PanelManager {
         this.infoPanel.classList.add('top-panel');
         this.mapPanel.classList.remove('top-panel');
         this.timelineWrapper.classList.add('panel-open');
-        this.onPanelStateChange?.(); // Trigger re-render when panel opens
+        this.layoutTimeline();
+    }
+
+    // Re-lays out the timeline once its width has finished animating (base.css, .timeline-wrapper):
+    // cards measured mid-animation get the wrong heights, which left the screen empty after a
+    // drawer closed on a phone. A drawer that covers the whole timeline (on phones) leaves it
+    // with no width, and nothing to lay out until it closes.
+    layoutTimeline() {
+        clearTimeout(this.layoutTimer);
+        this.layoutTimer = setTimeout(() => {
+            if (this.timelineWrapper.clientWidth > 0) this.onPanelStateChange?.();
+        }, 300);
     }
 
     bringMapToFront() {
