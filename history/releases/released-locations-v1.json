@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_location_sidecar",
   "source": {
-    "events_sha256": "c425d62ac9e6af095c4bc21fe1598a3d98ef276079cdcb5fa519495c3d78ab8a",
+    "events_sha256": "d12b4f7a658d3cf131ef5e7d43c255ec3bc66c87727f8f950d0cb5ad67eb4f79",
     "snapshot": {
       "events_sha256": "6b7234e304f96654cc132bd82a3a413f918acd9df512f3f064c6e6255fc59669",
       "places_sha256": "3ae455e2da05dc41a63cc21977b0c5a97a36fd14407ceadb345f3cc0877c5c09",
@@ -15,7 +15,9 @@
         "tally_sha256": "777b6abbdd8b5cc1609962e1878df713ab2a4aa815eb414b828da0fae13196f2",
         "overlay_sha256": "5095e063e17871eea317c4af519a680e3cd80dea8837ddbe4ee3663bdcc9523e"
       }
-    ]
+    ],
+    "recent2026_location_review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+    "recent2026_prior_sidecar_sha256": "f7d926f97023c5098702e6c2eda480481cf35a126e6ad1c404c92418fe54af2d"
   },
   "places": {
     "plc_00398907-b045-5b78-8375-e6eb2e5b13de": {
@@ -4508,6 +4510,2256 @@
         -3.1105555555556
       ],
       "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_1f3197be-ca04-5930-ab53-ec53ebd7398d": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        46.31316,
+        7.47914
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "6559506",
+        "label": "Crans-Montana",
+        "feature": "P.PPL",
+        "population": 10218,
+        "coordinates": [
+          46.31316,
+          7.47914
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_b91bb13b-8070-5a15-8f16-e393e944efc5": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        8,
+        -67
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q717",
+        "label": "Venezuela",
+        "description": "country in South America",
+        "coordinates": [
+          8,
+          -67
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "71a1aa962081c299808cf25ff62d9fef3e20f719e2c4e39c165ed9e24eee2f59"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Airstrikes across northern Venezuela; no finer place is written."
+    },
+    "plc_92e39b02-1b28-5bbe-a75e-28e2653e31f8": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        35.216667,
+        38.583333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q858",
+        "label": "Syria",
+        "description": "country in West Asia",
+        "coordinates": [
+          35.216667,
+          38.583333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "f1ea153c015430d8ca63bedb182242f0ba09a8ec601c94ba3e7bda0312b5a1fb"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Article title says northeastern Syria; the sentence names only the parties."
+    },
+    "plc_d5452e4d-a123-5287-a3a4-130e4fea701b": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        8.833333,
+        2.183333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q962",
+        "label": "Benin",
+        "description": "sovereign state in West Africa",
+        "coordinates": [
+          8.833333,
+          2.183333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "a1a2c89ed3e863eb26e9dbd3e6d6fa5ece7feb843f4f1d68a80bc1c69edacae8"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_0786f989-c35e-55c8-a388-0dccf3bd7c13": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        24.86,
+        67.01
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q8660",
+        "label": "Karachi",
+        "description": "provincial capital of Sindh, Pakistan",
+        "coordinates": [
+          24.86,
+          67.01
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "56b6e05da203106f2f7aa07cb186590e36d37d9f60ae95e041e19a0472ae94f1"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_dc2d1088-eeae-5a61-b9a1-e97587f79c12": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        35.216667,
+        38.583333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q858",
+        "label": "Syria",
+        "description": "country in West Asia",
+        "coordinates": [
+          35.216667,
+          38.583333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "f1ea153c015430d8ca63bedb182242f0ba09a8ec601c94ba3e7bda0312b5a1fb"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Territory held by the SDF; no finer place is written."
+    },
+    "plc_336b91ab-ac40-5c37-9049-e61bdb83142f": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        -6.75,
+        107.5
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q3724",
+        "label": "West Java",
+        "description": "province in Indonesia",
+        "coordinates": [
+          -6.75,
+          107.5
+        ],
+        "found_by": "cached_label",
+        "response_sha256": "6c09cf42ba6d7a0dcf57d1cb23e49016d5b2622fc7fd752344a84dd0f515fe2d"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "Article title names West Bandung; not used."
+    },
+    "plc_9fd3123c-6561-5888-a214-b2e44f93badc": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        -2.88,
+        23.656111
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q974",
+        "label": "Democratic Republic of the Congo",
+        "description": "country in Central Africa",
+        "coordinates": [
+          -2.88,
+          23.656111
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "0b47b63897b9bf3cf129f7eba57deb16ed629d0b3d17c27daff94d94c227e766"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "The mine is at Rubaya; the country is also written."
+    },
+    "plc_0ca29f66-7055-56c5-98f1-54a365fb11ae": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        13.575,
+        39.0875
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q200127",
+        "label": "Tigray Region",
+        "description": "bang vùng của Ethiopia",
+        "coordinates": [
+          13.575,
+          39.0875
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "b3a74cdda2934400f749e838829e2dc5bfab32d99b2c911a23cb7429443b24b2"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_7e47da63-a630-5097-9e7d-3ca541b52d04": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        30.12,
+        67.01
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q163239",
+        "label": "Balochistan",
+        "description": "province of Islamic Republic of Pakistan",
+        "coordinates": [
+          30.12,
+          67.01
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "c59725cf4417963718d1ab9111241f98631ef115d4cefe781ddc31b40ab19da2"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_7a5cfa5e-b619-566a-8969-776263f8cefc": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        9,
+        4.5
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q464953",
+        "label": "Kwara State",
+        "description": "state in Nigeria",
+        "coordinates": [
+          9,
+          4.5
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "973a2beab3a53f7466a1df00a9f12b587f7c91aceaae3ed3db62c7d0cb8c26b9"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_ac9dc1cd-62c8-5132-8d56-c24de8566ebc": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        33.698889,
+        73.036944
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1362",
+        "label": "Islamabad",
+        "description": "capital city of Pakistan",
+        "coordinates": [
+          33.698889,
+          73.036944
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "50e171b379129b7c545f5c8fa946925fe962bf046d5aaf80e61b285223b85a57"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_a99cf67b-4e72-5f2e-b503-cffc7ab4f231": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        22.8,
+        83
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q668",
+        "label": "India",
+        "description": "country in South Asia",
+        "coordinates": [
+          22.8,
+          83
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "0da7d8713118df271841816a9ad63eef0e016c20eaf8bd9ab162930225c52d9e"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Tournament held in two countries."
+    },
+    "plc_4c71a775-cbca-54d0-9803-f2eb183cc884": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        7,
+        81
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q854",
+        "label": "Sri Lanka",
+        "description": "island country in South Asia",
+        "coordinates": [
+          7,
+          81
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "0d972dd083be3ce8252b0df14bd6092273678d995d9e5f525e4930dfba20396b"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Tournament held in two countries."
+    },
+    "plc_36d62011-326d-5255-9fdc-92eb6e96287c": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        19,
+        -72.8
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q790",
+        "label": "Haiti",
+        "description": "country in the Caribbean Sea",
+        "coordinates": [
+          19,
+          -72.8
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "cd7cb0b069c985dc6d164b2bddedec9e3d117b2cec26dbc8a3cc3604c3ca4ca7"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_3cc5bd23-3e5e-5f70-8e40-9ebc4f23c196": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        35,
+        136
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q17",
+        "label": "Japan",
+        "description": "island country in East Asia",
+        "coordinates": [
+          35,
+          136
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "adb8060622846009f98478d14afbaa73ebfeb0a4a38bd60534f33987c49e6583"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_ed924a37-0591-5d43-a3c4-3d3495642073": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        14,
+        101
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q869",
+        "label": "Thailand",
+        "description": "country in Southeast Asia",
+        "coordinates": [
+          14,
+          101
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "56b6e05da203106f2f7aa07cb186590e36d37d9f60ae95e041e19a0472ae94f1"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_3ebf862f-2607-5357-a5a5-239828f7ec4d": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        38.7,
+        -9.183333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q45",
+        "label": "Portugal",
+        "description": "country in Southwestern Europe",
+        "coordinates": [
+          38.7,
+          -9.183333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "8448ab6dca3d0ea764cabaf948f38d5650b36d199a31f50d9ba8457786d946a7"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_daa6095a-edab-5d23-909b-e9bb6b930fa3": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        55.13027,
+        -120.99415
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "6170118",
+        "label": "Tumbler Ridge",
+        "feature": "P.PPL",
+        "population": 2454,
+        "coordinates": [
+          55.13027,
+          -120.99415
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_0c312d76-0216-5ccf-ae25-5f478587783a": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        18.2,
+        104.1
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q819",
+        "label": "Laos",
+        "description": "country in Southeast Asia",
+        "coordinates": [
+          18.2,
+          104.1
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "bc1101bdf71472a5b3a45efd0b6074937d86d35ff6194fe7ffc2255c3508957c"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_49565a5f-60eb-5f9c-94d2-f854f9a18790": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        19.94567,
+        -103.75932
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "3982461",
+        "label": "Tapalpa",
+        "feature": "P.PPLA2",
+        "population": 5782,
+        "coordinates": [
+          19.94567,
+          -103.75932
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_37ae43d3-4879-5740-bef2-12702fa44a1f": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        4,
+        -73.25
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q739",
+        "label": "Colombia",
+        "description": "country in South America",
+        "coordinates": [
+          4,
+          -73.25
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "ed6a10ed0f2f9e00137b5f4391bbe7b98e0cd53938a1790e377b76c9acd2019d"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_36849d9c-a365-5e82-b4ae-046a357617d2": {
+      "status": "resolved",
+      "precision": "site",
+      "coordinates": [
+        29.245,
+        50.31
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q913355",
+        "label": "Kharg Island",
+        "description": "island in Bushehr County, Iran",
+        "coordinates": [
+          29.245,
+          50.31
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "973a2beab3a53f7466a1df00a9f12b587f7c91aceaae3ed3db62c7d0cb8c26b9"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_1a1add5b-eb54-58fa-b02d-edfe8b19999f": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        48,
+        68
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q232",
+        "label": "Kazakhstan",
+        "description": "sovereign state in Eastern Europe and Central Asia",
+        "coordinates": [
+          48,
+          68
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "0d6fbc9adf2b49e7f769b76c7ad03924e1cd405f1036e98fbfea9bfea695c808"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_935f3603-478c-50d6-8dea-acfa05b6b438": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        40,
+        127
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q423",
+        "label": "North Korea",
+        "description": "sovereign state in East Asia",
+        "coordinates": [
+          40,
+          127
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "b6997fd02bfa51e34b3bd51a3c982fcbf8bc812339cbd3f2607116506d8961b8"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_a5886a43-ca77-533e-b428-36b5a71415ad": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        16,
+        108
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q881",
+        "label": "Vietnam",
+        "description": "country in Southeast Asia",
+        "coordinates": [
+          16,
+          108
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "4556e79d7a089fd9c8bbff2021f6a4bc463b79ceafcec20bb297286ef4cef8c8"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_e6ad2fcf-ff68-502c-ae3d-274ae7f85a61": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        -0.75,
+        15.383331
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q971",
+        "label": "Republic of the Congo",
+        "description": "country in Central Africa, capital Brazzaville",
+        "coordinates": [
+          -0.75,
+          15.383331
+        ],
+        "found_by": "cached_label",
+        "response_sha256": "192efe3fe73946e768439f00b12b75ff66ce82322e9c47763f3f5822435faf25"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_9eb682cb-8d48-5bb7-95bb-b570d12d8d79": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        -0.19337,
+        -74.78189
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "3671437",
+        "label": "Puerto Leguízamo",
+        "feature": "P.PPLA2",
+        "population": 20045,
+        "coordinates": [
+          -0.19337,
+          -74.78189
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "near",
+      "semantic_limit": "nearby_place_reference_not_incident_point",
+      "uncertainty": "The crash was near the town."
+    },
+    "plc_3eab2313-0417-5e0f-8da9-1dc703d3b8a8": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        56,
+        10
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q35",
+        "label": "Denmark",
+        "description": "country in Northern Europe",
+        "coordinates": [
+          56,
+          10
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "c3cbe3080d0a1e4228558143bce84a009525a537e90cc4a3b2e3f79ebbe1e465"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_0ae38e4c-5939-55a3-97ef-c753f3fee73e": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        32,
+        53
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q794",
+        "label": "Iran",
+        "description": "country in Western Asia",
+        "coordinates": [
+          32,
+          53
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "62009f190478ce688213800131ca26a641c5cba423ce7b5bb63d1285a273e085"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "A letter from the Iranian foreign ministry; the strait is its subject, not its place."
+    },
+    "plc_df50bcf3-54b2-5d17-8ac8-85760babc24f": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        16,
+        108
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q881",
+        "label": "Vietnam",
+        "description": "country in Southeast Asia",
+        "coordinates": [
+          16,
+          108
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "4556e79d7a089fd9c8bbff2021f6a4bc463b79ceafcec20bb297286ef4cef8c8"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_cb6929b7-1d94-5ff1-9d2f-252cd000c7e2": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        33.833333,
+        35.766667
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q822",
+        "label": "Lebanon",
+        "description": "country in West Asia",
+        "coordinates": [
+          33.833333,
+          35.766667
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "2c4c23622b15df012ad73bfdbd7c105f3568c60d85bba14f181e9e6db63cbb09"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Airstrikes across Lebanon."
+    },
+    "plc_fc57cbce-6248-5ff9-8dda-535c2945804e": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        11.8,
+        42.433333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q977",
+        "label": "Djibouti",
+        "description": "sovereign state in Africa",
+        "coordinates": [
+          11.8,
+          42.433333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "1bd99fab95bcc603a473c4d299cf7e8d33c1a757040b74c1ac27ed20a7162071"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_2bda7ec0-030e-5ca2-a9c8-77c9eb31db70": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        32.715,
+        -117.1625
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q16552",
+        "label": "San Diego",
+        "description": "seat of San Diego County, California, United States; second-largest city in California",
+        "coordinates": [
+          32.715,
+          -117.1625
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "9176967e2c861d17029e1fe7df76ba42c6880fd3ade11b75af47895d16726a36"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "near",
+      "semantic_limit": "nearby_place_reference_not_incident_point",
+      "uncertainty": "Splashdown in the Pacific near San Diego."
+    },
+    "plc_bb75ab92-e23c-5315-bb6b-9e3166666313": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        47,
+        19
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q28",
+        "label": "Hungary",
+        "description": "country in Central Europe",
+        "coordinates": [
+          47,
+          19
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "ef1ed8d1bfa03739ddf24d7ef46b53360c2703d74bf88a468092efc8aee7b089"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_cddbfe73-b43e-5ebf-97da-68080c10da82": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        8.833333,
+        2.183333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q962",
+        "label": "Benin",
+        "description": "sovereign state in West Africa",
+        "coordinates": [
+          8.833333,
+          2.183333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "a1a2c89ed3e863eb26e9dbd3e6d6fa5ece7feb843f4f1d68a80bc1c69edacae8"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_ea24a836-f8fa-56f0-a114-0e7faa40f9ba": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        36.39559,
+        -97.87839
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "4535961",
+        "label": "Enid",
+        "feature": "P.PPLA2",
+        "population": 51776,
+        "coordinates": [
+          36.39559,
+          -97.87839
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "Vance Air Force Base is at Enid."
+    },
+    "plc_489e98d4-5c15-5f8c-a0f2-3810ce6038ae": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        24.4,
+        54.3
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q878",
+        "label": "United Arab Emirates",
+        "description": "country in Western Asia",
+        "coordinates": [
+          24.4,
+          54.3
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "4556e79d7a089fd9c8bbff2021f6a4bc463b79ceafcec20bb297286ef4cef8c8"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_968d4cd2-3a28-5801-8167-73fd469879b3": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        28.1675,
+        113.6375
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1025444",
+        "label": "Liuyang",
+        "description": "county-level city in China",
+        "coordinates": [
+          28.1675,
+          113.6375
+        ],
+        "found_by": "cached_label",
+        "response_sha256": "bb3e9456b73005aac1d335c2183a66ff47b8f055278ef2485eefbdc173caf00e"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_af07bd54-9615-5f69-8484-6429c7e57bdf": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        15.60308,
+        32.52654
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1963",
+        "label": "Khartoum",
+        "description": "capital city of Sudan",
+        "coordinates": [
+          15.60308,
+          32.52654
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "6c0e1fe2ad5205f3a5c7351843a3b769919bd58d4ee40d66bc9e07af8681e8a3"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_02f8c595-aab3-5908-b8fb-30735080444c": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        15.64925,
+        32.53458
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "379251",
+        "label": "Khartoum North",
+        "feature": "P.PPL",
+        "population": 1012211,
+        "coordinates": [
+          15.64925,
+          32.53458
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_b9152b06-cc6b-5f62-b5a4-b0676d3506aa": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        15.683517,
+        32.462887
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q180921",
+        "label": "Omdurman",
+        "description": "city in Sudan",
+        "coordinates": [
+          15.683517,
+          32.462887
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "1f0e9fc076b7553adbfa2913948a48cccb4891b9e7f2fd1e9df627aa6f7aacff"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_76559091-704e-515c-adb4-6ec2820a4122": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        39.828175,
+        -98.5795
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q30",
+        "label": "United States",
+        "description": "country located primarily in North America",
+        "coordinates": [
+          39.828175,
+          -98.5795
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "9372aea09dd8b5b7b796e383ef66738be722e8053fd67779bcb1a8d453e90dca"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "A United States indictment; the court is not written."
+    },
+    "plc_ae634035-863e-5019-878c-7abc5f047bb3": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        37.873333,
+        112.564444
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q46913",
+        "label": "Shanxi",
+        "description": "province of central China with its capital at Taoyuan, the supposed original home of the prehistoric Huaxia",
+        "coordinates": [
+          37.873333,
+          112.564444
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "62b143a2d26313a0bed94153617addd76f7c26b0194ad6fae0575b4c76ad682a"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "The Liushenyu mine is not in the cache; placed at its province."
+    },
+    "plc_9e8c6af6-8cb3-5d4e-9999-603a64bac27f": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        10,
+        -11
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1006",
+        "label": "Guinea",
+        "description": "sovereign state in West Africa",
+        "coordinates": [
+          10,
+          -11
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "b28be2d0280ac9f78356166a4d7743d37bdc5c6b84a7ecde8b9e73b22df896ac"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_1ab4a9c8-948b-57c0-93ef-053cd1019a60": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        40.514722,
+        19.418333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q8075603",
+        "label": "Zvërnec",
+        "description": "island village in Vlorë, Albania",
+        "coordinates": [
+          40.514722,
+          19.418333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "973a2beab3a53f7466a1df00a9f12b587f7c91aceaae3ed3db62c7d0cb8c26b9"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "began_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_25d0a95c-4e1b-5a8b-8fd9-7f96ad62a19a": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        41,
+        20
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q222",
+        "label": "Albania",
+        "description": "country in southeastern Europe",
+        "coordinates": [
+          41,
+          20
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "d82062c314f91be21d5e7671d3edfe82a2e1bec6b0dbbbdff76f8872d2ae8e8f"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": ""
+    },
+    "plc_35471c46-cf87-5b9a-86fc-3abffe1039e6": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        40.383333,
+        44.95
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q399",
+        "label": "Armenia",
+        "description": "sovereign state in the South Caucasus region of Eurasia",
+        "coordinates": [
+          40.383333,
+          44.95
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "9835948bbc46a9284500905a16dba9d2b5df1ec324119a65788b43a4451981eb"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_946eec2e-fb35-5390-b101-96417a920248": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        42.55,
+        20.833333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1246",
+        "label": "Kosovo",
+        "description": "country in southeastern Europe",
+        "coordinates": [
+          42.55,
+          20.833333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "2a8a2199314f6cd7a8cd0c0eb7f8d5a961b9b5fffb632d20ac7592674491a84f"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_ec9bb8d8-803c-5333-a81c-325f6f1998a6": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        -9.4,
+        -76
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q419",
+        "label": "Peru",
+        "description": "sovereign state in South America",
+        "coordinates": [
+          -9.4,
+          -76
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "0b5280d92aa382c3bb6028ed350c7a1bfd51825ab807b407af399ad7785538cb"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_96fc5a4f-60d2-5948-8ef0-2669e2ac9ff1": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        12,
+        123
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q928",
+        "label": "Philippines",
+        "description": "archipelagic country in Southeast Asia",
+        "coordinates": [
+          12,
+          123
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "58f49db7015cb3e00de19ed7e862c5a7af331382607762b7c33e8daf387e9e3a"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Article title names Mindanao; not used."
+    },
+    "plc_14ad2c7f-f84a-54b4-919e-18241c842996": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        41.3825,
+        2.176944
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1492",
+        "label": "Barcelona",
+        "description": "city in Catalonia, Spain",
+        "coordinates": [
+          41.3825,
+          2.176944
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "72bb0679558703e1f1dd67a426bb85d9508f61edc4694972af93408bf1c59158"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "At the Sagrada Família."
+    },
+    "plc_ca40e85e-1932-58ee-b593-a7dfc3304981": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        -22.911111,
+        -43.205556
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q8678",
+        "label": "Rio de Janeiro",
+        "description": "city of Rio de Janeiro state, Brazil",
+        "coordinates": [
+          -22.911111,
+          -43.205556
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "56b6e05da203106f2f7aa07cb186590e36d37d9f60ae95e041e19a0472ae94f1"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_ed3a6183-9fab-52aa-89cd-e18708a27b02": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        54.6,
+        -2
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q145",
+        "label": "United Kingdom",
+        "description": "island country in north-west Europe",
+        "coordinates": [
+          54.6,
+          -2
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "13e70dcc74c619b4e5671531b8f370f2fd172520185e7b1c2cf7596d3b1f2b02"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_528287f1-0f68-5a78-bbcc-73f7d452ddb2": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        8,
+        -67
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q717",
+        "label": "Venezuela",
+        "description": "country in South America",
+        "coordinates": [
+          8,
+          -67
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "71a1aa962081c299808cf25ff62d9fef3e20f719e2c4e39c165ed9e24eee2f59"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Earthquakes in western Venezuela; no finer place is written."
+    },
+    "plc_404d3cea-c7c2-5ae2-af92-2c0c9e83c36c": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        28,
+        1
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q262",
+        "label": "Algeria",
+        "description": "country in North Africa",
+        "coordinates": [
+          28,
+          1
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "d4aef8466430d54621b358997199ee07017e0ec38563178993fb6f8e53c94b45"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_47e9f10e-8555-5263-a6e3-079b66cc6524": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        31.45,
+        34.4
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q39760",
+        "label": "Gaza Strip",
+        "description": "self-governing Palestinian territory next to Egypt and Israel",
+        "coordinates": [
+          31.45,
+          34.4
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "9835948bbc46a9284500905a16dba9d2b5df1ec324119a65788b43a4451981eb"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "Hamas civil administration of the Gaza Strip."
+    },
+    "plc_ef22d408-00d7-5ceb-9d82-a5215d4de0d7": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        0.316667,
+        6.6
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1039",
+        "label": "São Tomé and Príncipe",
+        "description": "island sovereign state in Africa",
+        "coordinates": [
+          0.316667,
+          6.6
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "7afc9d655c812b19cd7a11aed0e308e452c087cdc5a0b07cfde9a636c020557c"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_d196e612-386a-51d1-b99e-90808207cf1b": {
+      "status": "resolved",
+      "precision": "site",
+      "coordinates": [
+        12.583333,
+        43.333333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q83318",
+        "label": "Bab-el-Mandeb",
+        "description": "strait located between Yemen on the Arabian Peninsula, and Djibouti and Eritrea in the Horn of Africa",
+        "coordinates": [
+          12.583333,
+          43.333333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "973a2beab3a53f7466a1df00a9f12b587f7c91aceaae3ed3db62c7d0cb8c26b9"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "The blockade is on the strait."
+    },
+    "plc_8eac3d15-b7ef-5b15-93c9-b56ed0c1cd30": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        32.789722,
+        130.741389
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q130308",
+        "label": "Kumamoto Prefecture",
+        "description": "prefecture of Japan",
+        "coordinates": [
+          32.789722,
+          130.741389
+        ],
+        "found_by": "cached_label",
+        "response_sha256": "5649d74f5388d2f684fd362baa58a548db13230bd90aaf9de22735c3330db00f"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_482f76a3-2ae4-5416-8c66-eb463aa3fb61": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        23.716667,
+        44.116667
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q851",
+        "label": "Saudi Arabia",
+        "description": "country in West Asia",
+        "coordinates": [
+          23.716667,
+          44.116667
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "0d972dd083be3ce8252b0df14bd6092273678d995d9e5f525e4930dfba20396b"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "A Saudi announcement; the Red Sea is its subject."
+    },
+    "plc_a1bff5e9-8586-5dcd-ac3f-dcb64f1ba4a0": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        35.886667,
+        -5.3
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q5823",
+        "label": "Ceuta",
+        "description": "Spanish autonomous city in northwestern Africa",
+        "coordinates": [
+          35.886667,
+          -5.3
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "c5d544040185a3189b4611143568f52325878d5a2591adffd8e4b52563ff5293"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_89207031-ea38-5275-8f45-b1f8a928d125": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        35.2825,
+        -2.9475
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q5831",
+        "label": "Melilla",
+        "description": "Spanish autonomous city in northwestern Africa",
+        "coordinates": [
+          35.2825,
+          -2.9475
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "18d8567e08504e6d5d83538da07298d29d64c2f9b665017d28c6cc7194275c51"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "also_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_5936afa7-ea70-55f2-8b40-81e5c711a344": {
+      "status": "resolved",
+      "precision": "site",
+      "coordinates": [
+        35.810556,
+        76.568056
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q180996",
+        "label": "Broad Peak",
+        "description": "12th highest mountain in the world",
+        "coordinates": [
+          35.810556,
+          76.568056
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "1f0e9fc076b7553adbfa2913948a48cccb4891b9e7f2fd1e9df627aa6f7aacff"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_ac7b1d9a-09cd-5f39-9ae4-74929c6d4670": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        29.875,
+        121.549167
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q42780",
+        "label": "Ningbo",
+        "description": "prefecture-level city in Zhejiang, China",
+        "coordinates": [
+          29.875,
+          121.549167
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "5d5130e0436bdb9917f8cade518753723be2415a43ae701eeab32c197654f324"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_1b8042a2-469a-508e-9944-dfe151861e37": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        4,
+        -73.25
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q739",
+        "label": "Colombia",
+        "description": "country in South America",
+        "coordinates": [
+          4,
+          -73.25
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "ed6a10ed0f2f9e00137b5f4391bbe7b98e0cd53938a1790e377b76c9acd2019d"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "The sentence names only the country."
+    },
+    "plc_6227b5d2-4a02-515b-a344-6c63bf780734": {
+      "status": "resolved",
+      "precision": "site",
+      "coordinates": [
+        -16.9,
+        28
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1047206",
+        "label": "Lake Kariba",
+        "description": "reservoir in Zimbabwe",
+        "coordinates": [
+          -16.9,
+          28
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "973a2beab3a53f7466a1df00a9f12b587f7c91aceaae3ed3db62c7d0cb8c26b9"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_4d214245-513b-58d8-94aa-b2623a9a5627": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        -8.715,
+        121.495556
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q148440",
+        "label": "Flores Island",
+        "description": "island in East Nusa Tenggara Province, Indonesia",
+        "coordinates": [
+          -8.715,
+          121.495556
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "aed13bd0aaf3087d82d216c71c877eb90e345cf7c45d5d15571c972e41e7e39c"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "near",
+      "semantic_limit": "nearby_place_reference_not_incident_point",
+      "uncertainty": "Offshore, off \"the island of Flores\"."
+    },
+    "plc_f1869bef-e26b-5804-8534-ee6d850dcb08": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        39.828175,
+        -98.5795
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q30",
+        "label": "United States",
+        "description": "country located primarily in North America",
+        "coordinates": [
+          39.828175,
+          -98.5795
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "9372aea09dd8b5b7b796e383ef66738be722e8053fd67779bcb1a8d453e90dca"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_34644867-4b2a-5a2a-97e7-58b58f72931a": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        28,
+        84
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q837",
+        "label": "Nepal",
+        "description": "country in South Asia",
+        "coordinates": [
+          28,
+          84
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "604cf47c1413ec6f4d253498b64795d8ee9f5f29ab5d2091975317004be414e7"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "At the border between the two; no finer place is written."
+    },
+    "plc_096d6349-cfca-511e-93d5-9254e0b9a937": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        31.705556,
+        86.940278
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q17269",
+        "label": "Tibet Autonomous Region",
+        "description": "autonomous region of China",
+        "coordinates": [
+          31.705556,
+          86.940278
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "8355ad21b5f092ea4b091c359e79e5d22403a7a756f0d012d5d6a9f116a4d201"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "At the border between the two; no finer place is written."
+    },
+    "plc_f00c3e43-bbd4-5c53-85f4-50bae02d23c7": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        65,
+        -19
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q189",
+        "label": "Iceland",
+        "description": "Nordic island country in the North Atlantic Ocean",
+        "coordinates": [
+          65,
+          -19
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "6d386446b7f341d07ffff65518bdaca3074e0a4e7283fa83735e857fbe2084a9"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_52966529-34ae-577b-9b6b-10e61f47aded": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        17,
+        10
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1032",
+        "label": "Niger",
+        "description": "sovereign state in western Africa",
+        "coordinates": [
+          17,
+          10
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "6f883460c10381c04f0742ceae73e4c245b6a6d5d465f0a088a8af4e779f57e2"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Coup attempt; no finer place is written."
+    },
+    "plc_d3002fe4-9bce-5cb5-b214-e86c8f2ca90b": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        59,
+        26
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q191",
+        "label": "Estonia",
+        "description": "country in Northern Europe",
+        "coordinates": [
+          59,
+          26
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "e91ea860a0fe213498bbcf91717cbb14455e1f8794d49828c2d89b3433cf7399"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_796725fd-a67f-54fd-8497-c264f022bc28": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        11.998889,
+        120.205278
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q111414",
+        "label": "Coron",
+        "description": "municipality of the Philippines in the province of Palawan",
+        "coordinates": [
+          11.998889,
+          120.205278
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "b94bb2ea136e63c20cd0d7a3b06cd385bdffa935526a2d1cff8b38e1db0decb2"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "near",
+      "semantic_limit": "nearby_place_reference_not_incident_point",
+      "uncertainty": "The ferry was off Coron."
+    },
+    "plc_5ec6a9a9-c9cb-5a37-92bf-a61f5e3f8ffd": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        61,
+        15
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q34",
+        "label": "Sweden",
+        "description": "country in Northern Europe",
+        "coordinates": [
+          61,
+          15
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "69c92ce9280a5b0bc51e7aae1178fc0964c913d4e3454ab5efa0b43ccb465984"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_6bb08957-643a-517d-82ac-3b232998d477": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        -5,
+        110
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q49364",
+        "label": "Java Sea",
+        "description": "shallow sea between Java and Borneo, in Indonesia",
+        "coordinates": [
+          -5,
+          110
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "ba0c814768c91b55c57a5f033100f057b22ab218ad25587bd011019bcaca1b59"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_5de94f68-2925-57fe-91cb-44398f417f57": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        39.828175,
+        -98.5795
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q30",
+        "label": "United States",
+        "description": "country located primarily in North America",
+        "coordinates": [
+          39.828175,
+          -98.5795
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "9372aea09dd8b5b7b796e383ef66738be722e8053fd67779bcb1a8d453e90dca"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "A United States acknowledgment; the weapons are in orbit."
+    },
+    "plc_b0be48dc-7a3d-5905-8c50-d78f09435713": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        48.856667,
+        2.352222
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q90",
+        "label": "Paris",
+        "description": "capital and most populous city in France",
+        "coordinates": [
+          48.856667,
+          2.352222
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "4bcb939289ef9896249ad71cdeac8c64fc7520ef1fd6e599b3e2f446783307b8"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "began_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_556bdb1c-b203-5dc1-b0fa-238349ff2efc": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        47,
+        2
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q142",
+        "label": "France",
+        "description": "country in Western Europe and other continents (through its overseas territories in America, Africa and Oceania)",
+        "coordinates": [
+          47,
+          2
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "5edbdf210c58da8a4a6abf6e0ecc6d3037f04f2e0db5eaa5237c16bb9d445e1b"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": ""
+    },
+    "plc_0acb5daf-b63a-58e2-9cfb-c649a048ccd2": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        32,
+        -6
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1028",
+        "label": "Morocco",
+        "description": "sovereign state in North Africa",
+        "coordinates": [
+          32,
+          -6
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "7aeb86138770db4143430b6b75ae3928a9aa2d881c2ed5f566039ecd63129d4d"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_c582cf1a-b133-50c1-97b4-4c0007d7b468": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        9,
+        40
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q115",
+        "label": "Ethiopia",
+        "description": "country in the Horn of Africa",
+        "coordinates": [
+          9,
+          40
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "8624d7d35fdca8c2a98909a2c80157cdb3c84fd36b5afee72ab31082c0c2ad0b"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "Offensive in northern Ethiopia; no finer place is written."
+    },
+    "plc_f2e17826-626d-5805-bbd2-511133cfe3a4": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        44,
+        18
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q225",
+        "label": "Bosnia and Herzegovina",
+        "description": "country in Southeast Europe",
+        "coordinates": [
+          44,
+          18
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "e6b6df77fa564848535482cec729c4d769e5bbe36280152283b1d92f338161fe"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_6a4d4210-c653-5066-966f-999c5dbdc675": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        34.014444,
+        71.5675
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q1113311",
+        "label": "Peshawar",
+        "description": "capital of Khyber Pakhtunkhwa Province, Pakistan",
+        "coordinates": [
+          34.014444,
+          71.5675
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "51e408d491928fa922783794bb4194d975ad994cf3dc6652cef4d9868328f4d7"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_ce0abf58-b3a3-524a-8304-7b4107b1ce96": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        9.595,
+        28.436
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q336494",
+        "label": "Abyei",
+        "description": "area in Sudan established by the Abyei Protocol",
+        "coordinates": [
+          9.595,
+          28.436
+        ],
+        "found_by": "cached_label",
+        "response_sha256": "973a2beab3a53f7466a1df00a9f12b587f7c91aceaae3ed3db62c7d0cb8c26b9"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": "\"The disputed Abyei region\": the area, not the town; no country is asserted."
+    },
+    "plc_7168a020-3a7c-5485-a84d-bdf4b2dddd49": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        31.18248,
+        35.69999
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "250624",
+        "label": "Qīr Moāv",
+        "feature": "P.PPL",
+        "population": 22581,
+        "coordinates": [
+          31.18248,
+          35.69999
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_3785d890-1e45-5136-bca8-70ae463a0e5f": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        35.9,
+        14.45
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q44557",
+        "label": "Attard",
+        "description": "town in Malta",
+        "coordinates": [
+          35.9,
+          14.45
+        ],
+        "found_by": "cached_label",
+        "response_sha256": "33759424925428239a6e2ee91c11d8be2976ce4a656bf6d63ca3764616da7176"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
+    },
+    "plc_9b1823d0-da55-5937-a7f2-194df5a1493a": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        -14,
+        -53
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q155",
+        "label": "Brazil",
+        "description": "country in South America",
+        "coordinates": [
+          -14,
+          -53
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "d1199d8cf227e9761fda3d121b301d2b52d297d580a78ad2215abe42ef41f9a0"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_731b3c05-2d64-5607-be84-bd49ae1c0467": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        43.95,
+        20.933333
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "wikidata",
+        "id": "Q403",
+        "label": "Serbia",
+        "description": "country in Southeast Europe",
+        "coordinates": [
+          43.95,
+          20.933333
+        ],
+        "found_by": "cached_search",
+        "response_sha256": "d7dccf7ea13c4fe18e06dfce980aaab23535d99845987569dd8f090f55ee4490"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "country_context_or_country_wide_event_not_venue",
+      "uncertainty": "National government act; the sentence names no other place."
+    },
+    "plc_83f21cb0-0fdc-5030-aa89-3beec7d8f3cb": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        39.58158,
+        -3.87058
+      ],
+      "verification": "source_bound_review:recent-2026-100-v1",
+      "evidence": {
+        "scheme": "geonames",
+        "id": "2514406",
+        "label": "Los Yébenes",
+        "feature": "P.PPL",
+        "population": 6224,
+        "coordinates": [
+          39.58158,
+          -3.87058
+        ],
+        "found_by": "cities500"
+      },
+      "review_sha256": "360796194e4627f1c965fba330d859927aa3d7a4af2ac269a6908a8f15370163",
+      "role": "occurred_at",
+      "semantic_limit": "geographic_reference_at_declared_scale",
+      "uncertainty": ""
     }
   },
   "records": [
@@ -36076,6 +38328,1203 @@
           "location_index": 0,
           "before_sha256": "f134e49d0c771dc46dc64333904d89233e8b8fa8b781f0ed34cb8e9f9d810995",
           "place_id": "plc_28133d19-708c-5c05-afe0-15f8f72ece2e"
+        }
+      ]
+    },
+    {
+      "record_index": 52587,
+      "event_id": "evt_71c8e21c-e3a2-56b6-b39b-61d78af5bf38",
+      "event_name": "Crans-Montana bar fire",
+      "enhanced_time": "2026-01-01",
+      "baseline_record_sha256": "41acbce4508d731f463d17952133f5a3eb90beb69fb146efe2fb856323bac434",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_1f3197be-ca04-5930-ab53-ec53ebd7398d",
+          "before_sha256": "7215477c0b51a5dfba8fa7a801ecf59da98d9e98561beb18d9d0df0be0f90694"
+        }
+      ]
+    },
+    {
+      "record_index": 52588,
+      "event_id": "evt_7a7923ff-e6dc-5019-ae20-50b5ab109ccd",
+      "event_name": "U.S. strikes in Venezuela and capture of Nicolás Maduro",
+      "enhanced_time": "2026-01-03",
+      "baseline_record_sha256": "a06b0a2417cb9f83ae37a726357f27ee88d04a3304b31bb6707b175ca53515ea",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_b91bb13b-8070-5a15-8f16-e393e944efc5",
+          "before_sha256": "c6a37ab04ef4f6602df0ee7517702eb0fc28690c0c3353cc09070207c61c2bf9"
+        }
+      ]
+    },
+    {
+      "record_index": 52589,
+      "event_id": "evt_b4e8b29b-39bd-5d0e-9408-6da841158578",
+      "event_name": "2026 northeastern Syria offensive",
+      "enhanced_time": "2026-01-06",
+      "baseline_record_sha256": "f936020fb4f8538655bd321930ecd43f93e94e015eb4160288935bc97f02f2b3",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_92e39b02-1b28-5bbe-a75e-28e2653e31f8",
+          "before_sha256": "ad3206434e2e6b4ae4c7edb306d84a5a4f013f2c9d5eb918c440093754d24f88"
+        }
+      ]
+    },
+    {
+      "record_index": 52590,
+      "event_id": "evt_ccb0ff3d-87c4-519c-b432-0074233910b0",
+      "event_name": "2026 Beninese parliamentary election",
+      "enhanced_time": "2026-01-11",
+      "baseline_record_sha256": "80526f98b8729dd0ae447c17173e4ba1627f185c4355d280f574fa51ecd19e4a",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_d5452e4d-a123-5287-a3a4-130e4fea701b",
+          "before_sha256": "cf7b07d0d31f681da8f4003194d6ef1142079393dffe3e21ed67e504718026d7"
+        }
+      ]
+    },
+    {
+      "record_index": 52591,
+      "event_id": "evt_375ef8d8-33cd-56fb-b8f4-6bed3ce652f3",
+      "event_name": "Karachi shopping mall fire",
+      "enhanced_time": "2026-01-17",
+      "baseline_record_sha256": "7db9b304578d98f3321d15a358fcec7cc7a1d39ef19a76dfd598495c29d4d7cd",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_0786f989-c35e-55c8-a388-0dccf3bd7c13",
+          "before_sha256": "e734596e59c9ca2945d27990a33071cd21177420ad91750662c21e61154f8fc7"
+        }
+      ]
+    },
+    {
+      "record_index": 52592,
+      "event_id": "evt_00c1c624-df16-5e7e-8883-677ae4a33b00",
+      "event_name": "Syrian government gains territory after offensive",
+      "enhanced_time": "2026-01-20",
+      "baseline_record_sha256": "ac3685430716df4d1d2a193b60ebba9f4145f17433f7921392bc60c0f60701e2",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_dc2d1088-eeae-5a61-b9a1-e97587f79c12",
+          "before_sha256": "8adc0f122d2763921775e6a080adf507003e376d0432dedee5a09c8e77c8724a"
+        }
+      ]
+    },
+    {
+      "record_index": 52593,
+      "event_id": "evt_35bd8574-796f-5151-9003-d21940594a23",
+      "event_name": "West Java landslides",
+      "enhanced_time": "2026-01-24",
+      "baseline_record_sha256": "ead757d268e8d1c260f117e22c8389f3b43a276fef1d77524b3e4d5bd7d6496b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_336b91ab-ac40-5c37-9049-e61bdb83142f",
+          "before_sha256": "fe16076cbecb379acf106e6f0ca477c5322e279fb067fba1221167fbff5c40e1"
+        }
+      ]
+    },
+    {
+      "record_index": 52594,
+      "event_id": "evt_fcc5d2e9-0e39-5041-9f54-ecb099b7e95f",
+      "event_name": "Rubaya mine collapses",
+      "enhanced_time": "2026-01-28",
+      "baseline_record_sha256": "3c7f8e034f6c22739d912ed488e708e1689adba186eeb26264f981a1e6299cab",
+      "locations": [
+        {
+          "location_index": 1,
+          "place_id": "plc_9fd3123c-6561-5888-a214-b2e44f93badc",
+          "before_sha256": "86b3b08e907c14ee5d0bb76ba41b71d9c76cf1371c7ef84aad51f42991751537"
+        }
+      ]
+    },
+    {
+      "record_index": 52595,
+      "event_id": "evt_ee39fb04-9e5d-5f11-9d22-83d079785844",
+      "event_name": "Clashes erupt in Ethiopia’s Tigray region",
+      "enhanced_time": "2026-01-29",
+      "baseline_record_sha256": "87b46b50e43cdf50f8287834ee8c8090eba4ac0730fbc81216dcf8b9f72b7530",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_0ca29f66-7055-56c5-98f1-54a365fb11ae",
+          "before_sha256": "964aa37e0a7568aa06b9b2228e552d3a387c7a59f69fe0e179f55cc3b07e208d"
+        }
+      ]
+    },
+    {
+      "record_index": 52596,
+      "event_id": "evt_79f9147e-5d5b-5fd2-9642-ba7bf0b0f5df",
+      "event_name": "Balochistan attacks and fighting",
+      "enhanced_time": "2026-01-29",
+      "baseline_record_sha256": "adfe4bfebfedb2f989b68c32a2f27f7d4baf4b3db3ab571a892bc06fd3a6c7bf",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_7e47da63-a630-5097-9e7d-3ca541b52d04",
+          "before_sha256": "8e71de2a995c238fb6466fe7816e134d8031eeb5361c1c57395626c9e6dc5ffe"
+        }
+      ]
+    },
+    {
+      "record_index": 52598,
+      "event_id": "evt_2a53f706-3d4b-5c08-b81f-8ff36517acdb",
+      "event_name": "Boko Haram attacks villages in Kwara State",
+      "enhanced_time": "2026-02-03",
+      "baseline_record_sha256": "8fcd12a2c2a6d8697ccf5160b331759b2574963d77f058d68a7b1f8c8d6729a6",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_7a5cfa5e-b619-566a-8969-776263f8cefc",
+          "before_sha256": "c4cde22be92353b14380a3cb4a197e40d6e06adf96c32148efa837ff2a5ca7d6"
+        }
+      ]
+    },
+    {
+      "record_index": 52599,
+      "event_id": "evt_1543d241-b7e8-59ee-bd42-af76b7085da6",
+      "event_name": "Islamabad mosque bombing",
+      "enhanced_time": "2026-02-06",
+      "baseline_record_sha256": "0115e24fd1ebccbacc7e7b96dcfb3bce33ac26fcefee9141914643f341ea1821",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ac9dc1cd-62c8-5132-8d56-c24de8566ebc",
+          "before_sha256": "be787051adea30862ab2e3c320c25740229a0baac87c435ba908d3ae6cf13857"
+        }
+      ]
+    },
+    {
+      "record_index": 52600,
+      "event_id": "evt_804970ee-1e06-58b1-aef8-7963e6f90918",
+      "event_name": "2026 Men’s T20 World Cup begins",
+      "enhanced_time": "2026-02-07",
+      "baseline_record_sha256": "8aa14d98fa9be6e78720d70be980eb4dcbd84a966984ee0824f33995268d3bb3",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_a99cf67b-4e72-5f2e-b503-cffc7ab4f231",
+          "before_sha256": "ac26f8d593399989a34fd00dbffa0ba2e9f26119eedaac26f9526e04d44bccdc"
+        },
+        {
+          "location_index": 1,
+          "place_id": "plc_4c71a775-cbca-54d0-9803-f2eb183cc884",
+          "before_sha256": "e415995958405f88d8e7dfe360ff4c5c8135a9757c0cd6f5c02380da86a28586"
+        }
+      ]
+    },
+    {
+      "record_index": 52601,
+      "event_id": "evt_90129881-d863-5ec0-b076-78173fb8e2f4",
+      "event_name": "Haiti’s Transitional Presidential Council dissolves",
+      "enhanced_time": "2026-02-07",
+      "baseline_record_sha256": "b69a69bd89200e3af711fe7577c3d2e06d9935bfaecf4698e94eca77dde13427",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_36d62011-326d-5255-9fdc-92eb6e96287c",
+          "before_sha256": "38391e2cc13065fde6443c50c293719bca4e27fd1ca3fde4af271dc4e934b93d"
+        }
+      ]
+    },
+    {
+      "record_index": 52602,
+      "event_id": "evt_b33c7b6d-d69a-54c4-9886-45dfd2775f6a",
+      "event_name": "2026 Japanese general election",
+      "enhanced_time": "2026-02-08",
+      "baseline_record_sha256": "f812ae6ce36cc7638116e08a3a374078b5a2739dd8d6fd1d2dc7bcdaf3819900",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_3cc5bd23-3e5e-5f70-8e40-9ebc4f23c196",
+          "before_sha256": "10bb7d21b648dfa2f59db6bd565e52c9b9920228da343797b06500634c447321"
+        }
+      ]
+    },
+    {
+      "record_index": 52603,
+      "event_id": "evt_8bf438de-f559-5034-bc1d-8a4f5042fe85",
+      "event_name": "Thai election and constitutional referendum",
+      "enhanced_time": "2026-02-08",
+      "baseline_record_sha256": "77fd2bb92e5b3e8aa377bc1b47c273ebc202e1ab589dbad191a742e13dd66fbf",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ed924a37-0591-5d43-a3c4-3d3495642073",
+          "before_sha256": "5cee9401007ac538c98a8fd39d354e5d79b72d0d4a8e3f7480820295916cdbe4"
+        }
+      ]
+    },
+    {
+      "record_index": 52604,
+      "event_id": "evt_94323432-e445-5f98-b2f3-16ae37f04e10",
+      "event_name": "António José Seguro wins Portuguese presidential runoff",
+      "enhanced_time": "2026-02-08",
+      "baseline_record_sha256": "b47c43b68700ef77bcf2c600ef48f181e240bd4abe0b3135b9901f1c7c793623",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_3ebf862f-2607-5357-a5a5-239828f7ec4d",
+          "before_sha256": "bedb5d2ac5451b829d964869f7f17ca70c676acc8a8539a7a1ff0bf237d825b3"
+        }
+      ]
+    },
+    {
+      "record_index": 52605,
+      "event_id": "evt_59211f4f-b704-5a7f-83d4-9520302a784d",
+      "event_name": "Tumbler Ridge mass shooting",
+      "enhanced_time": "2026-02-10",
+      "baseline_record_sha256": "f965d6fba56654eabd463fffdc6693eb3754975efbc64c9c830e5e9903a55b95",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_daa6095a-edab-5d23-909b-e9bb6b930fa3",
+          "before_sha256": "5e094413fd9cc1ba6201b3635fba52913e4c5c3e75115a76be16486bee6e40bb"
+        }
+      ]
+    },
+    {
+      "record_index": 52606,
+      "event_id": "evt_896197dc-9f3b-5620-a518-6c6d7133ef83",
+      "event_name": "2026 Laotian parliamentary election",
+      "enhanced_time": "2026-02-22",
+      "baseline_record_sha256": "2dc8831f00e891330a47d411a185e80393fbc93373ba9800383977190962687d",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_0c312d76-0216-5ccf-ae25-5f478587783a",
+          "before_sha256": "3d21d5881dbdb94efdf53fd8e1818cea614f80828a6feff7754295fff4a2d7e3"
+        }
+      ]
+    },
+    {
+      "record_index": 52607,
+      "event_id": "evt_42d0479f-c409-52df-a283-a1d74c6a0f58",
+      "event_name": "Jalisco military operation kills El Mencho",
+      "enhanced_time": "2026-02-22",
+      "baseline_record_sha256": "832db6e47fd1cd566885fe6888ccb718309724217ca62af06e206426ae03dadb",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_49565a5f-60eb-5f9c-94d2-f854f9a18790",
+          "before_sha256": "04b043bc7a17a42a7ab7ad7708130e111c783328520a2a00c073adadc5ba41ab"
+        }
+      ]
+    },
+    {
+      "record_index": 52608,
+      "event_id": "evt_e3048151-644e-56c7-a2a7-f5fe4f31c5f0",
+      "event_name": "2026 Colombian parliamentary election",
+      "enhanced_time": "2026-03-08",
+      "baseline_record_sha256": "8795c36b5c7b041e808962a309d367e63b653a1191b4281f386b214320c6138b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_37ae43d3-4879-5740-bef2-12702fa44a1f",
+          "before_sha256": "b13dbebcd6983b0cf59d05328f242dec06191e85b94f14c86c0ba094142eb47f"
+        }
+      ]
+    },
+    {
+      "record_index": 52610,
+      "event_id": "evt_1e196d67-e3ea-5d9f-b256-3e9a87a706ca",
+      "event_name": "U.S. bombing raid on Kharg Island",
+      "enhanced_time": "2026-03-13",
+      "baseline_record_sha256": "4b1fc3d0f71c5483d049137861ef19b2a0ab2a16258baad373106abe1732bf80",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_36849d9c-a365-5e82-b4ae-046a357617d2",
+          "before_sha256": "57b7151a4311a9a08b30ce47d7da438f185969b070f047fe56836647d1eda994"
+        }
+      ]
+    },
+    {
+      "record_index": 52611,
+      "event_id": "evt_18d19cc4-1a1a-559e-83ef-ec9ec8889cee",
+      "event_name": "Kazakhstan approves a new constitution",
+      "enhanced_time": "2026-03-15",
+      "baseline_record_sha256": "687ca069d1302a5e39b74b9e3786f6e0d49fdf37c23b1391a395943413dc403b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_1a1add5b-eb54-58fa-b02d-edfe8b19999f",
+          "before_sha256": "4007af7964251c0eb24c51f440b5b8ee5046cbc5706529e30497c67119f84c24"
+        }
+      ]
+    },
+    {
+      "record_index": 52612,
+      "event_id": "evt_37b77862-c1d0-5199-88bb-011f2200a861",
+      "event_name": "2026 North Korean parliamentary election",
+      "enhanced_time": "2026-03-15",
+      "baseline_record_sha256": "40a2e0c9a653d3c735157326719ce6f31292262f62dc2d392e5badfaf5f5b1e2",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_935f3603-478c-50d6-8dea-acfa05b6b438",
+          "before_sha256": "9eeed2b31b454703d371cd5a5d4c6557033e71eb510c5a1a289b3b889498cfd9"
+        }
+      ]
+    },
+    {
+      "record_index": 52613,
+      "event_id": "evt_34555d8d-058c-5011-a207-eb90c82044b7",
+      "event_name": "2026 Vietnamese legislative election",
+      "enhanced_time": "2026-03-15",
+      "baseline_record_sha256": "294ef7b2e0c1dd99f632f917062ca797af8469119c4cf870f9ee52c6b623fe28",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_a5886a43-ca77-533e-b428-36b5a71415ad",
+          "before_sha256": "f4bfa89057f50b49a5b01f0041f458bea8cc44e711d79ca98b87f069e12b78d2"
+        }
+      ]
+    },
+    {
+      "record_index": 52614,
+      "event_id": "evt_ac128078-97d9-58a9-982c-eb9f705b0feb",
+      "event_name": "Denis Sassou Nguesso wins reelection in Congo",
+      "enhanced_time": "2026-03-15",
+      "baseline_record_sha256": "1544d58eed91b2a9a693c731cc4a392ed1c7389e4bc044481b90cb24d7972489",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_e6ad2fcf-ff68-502c-ae3d-274ae7f85a61",
+          "before_sha256": "a6998620fce6ac3398c33c65d03c477d58d7b332be69e0e92c9be3bc0f5507a8"
+        }
+      ]
+    },
+    {
+      "record_index": 52615,
+      "event_id": "evt_03e7c20f-77c7-56ee-9958-c505c7eb54e1",
+      "event_name": "Colombian military aircraft crashes near Puerto Leguízamo",
+      "enhanced_time": "2026-03-23",
+      "baseline_record_sha256": "a71ec82f193e7fb0250049f1843864acdb99f6de085aeba78ac442d7e7a2ffa4",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_9eb682cb-8d48-5bb7-95bb-b570d12d8d79",
+          "before_sha256": "420e9538bedb7c456562e47ca084a6208258701a7324fef34d2e87e3c7af93b6"
+        }
+      ]
+    },
+    {
+      "record_index": 52616,
+      "event_id": "evt_f1a5075e-f1c4-5dd2-a4c9-21cd03b43370",
+      "event_name": "2026 Danish general election",
+      "enhanced_time": "2026-03-24",
+      "baseline_record_sha256": "1c8c90e0a0c96213f042eae129147d51be58c860fe6c8b18a6b1e7bc5443234f",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_3eab2313-0417-5e0f-8da9-1dc703d3b8a8",
+          "before_sha256": "02cf9f4f369b050cc8e6c2b967d7e5afd48f338125242279980ec86435c4d3bb"
+        }
+      ]
+    },
+    {
+      "record_index": 52617,
+      "event_id": "evt_c8cb7096-9374-5069-a670-a5856344a861",
+      "event_name": "Iran outlines conditions for Strait of Hormuz passage",
+      "enhanced_time": "2026-03-24",
+      "baseline_record_sha256": "9a86f65ba18b5f5ad9576b3bd097871ace9477515786c47aed1119d51098c7a1",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_0ae38e4c-5939-55a3-97ef-c753f3fee73e",
+          "before_sha256": "e3cb491988bb6f9043257dad280db7aadfab1bba24f81498ad4ab3e4b0a0245e"
+        }
+      ]
+    },
+    {
+      "record_index": 52620,
+      "event_id": "evt_bf4c08e8-05ce-5cd4-8b47-b9131582a117",
+      "event_name": "Tô Lâm elected president of Vietnam",
+      "enhanced_time": "2026-04-07",
+      "baseline_record_sha256": "9fbdb7ef22090673a6e17f68103a04d09a9ce56dc6b5ddfde4b2ce27ee5ae46a",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_df50bcf3-54b2-5d17-8ac8-85760babc24f",
+          "before_sha256": "c203af3c05f7c1fd482911a1f6a0346b684d91eb9182dfcc98854c98ce774dbc"
+        }
+      ]
+    },
+    {
+      "record_index": 52622,
+      "event_id": "evt_69b8e8d1-2a8c-5a6e-8d25-4c8a95bef577",
+      "event_name": "Israeli airstrikes across Lebanon",
+      "enhanced_time": "2026-04-08",
+      "baseline_record_sha256": "a656b91f834651434ceb1b02325d89c6a6de1a0d1c831bfa5522e03ab1a17f0e",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_cb6929b7-1d94-5ff1-9d2f-252cd000c7e2",
+          "before_sha256": "9bfcb8d6e1d3264f81f12c060036471d8e7960f7bb90cc94764816aee935612f"
+        }
+      ]
+    },
+    {
+      "record_index": 52623,
+      "event_id": "evt_4ffe6de7-a48f-514b-92ef-15d345b7fd4e",
+      "event_name": "Ismaïl Omar Guelleh reelected in Djibouti",
+      "enhanced_time": "2026-04-10",
+      "baseline_record_sha256": "0ceea533cf298cc45a4aa099da3cd0540d0c54a2940f75cedbd79d79c5d6a0ae",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_fc57cbce-6248-5ff9-8dda-535c2945804e",
+          "before_sha256": "c5cea891b0236f5ce3ee48655e4bce5b537c26543832b49cc1923f3f28ec3eb6"
+        }
+      ]
+    },
+    {
+      "record_index": 52624,
+      "event_id": "evt_4fe806eb-1f61-52c2-a475-bc69e9d8c175",
+      "event_name": "Artemis II crew returns to Earth",
+      "enhanced_time": "2026-04-10",
+      "baseline_record_sha256": "1ca27a011e0cf2dde69d0c753384f1d72c9b1418217d503257937f07259c3343",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_2bda7ec0-030e-5ca2-a9c8-77c9eb31db70",
+          "before_sha256": "8754b23bef8d578c29d54dc982cd7c8debddf82387170243ff30a649c600287a"
+        }
+      ]
+    },
+    {
+      "record_index": 52625,
+      "event_id": "evt_eff76ba7-b706-533d-82c8-03660b516cbb",
+      "event_name": "Péter Magyar defeats Viktor Orbán in Hungarian election",
+      "enhanced_time": "2026-04-12",
+      "baseline_record_sha256": "0704d434ca2d03487ce7ffaa1511474a832c75108acc5f78fe6b2f4d8f9a7987",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_bb75ab92-e23c-5315-bb6b-9e3166666313",
+          "before_sha256": "4d2575606ed7d15b9533cd56cea9e21f16201bbba8d4de3eca7fbf6a05e9fa60"
+        }
+      ]
+    },
+    {
+      "record_index": 52626,
+      "event_id": "evt_718166ee-000b-5c74-ac65-ad694a8b047f",
+      "event_name": "Romuald Wadagni wins Beninese presidential election",
+      "enhanced_time": "2026-04-12",
+      "baseline_record_sha256": "6b5144d354d1f5d08381606a8a9ead7a4884be1b3a543acd6aa87a20b5f0bff5",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_cddbfe73-b43e-5ebf-97da-68080c10da82",
+          "before_sha256": "d4fc9ffa217d33c4504b10e858b41b21332396aae89b5844b0e373495cc19f99"
+        }
+      ]
+    },
+    {
+      "record_index": 52627,
+      "event_id": "evt_1035e5a5-0f9e-5e4b-bb80-2f91e466b590",
+      "event_name": "Tornado strikes Vance Air Force Base",
+      "enhanced_time": "2026-04-23",
+      "baseline_record_sha256": "ee851cdb1a3d264736248e2981e8ce9763e2aca7a097647ffdc59d97d51aa8f7",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ea24a836-f8fa-56f0-a114-0e7faa40f9ba",
+          "before_sha256": "fd5845bc230d3b5ad22c620242fdd3f7fd3cd7962215f8830e4e264b796b4133"
+        }
+      ]
+    },
+    {
+      "record_index": 52628,
+      "event_id": "evt_9bd384af-551b-5806-862c-4ddf8be36649",
+      "event_name": "United Arab Emirates leaves OPEC",
+      "enhanced_time": "2026-05-01",
+      "baseline_record_sha256": "390241347114aa1a9220676ef1d91e4a6d54bbbd05c28c8ab71613c3fa337001",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_489e98d4-5c15-5f8c-a0f2-3810ce6038ae",
+          "before_sha256": "0d02a78c6a63aff7de489053cb52b14f21a74fbfec7b8ca597c9083a20c27f37"
+        }
+      ]
+    },
+    {
+      "record_index": 52629,
+      "event_id": "evt_9cf243ed-f2f3-56bb-9003-e2c5e2dc7762",
+      "event_name": "Liuyang fireworks factory explosion",
+      "enhanced_time": "2026-05-04",
+      "baseline_record_sha256": "6d653f92e97f966e18f26ff3a261417325a5005ca3cd365c046e42197ab05b4b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_968d4cd2-3a28-5801-8167-73fd469879b3",
+          "before_sha256": "edb453bc8056480d2b9197a2c61836b6d9a13503b08f504a71e764a938406051"
+        }
+      ]
+    },
+    {
+      "record_index": 52630,
+      "event_id": "evt_299a1707-5a9c-5fff-ad85-0a27c00cd07b",
+      "event_name": "Drone attacks target Khartoum and nearby sites",
+      "enhanced_time": "2026-05-04",
+      "baseline_record_sha256": "96a846c35d46a7c632453fbde282c2e4b65d1f5e63d6424e9e8d6d9c3fa2a683",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_af07bd54-9615-5f69-8484-6429c7e57bdf",
+          "before_sha256": "f91d610d472337602f4b0ccb8c27e5f39bb0fc04c00702636d466e455d690a1f"
+        },
+        {
+          "location_index": 1,
+          "place_id": "plc_02f8c595-aab3-5908-b8fb-30735080444c",
+          "before_sha256": "1e6dd7c66e665302391294983b78e8099856d03697011387793df3c38e4a4639"
+        },
+        {
+          "location_index": 2,
+          "place_id": "plc_b9152b06-cc6b-5f62-b5a4-b0676d3506aa",
+          "before_sha256": "dad7b98dd09e790c5e186936ace8b66d252d08b6a5a7adab118b110fc0d7c830"
+        }
+      ]
+    },
+    {
+      "record_index": 52632,
+      "event_id": "evt_e00501fd-d073-54c8-861a-7ea18d54f4a0",
+      "event_name": "United States indicts Raúl Castro",
+      "enhanced_time": "2026-05-20",
+      "baseline_record_sha256": "8b3f609ac20eff60ebd4456d4f9f2ba01925264bb4c0ad8a8299d6d511c32a72",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_76559091-704e-515c-adb4-6ec2820a4122",
+          "before_sha256": "19b65f3421196c90fa9c1be9dac4f75b501b3d5fe524d00d4bfe580888c4a1e5"
+        }
+      ]
+    },
+    {
+      "record_index": 52634,
+      "event_id": "evt_2267f437-8284-54c7-a482-b4b2935dd055",
+      "event_name": "Liushenyu coal mine explosion",
+      "enhanced_time": "2026-05-22",
+      "baseline_record_sha256": "9147ec2057fa094776faa269b723e386fd81aae0295ea7d78051b1b0d2159468",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ae634035-863e-5019-878c-7abc5f047bb3",
+          "before_sha256": "7c00dec6185ba46b33f4cda40d0801be46ba7d8f314e56988d3e8fdd928ca191"
+        }
+      ]
+    },
+    {
+      "record_index": 52635,
+      "event_id": "evt_579aec86-86c6-5723-a613-46cc38f1f09c",
+      "event_name": "2026 Guinean parliamentary election",
+      "enhanced_time": "2026-05-31",
+      "baseline_record_sha256": "08cad96dc6136006e13e54b4ca83241ea5d2e9de6168f404e76d879140297a92",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_9e8c6af6-8cb3-5d4e-9999-603a64bac27f",
+          "before_sha256": "fa7875cf793debe1a81c8d2fe31f11a2784543871316c180e4b352064bb12119"
+        }
+      ]
+    },
+    {
+      "record_index": 52636,
+      "event_id": "evt_8a33e7ce-0cdd-5b34-aba9-555a9bc88df5",
+      "event_name": "Flamingo Revolution protests spread in Albania",
+      "enhanced_time": "2026-05-31",
+      "baseline_record_sha256": "2252544229c280395f8b99df8ce2ba1266598d5e591a7cdb72e054f1e250c04d",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_1ab4a9c8-948b-57c0-93ef-053cd1019a60",
+          "before_sha256": "ceaaba6655c67aa9ee095f7727101c1606a1c5dc7a2876cc13d5d3693f44bb03"
+        },
+        {
+          "location_index": 1,
+          "place_id": "plc_25d0a95c-4e1b-5a8b-8fd9-7f96ad62a19a",
+          "before_sha256": "29256c08db26aa438e2932194b51ca92cb86464efc5f892720cb42ca6cd58dcd"
+        }
+      ]
+    },
+    {
+      "record_index": 52637,
+      "event_id": "evt_6920b3f3-1ee0-5410-be96-ae2f8407bea5",
+      "event_name": "2026 Armenian parliamentary election",
+      "enhanced_time": "2026-06-07",
+      "baseline_record_sha256": "c0acf1fb8f4bb119312eb94606e5b1a18245630138ee89dc52f57ecde5091208",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_35471c46-cf87-5b9a-86fc-3abffe1039e6",
+          "before_sha256": "d26a9c31e9e33e53087c2b76338405f54daa35e793674a6985333cb66002a305"
+        }
+      ]
+    },
+    {
+      "record_index": 52638,
+      "event_id": "evt_775fefa1-facb-5385-a358-0baa4b1c3b98",
+      "event_name": "2026 Kosovan parliamentary election",
+      "enhanced_time": "2026-06-07",
+      "baseline_record_sha256": "bc14b295ce2d55894d415e14dfabfe405b339bc13a1f47e87f4455a0933f7e96",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_946eec2e-fb35-5390-b101-96417a920248",
+          "before_sha256": "010e182131affd8e8a547355a5bd3e33fc2257cf3bacaed3660dd4e24b18238d"
+        }
+      ]
+    },
+    {
+      "record_index": 52639,
+      "event_id": "evt_879ad24e-5aa3-5835-9d10-9391a1ea8580",
+      "event_name": "Keiko Fujimori wins Peruvian presidential runoff",
+      "enhanced_time": "2026-06-07",
+      "baseline_record_sha256": "d8baf65cad964486aaf69b3214bfd4931e2059df86b295df08a43f4bbab6889b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ec9bb8d8-803c-5333-a81c-325f6f1998a6",
+          "before_sha256": "bfdd3b6fd6185c4bfb7d3ecb7aa9297d7d368022cb202b51804705b09edebe43"
+        }
+      ]
+    },
+    {
+      "record_index": 52640,
+      "event_id": "evt_42840205-1ab1-5437-8252-2819c8bfee78",
+      "event_name": "Magnitude 7.8 earthquake strikes the Philippines",
+      "enhanced_time": "2026-06-08",
+      "baseline_record_sha256": "7cf90d12abe2c41b4b6cdf3caf2574332ab4e893a8d26883817869d0b240f59d",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_96fc5a4f-60d2-5948-8ef0-2669e2ac9ff1",
+          "before_sha256": "50dff1f43855134971d1dcde131975c917ca705548a93a7e49e541e2f212b26b"
+        }
+      ]
+    },
+    {
+      "record_index": 52641,
+      "event_id": "evt_ee26baa9-102a-54b5-bbb8-4d270b8dac86",
+      "event_name": "Sagrada Família’s central tower opens",
+      "enhanced_time": "2026-06-10",
+      "baseline_record_sha256": "d2f7d06cf02003166394f78004c90cc164f2c81819649cdd6f8917a7e100579e",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_14ad2c7f-f84a-54b4-919e-18241c842996",
+          "before_sha256": "b38148184cc47884be83fa94358223993fe23283f9692582e19f0031f35a784c"
+        }
+      ]
+    },
+    {
+      "record_index": 52644,
+      "event_id": "evt_28742d64-1d7b-5c88-a10f-26e901d58920",
+      "event_name": "Rio de Janeiro helicopter collision",
+      "enhanced_time": "2026-06-14",
+      "baseline_record_sha256": "1e5550876af632a85905e7a1b9ef7bebbf602c41a2cb3ccb45619ff2e9c2a1e0",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ca40e85e-1932-58ee-b593-a7dfc3304981",
+          "before_sha256": "ca71fb42e43e8888cf0343a187ad979bbc00439e42f525c89aef3601589f4861"
+        }
+      ]
+    },
+    {
+      "record_index": 52645,
+      "event_id": "evt_eebcc441-fa10-594f-852e-2ee8e3c77444",
+      "event_name": "Keir Starmer announces resignation",
+      "enhanced_time": "2026-06-22",
+      "baseline_record_sha256": "5f4ed6e15bf6b6cd65c41bad57c2cfdca1e0cb835fcf8358b314bf6f0302ba05",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ed3a6183-9fab-52aa-89cd-e18708a27b02",
+          "before_sha256": "6209b7e935b020eee2683da9e18b24a311abdc653ac0271c4453c2cf44f77867"
+        }
+      ]
+    },
+    {
+      "record_index": 52646,
+      "event_id": "evt_015536f9-3c47-5864-a0c5-3f6ee223babb",
+      "event_name": "Two major earthquakes strike western Venezuela",
+      "enhanced_time": "2026-06-24",
+      "baseline_record_sha256": "56169607db0d3eed6e77d60e9229c64c3a35978a60fb1d188e3fdd322807b387",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_528287f1-0f68-5a78-bbcc-73f7d452ddb2",
+          "before_sha256": "e7bd714dd64a366e8d132bc9a66d4c39a79f69187a1a7fa54e05674c07a1d76b"
+        }
+      ]
+    },
+    {
+      "record_index": 52647,
+      "event_id": "evt_44ea5b05-8df5-5713-90b5-81f63ce2e782",
+      "event_name": "2026 Algerian parliamentary election",
+      "enhanced_time": "2026-07-02",
+      "baseline_record_sha256": "80ee10cb4dee5c86de7a8482d6dd4e603666cabd5776191f27b36599050f7d7d",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_404d3cea-c7c2-5ae2-af92-2c0c9e83c36c",
+          "before_sha256": "431e16e6213bb0207b74b1c7535ba02f243e6a62af606d29ccf8eb76cea1cd65"
+        }
+      ]
+    },
+    {
+      "record_index": 52648,
+      "event_id": "evt_88529b3c-2fc5-552d-95c9-d04f0d21ac5d",
+      "event_name": "Hamas announces civil administration’s resignation",
+      "enhanced_time": "2026-07-06",
+      "baseline_record_sha256": "29f339dac3f5fd54d09bbe02cc75fad3c6098b157ed5fd044409cb16519e3e41",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_47e9f10e-8555-5263-a6e3-079b66cc6524",
+          "before_sha256": "99810700438cddc8efab41049d9e315d01ea49caad75f23ded59d120a757fb4e"
+        }
+      ]
+    },
+    {
+      "record_index": 52650,
+      "event_id": "evt_bacc641e-59a9-5f8e-9bbb-27b7f1c95964",
+      "event_name": "Carlos Vila Nova reelected president",
+      "enhanced_time": "2026-07-19",
+      "baseline_record_sha256": "5c7f3e774b2e7336adff3a8b6c34b6bcb93776d33de568cbd707adfed041a9ff",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ef22d408-00d7-5ceb-9d82-a5215d4de0d7",
+          "before_sha256": "e70a0dbbc05efbab1c31878f317d48843b3a4658ae61c732230ee894e057fcfc"
+        }
+      ]
+    },
+    {
+      "record_index": 52652,
+      "event_id": "evt_de690350-6a7c-5a9f-ae64-cb6bef6e045e",
+      "event_name": "Houthis announce blockade against Saudi Arabia",
+      "enhanced_time": "2026-07-20",
+      "baseline_record_sha256": "c2cdbfd6266e28c1dcfee7c00c7de9c0aac6cf550de1d8f529b539556b5b380b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_d196e612-386a-51d1-b99e-90808207cf1b",
+          "before_sha256": "8a6d4846f9c4d22d35a85b82bc94f5208673cd6d19006a131b850d1f1394c6de"
+        }
+      ]
+    },
+    {
+      "record_index": 52653,
+      "event_id": "evt_9549e73c-665d-55d1-b7b6-180bfde87917",
+      "event_name": "Earthquake strikes Kumamoto Prefecture",
+      "enhanced_time": "2026-07-28",
+      "baseline_record_sha256": "6a2dd14292961ba8e04694640f06413e11c1efc3d95b6980e133337a8fe004cd",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_8eac3d15-b7ef-5b15-93c9-b56ed0c1cd30",
+          "before_sha256": "525ac1717fb6b51818c820737e58d3d3cadd6bfe73f49061979626b05e35893b"
+        }
+      ]
+    },
+    {
+      "record_index": 52654,
+      "event_id": "evt_be0968ac-bcc7-5026-9c28-54af4ea3b7e9",
+      "event_name": "Saudi Arabia announces a maritime military alliance",
+      "enhanced_time": "2026-07-30",
+      "baseline_record_sha256": "c0ee20a884bc48a1a703322a5aea3c7c3288382e8a884ce2db6cbf8c62b579c9",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_482f76a3-2ae4-5416-8c66-eb463aa3fb61",
+          "before_sha256": "362802b1a12f7ba84a4cb56162899fb6a5fd324790b42ee62b41bc81079f286f"
+        }
+      ]
+    },
+    {
+      "record_index": 52655,
+      "event_id": "evt_cf5e14ff-1f26-54ff-9324-bb3109941b31",
+      "event_name": "Ceuta migrant crisis",
+      "enhanced_time": "2026-07-30",
+      "baseline_record_sha256": "2cd61de24db8cace507f49af0f781995bb9a053635b2de84ef2bd6635983f781",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_a1bff5e9-8586-5dcd-ac3f-dcb64f1ba4a0",
+          "before_sha256": "0941c9c1a645db3895b4cb0bcbeff2dd3d994f0a0af5e87c091c6d990067fe1b"
+        },
+        {
+          "location_index": 1,
+          "place_id": "plc_89207031-ea38-5275-8f45-b1f8a928d125",
+          "before_sha256": "fd5c31c89483e248920f7169214ac222f5fa0fd8730dc0e0977dff08b969fdf3"
+        }
+      ]
+    },
+    {
+      "record_index": 52656,
+      "event_id": "evt_fd30d4af-2063-5cd3-9287-05dd7fe40401",
+      "event_name": "Broad Peak avalanche kills ten climbers",
+      "enhanced_time": "2026-07-30",
+      "baseline_record_sha256": "c5f659e5e93b4c783a8bd331a5f6b2cf3d71b5f58e82871b36d9babd8f2ef27b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_5936afa7-ea70-55f2-8b40-81e5c711a344",
+          "before_sha256": "9931a82e06082c75928d34fb93dec149aaf3aaa42d57e4e8e9f0d5e432ad8619"
+        }
+      ]
+    },
+    {
+      "record_index": 52657,
+      "event_id": "evt_867a6c92-7f58-5d6e-a0dd-daf8478b3cb6",
+      "event_name": "Poland wins the Men’s Volleyball Nations League",
+      "enhanced_time": "2026-08-02",
+      "baseline_record_sha256": "94962e398cb459ebb13c1bacf22e207d30c3efa7e0afa578fe81530229920343",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ac7b1d9a-09cd-5f39-9ae4-74929c6d4670",
+          "before_sha256": "ca2c4a5c91192a9c1b8660d686670fe215e8da10487244231f5f1bd1fa4038a4"
+        }
+      ]
+    },
+    {
+      "record_index": 52659,
+      "event_id": "evt_8cc6d991-1db7-5eaa-bfaf-82fbd19bfc2a",
+      "event_name": "Magnitude 7.4 earthquake strikes Colombia",
+      "enhanced_time": "2026-08-10",
+      "baseline_record_sha256": "857645df618a20a704e543df5913e8ffd304e5bf4d9dfada695a32919ba9db30",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_1b8042a2-469a-508e-9944-dfe151861e37",
+          "before_sha256": "23e32f571219e40bfd088573e616e88fdf7ec4f28d1d7b4ef8dd4a7b90b085e7"
+        }
+      ]
+    },
+    {
+      "record_index": 52660,
+      "event_id": "evt_04a2a5ed-7e00-5cc6-83a4-ad8c738f5cfc",
+      "event_name": "Lake Kariba ferry capsizes",
+      "enhanced_time": "2026-08-11",
+      "baseline_record_sha256": "d81fa2b6cbfe0c4f72c860935160cf379ff5cea01c2e9995f8834a93fbf551b8",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_6227b5d2-4a02-515b-a344-6c63bf780734",
+          "before_sha256": "d7bb1f6da308a6788765b7f071fe832857977fda17ce8b201bc03316096e9939"
+        }
+      ]
+    },
+    {
+      "record_index": 52662,
+      "event_id": "evt_5e18422e-7d4e-5e56-b412-4dcd37ee2940",
+      "event_name": "Earthquake strikes off Flores",
+      "enhanced_time": "2026-08-15",
+      "baseline_record_sha256": "383b14643245a39edc69b67a6fc426ac2066c823bd1124681d5c98439d7446a6",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_4d214245-513b-58d8-94aa-b2623a9a5627",
+          "before_sha256": "b68460615d8851031fb0c4ba8504ab43f48c80cd05824414aadcf06b7415a87d"
+        }
+      ]
+    },
+    {
+      "record_index": 52663,
+      "event_id": "evt_d51d54ff-0c69-5a38-b089-086cb5927da2",
+      "event_name": "Trump announces “Economic D-Day” against Iran",
+      "enhanced_time": "2026-08-20",
+      "baseline_record_sha256": "092625f593fce8aa9a4529d150098f13e47fe36483c9fa1222336f901a67b469",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_f1869bef-e26b-5804-8534-ee6d850dcb08",
+          "before_sha256": "79d1448da7d29d4af87ff9d49b5adea1432482829bea6fb6bd0437dcc57b7909"
+        }
+      ]
+    },
+    {
+      "record_index": 52664,
+      "event_id": "evt_d425f004-2f49-5eaf-850e-b93e2f76ad48",
+      "event_name": "Nepal–Tibet floods",
+      "enhanced_time": "2026-08-26",
+      "baseline_record_sha256": "c04bd8c74c1d5f8444d751d7a5f4be3954ddf76849c4b7e9267ce79c6bd594b8",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_34644867-4b2a-5a2a-97e7-58b58f72931a",
+          "before_sha256": "0a5eb4bd866416292adebf7e62947da18475e3ff9a277abaf7d5cc2d21412fa0"
+        },
+        {
+          "location_index": 1,
+          "place_id": "plc_096d6349-cfca-511e-93d5-9254e0b9a937",
+          "before_sha256": "4c84717985c2bb2fd197cef9130aaeed8b6c136cd922073e9d8cbcb9e0982cb9"
+        }
+      ]
+    },
+    {
+      "record_index": 52665,
+      "event_id": "evt_a0ef3f73-0141-5ff8-ad83-07924f283b2c",
+      "event_name": "Iceland rejects continuation of EU membership talks",
+      "enhanced_time": "2026-08-29",
+      "baseline_record_sha256": "8619948ae1fa3d7a5defcf40ecb32ba9a5f82fdfc1c5219958d083c4b0735417",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_f00c3e43-bbd4-5c53-85f4-50bae02d23c7",
+          "before_sha256": "8c92fbc62cb472939bd68b0475c0617635c597492389a727e0b9cc8b28f48cb3"
+        }
+      ]
+    },
+    {
+      "record_index": 52666,
+      "event_id": "evt_dd51e395-5eb2-54a9-87e8-6e9bc0da1c0f",
+      "event_name": "Coup attempt in Niger",
+      "enhanced_time": "2026-08-29",
+      "baseline_record_sha256": "7c3efcb24d108486bcd13ebcdc8c4a287337747fc9bc0ad2766d1ce2131f62c6",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_52966529-34ae-577b-9b6b-10e61f47aded",
+          "before_sha256": "4116b42fba12cfb9e552c5e593dfe165dc848df938270c820ffc53d211e2797e"
+        }
+      ]
+    },
+    {
+      "record_index": 52667,
+      "event_id": "evt_4fa04906-5814-5247-ae11-c0c8dd951be7",
+      "event_name": "Ülle Madise elected president of Estonia",
+      "enhanced_time": "2026-09-02",
+      "baseline_record_sha256": "51ac35d3e173aed6233c660f71097f5eeac1462b8944c2cf9d78305917335569",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_d3002fe4-9bce-5cb5-b214-e86c8f2ca90b",
+          "before_sha256": "2e8eea42c2702c59db559494bab75610c8cfe8f333e29d2ea0eff227dee37f74"
+        }
+      ]
+    },
+    {
+      "record_index": 52670,
+      "event_id": "evt_8e8a80c4-2974-5df2-9b3a-9b471db0b13d",
+      "event_name": "MV June Aster ferry fire",
+      "enhanced_time": "2026-09-09",
+      "baseline_record_sha256": "b5dfd47e936b1d92ebacbd79bf7a02767a5e315dec45bb398439e865f88a716c",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_796725fd-a67f-54fd-8497-c264f022bc28",
+          "before_sha256": "c8dda7743b6edbb81146817bc8ed7f1e8706747d4ce27565d519b438a0ddc4ed"
+        }
+      ]
+    },
+    {
+      "record_index": 52671,
+      "event_id": "evt_1e76ea92-d57b-5aeb-9811-6616e281532c",
+      "event_name": "2026 Swedish general election",
+      "enhanced_time": "2026-09-13",
+      "baseline_record_sha256": "2858390a0ce802037ccfc6501ff28ba42f59b6e0f2c1117692cad867f22a1698",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_5ec6a9a9-c9cb-5a37-92bf-a61f5e3f8ffd",
+          "before_sha256": "11ccb5bca16f7afc816f70ba174a5fdb1293b9f844f05653209eac7ef1c925d4"
+        }
+      ]
+    },
+    {
+      "record_index": 52672,
+      "event_id": "evt_c270f4f6-49a3-5379-87aa-6ed51678988d",
+      "event_name": "Virgo Transport 8 sinks in the Java Sea",
+      "enhanced_time": "2026-09-13",
+      "baseline_record_sha256": "840e0c38c66d9362df6412ab85b022b2c89e1c3c6cadf25b1582b94c6a8653a7",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_6bb08957-643a-517d-82ac-3b232998d477",
+          "before_sha256": "6f79bef04e35d77f6b3e736eb9d29647395fbb4e50357feabe043aaa6412b2ef"
+        }
+      ]
+    },
+    {
+      "record_index": 52673,
+      "event_id": "evt_e4cff852-13fc-5991-bbc6-aa86c81094f5",
+      "event_name": "United States acknowledges orbital weapons",
+      "enhanced_time": "2026-09-14",
+      "baseline_record_sha256": "07e551720ab2d0e4a627afe0e441cea8e53b2d4e4a2ff033a6e7b6430f5338ea",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_5de94f68-2925-57fe-91cb-44398f417f57",
+          "before_sha256": "2374a6543bfe8f36d449e9eaba295cd17afc6d34b15b479de4e727e28e228feb"
+        }
+      ]
+    },
+    {
+      "record_index": 52674,
+      "event_id": "evt_9b8bf7f1-830b-5969-9988-7daa1aae45fe",
+      "event_name": "French student protests begin",
+      "enhanced_time": "2026-09-18",
+      "baseline_record_sha256": "e2af32777b3d4f10ebca208e049bb2498bf293cc15dc84ac53b9b5d3aaa133de",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_b0be48dc-7a3d-5905-8c50-d78f09435713",
+          "before_sha256": "5cc1f0352fc7832c674b44366c3e38a563824f8573eca63e31d783eaffaa1472"
+        },
+        {
+          "location_index": 1,
+          "place_id": "plc_556bdb1c-b203-5dc1-b0fa-238349ff2efc",
+          "before_sha256": "802afc1ecf600a8f3cc915088755f2a56de7efad3b36bc0adbc3f817c64ee738"
+        }
+      ]
+    },
+    {
+      "record_index": 52675,
+      "event_id": "evt_c651d592-fb14-53e3-afa3-293fdd53585d",
+      "event_name": "2026 Moroccan general election",
+      "enhanced_time": "2026-09-23",
+      "baseline_record_sha256": "9fdc7cf9b889a5e91efbf7475cfa7f1aa4b9a530122cf706372897671d403eb5",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_0acb5daf-b63a-58e2-9cfb-c649a048ccd2",
+          "before_sha256": "1586a5d35206f2a3bd0d97561efd620b86b1fe892d5062906a675bbed274076b"
+        }
+      ]
+    },
+    {
+      "record_index": 52676,
+      "event_id": "evt_541e687c-9c3f-58ff-8cf8-137c87f133c6",
+      "event_name": "TPLF and allies launch offensive in northern Ethiopia",
+      "enhanced_time": "2026-09-23",
+      "baseline_record_sha256": "cf4f06ba26188f46ca1911a64f6b297a1b0041f0e5ecd5085c2534725cbbd849",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_c582cf1a-b133-50c1-97b4-4c0007d7b468",
+          "before_sha256": "573cf0bfb21da6a39bebd4485d2b6064b9f42de1e58f0eeb4bf7997d6d9477d5"
+        }
+      ]
+    },
+    {
+      "record_index": 52678,
+      "event_id": "evt_325693e0-d263-5254-b1d7-15ba73adeeeb",
+      "event_name": "2026 Bosnian general election",
+      "enhanced_time": "2026-10-04",
+      "baseline_record_sha256": "08acba7b7168e38f9de8bdc2011dba79dfbd568d43afee35ec25f463bdcf4374",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_f2e17826-626d-5805-bbd2-511133cfe3a4",
+          "before_sha256": "4cabac5f7eb1a8615be37a5522ed72183ea1e357e2543095bc79d0a7c9dad8bb"
+        }
+      ]
+    },
+    {
+      "record_index": 52679,
+      "event_id": "evt_c43d0d97-f358-5642-91e7-8b1c33e86039",
+      "event_name": "Peshawar school roof collapse",
+      "enhanced_time": "2026-10-15",
+      "baseline_record_sha256": "707d3625d65fb52e5fcc405e65f09d9bf620517ddae053649aa5488661e1386b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_6a4d4210-c653-5066-966f-999c5dbdc675",
+          "before_sha256": "f1e36659b65b1544a175427dd8c6b6ac29a90f10001819428d275ce1ffd8bc7c"
+        }
+      ]
+    },
+    {
+      "record_index": 52681,
+      "event_id": "evt_de58dc09-dd54-5910-8d79-582009d3f437",
+      "event_name": "Drone attack on a market in Abyei",
+      "enhanced_time": "2026-10-19",
+      "baseline_record_sha256": "a33db75ccb843d1c14815a309776b572d222cac6f0767bf974f31a572dda665b",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_ce0abf58-b3a3-524a-8304-7b4107b1ce96",
+          "before_sha256": "a84d6968bd52c15bdfae9fd7582bc39d807ed77886baeb6ad0b2f602e1facb19"
+        }
+      ]
+    },
+    {
+      "record_index": 52682,
+      "event_id": "evt_f41393ab-403c-53c3-9ff6-12e0116473f4",
+      "event_name": "Karak church mass shooting",
+      "enhanced_time": "2026-10-23",
+      "baseline_record_sha256": "89ad1d3d15a381690369814305fa25b5d12e8df2c8b19d9f1a0979e547ab4e04",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_7168a020-3a7c-5485-a84d-bdf4b2dddd49",
+          "before_sha256": "74dc4d5cc970431a959850cedf25930520119efda6a6e5af0f10345f43d0ec02"
+        }
+      ]
+    },
+    {
+      "record_index": 52683,
+      "event_id": "evt_0bb3c40d-b4de-5d40-8a56-01a1c95c4e3b",
+      "event_name": "Armenia wins Junior Eurovision 2026",
+      "enhanced_time": "2026-10-24",
+      "baseline_record_sha256": "4ab097e0e549cdf58e1c3b2c1e45ebedb6849551948c4c287bac91a7186a09da",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_3785d890-1e45-5136-bca8-70ae463a0e5f",
+          "before_sha256": "dbc09e534c24d0e9b806c2fda675c629a35ddb224f10a0fd276f549e3cf8939f"
+        }
+      ]
+    },
+    {
+      "record_index": 52684,
+      "event_id": "evt_25e82d4a-6eb7-509b-9df9-f760258a0c2f",
+      "event_name": "Lula wins Brazilian presidential runoff",
+      "enhanced_time": "2026-10-25",
+      "baseline_record_sha256": "23d797d4a1817c755dbbed310940bdac62e5f17019f2dcc22822ea474cfc3528",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_9b1823d0-da55-5937-a7f2-194df5a1493a",
+          "before_sha256": "68591bdfb40ff8d1612d88cbb8e92e8e576580771f9ea904b129561498b2133d"
+        }
+      ]
+    },
+    {
+      "record_index": 52685,
+      "event_id": "evt_1f862d9d-b3cd-5441-909b-8bb4642a9410",
+      "event_name": "Student List wins Serbian parliamentary election",
+      "enhanced_time": "2026-10-25",
+      "baseline_record_sha256": "349a507c1b7e39dc9aecfaefe663cbae8645fcbd8533ac5055fea0ab628636e5",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_731b3c05-2d64-5607-be84-bd49ae1c0467",
+          "before_sha256": "e55335e4238f70af32d539d8d017f6e2be306cec081c3b800b9e5926a5273845"
+        }
+      ]
+    },
+    {
+      "record_index": 52686,
+      "event_id": "evt_38adc551-4baf-5833-8b6b-9fd4e61b64c0",
+      "event_name": "High-speed trains collide in Los Yébenes, Spain",
+      "enhanced_time": "2026-10-28",
+      "baseline_record_sha256": "ddbfd9e6a8231e1a9b95364217c15727698f8164caf4d68c1c205fe4ddd55487",
+      "locations": [
+        {
+          "location_index": 0,
+          "place_id": "plc_83f21cb0-0fdc-5030-aa89-3beec7d8f3cb",
+          "before_sha256": "7e82a74ee5ecf7995d5a2d2cc3ab2b9b353e8e3eac315f4a55cb84a108a8ab95"
         }
       ]
     }

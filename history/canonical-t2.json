@@ -1,12 +1,13 @@
 {
   "metadata": {
     "dataset_id": "world-history",
-    "snapshot_id": "world-history-early-expansion-v1",
-    "timestamp": "2026-10-28T23:41:07+00:00",
-    "parent_snapshot_id": "world-history-early-times-v1",
-    "parent_sha256": "49b8f43b83a89999960d6a02733edf876da42f27d5b38fdf4462f2ec9a6832f6",
+    "snapshot_id": "world-history-recent2026-v3",
+    "timestamp": "2026-10-29T20:10:28.106051+00:00",
+    "parent_snapshot_id": "world-history-early-expansion-v1",
+    "parent_sha256": "c425d62ac9e6af095c4bc21fe1598a3d98ef276079cdcb5fa519495c3d78ab8a",
     "early_times_draft_manifest_sha256": "1545ac4ba518c02dfc8cea8f4a903b9dcc8cbb3f4beba0bbf6c7862522e4923b",
-    "release_status": "candidate_pending_public_release"
+    "release_status": "candidate_pending_public_release",
+    "recent2026_source_artifact_sha256": "587cd23c058bad913582514ff08f7fd513447398b6c999cf56a8455d6bc82377"
   },
   "events": [
     {
@@ -2311859,6 +2311860,4967 @@
         "https://en.wikipedia.org/w/index.php?oldid=1380967451"
       ],
       "article_reference_status": "source_timeline"
+    },
+    {
+      "event_id": "evt_71c8e21c-e3a2-56b6-b39b-61d78af5bf38",
+      "name": "Crans-Montana bar fire",
+      "enhanced_time": "2026-01-01",
+      "enhanced_description": "41 people are killed and 116 injured in a fire at a bar in Crans-Montana, Switzerland.",
+      "locations": [
+        {
+          "place_id": "plc_1f3197be-ca04-5930-ab53-ec53ebd7398d",
+          "name": "Crans-Montana",
+          "city": "Crans-Montana",
+          "region": "",
+          "country": "Switzerland",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 0
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-01",
+        "date_precision": "day",
+        "source_date_label": "January 1",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_7a7923ff-e6dc-5019-ae20-50b5ab109ccd",
+      "name": "U.S. strikes in Venezuela and capture of Nicolás Maduro",
+      "enhanced_time": "2026-01-03",
+      "enhanced_description": "The United States launches several airstrikes on multiple locations across northern Venezuela, capturing Venezuelan president Nicolás Maduro and first lady Cilia Flores.",
+      "locations": [
+        {
+          "place_id": "plc_b91bb13b-8070-5a15-8f16-e393e944efc5",
+          "name": "Venezuela",
+          "city": "",
+          "region": "",
+          "country": "Venezuela",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 1
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-03",
+        "date_precision": "day",
+        "source_date_label": "January 3",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_b4e8b29b-39bd-5d0e-9408-6da841158578",
+      "name": "2026 northeastern Syria offensive",
+      "enhanced_time": "2026-01-06",
+      "enhanced_description": "Fighting between Syrian government forces and the Kurdish armed group Syrian Democratic Forces begins.",
+      "locations": [
+        {
+          "place_id": "plc_92e39b02-1b28-5bbe-a75e-28e2653e31f8",
+          "name": "Syria",
+          "city": "",
+          "region": "",
+          "country": "Syria",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 2
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-06",
+        "date_precision": "day",
+        "source_date_label": "January 6",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_ccb0ff3d-87c4-519c-b432-0074233910b0",
+      "name": "2026 Beninese parliamentary election",
+      "enhanced_time": "2026-01-11",
+      "enhanced_description": "The 2026 Beninese parliamentary election is held.",
+      "locations": [
+        {
+          "place_id": "plc_d5452e4d-a123-5287-a3a4-130e4fea701b",
+          "name": "Benin",
+          "city": "",
+          "region": "",
+          "country": "Benin",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 3
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-11",
+        "date_precision": "day",
+        "source_date_label": "January 11",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_375ef8d8-33cd-56fb-b8f4-6bed3ce652f3",
+      "name": "Karachi shopping mall fire",
+      "enhanced_time": "2026-01-17",
+      "enhanced_description": "A fire at a shopping mall in Karachi, Pakistan, kills 80 people.",
+      "locations": [
+        {
+          "place_id": "plc_0786f989-c35e-55c8-a388-0dccf3bd7c13",
+          "name": "Karachi",
+          "city": "Karachi",
+          "region": "",
+          "country": "Pakistan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 4
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-17",
+        "date_precision": "day",
+        "source_date_label": "January 17",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_00c1c624-df16-5e7e-8883-677ae4a33b00",
+      "name": "Syrian government gains territory after offensive",
+      "enhanced_time": "2026-01-20",
+      "enhanced_description": "The Syrian transitional government captures most of the territory held by the Syrian Democratic Forces following an offensive and subsequent ceasefire.",
+      "locations": [
+        {
+          "place_id": "plc_dc2d1088-eeae-5a61-b9a1-e97587f79c12",
+          "name": "Syria",
+          "city": "",
+          "region": "",
+          "country": "Syria",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 5
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-20",
+        "date_precision": "day",
+        "source_date_label": "January 20",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_35bd8574-796f-5151-9003-d21940594a23",
+      "name": "West Java landslides",
+      "enhanced_time": "2026-01-24",
+      "enhanced_description": "At least 70 people are killed and 10 others missing after major landslides in West Java, Indonesia.",
+      "locations": [
+        {
+          "place_id": "plc_336b91ab-ac40-5c37-9049-e61bdb83142f",
+          "name": "West Java",
+          "city": "",
+          "region": "West Java",
+          "country": "Indonesia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 6
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-24",
+        "date_precision": "day",
+        "source_date_label": "January 24",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_fcc5d2e9-0e39-5041-9f54-ecb099b7e95f",
+      "name": "Rubaya mine collapses",
+      "enhanced_time": "2026-01-28",
+      "enhanced_description": "Successive mine collapses at the Rubaya coltan mine in eastern Democratic Republic of the Congo kill more than 600 people.",
+      "locations": [
+        {
+          "place_id": "plc_4dc961b1-fcc5-5b0d-bdd0-d68fa5b6c5ba",
+          "name": "Rubaya",
+          "city": "Rubaya",
+          "region": "",
+          "country": "Democratic Republic of the Congo",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_9fd3123c-6561-5888-a214-b2e44f93badc",
+          "name": "Democratic Republic of the Congo",
+          "city": "",
+          "region": "",
+          "country": "Democratic Republic of the Congo",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 7
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-28",
+        "date_precision": "day",
+        "source_date_label": "January 28",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_ee39fb04-9e5d-5f11-9d22-83d079785844",
+      "name": "Clashes erupt in Ethiopia’s Tigray region",
+      "enhanced_time": "2026-01-29",
+      "enhanced_description": "Ethiopian civil conflict: Clashes erupt in the Tigray region in Ethiopia between Tigrayan fighters and Federal Forces.",
+      "locations": [
+        {
+          "place_id": "plc_0ca29f66-7055-56c5-98f1-54a365fb11ae",
+          "name": "Tigray Region",
+          "city": "",
+          "region": "Tigray Region",
+          "country": "Ethiopia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 8
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-29",
+        "date_precision": "day",
+        "source_date_label": "January 29",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_79f9147e-5d5b-5fd2-9642-ba7bf0b0f5df",
+      "name": "Balochistan attacks and fighting",
+      "enhanced_time": "2026-01-29",
+      "enhanced_description": "Insurgency in Balochistan: Fighting between the Balochistan Liberation Army and the Pakistani armed forces in several districts of Balochistan, Pakistan, leaves at least 225 people dead.",
+      "locations": [
+        {
+          "place_id": "plc_7e47da63-a630-5097-9e7d-3ca541b52d04",
+          "name": "Balochistan",
+          "city": "",
+          "region": "Balochistan",
+          "country": "Pakistan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 9
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-29",
+        "date_precision": "day",
+        "source_date_label": "January 29",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_c4a1deb2-8f2b-53ed-9ba4-4e30ebed1c6b",
+      "name": "Three million pages of Epstein files released",
+      "enhanced_time": "2026-01-30",
+      "enhanced_description": "Three million pages related to the Epstein files are released to the public, mentioning many high-profile public figures worldwide.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "politics",
+        "crime"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 10
+        }
+      ],
+      "temporal": {
+        "date": "2026-01-30",
+        "date_precision": "day",
+        "source_date_label": "January 30",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_2a53f706-3d4b-5c08-b81f-8ff36517acdb",
+      "name": "Boko Haram attacks villages in Kwara State",
+      "enhanced_time": "2026-02-03",
+      "enhanced_description": "Boko Haram insurgency: Boko Haram attacks two villages in Kwara State, Nigeria, killing at least 162 people.",
+      "locations": [
+        {
+          "place_id": "plc_7a5cfa5e-b619-566a-8969-776263f8cefc",
+          "name": "Kwara State",
+          "city": "",
+          "region": "Kwara State",
+          "country": "Nigeria",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 11
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-03",
+        "date_precision": "day",
+        "source_date_label": "February 3",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_1543d241-b7e8-59ee-bd42-af76b7085da6",
+      "name": "Islamabad mosque bombing",
+      "enhanced_time": "2026-02-06",
+      "enhanced_description": "At least 31 people are killed and another 100 are injured in a suicide bombing at the Khadija Tul Kubra Mosque in Islamabad, Pakistan.",
+      "locations": [
+        {
+          "place_id": "plc_ac9dc1cd-62c8-5132-8d56-c24de8566ebc",
+          "name": "Islamabad",
+          "city": "Islamabad",
+          "region": "",
+          "country": "Pakistan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "crime"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 12
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-06",
+        "date_precision": "day",
+        "source_date_label": "February 6",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_804970ee-1e06-58b1-aef8-7963e6f90918",
+      "name": "2026 Men’s T20 World Cup begins",
+      "enhanced_time": "2026-02-07",
+      "enhanced_description": "The 2026 Men's T20 World Cup held in India and Sri Lanka begins.",
+      "locations": [
+        {
+          "place_id": "plc_a99cf67b-4e72-5f2e-b503-cffc7ab4f231",
+          "name": "India",
+          "city": "",
+          "region": "",
+          "country": "India",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_4c71a775-cbca-54d0-9803-f2eb183cc884",
+          "name": "Sri Lanka",
+          "city": "",
+          "region": "",
+          "country": "Sri Lanka",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "sports"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 13
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-07",
+        "date_precision": "day",
+        "source_date_label": "February 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_90129881-d863-5ec0-b076-78173fb8e2f4",
+      "name": "Haiti’s Transitional Presidential Council dissolves",
+      "enhanced_time": "2026-02-07",
+      "enhanced_description": "The Transitional Presidential Council of Haiti is dissolved, transferring executive power to acting prime minister Alix Didier Fils-Aimé.",
+      "locations": [
+        {
+          "place_id": "plc_36d62011-326d-5255-9fdc-92eb6e96287c",
+          "name": "Haiti",
+          "city": "",
+          "region": "",
+          "country": "Haiti",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 14
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-07",
+        "date_precision": "day",
+        "source_date_label": "February 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_b33c7b6d-d69a-54c4-9886-45dfd2775f6a",
+      "name": "2026 Japanese general election",
+      "enhanced_time": "2026-02-08",
+      "enhanced_description": "2026 Japanese general election: Incumbent Prime Minister Sanae Takaichi wins a landslide victory, securing a supermajority in the House of Representatives.",
+      "locations": [
+        {
+          "place_id": "plc_3cc5bd23-3e5e-5f70-8e40-9ebc4f23c196",
+          "name": "Japan",
+          "city": "",
+          "region": "",
+          "country": "Japan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 15
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-08",
+        "date_precision": "day",
+        "source_date_label": "February 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_8bf438de-f559-5034-bc1d-8a4f5042fe85",
+      "name": "Thai election and constitutional referendum",
+      "enhanced_time": "2026-02-08",
+      "enhanced_description": "2026 Thai general election and constitutional referendum: Incumbent Prime Minister Anutin Charnvirakul wins a plurality in the House of Representatives, and the Referendum to begin drafting a new constitution passes.",
+      "locations": [
+        {
+          "place_id": "plc_ed924a37-0591-5d43-a3c4-3d3495642073",
+          "name": "Thailand",
+          "city": "",
+          "region": "",
+          "country": "Thailand",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 16
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-08",
+        "date_precision": "day",
+        "source_date_label": "February 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_94323432-e445-5f98-b2f3-16ae37f04e10",
+      "name": "António José Seguro wins Portuguese presidential runoff",
+      "enhanced_time": "2026-02-08",
+      "enhanced_description": "2026 Portuguese presidential election: Socialist candidate António José Seguro is elected President of Portugal in the second round, beating Chega leader André Ventura.",
+      "locations": [
+        {
+          "place_id": "plc_3ebf862f-2607-5357-a5a5-239828f7ec4d",
+          "name": "Portugal",
+          "city": "",
+          "region": "",
+          "country": "Portugal",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 17
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-08",
+        "date_precision": "day",
+        "source_date_label": "February 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_59211f4f-b704-5a7f-83d4-9520302a784d",
+      "name": "Tumbler Ridge mass shooting",
+      "enhanced_time": "2026-02-10",
+      "enhanced_description": "At least nine people, including the perpetrator, are killed, and 27 are injured in a mass shooting at Tumbler Ridge Secondary School and at a residence in Tumbler Ridge, British Columbia, Canada.",
+      "locations": [
+        {
+          "place_id": "plc_daa6095a-edab-5d23-909b-e9bb6b930fa3",
+          "name": "Tumbler Ridge",
+          "city": "Tumbler Ridge",
+          "region": "",
+          "country": "Canada",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "crime"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 18
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-10",
+        "date_precision": "day",
+        "source_date_label": "February 10",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_896197dc-9f3b-5620-a518-6c6d7133ef83",
+      "name": "2026 Laotian parliamentary election",
+      "enhanced_time": "2026-02-22",
+      "enhanced_description": "The 2026 Laotian parliamentary election is held.",
+      "locations": [
+        {
+          "place_id": "plc_0c312d76-0216-5ccf-ae25-5f478587783a",
+          "name": "Laos",
+          "city": "",
+          "region": "",
+          "country": "Laos",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 19
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-22",
+        "date_precision": "day",
+        "source_date_label": "February 22",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_42d0479f-c409-52df-a283-a1d74c6a0f58",
+      "name": "Jalisco military operation kills El Mencho",
+      "enhanced_time": "2026-02-22",
+      "enhanced_description": "2026 Jalisco operation: A military operation in Tapalpa, Jalisco, Mexico, kills 62 people including Jalisco New Generation Cartel leader El Mencho.",
+      "locations": [
+        {
+          "place_id": "plc_49565a5f-60eb-5f9c-94d2-f854f9a18790",
+          "name": "Tapalpa",
+          "city": "Tapalpa",
+          "region": "",
+          "country": "Mexico",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "crime"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 20
+        }
+      ],
+      "temporal": {
+        "date": "2026-02-22",
+        "date_precision": "day",
+        "source_date_label": "February 22",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_e3048151-644e-56c7-a2a7-f5fe4f31c5f0",
+      "name": "2026 Colombian parliamentary election",
+      "enhanced_time": "2026-03-08",
+      "enhanced_description": "2026 Colombian parliamentary election: President Gustavo Petro's party Historic Pact wins a plurality of seats in the Chamber of Representatives and the Senate.",
+      "locations": [
+        {
+          "place_id": "plc_37ae43d3-4879-5740-bef2-12702fa44a1f",
+          "name": "Colombia",
+          "city": "",
+          "region": "",
+          "country": "Colombia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 21
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-08",
+        "date_precision": "day",
+        "source_date_label": "March 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_5e85197c-ef3c-5a85-a96a-59668f6ce4e1",
+      "name": "India wins the 2026 Men’s T20 World Cup",
+      "enhanced_time": "2026-03-08",
+      "enhanced_description": "India beats New Zealand in the 2026 Men's T20 World Cup final and secures its third title.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "sports"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 22
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-08",
+        "date_precision": "day",
+        "source_date_label": "March 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_1e196d67-e3ea-5d9f-b256-3e9a87a706ca",
+      "name": "U.S. bombing raid on Kharg Island",
+      "enhanced_time": "2026-03-13",
+      "enhanced_description": "2026 Iran war: The United States Air Force conducts a large bombing raid on Kharg Island, a key oil export hub off the Persian Gulf coast of Iran.",
+      "locations": [
+        {
+          "place_id": "plc_36849d9c-a365-5e82-b4ae-046a357617d2",
+          "name": "Kharg Island",
+          "city": "",
+          "region": "",
+          "country": "Iran",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "site",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 23
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-13",
+        "date_precision": "day",
+        "source_date_label": "March 13",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_18d19cc4-1a1a-559e-83ef-ec9ec8889cee",
+      "name": "Kazakhstan approves a new constitution",
+      "enhanced_time": "2026-03-15",
+      "enhanced_description": "2026 Kazakh constitutional referendum: The new Constitution of Kazakhstan is accepted with 90% in favor.",
+      "locations": [
+        {
+          "place_id": "plc_1a1add5b-eb54-58fa-b02d-edfe8b19999f",
+          "name": "Kazakhstan",
+          "city": "",
+          "region": "",
+          "country": "Kazakhstan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 24
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-15",
+        "date_precision": "day",
+        "source_date_label": "March 15",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_37b77862-c1d0-5199-88bb-011f2200a861",
+      "name": "2026 North Korean parliamentary election",
+      "enhanced_time": "2026-03-15",
+      "enhanced_description": "2026 North Korean parliamentary election: General Secretary Kim Jong Un's Workers' Party wins a landslide majority in the Supreme People's Assembly.",
+      "locations": [
+        {
+          "place_id": "plc_935f3603-478c-50d6-8dea-acfa05b6b438",
+          "name": "North Korea",
+          "city": "",
+          "region": "",
+          "country": "North Korea",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 25
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-15",
+        "date_precision": "day",
+        "source_date_label": "March 15",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_34555d8d-058c-5011-a207-eb90c82044b7",
+      "name": "2026 Vietnamese legislative election",
+      "enhanced_time": "2026-03-15",
+      "enhanced_description": "2026 Vietnamese legislative election: The Communist Party led by General Secretary Tô Lâm wins almost all the seats in the National Assembly of Vietnam.",
+      "locations": [
+        {
+          "place_id": "plc_a5886a43-ca77-533e-b428-36b5a71415ad",
+          "name": "Vietnam",
+          "city": "",
+          "region": "",
+          "country": "Vietnam",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 26
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-15",
+        "date_precision": "day",
+        "source_date_label": "March 15",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_ac128078-97d9-58a9-982c-eb9f705b0feb",
+      "name": "Denis Sassou Nguesso wins reelection in Congo",
+      "enhanced_time": "2026-03-15",
+      "enhanced_description": "2026 Republic of the Congo presidential election: Incumbent President Denis Sassou Nguesso wins reelection in a landslide victory.",
+      "locations": [
+        {
+          "place_id": "plc_e6ad2fcf-ff68-502c-ae3d-274ae7f85a61",
+          "name": "Republic of the Congo",
+          "city": "",
+          "region": "",
+          "country": "Republic of the Congo",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 27
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-15",
+        "date_precision": "day",
+        "source_date_label": "March 15",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_03e7c20f-77c7-56ee-9958-c505c7eb54e1",
+      "name": "Colombian military aircraft crashes near Puerto Leguízamo",
+      "enhanced_time": "2026-03-23",
+      "enhanced_description": "A Lockheed C-130 of the Colombian Aerospace Force crashes near Puerto Leguízamo, Colombia, killing 69 people.",
+      "locations": [
+        {
+          "place_id": "plc_9eb682cb-8d48-5bb7-95bb-b570d12d8d79",
+          "name": "Puerto Leguízamo",
+          "city": "",
+          "region": "",
+          "country": "Colombia",
+          "historical_name": "",
+          "role": "near",
+          "declared_precision": "approximate",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 28
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-23",
+        "date_precision": "day",
+        "source_date_label": "March 23",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_f1a5075e-f1c4-5dd2-a4c9-21cd03b43370",
+      "name": "2026 Danish general election",
+      "enhanced_time": "2026-03-24",
+      "enhanced_description": "2026 Danish general election: Incumbent Prime Minister Mette Frederiksen's coalition loses its majority in the Folketing.",
+      "locations": [
+        {
+          "place_id": "plc_3eab2313-0417-5e0f-8da9-1dc703d3b8a8",
+          "name": "Denmark",
+          "city": "",
+          "region": "",
+          "country": "Denmark",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 29
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-24",
+        "date_precision": "day",
+        "source_date_label": "March 24",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_c8cb7096-9374-5069-a670-a5856344a861",
+      "name": "Iran outlines conditions for Strait of Hormuz passage",
+      "enhanced_time": "2026-03-24",
+      "enhanced_description": "2026 Iran war: Iran's Ministry of Foreign Affairs states in a letter to the United Nations that ships not tied to either the United States or Israel can pass through the Strait of Hormuz.",
+      "locations": [
+        {
+          "place_id": "plc_0ae38e4c-5939-55a3-97ef-c753f3fee73e",
+          "name": "Iran",
+          "city": "",
+          "region": "",
+          "country": "Iran",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 30
+        }
+      ],
+      "temporal": {
+        "date": "2026-03-24",
+        "date_precision": "day",
+        "source_date_label": "March 24",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_5794992d-a556-59f6-a39a-98cec45bd644",
+      "name": "Artemis II launches on lunar flyby mission",
+      "enhanced_time": "2026-04-01",
+      "enhanced_description": "NASA launches the Artemis II lunar flyby mission, marking the first crewed flight beyond low Earth orbit since Apollo 17 in 1972.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science",
+        "exploration"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 31
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-01",
+        "date_precision": "day",
+        "source_date_label": "April 1",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_4c32b6f1-a2c6-5137-a430-ad2ded4732ae",
+      "name": "Artemis II crew sets human distance record",
+      "enhanced_time": "2026-04-06",
+      "enhanced_description": "The crew of Artemis II breaks the record for the furthest humans have ever been from Earth, reaching a maximum distance of 252,756 miles (406,771 km) as they travel around the far side of the Moon.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science",
+        "exploration"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 32
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-06",
+        "date_precision": "day",
+        "source_date_label": "April 6",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "not_applicable"
+    },
+    {
+      "event_id": "evt_bf4c08e8-05ce-5cd4-8b47-b9131582a117",
+      "name": "Tô Lâm elected president of Vietnam",
+      "enhanced_time": "2026-04-07",
+      "enhanced_description": "2026 Vietnamese presidential election: The National Assembly of Vietnam elects General Secretary Tô Lâm as the new president of Vietnam, replacing Lương Cường.",
+      "locations": [
+        {
+          "place_id": "plc_df50bcf3-54b2-5d17-8ac8-85760babc24f",
+          "name": "Vietnam",
+          "city": "",
+          "region": "",
+          "country": "Vietnam",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 33
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-07",
+        "date_precision": "day",
+        "source_date_label": "April 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_773deac9-6172-54fe-94ce-3f47b679d77f",
+      "name": "United States and Iran agree to a two-week ceasefire",
+      "enhanced_time": "2026-04-07",
+      "enhanced_description": "2026 Iran war: Following an ultimatum from Trump regarding the Strait of Hormuz, the United States and Iran agree on a two-week ceasefire.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "war",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 34
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-07",
+        "date_precision": "day",
+        "source_date_label": "April 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_69b8e8d1-2a8c-5a6e-8d25-4c8a95bef577",
+      "name": "Israeli airstrikes across Lebanon",
+      "enhanced_time": "2026-04-08",
+      "enhanced_description": "Israel launches a series of airstrikes across Lebanon, targeting Hezbollah infrastructure. More than 300 people are killed and over 1,100 injured.",
+      "locations": [
+        {
+          "place_id": "plc_cb6929b7-1d94-5ff1-9d2f-252cd000c7e2",
+          "name": "Lebanon",
+          "city": "",
+          "region": "",
+          "country": "Lebanon",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 35
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-08",
+        "date_precision": "day",
+        "source_date_label": "April 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_4ffe6de7-a48f-514b-92ef-15d345b7fd4e",
+      "name": "Ismaïl Omar Guelleh reelected in Djibouti",
+      "enhanced_time": "2026-04-10",
+      "enhanced_description": "2026 Djiboutian presidential election: Incumbent President Ismaïl Omar Guelleh is re-elected for a sixth term.",
+      "locations": [
+        {
+          "place_id": "plc_fc57cbce-6248-5ff9-8dda-535c2945804e",
+          "name": "Djibouti",
+          "city": "",
+          "region": "",
+          "country": "Djibouti",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 36
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-10",
+        "date_precision": "day",
+        "source_date_label": "April 10",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_4fe806eb-1f61-52c2-a475-bc69e9d8c175",
+      "name": "Artemis II crew returns to Earth",
+      "enhanced_time": "2026-04-10",
+      "enhanced_description": "The crew of Artemis II successfully returns to Earth, splashing down safely in the Pacific Ocean near San Diego, California, United States. The four crew members are extracted from the capsule and taken by helicopter to the USS John P. Murtha.",
+      "locations": [
+        {
+          "place_id": "plc_2bda7ec0-030e-5ca2-a9c8-77c9eb31db70",
+          "name": "San Diego",
+          "city": "",
+          "region": "",
+          "country": "United States",
+          "historical_name": "",
+          "role": "near",
+          "declared_precision": "approximate",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "science",
+        "exploration"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 37
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-10",
+        "date_precision": "day",
+        "source_date_label": "April 10",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_eff76ba7-b706-533d-82c8-03660b516cbb",
+      "name": "Péter Magyar defeats Viktor Orbán in Hungarian election",
+      "enhanced_time": "2026-04-12",
+      "enhanced_description": "2026 Hungarian parliamentary election: Incumbent Prime Minister Viktor Orbán loses re-election in a landslide to Péter Magyar's Tisza Party, ending 16 years of Fidesz–KDNP rule.",
+      "locations": [
+        {
+          "place_id": "plc_bb75ab92-e23c-5315-bb6b-9e3166666313",
+          "name": "Hungary",
+          "city": "",
+          "region": "",
+          "country": "Hungary",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 38
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-12",
+        "date_precision": "day",
+        "source_date_label": "April 12",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_718166ee-000b-5c74-ac65-ad694a8b047f",
+      "name": "Romuald Wadagni wins Beninese presidential election",
+      "enhanced_time": "2026-04-12",
+      "enhanced_description": "2026 Beninese presidential election: Independent candidate Romuald Wadagni wins in a landslide with over 94% of the vote.",
+      "locations": [
+        {
+          "place_id": "plc_cddbfe73-b43e-5ebf-97da-68080c10da82",
+          "name": "Benin",
+          "city": "",
+          "region": "",
+          "country": "Benin",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 39
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-12",
+        "date_precision": "day",
+        "source_date_label": "April 12",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_1035e5a5-0f9e-5e4b-bb80-2f91e466b590",
+      "name": "Tornado strikes Vance Air Force Base",
+      "enhanced_time": "2026-04-23",
+      "enhanced_description": "Tornado outbreak sequence of April 23–28, 2026: An EF4 tornado hits the Vance Air Force Base in Enid, Oklahoma, injuring one person and damaging or destroying homes.",
+      "locations": [
+        {
+          "place_id": "plc_ea24a836-f8fa-56f0-a114-0e7faa40f9ba",
+          "name": "Enid",
+          "city": "Enid",
+          "region": "",
+          "country": "United States",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 40
+        }
+      ],
+      "temporal": {
+        "date": "2026-04-23",
+        "date_precision": "day",
+        "source_date_label": "April 23",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_9bd384af-551b-5806-862c-4ddf8be36649",
+      "name": "United Arab Emirates leaves OPEC",
+      "enhanced_time": "2026-05-01",
+      "enhanced_description": "The United Arab Emirates leaves OPEC, ending six decades of membership and removing one of the organization's largest oil producers.",
+      "locations": [
+        {
+          "place_id": "plc_489e98d4-5c15-5f8c-a0f2-3810ce6038ae",
+          "name": "United Arab Emirates",
+          "city": "",
+          "region": "",
+          "country": "United Arab Emirates",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "economics",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 41
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-01",
+        "date_precision": "day",
+        "source_date_label": "May 1",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_9cf243ed-f2f3-56bb-9003-e2c5e2dc7762",
+      "name": "Liuyang fireworks factory explosion",
+      "enhanced_time": "2026-05-04",
+      "enhanced_description": "An explosion at a fireworks factory in Liuyang, Hunan, China kills 37 people and injures 51 others.",
+      "locations": [
+        {
+          "place_id": "plc_968d4cd2-3a28-5801-8167-73fd469879b3",
+          "name": "Liuyang",
+          "city": "Liuyang",
+          "region": "",
+          "country": "China",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 42
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-04",
+        "date_precision": "day",
+        "source_date_label": "May 4",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_299a1707-5a9c-5fff-ad85-0a27c00cd07b",
+      "name": "Drone attacks target Khartoum and nearby sites",
+      "enhanced_time": "2026-05-04",
+      "enhanced_description": "Sudanese civil war: Rapid Support Forces launch drone attacks at several targets in Khartoum, Sudan, including the Khartoum International Airport in Khartoum, Sudan. Drone strikes are also reported at the Signal Corps in Khartoum Bahri and Al-Markhiyat camp in northern Omdurman. Additionally, the Sudan Army's air defenses intercept drone strikes at the airport.",
+      "locations": [
+        {
+          "place_id": "plc_af07bd54-9615-5f69-8484-6429c7e57bdf",
+          "name": "Khartoum",
+          "city": "Khartoum",
+          "region": "",
+          "country": "Sudan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_02f8c595-aab3-5908-b8fb-30735080444c",
+          "name": "Khartoum North",
+          "city": "Khartoum North",
+          "region": "",
+          "country": "Sudan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_b9152b06-cc6b-5f62-b5a4-b0676d3506aa",
+          "name": "Omdurman",
+          "city": "Omdurman",
+          "region": "",
+          "country": "Sudan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 43
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-04",
+        "date_precision": "day",
+        "source_date_label": "May 4",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_4d12b0e5-4c08-51ee-a2d4-a4c7e813db7b",
+      "name": "Israeli strike kills Hamas commander al-Haddad",
+      "enhanced_time": "2026-05-15",
+      "enhanced_description": "Gaza war: An Israeli strike assassinates Izz al-Din al-Haddad, commander of the Izz al-Din al-Qassam Brigades and leader of Hamas in the Gaza Strip.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 44
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-15",
+        "date_precision": "day",
+        "source_date_label": "May 15",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "held"
+    },
+    {
+      "event_id": "evt_e00501fd-d073-54c8-861a-7ea18d54f4a0",
+      "name": "United States indicts Raúl Castro",
+      "enhanced_time": "2026-05-20",
+      "enhanced_description": "Former First Secretary of the Communist Party of Cuba Raúl Castro is indicted by the United States over the 1996 shootdown of Brothers to the Rescue aircraft.",
+      "locations": [
+        {
+          "place_id": "plc_76559091-704e-515c-adb4-6ec2820a4122",
+          "name": "United States",
+          "city": "",
+          "region": "",
+          "country": "United States",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics",
+        "crime"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 45
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-20",
+        "date_precision": "day",
+        "source_date_label": "May 20",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_83d102bf-c822-5f23-8f13-a7b44bcb554b",
+      "name": "European heatwaves begin",
+      "enhanced_time": "2026-05-22",
+      "enhanced_description": "The 2026 European heatwaves begin, bringing record-breaking temperatures to several European countries and causing thousands of deaths over the next several weeks.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "natural disaster",
+        "environment"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 46
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-22",
+        "date_precision": "day",
+        "source_date_label": "May 22",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_2267f437-8284-54c7-a482-b4b2935dd055",
+      "name": "Liushenyu coal mine explosion",
+      "enhanced_time": "2026-05-22",
+      "enhanced_description": "A gas explosion at the Liushenyu coal mine in Shanxi, China, kills 82 people.",
+      "locations": [
+        {
+          "place_id": "plc_ae634035-863e-5019-878c-7abc5f047bb3",
+          "name": "Shanxi",
+          "city": "",
+          "region": "Shanxi",
+          "country": "China",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 47
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-22",
+        "date_precision": "day",
+        "source_date_label": "May 22",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_579aec86-86c6-5723-a613-46cc38f1f09c",
+      "name": "2026 Guinean parliamentary election",
+      "enhanced_time": "2026-05-31",
+      "enhanced_description": "2026 Guinean parliamentary election: Parties supporting incumbent President Mamady Doumbouya win the election.",
+      "locations": [
+        {
+          "place_id": "plc_9e8c6af6-8cb3-5d4e-9999-603a64bac27f",
+          "name": "Guinea",
+          "city": "",
+          "region": "",
+          "country": "Guinea",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 48
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-31",
+        "date_precision": "day",
+        "source_date_label": "May 31",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_8a33e7ce-0cdd-5b34-aba9-555a9bc88df5",
+      "name": "Flamingo Revolution protests spread in Albania",
+      "enhanced_time": "2026-05-31",
+      "enhanced_description": "Flamingo Revolution: Following small protests in the village of Zvërnec, major protests erupt in Albania over a proposed luxury development involving Donald Trump's son-in-law Jared Kushner and his firm Affinity Partners, as well as broader discontent with Prime Minister Edi Rama's government.",
+      "locations": [
+        {
+          "place_id": "plc_1ab4a9c8-948b-57c0-93ef-053cd1019a60",
+          "name": "Zvërnec",
+          "city": "Zvërnec",
+          "region": "",
+          "country": "Albania",
+          "historical_name": "",
+          "role": "began_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_25d0a95c-4e1b-5a8b-8fd9-7f96ad62a19a",
+          "name": "Albania",
+          "city": "",
+          "region": "",
+          "country": "Albania",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 49
+        }
+      ],
+      "temporal": {
+        "date": "2026-05-31",
+        "date_precision": "day",
+        "source_date_label": "May 31",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_6920b3f3-1ee0-5410-be96-ae2f8407bea5",
+      "name": "2026 Armenian parliamentary election",
+      "enhanced_time": "2026-06-07",
+      "enhanced_description": "2026 Armenian parliamentary election: The Civil Contract, led by incumbent Prime Minister Nikol Pashinyan, wins reelection.",
+      "locations": [
+        {
+          "place_id": "plc_35471c46-cf87-5b9a-86fc-3abffe1039e6",
+          "name": "Armenia",
+          "city": "",
+          "region": "",
+          "country": "Armenia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 50
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-07",
+        "date_precision": "day",
+        "source_date_label": "June 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_775fefa1-facb-5385-a358-0baa4b1c3b98",
+      "name": "2026 Kosovan parliamentary election",
+      "enhanced_time": "2026-06-07",
+      "enhanced_description": "2026 Kosovan parliamentary election: Amid the ongoing political deadlock, Vetëvendosje, led by incumbent Prime Minister Albin Kurti, wins a plurality of seats.",
+      "locations": [
+        {
+          "place_id": "plc_946eec2e-fb35-5390-b101-96417a920248",
+          "name": "Kosovo",
+          "city": "",
+          "region": "",
+          "country": "Kosovo",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 51
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-07",
+        "date_precision": "day",
+        "source_date_label": "June 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_879ad24e-5aa3-5835-9d10-9391a1ea8580",
+      "name": "Keiko Fujimori wins Peruvian presidential runoff",
+      "enhanced_time": "2026-06-07",
+      "enhanced_description": "2026 Peruvian general election: Popular Force leader Keiko Fujimori narrowly defeats Together for Peru leader Roberto Sánchez in the presidential runoff. Left-wing parties gain a majority in the Chamber of Deputies but tie in the reestablished Senate.",
+      "locations": [
+        {
+          "place_id": "plc_ec9bb8d8-803c-5333-a81c-325f6f1998a6",
+          "name": "Peru",
+          "city": "",
+          "region": "",
+          "country": "Peru",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 52
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-07",
+        "date_precision": "day",
+        "source_date_label": "June 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_42840205-1ab1-5437-8252-2819c8bfee78",
+      "name": "Magnitude 7.8 earthquake strikes the Philippines",
+      "enhanced_time": "2026-06-08",
+      "enhanced_description": "A powerful magnitude 7.8 earthquake strikes the Philippines, the strongest in the country since 1976. 107 are killed and 1,320 are injured.",
+      "locations": [
+        {
+          "place_id": "plc_96fc5a4f-60d2-5948-8ef0-2669e2ac9ff1",
+          "name": "Philippines",
+          "city": "",
+          "region": "",
+          "country": "Philippines",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 53
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-08",
+        "date_precision": "day",
+        "source_date_label": "June 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_ee26baa9-102a-54b5-bbb8-4d270b8dac86",
+      "name": "Sagrada Família’s central tower opens",
+      "enhanced_time": "2026-06-10",
+      "enhanced_description": "In Barcelona, Spain, the blessing ceremony of the Sagrada Família's tallest tower by Pope Leo XIV is held, exactly 100 years after the death of architect Antoni Gaudí. Pope Leo XIV consecrates and opens the central tower of Jesus Christ. The Sagrada Família is the world's tallest church.",
+      "locations": [
+        {
+          "place_id": "plc_14ad2c7f-f84a-54b4-919e-18241c842996",
+          "name": "Barcelona",
+          "city": "Barcelona",
+          "region": "",
+          "country": "Spain",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "religion",
+        "culture"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 54
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-10",
+        "date_precision": "day",
+        "source_date_label": "June 10",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_4862e347-fb22-50ba-aaea-4354b92d5d8d",
+      "name": "NOAA declares the onset of El Niño",
+      "enhanced_time": "2026-06-11",
+      "enhanced_description": "The National Oceanic and Atmospheric Administration declares the onset of an El Niño event in the tropical Pacific, and forecasts a 63% chance that it will rank among the largest since records began in 1950.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science",
+        "environment"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 55
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-11",
+        "date_precision": "day",
+        "source_date_label": "June 11",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_0ee5db86-8bf0-52b1-9b4e-dd68c660cb83",
+      "name": "SpaceX offering makes Elon Musk a trillionaire",
+      "enhanced_time": "2026-06-12",
+      "enhanced_description": "Elon Musk becomes the first US dollar trillionaire with the initial public offering of SpaceX.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "economics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 56
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-12",
+        "date_precision": "day",
+        "source_date_label": "June 12",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_28742d64-1d7b-5c88-a10f-26e901d58920",
+      "name": "Rio de Janeiro helicopter collision",
+      "enhanced_time": "2026-06-14",
+      "enhanced_description": "A mid-air collision between two helicopters in Rio de Janeiro, Brazil, kills six people, including American singer-songwriter Oliver Tree, Argentine YouTuber Gaspi, Argentine director and screenwriter Lucas A. Vignale and Brazilian music producer Lucas Frota.",
+      "locations": [
+        {
+          "place_id": "plc_ca40e85e-1932-58ee-b593-a7dfc3304981",
+          "name": "Rio de Janeiro",
+          "city": "Rio de Janeiro",
+          "region": "",
+          "country": "Brazil",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 57
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-14",
+        "date_precision": "day",
+        "source_date_label": "June 14",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_eebcc441-fa10-594f-852e-2ee8e3c77444",
+      "name": "Keir Starmer announces resignation",
+      "enhanced_time": "2026-06-22",
+      "enhanced_description": "Keir Starmer announces his resignation as Prime Minister of the United Kingdom, prompting a leadership election.",
+      "locations": [
+        {
+          "place_id": "plc_ed3a6183-9fab-52aa-89cd-e18708a27b02",
+          "name": "United Kingdom",
+          "city": "",
+          "region": "",
+          "country": "United Kingdom",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 58
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-22",
+        "date_precision": "day",
+        "source_date_label": "June 22",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_015536f9-3c47-5864-a0c5-3f6ee223babb",
+      "name": "Two major earthquakes strike western Venezuela",
+      "enhanced_time": "2026-06-24",
+      "enhanced_description": "Two consecutive earthquakes with magnitudes of Mw 7.2 and Mw 7.5 shake western Venezuela. At least 6,500 people are killed, with thousands injured or missing and widespread damage across the country.",
+      "locations": [
+        {
+          "place_id": "plc_528287f1-0f68-5a78-bbcc-73f7d452ddb2",
+          "name": "Venezuela",
+          "city": "",
+          "region": "",
+          "country": "Venezuela",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 59
+        }
+      ],
+      "temporal": {
+        "date": "2026-06-24",
+        "date_precision": "day",
+        "source_date_label": "June 24",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_44ea5b05-8df5-5713-90b5-81f63ce2e782",
+      "name": "2026 Algerian parliamentary election",
+      "enhanced_time": "2026-07-02",
+      "enhanced_description": "The 2026 Algerian parliamentary election is held.",
+      "locations": [
+        {
+          "place_id": "plc_404d3cea-c7c2-5ae2-af92-2c0c9e83c36c",
+          "name": "Algeria",
+          "city": "",
+          "region": "",
+          "country": "Algeria",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 60
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-02",
+        "date_precision": "day",
+        "source_date_label": "July 2",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_88529b3c-2fc5-552d-95c9-d04f0d21ac5d",
+      "name": "Hamas announces civil administration’s resignation",
+      "enhanced_time": "2026-07-06",
+      "enhanced_description": "Hamas announces the resignation of its civil administration under the Gaza peace plan.",
+      "locations": [
+        {
+          "place_id": "plc_47e9f10e-8555-5263-a6e3-079b66cc6524",
+          "name": "Gaza Strip",
+          "city": "",
+          "region": "Gaza Strip",
+          "country": "",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 61
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-06",
+        "date_precision": "day",
+        "source_date_label": "July 6",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_9f94fc65-9b00-5816-9dbf-e25250b39ce2",
+      "name": "IOC lifts ban on Russian Olympic Committee",
+      "enhanced_time": "2026-07-07",
+      "enhanced_description": "The International Olympic Committee lifts the ban on the Russian Olympic Committee, allowing its athletes to participate in future Olympic Games.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "sports",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 62
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-07",
+        "date_precision": "day",
+        "source_date_label": "July 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_bacc641e-59a9-5f8e-9bbb-27b7f1c95964",
+      "name": "Carlos Vila Nova reelected president",
+      "enhanced_time": "2026-07-19",
+      "enhanced_description": "2026 São Toméan presidential election: Incumbent President Carlos Vila Nova is reelected for a second term.",
+      "locations": [
+        {
+          "place_id": "plc_ef22d408-00d7-5ceb-9d82-a5215d4de0d7",
+          "name": "São Tomé and Príncipe",
+          "city": "",
+          "region": "",
+          "country": "São Tomé and Príncipe",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 63
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-19",
+        "date_precision": "day",
+        "source_date_label": "July 19",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_7e30ddfd-b0ba-5924-9a54-b438c5deb3b2",
+      "name": "Spain wins the 2026 FIFA World Cup",
+      "enhanced_time": "2026-07-19",
+      "enhanced_description": "2026 FIFA World Cup final: Spain beat defending champions Argentina 1–0 during extra time to win a second FIFA World Cup title after 16 years. Spanish forward Ferran Torres scores the only goal in the 106th minute.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "sports"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 64
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-19",
+        "date_precision": "day",
+        "source_date_label": "July 19",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_de690350-6a7c-5a9f-ae64-cb6bef6e045e",
+      "name": "Houthis announce blockade against Saudi Arabia",
+      "enhanced_time": "2026-07-20",
+      "enhanced_description": "2026 Iran war: The Houthis announce a maritime blockade against Saudi Arabia on the Bab el-Mandeb strait.",
+      "locations": [
+        {
+          "place_id": "plc_d196e612-386a-51d1-b99e-90808207cf1b",
+          "name": "Bab-el-Mandeb",
+          "city": "",
+          "region": "",
+          "country": "",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "site",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 65
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-20",
+        "date_precision": "day",
+        "source_date_label": "July 20",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_9549e73c-665d-55d1-b7b6-180bfde87917",
+      "name": "Earthquake strikes Kumamoto Prefecture",
+      "enhanced_time": "2026-07-28",
+      "enhanced_description": "An earthquake strikes Kumamoto Prefecture in southern Japan with a magnitude of Mww 6.8 (MJMA 7.1) at a depth of 10 km (6.2 mi), killing at least 30 and injuring over 60.",
+      "locations": [
+        {
+          "place_id": "plc_8eac3d15-b7ef-5b15-93c9-b56ed0c1cd30",
+          "name": "Kumamoto Prefecture",
+          "city": "",
+          "region": "Kumamoto Prefecture",
+          "country": "Japan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 66
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-28",
+        "date_precision": "day",
+        "source_date_label": "July 28",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_be0968ac-bcc7-5026-9c28-54af4ea3b7e9",
+      "name": "Saudi Arabia announces a maritime military alliance",
+      "enhanced_time": "2026-07-30",
+      "enhanced_description": "2026 Iran war: Saudi Arabia announces the establishment of a 14-nation military alliance to restore and protect freedom of navigation through the Red Sea amid the Iran conflict and ongoing crisis in the area stimulated by the Houthis.",
+      "locations": [
+        {
+          "place_id": "plc_482f76a3-2ae4-5416-8c66-eb463aa3fb61",
+          "name": "Saudi Arabia",
+          "city": "",
+          "region": "",
+          "country": "Saudi Arabia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 67
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-30",
+        "date_precision": "day",
+        "source_date_label": "July 30",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_cf5e14ff-1f26-54ff-9324-bb3109941b31",
+      "name": "Ceuta migrant crisis",
+      "enhanced_time": "2026-07-30",
+      "enhanced_description": "2026 Ceuta migrant crisis: Approximately 80,000 people illegally enter Ceuta, Spain with smaller numbers attempting to cross into Melilla, having swum from Morocco. This follows a Supreme Court of Spain decision prohibiting the hot return of migrants arriving by sea. At least 111 people are killed.",
+      "locations": [
+        {
+          "place_id": "plc_a1bff5e9-8586-5dcd-ac3f-dcb64f1ba4a0",
+          "name": "Ceuta",
+          "city": "Ceuta",
+          "region": "",
+          "country": "Spain",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_89207031-ea38-5275-8f45-b1f8a928d125",
+          "name": "Melilla",
+          "city": "Melilla",
+          "region": "",
+          "country": "Spain",
+          "historical_name": "",
+          "role": "also_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 68
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-30",
+        "date_precision": "day",
+        "source_date_label": "July 30",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_fd30d4af-2063-5cd3-9287-05dd7fe40401",
+      "name": "Broad Peak avalanche kills ten climbers",
+      "enhanced_time": "2026-07-30",
+      "enhanced_description": "An avalanche on Broad Peak in the Karakoram range of Pakistan kills ten climbers, including Nirmal Purja, Pur Bahadur Gurung, Nadhira Al Harthy and Kili Pemba Sherpa.",
+      "locations": [
+        {
+          "place_id": "plc_5936afa7-ea70-55f2-8b40-81e5c711a344",
+          "name": "Broad Peak",
+          "city": "",
+          "region": "",
+          "country": "Pakistan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "site",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 69
+        }
+      ],
+      "temporal": {
+        "date": "2026-07-30",
+        "date_precision": "day",
+        "source_date_label": "July 30",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_867a6c92-7f58-5d6e-a0dd-daf8478b3cb6",
+      "name": "Poland wins the Men’s Volleyball Nations League",
+      "enhanced_time": "2026-08-02",
+      "enhanced_description": "Poland wins the 2026 FIVB Men's Volleyball Nations League, held in Ningbo, China, defeating the United States 3–2 in the final.",
+      "locations": [
+        {
+          "place_id": "plc_ac7b1d9a-09cd-5f39-9ae4-74929c6d4670",
+          "name": "Ningbo",
+          "city": "Ningbo",
+          "region": "",
+          "country": "China",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "sports"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 70
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-02",
+        "date_precision": "day",
+        "source_date_label": "August 2",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_cdb877a3-7f4a-5c67-a624-035144157ab6",
+      "name": "Saudi Arabia, Pakistan and Turkey sign defence pact",
+      "enhanced_time": "2026-08-07",
+      "enhanced_description": "Saudi Arabia, Pakistan and Turkey sign the Mecca Defence Alliance, a mutual defence pact, amid the 2026 Iran war.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "war",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 71
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-07",
+        "date_precision": "day",
+        "source_date_label": "August 7",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_8cc6d991-1db7-5eaa-bfaf-82fbd19bfc2a",
+      "name": "Magnitude 7.4 earthquake strikes Colombia",
+      "enhanced_time": "2026-08-10",
+      "enhanced_description": "A powerful magnitude 7.4 earthquake strikes Colombia, killing 335 and injuring over 1,248 people.",
+      "locations": [
+        {
+          "place_id": "plc_1b8042a2-469a-508e-9944-dfe151861e37",
+          "name": "Colombia",
+          "city": "",
+          "region": "",
+          "country": "Colombia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 72
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-10",
+        "date_precision": "day",
+        "source_date_label": "August 10",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_04a2a5ed-7e00-5cc6-83a4-ad8c738f5cfc",
+      "name": "Lake Kariba ferry capsizes",
+      "enhanced_time": "2026-08-11",
+      "enhanced_description": "A ferry capsizing on Lake Kariba, Zimbabwe, kills at least 97 people, becoming the deadliest boat disaster in the country's history.",
+      "locations": [
+        {
+          "place_id": "plc_6227b5d2-4a02-515b-a344-6c63bf780734",
+          "name": "Lake Kariba",
+          "city": "",
+          "region": "",
+          "country": "Zimbabwe",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "site",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 73
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-11",
+        "date_precision": "day",
+        "source_date_label": "August 11",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_c53579e3-5d75-597f-b32b-b1b9e69f9af0",
+      "name": "Total solar eclipse crosses parts of Europe",
+      "enhanced_time": "2026-08-12",
+      "enhanced_description": "A total solar eclipse occurs in parts of Europe, the first in continental Europe since 1999.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 74
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-12",
+        "date_precision": "day",
+        "source_date_label": "August 12",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_5e18422e-7d4e-5e56-b412-4dcd37ee2940",
+      "name": "Earthquake strikes off Flores",
+      "enhanced_time": "2026-08-15",
+      "enhanced_description": "At least 142 people are killed and nearly 1,300 injured when a magnitude 7.8 earthquake strikes off the island of Flores, Indonesia.",
+      "locations": [
+        {
+          "place_id": "plc_4d214245-513b-58d8-94aa-b2623a9a5627",
+          "name": "Flores Island",
+          "city": "",
+          "region": "",
+          "country": "Indonesia",
+          "historical_name": "",
+          "role": "near",
+          "declared_precision": "approximate",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 75
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-15",
+        "date_precision": "day",
+        "source_date_label": "August 15",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_d51d54ff-0c69-5a38-b089-086cb5927da2",
+      "name": "Trump announces “Economic D-Day” against Iran",
+      "enhanced_time": "2026-08-20",
+      "enhanced_description": "2026 Iran war: U.S. President Donald Trump announces an \"Economic D-Day\" against Iran, calling on allies to join efforts to isolate Iran economically.",
+      "locations": [
+        {
+          "place_id": "plc_f1869bef-e26b-5804-8534-ee6d850dcb08",
+          "name": "United States",
+          "city": "",
+          "region": "",
+          "country": "United States",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war",
+        "economics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 76
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-20",
+        "date_precision": "day",
+        "source_date_label": "August 20",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_d425f004-2f49-5eaf-850e-b93e2f76ad48",
+      "name": "Nepal–Tibet floods",
+      "enhanced_time": "2026-08-26",
+      "enhanced_description": "2026 Nepal–Tibet floods: At least 1,403 people are killed and 6,650 are reported missing after a landslide and glacial collapse trigger flash floods and debris flows at the border between Nepal and the Tibet Autonomous Region of China.",
+      "locations": [
+        {
+          "place_id": "plc_34644867-4b2a-5a2a-97e7-58b58f72931a",
+          "name": "Nepal",
+          "city": "",
+          "region": "",
+          "country": "Nepal",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_096d6349-cfca-511e-93d5-9254e0b9a937",
+          "name": "Tibet Autonomous Region",
+          "city": "",
+          "region": "Tibet Autonomous Region",
+          "country": "China",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "natural disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 77
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-26",
+        "date_precision": "day",
+        "source_date_label": "August 26",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_a0ef3f73-0141-5ff8-ad83-07924f283b2c",
+      "name": "Iceland rejects continuation of EU membership talks",
+      "enhanced_time": "2026-08-29",
+      "enhanced_description": "2026 Icelandic European Union membership negotiations referendum: A referendum to continue negotiations for Iceland to join the European Union is rejected.",
+      "locations": [
+        {
+          "place_id": "plc_f00c3e43-bbd4-5c53-85f4-50bae02d23c7",
+          "name": "Iceland",
+          "city": "",
+          "region": "",
+          "country": "Iceland",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 78
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-29",
+        "date_precision": "day",
+        "source_date_label": "August 29",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_dd51e395-5eb2-54a9-87e8-6e9bc0da1c0f",
+      "name": "Coup attempt in Niger",
+      "enhanced_time": "2026-08-29",
+      "enhanced_description": "2026 Nigerien coup attempt: A mutinous faction of the Niger Armed Forces called the Armed Forces for the Restoration of the Fatherland attempt a coup against president Abdourahamane Tiani.",
+      "locations": [
+        {
+          "place_id": "plc_52966529-34ae-577b-9b6b-10e61f47aded",
+          "name": "Niger",
+          "city": "",
+          "region": "",
+          "country": "Niger",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics",
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 79
+        }
+      ],
+      "temporal": {
+        "date": "2026-08-29",
+        "date_precision": "day",
+        "source_date_label": "August 29",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_4fa04906-5814-5247-ae11-c0c8dd951be7",
+      "name": "Ülle Madise elected president of Estonia",
+      "enhanced_time": "2026-09-02",
+      "enhanced_description": "The 2026 Estonian presidential election: Ülle Madise is elected president of Estonia by the Riigikogu.",
+      "locations": [
+        {
+          "place_id": "plc_d3002fe4-9bce-5cb5-b214-e86c8f2ca90b",
+          "name": "Estonia",
+          "city": "",
+          "region": "",
+          "country": "Estonia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 80
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-02",
+        "date_precision": "day",
+        "source_date_label": "September 2",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_de161240-a5de-5d2a-86c1-1da5bbeb1c76",
+      "name": "United Nations backs wider use of Equal Earth projection",
+      "enhanced_time": "2026-09-04",
+      "enhanced_description": "The United Nations votes to adopt a resolution which calls for wider use of the Equal Earth projection over the Mercator projection to better reflect the true size of equatorial regions such as Africa.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "politics",
+        "science"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 81
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-04",
+        "date_precision": "day",
+        "source_date_label": "September 4",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_e4963a8b-8786-5133-939c-7daf7212177e",
+      "name": "Countries announce plans for Israeli settlement trade restrictions",
+      "enhanced_time": "2026-09-08",
+      "enhanced_description": "Twelve countries, including Canada, France and the United Kingdom, announce plans to introduce or support trade restrictions on goods from Israeli settlements, citing threats to a two-state solution.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "politics",
+        "economics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 82
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-08",
+        "date_precision": "day",
+        "source_date_label": "September 8",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_8e8a80c4-2974-5df2-9b3a-9b471db0b13d",
+      "name": "MV June Aster ferry fire",
+      "enhanced_time": "2026-09-09",
+      "enhanced_description": "A fire on the ferry MV June Aster kills at least 76 people and 13 others go missing off Coron, Palawan, Philippines.",
+      "locations": [
+        {
+          "place_id": "plc_796725fd-a67f-54fd-8497-c264f022bc28",
+          "name": "Coron",
+          "city": "",
+          "region": "",
+          "country": "Philippines",
+          "historical_name": "",
+          "role": "near",
+          "declared_precision": "approximate",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 83
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-09",
+        "date_precision": "day",
+        "source_date_label": "September 9",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_1e76ea92-d57b-5aeb-9811-6616e281532c",
+      "name": "2026 Swedish general election",
+      "enhanced_time": "2026-09-13",
+      "enhanced_description": "2026 Swedish general election: The left-wing bloc led by former Prime Minister and Social Democratic leader Magdalena Andersson narrowly wins a majority in the Riksdag.",
+      "locations": [
+        {
+          "place_id": "plc_5ec6a9a9-c9cb-5a37-92bf-a61f5e3f8ffd",
+          "name": "Sweden",
+          "city": "",
+          "region": "",
+          "country": "Sweden",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 84
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-13",
+        "date_precision": "day",
+        "source_date_label": "September 13",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_c270f4f6-49a3-5379-87aa-6ed51678988d",
+      "name": "Virgo Transport 8 sinks in the Java Sea",
+      "enhanced_time": "2026-09-13",
+      "enhanced_description": "Indonesian ferry KM Virgo Transport 8 sinks in the Java Sea, killing 64 and leaving 71 missing.",
+      "locations": [
+        {
+          "place_id": "plc_6bb08957-643a-517d-82ac-3b232998d477",
+          "name": "Java Sea",
+          "city": "",
+          "region": "Java Sea",
+          "country": "",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 85
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-13",
+        "date_precision": "day",
+        "source_date_label": "September 13",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_e4cff852-13fc-5991-bbc6-aa86c81094f5",
+      "name": "United States acknowledges orbital weapons",
+      "enhanced_time": "2026-09-14",
+      "enhanced_description": "The United States publicly acknowledges for the first time that it has deployed \"space control weapons\" in Earth orbit, with Air Force Secretary Troy Meink confirming that the United States Space Force possesses orbital weapons capable of offensive and defensive operations.",
+      "locations": [
+        {
+          "place_id": "plc_5de94f68-2925-57fe-91cb-44398f417f57",
+          "name": "United States",
+          "city": "",
+          "region": "",
+          "country": "United States",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war",
+        "technology"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 86
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-14",
+        "date_precision": "day",
+        "source_date_label": "September 14",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_9b8bf7f1-830b-5969-9988-7daa1aae45fe",
+      "name": "French student protests begin",
+      "enhanced_time": "2026-09-18",
+      "enhanced_description": "2026 French student protests: A series of student-led protests begin in Paris with students demanding better funding and resources for schools. In October these protests spread across France, with hundreds of thousands taking part and thousands arrested. The protests spread to multiple countries in Europe, taking on cost-of-living themes.",
+      "locations": [
+        {
+          "place_id": "plc_b0be48dc-7a3d-5905-8c50-d78f09435713",
+          "name": "Paris",
+          "city": "Paris",
+          "region": "",
+          "country": "France",
+          "historical_name": "",
+          "role": "began_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        },
+        {
+          "place_id": "plc_556bdb1c-b203-5dc1-b0fa-238349ff2efc",
+          "name": "France",
+          "city": "",
+          "region": "",
+          "country": "France",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics",
+        "education"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 87
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-18",
+        "date_precision": "day",
+        "source_date_label": "September 18",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_c651d592-fb14-53e3-afa3-293fdd53585d",
+      "name": "2026 Moroccan general election",
+      "enhanced_time": "2026-09-23",
+      "enhanced_description": "2026 Moroccan general election: The Authenticity and Modernity Party led by Fatima Ezzahra El Mansouri wins the most seats in the House of Representatives. Fatima Ezzahra El Mansouri becomes Morocco's first female prime minister.",
+      "locations": [
+        {
+          "place_id": "plc_0acb5daf-b63a-58e2-9cfb-c649a048ccd2",
+          "name": "Morocco",
+          "city": "",
+          "region": "",
+          "country": "Morocco",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 88
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-23",
+        "date_precision": "day",
+        "source_date_label": "September 23",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_541e687c-9c3f-58ff-8cf8-137c87f133c6",
+      "name": "TPLF and allies launch offensive in northern Ethiopia",
+      "enhanced_time": "2026-09-23",
+      "enhanced_description": "2026 Ethiopian offensive: The Tigray People’s Liberation Front and groups aligned with them launch a military offensive in northern Ethiopia against the Ethiopian Government, resuming the civil conflict.",
+      "locations": [
+        {
+          "place_id": "plc_c582cf1a-b133-50c1-97b4-4c0007d7b468",
+          "name": "Ethiopia",
+          "city": "",
+          "region": "",
+          "country": "Ethiopia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 89
+        }
+      ],
+      "temporal": {
+        "date": "2026-09-23",
+        "date_precision": "day",
+        "source_date_label": "September 23",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_f0cc33ec-dc43-5491-846e-0226eb1319a0",
+      "name": "G7 agrees to release 100 million barrels of oil",
+      "enhanced_time": "2026-10-02",
+      "enhanced_description": "G7 leaders hold an emergency meeting to discuss global diesel supplies and agree to release 100 million barrels of oil, as prices surge to record highs amid disruption from the 2026 Iran war.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "economics",
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 90
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-02",
+        "date_precision": "day",
+        "source_date_label": "October 2",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_325693e0-d263-5254-b1d7-15ba73adeeeb",
+      "name": "2026 Bosnian general election",
+      "enhanced_time": "2026-10-04",
+      "enhanced_description": "The 2026 Bosnian general election is held.",
+      "locations": [
+        {
+          "place_id": "plc_f2e17826-626d-5805-bbd2-511133cfe3a4",
+          "name": "Bosnia and Herzegovina",
+          "city": "",
+          "region": "",
+          "country": "Bosnia and Herzegovina",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 91
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-04",
+        "date_precision": "day",
+        "source_date_label": "October 4",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_c43d0d97-f358-5642-91e7-8b1c33e86039",
+      "name": "Peshawar school roof collapse",
+      "enhanced_time": "2026-10-15",
+      "enhanced_description": "2026 Peshawar school roof collapse: The roof of a private school in Peshawar, Khyber Pakhtunkhwa, Pakistan, collapses, killing 35 people and injuring more than 50.",
+      "locations": [
+        {
+          "place_id": "plc_6a4d4210-c653-5066-966f-999c5dbdc675",
+          "name": "Peshawar",
+          "city": "Peshawar",
+          "region": "",
+          "country": "Pakistan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 92
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-15",
+        "date_precision": "day",
+        "source_date_label": "October 15",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_67aa8700-4a00-59ed-8902-c3b7f0224987",
+      "name": "Andorra and San Marino sign EU association agreements",
+      "enhanced_time": "2026-10-19",
+      "enhanced_description": "Andorra and San Marino each sign an association agreement with the European Union.",
+      "locations": [],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 93
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-19",
+        "date_precision": "day",
+        "source_date_label": "October 19",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "no_point"
+    },
+    {
+      "event_id": "evt_de58dc09-dd54-5910-8d79-582009d3f437",
+      "name": "Drone attack on a market in Abyei",
+      "enhanced_time": "2026-10-19",
+      "enhanced_description": "Sudanese civil war: A drone attack on a market in the disputed Abyei region kills at least 220 people.",
+      "locations": [
+        {
+          "place_id": "plc_ce0abf58-b3a3-524a-8304-7b4107b1ce96",
+          "name": "Abyei Area",
+          "city": "",
+          "region": "Abyei Area",
+          "country": "",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "region",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "war"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 94
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-19",
+        "date_precision": "day",
+        "source_date_label": "October 19",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_f41393ab-403c-53c3-9ff6-12e0116473f4",
+      "name": "Karak church mass shooting",
+      "enhanced_time": "2026-10-23",
+      "enhanced_description": "A mass shooting occurs in Karak, Jordan at a Greek Orthodox Church, killing nine people and injuring 34.",
+      "locations": [
+        {
+          "place_id": "plc_7168a020-3a7c-5485-a84d-bdf4b2dddd49",
+          "name": "Karak",
+          "city": "Karak",
+          "region": "",
+          "country": "Jordan",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "crime"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 95
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-23",
+        "date_precision": "day",
+        "source_date_label": "October 23",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_0bb3c40d-b4de-5d40-8a56-01a1c95c4e3b",
+      "name": "Armenia wins Junior Eurovision 2026",
+      "enhanced_time": "2026-10-24",
+      "enhanced_description": "The Junior Eurovision Song Contest 2026 is held in Attard, Malta. Armenia wins their third contest with the song \"Boo!\" by Naré.",
+      "locations": [
+        {
+          "place_id": "plc_3785d890-1e45-5136-bca8-70ae463a0e5f",
+          "name": "Attard",
+          "city": "Attard",
+          "region": "",
+          "country": "Malta",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "culture"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 96
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-24",
+        "date_precision": "day",
+        "source_date_label": "October 24",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_25e82d4a-6eb7-509b-9df9-f760258a0c2f",
+      "name": "Lula wins Brazilian presidential runoff",
+      "enhanced_time": "2026-10-25",
+      "enhanced_description": "2026 Brazilian general election: Incumbent president Luiz Inácio Lula da Silva defeats senator Flávio Bolsonaro in the second round in an upset victory, becoming the first president in Brazilian history to be re-elected to a fourth term and the first to win a second round after losing a first round. Right-leaning parties win majorities in the Chamber of Deputies and the Federal Senate.",
+      "locations": [
+        {
+          "place_id": "plc_9b1823d0-da55-5937-a7f2-194df5a1493a",
+          "name": "Brazil",
+          "city": "",
+          "region": "",
+          "country": "Brazil",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 97
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-25",
+        "date_precision": "day",
+        "source_date_label": "October 25",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_1f862d9d-b3cd-5441-909b-8bb4642a9410",
+      "name": "Student List wins Serbian parliamentary election",
+      "enhanced_time": "2026-10-25",
+      "enhanced_description": "2026 Serbian parliamentary election: Following mass student protests, the Student List wins a majority in the National Assembly, defeating former president Aleksandar Vučić's United Serbia.",
+      "locations": [
+        {
+          "place_id": "plc_731b3c05-2d64-5607-be84-bd49ae1c0467",
+          "name": "Serbia",
+          "city": "",
+          "region": "",
+          "country": "Serbia",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "country",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "politics"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 98
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-25",
+        "date_precision": "day",
+        "source_date_label": "October 25",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
+    },
+    {
+      "event_id": "evt_38adc551-4baf-5833-8b6b-9fd4e61b64c0",
+      "name": "High-speed trains collide in Los Yébenes, Spain",
+      "enhanced_time": "2026-10-28",
+      "enhanced_description": "At least 64 people are killed and hundreds injured when two high speed trains collide in Los Yébenes, Toledo, Spain.",
+      "locations": [
+        {
+          "place_id": "plc_83f21cb0-0fdc-5030-aa89-3beec7d8f3cb",
+          "name": "Los Yébenes",
+          "city": "Los Yébenes",
+          "region": "",
+          "country": "Spain",
+          "historical_name": "",
+          "role": "occurred_at",
+          "declared_precision": "settlement",
+          "geography": {
+            "status": "missing",
+            "precision": "unknown",
+            "coordinates": null,
+            "verification": "reviewed_position_in_companion_location_release"
+          }
+        }
+      ],
+      "figures": [],
+      "categories": [
+        "disaster"
+      ],
+      "confidence": "medium",
+      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1382417751"
+      ],
+      "article_reference_status": "source_timeline",
+      "source_lineage": "revision_bound_source_collection",
+      "source_refs": [
+        {
+          "artifact_path": "pilots/recent-2026-100-v1/prepared-v1/drafts.json",
+          "artifact_sha256": "154d495612645c0eebe0f52ad8a0dd26ef2d1ac7cdcf90c871c485de5b3d497f",
+          "record_index": 99
+        }
+      ],
+      "temporal": {
+        "date": "2026-10-28",
+        "date_precision": "day",
+        "source_date_label": "October 28",
+        "source_page_year": 2026,
+        "calendar": "unspecified",
+        "date_parse_status": "parsed"
+      },
+      "location_applicability": "located"
     }
   ]
 }
