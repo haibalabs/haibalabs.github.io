@@ -153,3 +153,29 @@ test('another events file or a malformed release shows no world images and no me
   await openSite(page, { release: '{"version":1,"source":{},"records":"not a list"}' });
   await expect(page.locator('#timeline-content .event-image')).toHaveCount(0);
 });
+
+test('scrolling keeps the cards that stay on screen, so their images are not loaded again', async ({ page }) => {
+  test.setTimeout(120000);
+  // the opening events all have images
+  await openSite(page, { query: '', release: null });
+  await expect(page.locator('#timeline-content .event').first().locator('.event-image img')).toBeVisible();
+  const result = await page.evaluate(async () => {
+    const wrapper = document.getElementById('timeline-wrapper');
+    const cards = () => [...document.querySelectorAll('#timeline-content > .event')];
+    const ids = () => cards().map(card => card.dataset.eventId).join();
+    const imageOf = () => new Map(cards().map(card => [card.dataset.eventId, card.querySelector('.event-image img')]));
+    const before = imageOf();
+    const start = ids();
+    // scroll in small steps until the rendered range moves
+    for (let step = 0; step < 40 && ids() === start; step++) {
+      wrapper.scrollTop += wrapper.clientHeight * 0.25;
+      await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 50)));
+    }
+    const after = imageOf();
+    const stayed = [...after.keys()].filter(id => before.get(id));
+    return { moved: ids() !== start, withImages: stayed.length, sameImages: stayed.filter(id => after.get(id) === before.get(id)).length };
+  });
+  expect(result.moved).toBe(true);
+  expect(result.withImages).toBeGreaterThan(0);
+  expect(result.sameImages).toBe(result.withImages);
+});
