@@ -496,7 +496,7 @@ export class UIManager {
         this.endIndex = endIndex;
         
         if (needToRender) {
-            this.renderEvents();
+            this.renderEvents(undefined, { keepCards: true });
         }
     }
 
@@ -532,14 +532,22 @@ export class UIManager {
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    async renderEvents(onMeasurementsComplete) {
+    // keepCards: a scroll moved the visible range and nothing else changed, so cards still in range
+    // keep their elements. Rebuilding them would make the browser decode their images again,
+    // which flickers on phones.
+    async renderEvents(onMeasurementsComplete, { keepCards = false } = {}) {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         this.filteredCount = filteredEvents.length;
         this.mapBrowser?.refresh(filteredEvents);
-    
+
         const contentContainer = document.getElementById('timeline-content');
         const placeholder = document.getElementById('timeline-placeholder');
-    
+
+        const kept = new Map();
+        if (keepCards) {
+            for (const div of contentContainer.querySelectorAll(':scope > .event')) kept.set(div.dataset.eventId, div);
+        }
+
         // Clear current content
         contentContainer.innerHTML = '';
 
@@ -564,8 +572,8 @@ export class UIManager {
             if (i >= filteredEvents.length) break;
             
             const event = filteredEvents[i];
-            const eventDiv = this.renderEvent(event);
-            
+            const eventDiv = kept.get(this.eventManager.placeIndex.idFor(event)) ?? this.renderEvent(event);
+
             eventDiv.style.position = 'absolute';
             eventDiv.style.top = `${currentPosition}px`;
             
