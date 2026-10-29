@@ -203,7 +203,7 @@ export class EditUI {
         if (!visible.length) {
             const empty = document.createElement('li');
             empty.className = 'my-edits-empty';
-            empty.textContent = 'No edits yet. Turn on edit buttons above, then use the pencil on an event or the new event button at the top.';
+            empty.textContent = 'No edits yet. Turn on Editing above, then use the pencil on an event or the new event button at the top.';
             this.list.append(empty);
         }
     }
