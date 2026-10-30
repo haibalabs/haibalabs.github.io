@@ -61,7 +61,7 @@ export class ColorEditor {
         this.root.append(this.body);
         L.DomEvent.disableClickPropagation(this.root);
         L.DomEvent.disableScrollPropagation(this.root);
-        host.append(this.root);
+        host.prepend(this.root);
         this.render();
     }
     remove() {

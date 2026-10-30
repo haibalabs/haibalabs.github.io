@@ -145,10 +145,10 @@ export const VARIANTS = [
     {
         id: 'colors',
         label: 'Colour editor',
-        note: 'A panel at the map’s top right with a picker for each colour of our own styles and a hill-strength slider. Changes show as you drag and are kept in the link.',
+        note: 'A panel above this one with a picker for each colour of our own styles and a hill-strength slider. Changes show as you drag and are kept in the link.',
         apply(lab, on) {
             lab.colorEditor?.remove();
-            lab.colorEditor = on ? new ColorEditor(lab, lab.panelManager.mapPanel, { isDark, restyle: () => restyle(lab) }) : null;
+            lab.colorEditor = on ? new ColorEditor(lab, lab.dock, { isDark, restyle: () => restyle(lab) }) : null;
         },
     },
     {

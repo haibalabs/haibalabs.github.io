@@ -38,7 +38,10 @@ export class LabPanel {
         // Clicks, drags and wheel turns on the panel stay off the map underneath.
         L.DomEvent.disableClickPropagation(this.root);
         L.DomEvent.disableScrollPropagation(this.root);
-        host.append(this.root);
+        // The dock holds the lab's panels: beside the drawer on desktop, over the map on phones (lab.css).
+        lab.dock = element('div', 'lab-dock');
+        lab.dock.append(this.root);
+        host.append(lab.dock);
 
         for (const variant of variants) if (this.values.has(variant.id)) this.apply(variant, this.values.get(variant.id));
         this.renderToggle();
