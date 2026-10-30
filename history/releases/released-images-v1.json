@@ -990,6 +990,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "d4c4b48e66277149fdd97053cf0a13a53c7a7ef9e606bcbb4d87235c34fba692",
+      "caption": "Signature of Emperor Go-Kōgon, reproduced from a document.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "後光嚴天皇 — 《後光厳院御文類》（局部）",
+      "date_qualification": "A signature associated with Emperor Go-Kōgon, dated 1362-01-01; it is not a depiction of his 1352 accession.",
+      "display_date": "1362-01-01",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1362-01-01"
+      },
+      "enhanced_time": "1352-09-25",
+      "event_issue_ids": [],
+      "event_name": "Emperor Go-Kōgon becomes 4th Emperor of the Northern Court of Japan",
+      "evidence_event_id": "evt_395cb9b3-6155-5c81-b25d-4b21d1927091",
+      "image_date": "1362-01-01",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/94/Go-K%C5%8Dgon_shomei.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "cf7c8162891eda5a0036b2c8d05f7a53a0b96efddcb8cee6de15521ebfb8670a",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 9273,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Go-K%C5%8Dgon_shomei.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Go-K%C5%8Dgon_shomei.svg/960px-Go-K%C5%8Dgon_shomei.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "da8006d322dbc896743a23233241961387e897475f30e3a52e3bdb3c5e2e54c8",
       "caption": "New Court at Corpus Christi College, Cambridge, England.",
       "caption_policy": "image-caption-v2",
@@ -2394,6 +2424,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "07b41725afdbea802578f7a6004f228a040ec260862f7d80eb195adc10b2c4ad",
+      "caption": "A map of Kalmar by P.O. Hallman.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "P.O. Hallman — Kalmar kommun",
+      "date_qualification": "Map of Kalmar dated 1906, centuries after the 1611 declaration of war; it provides geographic context, not a depiction of the event.",
+      "display_date": "1906",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1906"
+      },
+      "enhanced_time": "1611-04-04",
+      "event_issue_ids": [],
+      "event_name": "Denmark-Norway declares war on Sweden",
+      "evidence_event_id": "evt_39ec3d58-0962-5edf-943c-4efc009dc6b7",
+      "image_date": "1906",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/86/Kalmar_1906.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "00e1f33d5bce4b678531f0755a1b5418cc417f1cc00e60d0f088b68205cd0a44",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 10349,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Kalmar_1906.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/86/Kalmar_1906.jpg/960px-Kalmar_1906.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "3bea59b97b21c0642f4f96b98c0e6a422b35f237f45e56a189f05430950426a5",
       "caption": "Exterior of the South Building of Matsuzakaya Nagoya store.",
       "credit": "Renaik — Own work",
@@ -2439,6 +2499,33 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Wenceslaus-Hollar-The-second-Globe-playhouse-detail.png",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Wenceslaus-Hollar-The-second-Globe-playhouse-detail.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "54ce3fd715742c4f4b9b7eb7d9e262a3c8d92d6ee6845ec40b2cd4f846a46785",
+      "caption": "A historic letter from the Japanese embassy to Spain, sent by Date Masamune and kept in Seville Town Hall.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "See below — Photo by E Asterion u talking to me? 00:24, 28 August 2006 (UTC). Transferred from en.wikipedia to Commons by Clpo13 using MTC! .",
+      "date_qualification": "A document associated with the Keichō Embassy, not a depiction of its departure from Japan. The original image date is described as early 17th century; no supported display date is available.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1613-10-28",
+      "event_issue_ids": [],
+      "event_name": "Keichō embassy departs Japan",
+      "evidence_event_id": "evt_3774f872-ce5a-5c44-af96-f623aa4ba7ca",
+      "image_date": "early 17 th century date QS:P,+1650-00-00T00:00:00Z/7,P4241,Q40719727",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Historic_Letter_from_the_Japanese_Embassy_to_Spain.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 2.5",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.5",
+      "pair_id": "3f00dbdce9d111133184401e3421c74a1fb0c33144913ec951508094d694bde5",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 10419,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 2.5; UsageTerms: Creative Commons Attribution-Share Alike 2.5; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Historic_Letter_from_the_Japanese_Embassy_to_Spain.JPG",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Historic_Letter_from_the_Japanese_Embassy_to_Spain.JPG/960px-Historic_Letter_from_the_Japanese_Embassy_to_Spain.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -4051,6 +4138,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "bb54d73e2df289bf18c8bec6122e570ba9099031a5b2f0cb190428172d0d5a3e",
+      "caption": "Bhavanidas’s painting depicts Emperor Aurangzeb being carried in a palanquin.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Bhavanidas — https://www.metmuseum.org/Collections/search-the-collections/140012467?rpp=20&pg=1&ft=bhavanidas&pos=4",
+      "date_qualification": "Retrospective painting of Aurangzeb, not a depiction of his 1658 proclamation; the image is dated circa before 1720.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1658-02-05",
+      "event_issue_ids": [],
+      "event_name": "Prince Muhi al-Din Muhammad proclaims himself Emperor",
+      "evidence_event_id": "evt_3b050ad6-7a20-53c5-be01-d2b45cc1adcc",
+      "image_date": "circa before 1720 date QS:P,+1720-00-00T00:00:00Z/7,P1326,+1720-00-00T00:00:00Z/9,P1480,Q5727902",
+      "image_role": "retrospective_illustration",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Bhavanidas._The_Emperor_Aurangzeb_Carried_on_a_Palanquin_ca._1705%E2%80%9320_Metripolitan_Museum_of_Art..jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "2e8dc8b9a978efc9a6016e9b1ed17f136e8856caca9985d99ca068c2e7385d4d",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 11906,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Bhavanidas._The_Emperor_Aurangzeb_Carried_on_a_Palanquin_ca._1705%E2%80%9320_Metripolitan_Museum_of_Art..jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Bhavanidas._The_Emperor_Aurangzeb_Carried_on_a_Palanquin_ca._1705%E2%80%9320_Metripolitan_Museum_of_Art..jpg/960px-Bhavanidas._The_Emperor_Aurangzeb_Carried_on_a_Palanquin_ca._1705%E2%80%9320_Metripolitan_Museum_of_Art..jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "459d41fe3aa55121824d90bcf3ceb6daa19f99161a5f9a8dd9158f18b50dfa28",
       "caption": "17th-century illustration titled “Incidents in the Rebellion of the Fifth Monarchy Men under Thomas Venner, and the Execution of their Leaders.”",
       "credit": "Unknown author Unknown author — [1]",
@@ -4732,6 +4846,33 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Lully_-_Alceste_-_libretto,_Paris_1674_-_title_page.png",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/63/Lully_-_Alceste_-_libretto%2C_Paris_1674_-_title_page.png/960px-Lully_-_Alceste_-_libretto%2C_Paris_1674_-_title_page.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "d4a0a1e7b0c04ce98293cfa0466c8f63647d5c97ea7dd4d1c15bf82d3680a5f1",
+      "caption": "Painting by Nicaise De Keyser depicting William of Orange at the Battle of Seneffe.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Nicaise De Keyser — Unknown source Unknown source",
+      "date_qualification": "A 19th-century retrospective painting, not a contemporary battle photograph; the saved image date is not sufficiently specific to support a display date.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1674-08-11",
+      "event_issue_ids": [],
+      "event_name": "Battle of Seneffe",
+      "evidence_event_id": "evt_36b84e4c-93b3-5547-92d8-97b8d040f3a0",
+      "image_date": "19 th century date QS:P,+1850-00-00T00:00:00Z/7",
+      "image_role": "retrospective_illustration",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/85/Battle_of_Seneffe_William_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "f84b12cffaabc1888c698c10056f511b9eb2b2738c5d9fddc9a7e5ca6508d471",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 12469,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Battle_of_Seneffe_William_(cropped).jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Battle_of_Seneffe_William_%28cropped%29.jpg/960px-Battle_of_Seneffe_William_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -5539,6 +5680,36 @@
       "rights_statement": "LicenseShortName: CC BY 2.0; UsageTerms: Creative Commons Attribution 2.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:Edinburgh_IMG_4133_(14919305115).jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Edinburgh_IMG_4133_%2814919305115%29.jpg/960px-Edinburgh_IMG_4133_%2814919305115%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "15255283c8185bca5db67f4805993060e26ac847de15f34ae8b3f7005e0ca4b8",
+      "caption": "Map showing wars between the Qing Dynasty and Dzungar Khanate.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "SY — Own work",
+      "date_qualification": "A map of the broader Qing–Dzungar wars, not a depiction of Galdan Boshugtu Khan’s death. The saved image date is 2018-09-16.",
+      "display_date": "2018-09-16",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2018-09-16"
+      },
+      "enhanced_time": "1697-04-23",
+      "event_issue_ids": [],
+      "event_name": "Death of Galdan Boshugtu Khan",
+      "evidence_event_id": "evt_3a9aab80-a3d8-52bc-b90d-9be1510ad2b9",
+      "image_date": "2018-09-16",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Qing_Dzungar_wars.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "887f681c949a30133f92de77a67299b991c44cc4748cad0c0573ba064030359d",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 13241,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Qing_Dzungar_wars.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Qing_Dzungar_wars.jpg/960px-Qing_Dzungar_wars.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -10663,6 +10834,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "f9071394bfa9804fe6c4b556463473d2c18cd2bf3cef4b24a347f5571fae89bf",
+      "caption": "Indigenous art titled “Dawn Reflections” projected on the Sydney Opera House.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Dicklyon — Own work",
+      "date_qualification": "Contemporary Australia Day event imagery from 2023, not a depiction of the 1788 First Fleet landing; the original image date is recorded as 26 January 2023, 05:34:01 (according to Exif data).",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1788-01-26",
+      "event_issue_ids": [],
+      "event_name": "Australia Day: First Fleet lands at Sydney Cove",
+      "evidence_event_id": "evt_3b217f5b-d3a0-55c3-96d4-60746cb87bdb",
+      "image_date": "26 January 2023, 05:34:01 (according to Exif data)",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Dawn_Reflections%2C_Sydney_Opera_House%2C_Australia_Day_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "439c9f6600124faa25370f6da35106b9de7c2f317708eb3baad53ce4efa7d7d2",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 16263,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Dawn_Reflections,_Sydney_Opera_House,_Australia_Day_2023.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/52/Dawn_Reflections%2C_Sydney_Opera_House%2C_Australia_Day_2023.jpg/960px-Dawn_Reflections%2C_Sydney_Opera_House%2C_Australia_Day_2023.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "99e18f2c7e3c075d004c67547f4079dafd98a7a2a9b8591d6946b42eea3f1525",
       "caption": "Map of electoral subdivisions represented at the Estates-General of 1789, traced from Brette’s 1904 atlas.",
       "credit": "Max96 — Own work",
@@ -12289,6 +12487,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "899a58220838b0989a80fb8701ee798e3c125811a2a8254e3dfd642bbe595db7",
+      "caption": "Coastal cliffs and vegetation on Adams Island in the Auckland Islands group.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Albatross2147 at English Wikipedia — Own work , photographed and scanned",
+      "date_qualification": "A later site photograph of the islands, not a depiction of their 1806 discovery; the image date is not specified.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1806-08-18",
+      "event_issue_ids": [],
+      "event_name": "Discovery of the Auckland Islands",
+      "evidence_event_id": "evt_390211c0-2142-5999-9f60-7b80408400c6",
+      "image_date": "not specified",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Auckland_Islands_-_South_Coast.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "85dfbd1b735f4d312cc22a3e232d4b25c90ca3f690df0014b446214e2ba65edd",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 17184,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Auckland_Islands_-_South_Coast.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Auckland_Islands_-_South_Coast.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "ebb22ac7f2319f9b0bc62edc22fa4ceff93fd676821e9cee1403058c0f4239a2",
       "caption": "Official medallion of the British Anti-Slavery Society.",
       "credit": "Josiah Wedgwood (1730-1795) and either William Hackwood or Henry Webber; \"Josiah Wedgewood...produced the emblem as a jasper-ware cameo at his pottery factory. Although the artist who designed and engraved the seal is unknown, the design for the cameo is attributed to William Hackwood or to Henry Webber, who were both modelers at the Wedgewood factory.\" ( https://www.pbs.org/wgbh/aia/part2/2h67.html PBS]) — British Abolition Movement",
@@ -12746,6 +12971,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:IV_corpo_durante_la_campagna_di_Russia.jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/IV_corpo_durante_la_campagna_di_Russia.jpg/960px-IV_corpo_durante_la_campagna_di_Russia.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "8b9df70c3237d08a97b924896dab9eeb5594a1f293866a325bcd0f2456e9dbdb",
+      "caption": "Photograph of the Cathedral of Saint Sophia in Polatsk, Belarus.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Alex Zelenko — Photo made by EugeneZelenko 's brother, Alex Zelenko.",
+      "date_qualification": "Modern photograph of a site in Polatsk, not an image of the 1812 battle; the depicted-date metadata is 2006-07-17.",
+      "display_date": "2006-07-17",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2006-07-17"
+      },
+      "enhanced_time": "1812-10-18",
+      "event_issue_ids": [],
+      "event_name": "Second Battle of Polotsk",
+      "evidence_event_id": "evt_36d2393c-7647-5881-aa48-373dfa732ec7",
+      "image_date": "2006-07-17",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/25/Belarus-Polatsk-Cathedral_of_Sophia-20.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "89c81fe91189b657b73107360a9c4920db82e68e13537a37669fa388d983f417",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 17507,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Belarus-Polatsk-Cathedral_of_Sophia-20.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Belarus-Polatsk-Cathedral_of_Sophia-20.jpg/960px-Belarus-Polatsk-Cathedral_of_Sophia-20.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -13599,6 +13854,33 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:AmCyc_Memphis_(Tennessee).jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/AmCyc_Memphis_%28Tennessee%29.jpg/960px-AmCyc_Memphis_%28Tennessee%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "e2f1f38379482bb9328e3b2b61e293943b2d5256aff41ec1e023350f9720d1f8",
+      "caption": "Photograph of the Mausoleum of General José Gervasio Artigas in Uruguay.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Sergio Zolessi. — Own work",
+      "date_qualification": "A later photograph of a monument associated with Artigas, not a depiction of his flight to Paraguay. The image date is recorded as “Taken on 8 September 2013, 20:44:42”; no display date is supported.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1820-09-05",
+      "event_issue_ids": [],
+      "event_name": "José Gervasio Artigas flees to Paraguay",
+      "evidence_event_id": "evt_374c6eb7-3ead-534a-b1fe-f7161b6fe76b",
+      "image_date": "Taken on 8 September 2013, 20:44:42",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Monumento_al_General_Jos%C3%A9_Artigas.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pair_id": "10308eed648cbad738b63682d26da8f28c04cf97d89862e7828f4033f8e3698d",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 17946,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 3.0; UsageTerms: Creative Commons Attribution-Share Alike 3.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Monumento_al_General_Jos%C3%A9_Artigas.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Monumento_al_General_Jos%C3%A9_Artigas.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -14547,6 +14829,33 @@
       "rights_statement": "LicenseShortName: CC BY 2.0; UsageTerms: Creative Commons Attribution 2.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:William_Lloyd_Garrison.jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/William_Lloyd_Garrison.jpg/960px-William_Lloyd_Garrison.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "d3c20bbc7903dea9aa1f7eee91d8faed942cd0494039b3e290714867e97ecc91",
+      "caption": "Portrait of French general Jean Maximilien Lamarque.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Unknown author Unknown author — [1]",
+      "date_qualification": "Portrait of a figure whose funeral preceded the riots that sparked the June Rebellion; the image date is not established by the supplied upload-date metadata.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1832-06-05",
+      "event_issue_ids": [],
+      "event_name": "The June Rebellion in France, anti-monarchist riots led chiefly by students, breaks out in Paris",
+      "evidence_event_id": "evt_3a7784d0-61a1-5e69-a6f2-bab13d64f87a",
+      "image_date": "9 April 2008 (original upload date)",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/45/General_Jean_Maximilien_Lamarque.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "fa5bbf036077c4e4af5552ddf6e031b350e70c3906848efc20b3b4bf9f45d18b",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 18437,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:General_Jean_Maximilien_Lamarque.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/4/45/General_Jean_Maximilien_Lamarque.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -15617,6 +15926,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "ebf009bd94d12f2277fb3b3fb62a18ca9a9f8170e6fe9e41f19423074e79c0eb",
+      "caption": "The third workshop of Carl Zeiss at Johannisplatz in Jena, Germany.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "ZEISS Microscopy from Germany — First workshop of Carl Zeiss in the city center of Jena, Germany, ca. 1847",
+      "date_qualification": "A photograph of the former workshop site, taken in 2012; the workshop dates from after 1858, later than the company’s 1846 founding.",
+      "display_date": "2012-04-02",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2012-04-02 17:49"
+      },
+      "enhanced_time": "1846-11-17",
+      "event_issue_ids": [],
+      "event_name": "Founding of Carl Zeiss",
+      "evidence_event_id": "evt_380f1744-0f0b-582a-9101-19d9e037a824",
+      "image_date": "2012-04-02 17:49",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Third_workshop_of_Carl_Zeiss_in_the_city_center_of_Jena%2C_Germany%2C_after_1858_%287039026941%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "pair_id": "691e92a3731cb1b5a31fef150a9c0e1e0b7dde19e1fecd4ef942f2c5286cbc8a",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 19079,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 2.0; UsageTerms: Creative Commons Attribution-Share Alike 2.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Third_workshop_of_Carl_Zeiss_in_the_city_center_of_Jena,_Germany,_after_1858_(7039026941).jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Third_workshop_of_Carl_Zeiss_in_the_city_center_of_Jena%2C_Germany%2C_after_1858_%287039026941%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "e5e68e1e23a6362f3e2056e398568a41d4c2a313407ac094ae56e42951b702ad",
       "caption": "Hand-colored lithograph depicting the Battle of Buena Vista.",
       "credit": "Adolphe Jean-Baptiste Bayot / Carl Nebel — Immediate image source: http://www.dsloan.com/Auctions/A22/item-kendall-nebel.html Originally published in George Wilkins Kendall & Carl Nebel: The War between the United States and Mexico Illustrated, Embracing Pictorial Drawings of all the Principal Conflicts , New York: D. Appleton; Philadelphia: George Appleton [Paris: Plon Brothers], 1851.",
@@ -15971,6 +16310,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "1353e2867661cee658d4d219b0f460f3b7dbae189f741128bfefa71a2d0baec1",
+      "caption": "Proclama al Pueblo de California, a proclamation translated by William Hartnell.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "William Hartnell, Translator of the Convention of Monterey of 1849. — Archives of the State of California",
+      "date_qualification": "A 1849 proclamation associated with the California constitutional process; it is a historical document, not a depiction of the ratification vote.",
+      "display_date": "1849",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1849"
+      },
+      "enhanced_time": "1849-11-13",
+      "event_issue_ids": [],
+      "event_name": "Ratification of the Constitution of California",
+      "evidence_event_id": "evt_378489ac-6734-5a27-9d7a-b2e5fca391ce",
+      "image_date": "1849",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Proclama_al_Pueblo_de_California_%281849%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "6096a61a42f3224516fac3afdd69cb7113866236e4bfa320efb51a8c52bbcc26",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 19320,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Proclama_al_Pueblo_de_California_(1849)_(cropped).jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Proclama_al_Pueblo_de_California_%281849%29_%28cropped%29.jpg/500px-Proclama_al_Pueblo_de_California_%281849%29_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "1e4a3c154e7baa8fd4127ada72c3ca7de4fc2f7ae5a37e77b321fee5ff54780e",
       "caption": "Coat of arms of the First Empire of Brazil, shown as a historical symbol.",
       "credit": "Tonyjeff , based on work of Jean-Baptiste Debret . — symbol of the XIX century; see [1] for description, and [2] for a representative example. Shield also shown in Maclagan, Michael ; Louda, Jiří (1999) Line of Succession: Heraldry of the Royal Families of Europe . London: Little, Brown & Co. ISBN 1-85605-469-1 , pp. 235-236. Reformed standard according to this book, an official publication of the government of Brazil, on page 74 .",
@@ -16022,6 +16391,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:AZ-NM1867.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/f/f7/AZ-NM1867.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "b8358c6cab4acad4bbe1151552f8fa827313960c5391556915bee5ef8f0b192d",
+      "caption": "Color version of the Pinkerton National Detective Agency’s first logo.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Original logo created by the Pinkerton National Detective Agency — http://wiki.urbandead.com/images/0/0d/We_never_sleep_hp.jpg",
+      "date_qualification": "Historical agency logo, not a photograph of the agency’s founding. The image is dated to the 1850s.",
+      "display_date": "1850s",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1850s date QS:P,+1850-00-00T00:00:00Z/8"
+      },
+      "enhanced_time": "1850-01-01",
+      "event_issue_ids": [],
+      "event_name": "Allan Pinkerton forms the North-Western Police Agency",
+      "evidence_event_id": "evt_37ef4c9d-0fec-53ab-9fdb-e65dffc4a568",
+      "image_date": "1850s date QS:P,+1850-00-00T00:00:00Z/8",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/We_never_sleep.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "2d1af0f994ae8a4c0d19cf406cae4c80bd327a2cc17198a3350ddbedac0b66df",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 19357,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:We_never_sleep.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/c/c4/We_never_sleep.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -19340,6 +19739,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "69873ecdadc25b50dd5055c4eeb1e02715a9dd813a62a0c21f2000197d64c70f",
+      "caption": "The Black Hills landscape seen from near Mount Rushmore.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Tabun1015 — Own work",
+      "date_qualification": "A landscape view of the Black Hills, not a depiction of the 1874 gold discovery. The supplied original image date, “0012,” is not a supported display date.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1874-01-01",
+      "event_issue_ids": [],
+      "event_name": "Gold discovered in the Black Hills",
+      "evidence_event_id": "evt_3877f194-0f8d-5e3d-89e2-7999b5f30ed0",
+      "image_date": "0012",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Black_Hills%2C_Mount_Rushmore_National_Park.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY 2.5",
+      "license_url": "https://creativecommons.org/licenses/by/2.5",
+      "pair_id": "29cdc261cab94b8a5e0b971fe66dc6ac41a44a77442e67e435eb1ed54468900a",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 21068,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY 2.5; UsageTerms: Creative Commons Attribution 2.5; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Black_Hills,_Mount_Rushmore_National_Park.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Black_Hills%2C_Mount_Rushmore_National_Park.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "47eaae897617bd9eb2a5719a701b229cbea9f18bee69fe4251002f5b4be05d3f",
       "caption": "Composite image of Churchill Downs, Kentucky.",
       "credit": "Unknown author Unknown author — http://www.hellolouisville.com/louisville/history_buildings.cfm",
@@ -19913,6 +20339,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:President_Manuel_Gonzalez.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/1/1c/President_Manuel_Gonzalez.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "1256f187bd2c414b1a43331d8392181ec92e17428a2e86744e87bb53882f0c2e",
+      "caption": "Exterior of the Finlay Medical History Museum.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Orangesodax — Own work",
+      "date_qualification": "A 2016 photograph of the museum, a site associated with Carlos Finlay; it does not depict the 1881 discovery or conference.",
+      "display_date": "2016-01-18",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2016-01-18"
+      },
+      "enhanced_time": "1881-02-18",
+      "event_issue_ids": [],
+      "event_name": "Carlos Finlay's discovery of Yellow Fever transmission",
+      "evidence_event_id": "evt_38768a0d-db89-514a-b990-edea6f4cd4e1",
+      "image_date": "2016-01-18",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Finlay_Medical_History_Museum_Outside.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "c7d98fef0cc18f5812ed6807f080ad0e6003138f0a1432af649b3b80c902bb78",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 21435,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Finlay_Medical_History_Museum_Outside.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Finlay_Medical_History_Museum_Outside.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -20653,6 +21109,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "69e7b3ce3681253130caa5e033cd5e2b5da4c3457e356ec7f8c7db2d7d99aa5a",
+      "caption": "A commemorative postage stamp issued by Pakistan Post for Aitchison College.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Saad Ullah Bhatti — Own work",
+      "date_qualification": "Commemorative stamp created in 2021, long after the college’s 1886 founding; it is a symbolic representation, not a contemporary image of the founding.",
+      "display_date": "2021-08-31",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2021-08-31"
+      },
+      "enhanced_time": "1886-01-02",
+      "event_issue_ids": [],
+      "event_name": "Formation of Punjab Chiefs' College (later Aitchison College)",
+      "evidence_event_id": "evt_39ac0fb9-11fd-5922-a7fd-b3478ddbde69",
+      "image_date": "2021-08-31",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Aitchison-College%27s_Postage_Stamp.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "pair_id": "2d586563198b283d60f8323ec3950f5caa248291939dbff3e7740eb754145bd1",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 21817,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY 4.0; UsageTerms: Creative Commons Attribution 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Aitchison-College%27s_Postage_Stamp.png",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Aitchison-College%27s_Postage_Stamp.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "9973e7b1060481e50ed999dfc1806f50a87954757d8d00f16ff464d8e33d879b",
       "caption": "Portrait of Emily Ruete (Sayyida Salme) in traditional dress.",
       "caption_policy": "image-caption-v2",
@@ -20729,6 +21215,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "b712a85dd3fbf8b8365b5d10e31e0927d9829ffb3abe8450f22e46b6ca97011c",
+      "caption": "Herrick Memorial Chapel and fountain at Occidental College.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "The original uploader was Geographer at English Wikipedia . — Transferred from en.wikipedia to Commons by IngerAlHaosului using CommonsHelper .",
+      "date_qualification": "Campus-site photograph described as taken on July 15, 2005; the chapel was built in 1964 and the fountain in 1979. It depicts the later campus, not the college’s 1887 founding.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1887-04-20",
+      "event_issue_ids": [],
+      "event_name": "Occidental College founded",
+      "evidence_event_id": "evt_397355c8-aa94-558f-be4e-c3e0b4176f2c",
+      "image_date": "15 July 2005 (original upload date)",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Herrick_Memorial_Chapel_n_fountain.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY 1.0",
+      "license_url": "https://creativecommons.org/licenses/by/1.0",
+      "pair_id": "6c7aa103e73e635182d37aa1e971fde498e502d785ced25ef6128746d49e3744",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 21855,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY 1.0; UsageTerms: Creative Commons Attribution 1.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Herrick_Memorial_Chapel_n_fountain.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/95/Herrick_Memorial_Chapel_n_fountain.jpg/960px-Herrick_Memorial_Chapel_n_fountain.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "006828e3570d5da22b7a604e5889c3864be40f9b7d659484dcfb2484179717f6",
       "caption": "William Ewart Lockhart’s painting depicts the Golden Jubilee thanksgiving service at Westminster Abbey.",
       "caption_policy": "image-caption-v2",
@@ -20753,6 +21266,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:William_Ewart_Lockhart,_Queen_Victoria%27s_Golden_Jubilee_Service,_Westminster_Abbey,_21_June_1887_(1887%E2%80%931890).jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/William_Ewart_Lockhart%2C_Queen_Victoria%27s_Golden_Jubilee_Service%2C_Westminster_Abbey%2C_21_June_1887_%281887%E2%80%931890%29.jpg/960px-William_Ewart_Lockhart%2C_Queen_Victoria%27s_Golden_Jubilee_Service%2C_Westminster_Abbey%2C_21_June_1887_%281887%E2%80%931890%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "247dbcbde7f7d21c95d3a51ba673cadca3103e6afd7e3af92059151410b4adf6",
+      "caption": "De Beers mine shaft, depicted in an image associated with Gardner F. Williams’s The Diamond Mines of South Africa.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Gardner F. Williams — The Diamond Mines of South Africa",
+      "date_qualification": "Image date is 1905-01-01, after the company’s 1888 founding; it depicts a mine site, not the founding event.",
+      "display_date": "1905-01-01",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1905-01-01"
+      },
+      "enhanced_time": "1888-03-13",
+      "event_issue_ids": [],
+      "event_name": "De Beers Consolidated Mines Ltd. is founded",
+      "evidence_event_id": "evt_36a5cae8-b22c-5d5f-8d8c-0f7183dcccaa",
+      "image_date": "1905-01-01",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/0b/De_Beers_Mine_shaft.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "2299ca0dced5204a4f0e09cbf40a846a98ce1ad16330a8d1dcaa04de602eca2d",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 21916,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:De_Beers_Mine_shaft.png",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/0/0b/De_Beers_Mine_shaft.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -21037,6 +21580,33 @@
       "rights_statement": "LicenseShortName: CC BY 2.0; UsageTerms: Creative Commons Attribution 2.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:Moulin_Rouge,_Paris_April_2011.jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/Moulin_Rouge%2C_Paris_April_2011.jpg/960px-Moulin_Rouge%2C_Paris_April_2011.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "3a57735c25fd1ffd8a74c131e09317d7fd3cf66d5a36d9a26ff6a3885539ef96",
+      "caption": "Photograph of the Capilano Suspension Bridge in Vancouver, Canada.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Markus Säynevirta — Own work",
+      "date_qualification": "A photograph of the bridge in 2016, decades after its 1889 opening; it documents the site, not the opening event. No supported display date is available.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1889-01-01",
+      "event_issue_ids": [],
+      "event_name": "The Capilano Suspension Bridge opens in British Columbia",
+      "evidence_event_id": "evt_39227f37-9bc6-5797-b01a-d7037fa6f4b1",
+      "image_date": "9 July 2016 (according to Exif data)",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Capilano_Suspension_Bridge%2C_Vancouver%2C_Canada_%28July_2016%29_2.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "3b1b78171e9acec8d38f562d0cbd566173e9007180aaff867dcbdee996c29640",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 22066,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Capilano_Suspension_Bridge,_Vancouver,_Canada_(July_2016)_2.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Capilano_Suspension_Bridge%2C_Vancouver%2C_Canada_%28July_2016%29_2.jpg/960px-Capilano_Suspension_Bridge%2C_Vancouver%2C_Canada_%28July_2016%29_2.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -22656,6 +23226,36 @@
       "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:Torpedo_tube_on_holland_1.jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Torpedo_tube_on_holland_1.jpg/960px-Torpedo_tube_on_holland_1.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "17a1951f33cf84ab90722e4b73e23675a8029022d2b44d581802afcebf821c7f",
+      "caption": "Lithograph of an okapi by P. J. Smit, based on a painting by Sir Harry Johnston.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Painting by Sir Harry Johnston (1858-1927) , lithograph by P. J. Smit — Proceedings of the Zoological Society, 1901 , London, UK https://archive.org/stream/proceedingsofzoo19012zool#page/n51/mode/2up",
+      "date_qualification": "The 1901 lithograph is a retrospective illustration of the okapi, not a photograph of its first European observation.",
+      "display_date": "1901",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1901"
+      },
+      "enhanced_time": "1901-01-01",
+      "event_issue_ids": [],
+      "event_name": "The okapi is observed for the first time by Europeans",
+      "evidence_event_id": "evt_3a3cc03a-68ca-5a74-b835-f08b8fa689ba",
+      "image_date": "1901",
+      "image_role": "retrospective_illustration",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/6/68/Okapi_1901.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "758f8d8f3e5640772e2cd09e605cec5e1752d43501563ba2e1185a5a20ad3683",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 23059,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Okapi_1901.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Okapi_1901.jpg/960px-Okapi_1901.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -24627,6 +25227,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "1dc5aaf7c9603a381658dba634495a5bcc7844adb585deab671de4cf1f6e4b8b",
+      "caption": "Photograph of damage to the lighthouse on Vincent’s Pier in Scarborough.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "not stated — This photograph Q 53462 comes from the collections of the Imperial War Museums (collection no. 3100-06)",
+      "date_qualification": "The damage resulted from the bombardment on 16 December 1914; the image is dated 1914-12, with supported display date 1914.",
+      "display_date": "1914",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1914-12"
+      },
+      "enhanced_time": "1914-12-16",
+      "event_issue_ids": [],
+      "event_name": "World War I: Raid on Scarborough, Hartlepool and Whitby",
+      "evidence_event_id": "evt_39d3d35d-931e-585d-abaf-c0355b57c2af",
+      "image_date": "1914-12",
+      "image_role": "event_aftermath",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Lighthouse_damage_Scarborough_1914_IWM_Q_53462.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "a9d4ddf7e572ed4bca885bdfb983fb58519a0e74ae4b002e751013869b3adb77",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 24167,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Lighthouse_damage_Scarborough_1914_IWM_Q_53462.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Lighthouse_damage_Scarborough_1914_IWM_Q_53462.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "6540cc3cf88c129fc651ed9cd4ca485147e9dae1a4d134ece5b71f3b2b37a1cb",
       "caption": "HMS Dreadnought underway.",
       "credit": "Adam Cuerden — U.S. Naval Historical Center",
@@ -24825,6 +25455,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "dbaf5b3703225d3b0738bc02ee60e6ec5c318ad772b8ab54040f6d238460e64c",
+      "caption": "Illustration of the passenger ferry SS Sussex in the English Channel.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Theobird — Own work",
+      "date_qualification": "A 2013 illustration depicting the ship, not a contemporary photograph of its 1916 torpedoing.",
+      "display_date": "2013-04-13",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2013-04-13 16:24:34"
+      },
+      "enhanced_time": "1916-03-24",
+      "event_issue_ids": [],
+      "event_name": "Torpedoing of SS Sussex",
+      "evidence_event_id": "evt_37f1f1c6-87b1-523f-9270-ab13a280e5cd",
+      "image_date": "2013-04-13 16:24:34",
+      "image_role": "retrospective_illustration",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/SS_Sussex.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pair_id": "ca48efecfe3f7aab8d11dca90f3318e6e82fabf0977dd4946726e61d76a1cd7a",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 24298,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 3.0; UsageTerms: Creative Commons Attribution-Share Alike 3.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:SS_Sussex.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/SS_Sussex.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "054f820a4cac095a88529c3a85fd1089f04e4105eff5dd83ccf9bafbfe71c35e",
       "caption": "Newspaper photographs relating to the San Francisco Preparedness Day bombing.",
       "credit": "Unknown author Unknown author — The Fairmont West Virginian. (Fairmont, W. Va.), 27 July 1916. Chronicling America: Historic American Newspapers. Lib. of Congress. < http://chroniclingamerica.loc.gov/lccn/sn86092557/1916-07-27/ed-1/seq-8/ >",
@@ -24870,6 +25530,36 @@
       "rights_statement": "LicenseShortName: CC BY 2.0; UsageTerms: Creative Commons Attribution 2.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:Portuguese_war_cemetery_near_La_Bassee_(9687641560).jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Portuguese_war_cemetery_near_La_Bassee_%289687641560%29.jpg/960px-Portuguese_war_cemetery_near_La_Bassee_%289687641560%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "4597189118e2d07b32eb05a5926fb0e6f5ba3b8ff766fd9e5f04f8e17fd26423",
+      "caption": "French soldiers moving into attack from their trench during the Battle of Verdun.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Collection DocAnciens/docpix.fr — www.docpix.fr",
+      "date_qualification": "Described as a scene during the Battle of Verdun; image date is 1916.",
+      "display_date": "1916",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1916"
+      },
+      "enhanced_time": "1916-12-18",
+      "event_issue_ids": [],
+      "event_name": "End of the Battle of Verdun",
+      "evidence_event_id": "evt_3a4975cc-6ced-57a1-81c8-e82b67c8e6ab",
+      "image_date": "1916",
+      "image_role": "event_photo",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Bataille_de_Verdun_1916.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "ca662c287f44c20d83becba8c22ca971df027ea643d647a45541dbc148583b23",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 24368,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Bataille_de_Verdun_1916.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Bataille_de_Verdun_1916.jpg/960px-Bataille_de_Verdun_1916.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -25653,6 +26343,66 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:International_Politics_Building,_Aberystwyth_University.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/1/11/International_Politics_Building%2C_Aberystwyth_University.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "1004760c40ed02da3529a004c8607d90e07a88ef3a0b0cf0c76c48d05f278c65",
+      "caption": "Map of the Azerbaijan Democratic Republic.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Golden — Own work . Based on the sources listed below: 1.O n the Religious Frontier: Tsarist Russia and Islam in the Caucasus Author: Firouzeh Mostashari I.B.Tauris, 2006, ISBN 1850437718 , 9781850437710 2. The Azerbaijani Turks: Power and Identity Under Russian Rule Author: Audrey L. Altstadt Hoover Press, 1992, ISBN 0817991824 , 9780817991821 3. Mudros to Lausanne Britain's Frontier in West Asia , 1918-1923 Author: Briton Cooper Busch SUNY Press, 1976, ISBN 0873952650 , 9780873952651 4.Copy of Official Map Issued by the Azerbaijan Democratic Republic in 1919 on Wikipedia 5.The Atlas Of Ethnopolitical History of The Caucasus (1774-2004) Author: Arthur Tsutsiev “Evropa”, Moscow, 2006, ISBN 5-9739-0045-2 6.The Grosser Atlas zur Weltgeschichte Author: Hans-Erich Stier (dir.) “Westermann”, Braunschweig 1985, ISBN 3-14-100919-8 , p. 149-151 7.The Atlas historique de l'Arménie Authors: Claude Mutafian & Eric Van Lauwe “Autrement”, Paris 2001, ISBN 978-2746701007 , pp.70-72 This PNG graphic was created with Medibang.",
+      "date_qualification": "A map of the republic’s territory during 1918–1920, not a depiction of the Foreign Ministry’s establishment. Map creation date: 2020-03-18.",
+      "display_date": "2020-03-18",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2020-03-18"
+      },
+      "enhanced_time": "1919-07-19",
+      "event_issue_ids": [],
+      "event_name": "The Foreign Ministry of the Azerbaijan Democratic Republic is established",
+      "evidence_event_id": "evt_3a0a9781-146c-52bc-a8f3-6aeb787ece87",
+      "image_date": "2020-03-18",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/bb/Map_of_the_Azerbaijan_Democratic_Republic.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "59a7fff4debf7f8520461c61a93d85a90d167ff4d3a7b53a61b54fe44f08fa94",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 24872,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Map_of_the_Azerbaijan_Democratic_Republic.png",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Map_of_the_Azerbaijan_Democratic_Republic.png/960px-Map_of_the_Azerbaijan_Democratic_Republic.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "0de5a164edab20005ca6babe274aa2d8841d90826d2d114660febaee69750c55",
+      "caption": "The Communist Party USA Workers’ Bookshop at its New York headquarters, with political posters in the window.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Marjory Collins — This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID fsa.8d08139 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+      "date_qualification": "A 1942 photograph of the party’s bookshop in New York, not a photograph of the party’s 1919 establishment in Chicago.",
+      "display_date": "1942",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1942-09"
+      },
+      "enhanced_time": "1919-01-01",
+      "event_issue_ids": [],
+      "event_name": "The Communist Party of America is established",
+      "evidence_event_id": "evt_381c581a-29a4-535e-bcd4-1086db9d8ced",
+      "image_date": "1942-09",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Communist_Party_USA%2C_Workers%27_Bookshop%2C_New_York.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "a4893678afce5596bae8c08c39803c89d31f98bee055eb4e610e51b71e11574f",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 24890,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Communist_Party_USA,_Workers%27_Bookshop,_New_York.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Communist_Party_USA%2C_Workers%27_Bookshop%2C_New_York.jpg/960px-Communist_Party_USA%2C_Workers%27_Bookshop%2C_New_York.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -29011,6 +29761,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "6db3163f008f0b05359871666b867a8a2603a897e18bde729d89f578d99e79ab",
+      "caption": "Crowds and automobiles gather at the Tacoma Narrows Bridge opening.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "University of Washington Libraries Digital Collections — Flickr : Opening day of the Tacoma Narrows Bridge, Tacoma, Washington",
+      "date_qualification": "Opening-day photograph from July 1, 1940, several months before the November 7 collapse; it documents the original bridge before its collapse, not the collapse itself. The supplied supported_display_date is null.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1940-11-07",
+      "event_issue_ids": [],
+      "event_name": "Tacoma Narrows Bridge Collapse",
+      "evidence_event_id": "evt_3a53d414-ad6a-56e8-941a-4f78b340039b",
+      "image_date": "Taken on 1 July 1940, 12:48:16",
+      "image_role": "contextual_photo",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Opening_day_of_the_Tacoma_Narrows_Bridge%2C_Tacoma%2C_Washington.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "e605e7c137db511ea1deaf28f25cced8b23278270493e085ede32dda427e895d",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 27004,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Opening_day_of_the_Tacoma_Narrows_Bridge,_Tacoma,_Washington.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/4/4e/Opening_day_of_the_Tacoma_Narrows_Bridge%2C_Tacoma%2C_Washington.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "f512fffd9fc4cf9647d354e11472dd6da2223b5ed467e50495a37b3b3f231f13",
       "caption": "Diagram of torpedo damage to the Italian battleship Littorio.",
       "credit": "Maxrossomachin — Own work",
@@ -29436,6 +30213,36 @@
       "rights_statement": "LicenseShortName: CC BY-SA 2.0; UsageTerms: Creative Commons Attribution-Share Alike 2.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:Struma-map.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/2/29/Struma-map.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "07c5d7de4dd43ab608722acae46f07e58afa36d572ecfbd47d4e3532bea190bb",
+      "caption": "Photograph of film art director Cedric Gibbons.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Macfadden Publications, Inc.; no photographer credited — Photoplay , Volume 19 Number 4 (page 47)",
+      "date_qualification": "Portrait of Cedric Gibbons, not a photograph of the 14th Academy Awards ceremony; the saved image date is month-specific, while the supported display date is only 1936.",
+      "display_date": "1936",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1936-04"
+      },
+      "enhanced_time": "1942-02-26",
+      "event_issue_ids": [],
+      "event_name": "14th Academy Awards ceremony",
+      "evidence_event_id": "evt_3ab043f7-b206-53c0-bd03-aed22daccc7a",
+      "image_date": "1936-04",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Cedric-Gibbons-1936.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "eb13fadd15f4b3da0a5d97616f0b7550236ed0bb254a16f245262736c70af7ab",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 27341,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Cedric-Gibbons-1936.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/4/48/Cedric-Gibbons-1936.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -30050,6 +30857,36 @@
       "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:The_COUNTEROFFENSIVE_OF_SOVIET_FORCES_July_12_-_August_23,_1943_EN.svg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/The_COUNTEROFFENSIVE_OF_SOVIET_FORCES_July_12_-_August_23%2C_1943_EN.svg/960px-The_COUNTEROFFENSIVE_OF_SOVIET_FORCES_July_12_-_August_23%2C_1943_EN.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "dbf0e23b236b459af8fc790111ab2bc342708eba38671fe5f6c13b5cab914017",
+      "caption": "Group photograph of Allied government and military leaders at the Quadrant Conference in Quebec.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "US Army Signal Corps — US Naval History and Heritage Command, photo no. UA 02.06.05. https://www.history.navy.mil/content/history/nhhc/our-collections/photography/numerical-list-of-images/nhhc-series/ua-collection/ua-02-06-05-allied-conference--quebec--canada.html",
+      "date_qualification": "The image is dated 1943-08, during the conference held August 17–24, 1943.",
+      "display_date": "1943",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1943-08"
+      },
+      "enhanced_time": "1943-01-01",
+      "event_issue_ids": [],
+      "event_name": "Quadrant Conference",
+      "evidence_event_id": "evt_39410068-1353-5225-b504-71c9ed8ea7e5",
+      "image_date": "1943-08",
+      "image_role": "event_photo",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Quebec_Conference_leaders.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "c0a7d0b6758e57da1433c8a91602ac5c71233d1a5ea0e166555fb3dc30aa74bf",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 27740,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Quebec_Conference_leaders.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Quebec_Conference_leaders.svg/960px-Quebec_Conference_leaders.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -32532,6 +33369,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "e21e4f938953e373384aae8c4e83ff18c00fb87ea89137d72c1eb038c14a6e50",
+      "caption": "Roger Bannister in a wire-service photograph.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Unknown (United Press International) — [1]",
+      "date_qualification": "Portrait of Bannister from 1953, before his sub-four-minute mile in 1954.",
+      "display_date": "1953",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1953"
+      },
+      "enhanced_time": "1954-05-06",
+      "event_issue_ids": [],
+      "event_name": "Roger Bannister's sub-four minute mile",
+      "evidence_event_id": "evt_39209be4-c884-5a75-b3a1-23457f5d9df6",
+      "image_date": "1953",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Roger_Bannister_1953.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "4fd94083cf6e913cab2e6dd16455735f7e394ed77b340df09b647870f3d32467",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 29509,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Roger_Bannister_1953.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Roger_Bannister_1953.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "04e34ff9f1b8efe43c3161ada394fcc9ce2abf1baae750b4e62d86fd243206e8",
       "caption": "A group of political prisoners in Kengir, including Lithuanian prisoner Aleksandra Kišonaitė.",
       "caption_policy": "image-caption-v2",
@@ -34944,6 +35811,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "f51f1608c827fa946af03ccef0d5f77a6184859a0f76ac07b861f0963b13ebf5",
+      "caption": "Portrait of Ahmad Shukeiri, founder of the PLO.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Unknown author Unknown author — This image has been extracted from another file",
+      "date_qualification": "Portrait of a PLO founder, not a depiction of the charter’s release. The saved image date is 1965-01-01, after the 1964 event; it is not an event photograph.",
+      "display_date": "1965-01-01",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1965-01-01"
+      },
+      "enhanced_time": "1964-05-28",
+      "event_issue_ids": [],
+      "event_name": "Release of the PLO Charter",
+      "evidence_event_id": "evt_389eec97-84c1-5e9f-85ab-0750658c44c0",
+      "image_date": "1965-01-01",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Ahmad_Shukeiri_cropped.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "a4efab40129726c047bbc2ec78ccb1553d29e762f785f53e87a063ee0872e9a5",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 30851,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Ahmad_Shukeiri_cropped.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/7/7d/Ahmad_Shukeiri_cropped.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "d187029018633835274725b9122b31b8c6d7278c65612b72f8b8132bc95b7249",
       "caption": "1968 Ford GT40 Mk I, chassis 1075, displayed at the Henry Ford Museum in Dearborn.",
       "credit": "Sicnag — 1968 Ford GT40 Mk I",
@@ -35491,6 +36388,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "6e213bc5feb36c4df45d1e9d6a8345a415fac4b79e8eb872bbb1e6eca7e1b2f6",
+      "caption": "A British Army bomb disposal expert attempts to disarm an improvised explosive device in Hong Kong.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Unknown author Unknown author — https://photoblog.hk/255367/%E5%BE%9E%E7%8F%8D%E8%B2%B4%E8%88%8A%E7%85%A7%E7%89%87%E4%BA%86%E8%A7%A3%EF%BC%8C%E5%B7%A5%E8%81%AF%E6%9C%83%E6%8E%A8%E5%8B%95%E7%9A%84%E3%80%8C%E5%85%AD%E4%B8%83%E6%9A%B4%E5%8B%95%E3%80%8D%E6%98%AF/",
+      "date_qualification": "Described as a photograph from between July 1967 and December 1967, during the Hong Kong 1967 riots.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1967-01-01",
+      "event_issue_ids": [],
+      "event_name": "Hong Kong 1967 riots",
+      "evidence_event_id": "evt_3b12c4ef-d091-505f-a391-6e45ba5dd2be",
+      "image_date": "between July 1967 and Dec 1967",
+      "image_role": "event_photo",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/78/British_Army_bomb_disposal_expert_check_and_remove_pro-communist_bomb_in_Hong_Kong.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "822900bb09826b00acdb4d4cb8705b34f1a12e149e68f3ecb6fd7e819340e404",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 31479,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:British_Army_bomb_disposal_expert_check_and_remove_pro-communist_bomb_in_Hong_Kong.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/78/British_Army_bomb_disposal_expert_check_and_remove_pro-communist_bomb_in_Hong_Kong.jpg/960px-British_Army_bomb_disposal_expert_check_and_remove_pro-communist_bomb_in_Hong_Kong.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "6cd968f40404d4500742bf5602402f001e5062785c357c7afb6b73e5fd51a84f",
       "caption": "Bronze sculpture of Lucio Cabañas Barrientos.",
       "credit": "Ponce CCA — Own work",
@@ -35938,6 +36862,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "ca9d24231af0a9f5140d73e5514261429036378f00de45390dd7be26e7aa9bda",
+      "caption": "Photograph of Georges Pompidou’s grave in Orvilliers, Yvelines, France.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "ℍenry Salomé — Cliché personnel, Persönliches Photo, Own picture, Photografia personale",
+      "date_qualification": "Photograph of Pompidou’s grave, not the 1969 presidential election; original image date: 2007-08-13.",
+      "display_date": "2007-08-13",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2007-08-13"
+      },
+      "enhanced_time": "1969-06-15",
+      "event_issue_ids": [],
+      "event_name": "Georges Pompidou elected President of France",
+      "evidence_event_id": "evt_3a2bbb36-c770-5437-9ee8-eca802813232",
+      "image_date": "2007-08-13",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/d/db/Orvilliers_Tombe_Pompidou.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "pair_id": "8042a4a8bc98571a33839bab8b9b40fb7d890ec3678de80db67d1385c7c59f3e",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 31869,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 3.0; UsageTerms: Creative Commons Attribution-Share Alike 3.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Orvilliers_Tombe_Pompidou.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Orvilliers_Tombe_Pompidou.jpg/960px-Orvilliers_Tombe_Pompidou.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "7aeffe2be5928bda217e23b26a8f2f0dc239c85e71649a00e687a6c175a2c017",
       "caption": "The Centre Block of the Canadian Parliament, with the Peace Tower, in Ottawa.",
       "caption_policy": "image-caption-v2",
@@ -36046,6 +37000,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Mariner_6-7.png",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Mariner_6-7.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "a2aa59e6bbe604618a0a199598198302662c709cb9b3b7349e7ac4baa8cf7e45",
+      "caption": "CIA map of the China-USSR border, with shaded relief and two inset maps.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "United States. Central Intelligence Agency — https://www.loc.gov/item/2007628762/",
+      "date_qualification": "A 1988 map providing geographic context for the border conflict; it is not a contemporary event photograph.",
+      "display_date": "1988",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1988"
+      },
+      "enhanced_time": "1969-08-13",
+      "event_issue_ids": [],
+      "event_name": "Sino-Soviet Border Clashes",
+      "evidence_event_id": "evt_38708542-5953-5e6f-b119-b7a4d12dc582",
+      "image_date": "1988",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/35/China-USSR_border._LOC_2007628762_cr.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "d1da052e86545f48e7a0e1c6e20a4c9810d05c2ed89ee4e0285db3e767769f82",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 31891,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:China-USSR_border._LOC_2007628762_cr.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/35/China-USSR_border._LOC_2007628762_cr.jpg/960px-China-USSR_border._LOC_2007628762_cr.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -36599,6 +37583,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "92c8514fe2253c4448745174ab1e98e0d232a447125a7ccc9977416a167ee6b8",
+      "caption": "Yasser Arafat, Nayef Hawatmeh and Kamal Nasser at a press conference in Amman.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Published by Al Ahram . Photographer unknown — Al Ahram Weekly Farewell Arafat: Photo-gallery",
+      "date_qualification": "The press conference is dated June 1970, before the main phase of the conflict; use as contextual identification of figures associated with the conflict, not as a photograph of the offensive.",
+      "display_date": "1970",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1970-06"
+      },
+      "enhanced_time": "1971-01-01",
+      "event_issue_ids": [],
+      "event_name": "Jordanian army troops launch an offensive against Palestinian guerillas",
+      "evidence_event_id": "evt_384ac22a-903d-55af-baff-5e170e1418e7",
+      "image_date": "1970-06",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Arafat_in_Jordan.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "e97752b6ebd77c38361bf07561633a855b005f1d8a7b778e00ef67724f116815",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 32281,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Arafat_in_Jordan.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Arafat_in_Jordan.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "3ffb1883135898274a2c048f1b0848c3c60dfb74092ac0932d8a4f1d15b7dc76",
       "caption": "Official Supreme Court portrait of Hugo Black, painted by his grandson John Black from a print created by Yousuf Karsh.",
       "credit": "John Black — From the Supreme Court Historical Society , which notes, \"All portraits courtesy of the Supreme Court of the United States.\" Painted by his grandson, John Black from a print created by w:Yousuf Karsh",
@@ -36674,6 +37688,36 @@
       "rights_statement": "LicenseShortName: CC BY-SA 3.0; UsageTerms: Creative Commons Attribution-Share Alike 3.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:United_Arab_Emirates_(orthographic_projection).svg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cd/United_Arab_Emirates_%28orthographic_projection%29.svg/960px-United_Arab_Emirates_%28orthographic_projection%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "8f577058da09c286679ea203dc2c4e17139928d351bc706607a45200cb5e2c3d",
+      "caption": "Portrait of Zulfikar Ali Bhutto with a Pakistani flag in the background.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Bernard Gotfryd — This image is available from the United States Library of Congress 's Prints and Photographs division under the digital ID gtfy.00458 . This tag does not indicate the copyright status of the attached work. A normal copyright tag is still required. See Commons:Licensing .",
+      "date_qualification": "Portrait of Bhutto, dated circa 1970, about two years before the announced program; it is not a photograph of the announcement.",
+      "display_date": "c. 1970",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "circa 1970 date QS:P,+1970-00-00T00:00:00Z/9,P1480,Q5727902"
+      },
+      "enhanced_time": "1972-01-20",
+      "event_issue_ids": [],
+      "event_name": "Zulfikar Ali Bhutto announces nuclear weapons program",
+      "evidence_event_id": "evt_36b2ab62-021d-58f2-ba44-33053258236c",
+      "image_date": "circa 1970 date QS:P,+1970-00-00T00:00:00Z/9,P1480,Q5727902",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/09/Zulfikar_Ali_Bhutto_Portrait_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "8c2351af36ff289bec48f48e99fe5fbcfe30307094d9306c978e04cf6ab10b5c",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 32390,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Zulfikar_Ali_Bhutto_Portrait_(cropped).jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/0/09/Zulfikar_Ali_Bhutto_Portrait_%28cropped%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -37088,6 +38132,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Richard_Nixon_presidential_portrait_(2).jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Richard_Nixon_presidential_portrait_%282%29.jpg/960px-Richard_Nixon_presidential_portrait_%282%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "cb54d2a41df12c412145645fbf76cb106b4d8f78ef055c04f635403536e8a467",
+      "caption": "Photograph of Comet Kohoutek taken by a Skylab 4 crew member from Earth orbit.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "NASA — http://spaceflight.nasa.gov/gallery/images/skylab/skylab4/hires/s73-38731.jpg",
+      "date_qualification": "Photographed in December 1973 during the comet’s passage; this depicts the comet, not its March discovery. Original image date: 1973-12.",
+      "display_date": "1973",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1973-12"
+      },
+      "enhanced_time": "1973-03-18",
+      "event_issue_ids": [],
+      "event_name": "Discovery of Comet Kohoutek",
+      "evidence_event_id": "evt_395e8fc1-143f-5397-952a-a9a777a9580f",
+      "image_date": "1973-12",
+      "image_role": "contextual_photo",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Comet_Kohoutek_%28S73-38731%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "fa3602326c236b615f8775b9d97448a73a4ddab0c1df8f86651b831a5bcdb614",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 32564,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Comet_Kohoutek_(S73-38731).jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/ff/Comet_Kohoutek_%28S73-38731%29.jpg/960px-Comet_Kohoutek_%28S73-38731%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -38132,6 +39206,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "8b599a7d75112cd6112f091c6b648be31a3ca3586b0f4d8f39796aa7b7ba7a50",
+      "caption": "A banner at Grenada National Museum recalls former Prime Minister Maurice Bishop.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "David Stanley — Flickr at https://www.flickr.com/photos/davidstanleytravel/46958777741/",
+      "date_qualification": "Museum banner commemorating Bishop, not a photograph of the 1979 coup. Taken in 2018.",
+      "display_date": "2018",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "Taken on 30 December 2018"
+      },
+      "enhanced_time": "1979-03-13",
+      "event_issue_ids": [],
+      "event_name": "Maurice Bishop's coup in Grenada",
+      "evidence_event_id": "evt_3a5aa2dd-f82f-5954-86a3-9579859afe50",
+      "image_date": "Taken on 30 December 2018",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Grenada_Revolution.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY 2.5",
+      "license_url": "https://creativecommons.org/licenses/by/2.5",
+      "pair_id": "1696ff955095e85e56d9b6413b024f7daadb9c89fa0007b15b2955a62a28cccc",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 33314,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY 2.5; UsageTerms: Creative Commons Attribution 2.5; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Grenada_Revolution.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Grenada_Revolution.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "594e7012f84ed8662e41b80247877567f7794dcc414724fef0f618e653f147ca",
       "caption": "Railway diversion through a cutting near Penmanshiel, around the sealed tunnel.",
       "credit": "Richard Webb (Uploaded by User:PeterJewell ) — Geograph",
@@ -38870,6 +39974,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Beirutembassy.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/4/40/Beirutembassy.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "99c79d2058bd2ad486e3bceaa2e43ae3a5fd2b62b21c60d737948d79fa3e6721",
+      "caption": "Tamil Eelam flag associated with the LTTE era.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Tyiqnqnenq — Own work",
+      "date_qualification": "A flag, not a contemporaneous photograph of the Black July riots. The saved image date is 2019-09-12.",
+      "display_date": "2019-09-12",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2019-09-12"
+      },
+      "enhanced_time": "1983-07-24",
+      "event_issue_ids": [],
+      "event_name": "Black July Anti-Tamil Riots",
+      "evidence_event_id": "evt_396e0f8e-ee96-5562-9bcd-69406a49a37c",
+      "image_date": "2019-09-12",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9b/Tamil_Eelam_Flag.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "393ab1bb39a0f81b2726a10c58e44577c242a172448792c499a85b229fe47600",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 33911,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Tamil_Eelam_Flag.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9b/Tamil_Eelam_Flag.svg/960px-Tamil_Eelam_Flag.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -43978,6 +45112,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "8c807c97b34c01d343b548602be4593fb2a1dfd114554d6d54f7794e398b5675",
+      "caption": "Map showing the legal status of same-sex marriage in Brazil.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Jedi Friend — Own work : based on File:Brazil Labelled Map.svg",
+      "date_qualification": "A retrospective map of legal status prior to May 2013, not a depiction of the 2011 Supreme Federal Court ruling. Image date is given as 2016-12; display date follows the supplied supported date.",
+      "display_date": "2016",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2016-12"
+      },
+      "enhanced_time": "2011-05-05",
+      "event_issue_ids": [],
+      "event_name": "Brazil approves same-sex marriage",
+      "evidence_event_id": "evt_3760e20d-29dd-5682-9dc8-7784a4ddea0c",
+      "image_date": "2016-12",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Same-sex_marriage_in_Brazil_prior_to_May_2013.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "f834bc8274f27454542558e2b76fe70c467ef1b77c427c9e9aa39091b51906a0",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 37201,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Same-sex_marriage_in_Brazil_prior_to_May_2013.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/39/Same-sex_marriage_in_Brazil_prior_to_May_2013.svg/960px-Same-sex_marriage_in_Brazil_prior_to_May_2013.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "8f7a81d5f2962f3db896033c658cfabb92459a5cbec64b77e2c1646b2d977294",
       "caption": "Orthographic projection highlighting South Sudan and its claimed areas.",
       "caption_policy": "image-caption-v2",
@@ -44900,6 +46064,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "4bf306810e3c35195e3562557ff8cc7e64e4f5a1008e68f6e670b0c7b5f5a9d4",
+      "caption": "Flooding in Angamaly, Kerala.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Ranjithsiji — Own work",
+      "date_qualification": "Photograph of flooding in Angamaly during the 2018 Kerala floods; the saved image date is 2018-08-16, after the event record’s 2018-08-10 date.",
+      "display_date": "2018-08-16",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2018-08-16 16:39:47"
+      },
+      "enhanced_time": "2018-08-10",
+      "event_issue_ids": [],
+      "event_name": "Floods in Kerala, India",
+      "evidence_event_id": "evt_396a1359-246c-5892-852a-fcb83e19691b",
+      "image_date": "2018-08-16 16:39:47",
+      "image_role": "event_aftermath",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/51/Kerala_Flood_2018_-_Angamaly-_IMG_20180816_163946.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "12965f961e24bd7f0df7af831061c6d48562f282566732731d6ea77a3a172ff2",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 37841,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Kerala_Flood_2018_-_Angamaly-_IMG_20180816_163946.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Kerala_Flood_2018_-_Angamaly-_IMG_20180816_163946.jpg/960px-Kerala_Flood_2018_-_Angamaly-_IMG_20180816_163946.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "12b86b81fa3afb8de3e5b6d3954f1a364f8d161f3d249c0b86ab2a48471d303f",
       "caption": "Logan Paul at the weigh-in for his white-collar boxing match against KSI.",
       "credit": "KSIvsLogan — YouTube : KSI VS. LOGAN PAUL [OFFICIAL WEIGH IN] – View/save archived versions on archive.org",
@@ -44945,6 +46139,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Parker_Solar_Probe_Launch_(NHQ201808120013).jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Parker_Solar_Probe_Launch_%28NHQ201808120013%29.jpg/960px-Parker_Solar_Probe_Launch_%28NHQ201808120013%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "edcf1040430d888ba6aece4ec2936617fa630fd69400b1b7f489b4695a900b8a",
+      "caption": "Enhanced infrared satellite animation of Typhoon Mangkhut making landfall over northeastern Luzon.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "National Oceanic and Atmospheric Administration Satellite Services Division — http://www.ssd.noaa.gov/PS/TROP/floaters/",
+      "date_qualification": "The animation depicts the storm’s landfall on September 14, 2018; the upload date is later.",
+      "display_date": "2018-09-14",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2018-09-14"
+      },
+      "enhanced_time": "2018-09-14",
+      "event_issue_ids": [],
+      "event_name": "Typhoon Mangkhut impacts Asia",
+      "evidence_event_id": "evt_3a703408-edf3-594b-b678-7b0a85fe6feb",
+      "image_date": "2018-09-14",
+      "image_role": "event_photo",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Mangkhut_Landfall_over_Luzon_2018-09-14.gif?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "12e52b382eb9069f7100a16d334550d89521d7648d2ffd59a51d0482d6071214",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 37854,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Mangkhut_Landfall_over_Luzon_2018-09-14.gif",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Mangkhut_Landfall_over_Luzon_2018-09-14.gif?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -46008,6 +47232,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "6bc241183881a8f272c6cb089f4ebee102d0348b1987d374aec55c402b7cf59d",
+      "caption": "Map showing Jair Bolsonaro’s first-round vote share across Brazilian states.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "沁水湾 — Own work",
+      "date_qualification": "First-round election results map, dated 2022-10-03; it depicts vote share, not the 30 October runoff.",
+      "display_date": "2022-10-03",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2022-10-03"
+      },
+      "enhanced_time": "2022-10-30",
+      "event_issue_ids": [],
+      "event_name": "2022 Brazilian general election",
+      "evidence_event_id": "evt_3b326194-9a93-56ef-b50e-ca9c4f6df112",
+      "image_date": "2022-10-03",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/25/2022_Brazil_Presidential_Election%2C_Bolsonaro_Round_1.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "3a6c81aa8a96f6f5a6b5b17464ab536d273d218ff55ba37bd1292d705332c94c",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 38770,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:2022_Brazil_Presidential_Election,_Bolsonaro_Round_1.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/2022_Brazil_Presidential_Election%2C_Bolsonaro_Round_1.svg/960px-2022_Brazil_Presidential_Election%2C_Bolsonaro_Round_1.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "996ea359c215ba8c0931fc1ae00e58769c745adad7d728c397294edf35d92aed",
       "caption": "Morbi’s hanging suspension bridge over the Machchhu River.",
       "credit": "Camaal Mustafa Sikan… — https://web.archive.org/web/20161010131944/http://www.panoramio.com/photo/9505483",
@@ -46484,6 +47738,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "c6e572798d5845ea75fc45c8d8b7973ac8abd1c54fb4c5edbcf8e9e5f3882eed",
+      "caption": "Portrait of Mahamat Idriss Déby by Christophe Licoppe for the European Commission.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Christophe Licoppe - European Commission — https://audiovisual.ec.europa.eu/en/photo-details/P-054643~2F00-06",
+      "date_qualification": "Portrait from 17 February 2022, more than two years before the 2024 election; contextual identification of the elected president, not a photograph of the election.",
+      "display_date": "2022-02-17",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2022-02-17 14:42:45"
+      },
+      "enhanced_time": "2024-05-06",
+      "event_issue_ids": [],
+      "event_name": "2024 Chadian presidential election: Mahamat Déby wins election to a full term as president",
+      "evidence_event_id": "evt_38cc6f01-df5c-5fe4-bfbc-f5ea8c9c3693",
+      "image_date": "2022-02-17 14:42:45",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Mahamat_Idriss_D%C3%A9by_in_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "pair_id": "4498383bbaedbae0948f05cd57251d8d900d36d7d1639e6b72ac57dbea34cb15",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 39045,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY 4.0; UsageTerms: Creative Commons Attribution 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Mahamat_Idriss_D%C3%A9by_in_2022.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/5/52/Mahamat_Idriss_D%C3%A9by_in_2022.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "4b073e3c12ca3354a54c4b21f27c8215d89dfa93b3796ea775965c5f4f8825e8",
       "caption": "A United Launch Alliance Atlas V rocket carrying Boeing’s CST-100 Starliner launches from Space Launch Complex 41 at Cape Canaveral Space Force Station.",
       "credit": "NASA/Joel Kowsky — https://www.flickr.com/photos/nasahqphoto/53772058094/",
@@ -46553,6 +47837,36 @@
       "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:2024_Bangladesh_Quota_Reform_Movement_death_tolls_by_district_(en).svg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/2024_Bangladesh_Quota_Reform_Movement_death_tolls_by_district_%28en%29.svg/960px-2024_Bangladesh_Quota_Reform_Movement_death_tolls_by_district_%28en%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "bbde85e08c24783fb8d3097c65871a861b1e3536cc5d4175798f283c08cf1449",
+      "caption": "Vadim Krasikov arrives at Vnukovo International Airport in Moscow.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Unknown author Unknown author — http://kremlin.ru/events/president/news/74696/photos/77622",
+      "date_qualification": "Shows Krasikov’s arrival in Moscow during the prisoner exchange, rather than the exchange at Ankara Esenboğa Airport. Original image date: Taken on 1 August 2024.",
+      "display_date": "2024",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "Taken on 1 August 2024"
+      },
+      "enhanced_time": "2024-08-01",
+      "event_issue_ids": [],
+      "event_name": "2024 American–Russian Prisoner Exchange",
+      "evidence_event_id": "evt_3b08745e-8e94-57d0-a63d-ba32b89b0d55",
+      "image_date": "Taken on 1 August 2024",
+      "image_role": "event_aftermath",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Exchange_of_prisoners_between_Russia_and_the_West_%282024%29_Russia.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "pair_id": "604ce61396f5129d7c76d99c922d7d7a4d940abece119a695df7e7601fa6e076",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 39105,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY 4.0; UsageTerms: Creative Commons Attribution 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Exchange_of_prisoners_between_Russia_and_the_West_(2024)_Russia.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Exchange_of_prisoners_between_Russia_and_the_West_%282024%29_Russia.jpg/960px-Exchange_of_prisoners_between_Russia_and_the_West_%282024%29_Russia.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -48110,6 +49424,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Calixtus_III.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/6/60/Calixtus_III.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "1bf762c8220314ac1bf39ecf83a77423ef25c6450042d4130d467a7dbd11cfc2",
+      "caption": "Coat of arms of Stephen III of Moldavia.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Madboy74 — Own work https://cimerek.hu/cimer/iii-istvan-moldvai-fejedelem-cimere/",
+      "date_qualification": "A modern depiction of a historical coat of arms, not an image of the 1457 accession event. Image date: 2012-01-02.",
+      "display_date": "2012-01-02",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2012-01-02"
+      },
+      "enhanced_time": "1457-04-12",
+      "event_issue_ids": [],
+      "event_name": "Ștefan cel Mare secures Moldavian throne",
+      "evidence_event_id": "evt_37090ad2-4613-5497-b1ea-b876024c986f",
+      "image_date": "2012-01-02",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/0c/Coa_Romania_Country_History_%C8%98tefan_cel_Mare_%281457-1504%29_v2.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "19c198339cb24d7d6f61acf56fa68255397b7d8a2a2f9874517a3e07cb1b921f",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 40120,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Coa_Romania_Country_History_%C8%98tefan_cel_Mare_(1457-1504)_v2.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Coa_Romania_Country_History_%C8%98tefan_cel_Mare_%281457-1504%29_v2.svg/960px-Coa_Romania_Country_History_%C8%98tefan_cel_Mare_%281457-1504%29_v2.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -50231,6 +51575,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "22441edd2ba0da0eebb924086dbdf49c751e2e32c42d0290d6e2da73c28d0a3e",
+      "caption": "Palacio de Gobierno del Estado de Puebla in Puebla de Zaragoza, Mexico.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Codo — Government Building In Puebla",
+      "date_qualification": "A photograph of a government building in Puebla, made long after the city’s 1531 founding; it is a site image, not a depiction of the founding event.",
+      "display_date": "2006-10-07",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2006-10-07 02:51"
+      },
+      "enhanced_time": "1531-04-16",
+      "event_issue_ids": [],
+      "event_name": "Founding of Puebla",
+      "evidence_event_id": "evt_38b4faa4-375b-5015-afa3-44a3d46cf2ef",
+      "image_date": "2006-10-07 02:51",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Government_Building_In_Puebla.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "pair_id": "fe9dc235a4ed6395900c970a2fdfd7cab433a45bd57045f89f71c0e7a82b6d44",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 41609,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 2.0; UsageTerms: Creative Commons Attribution-Share Alike 2.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Government_Building_In_Puebla.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Government_Building_In_Puebla.jpg/960px-Government_Building_In_Puebla.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "664c71738c6cfea4131b433ba3f8f4b696458a706b3d254870547606b74a6d8e",
       "caption": "Retrospective illustration titled “Hernando Pizarro herido en Puná,” depicting Hernando Pizarro wounded at Puná.",
       "credit": "Fondo Antiguo de la Biblioteca de la Universidad de Sevilla from Sevilla, España — \"Hernando Pizarro herido en Puná\".",
@@ -50417,6 +51791,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "836cda8e45eca985be184ff1e7eef76c64fc8b7c1d6ff76ab82c73ab3de18c6f",
+      "caption": "Memorial plaque for Archbishop Olav Engelbrektsson in St. Gummarus church, Lier, Belgium.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Orf3us (changes by Rabanus Flavus ) — File:Fra højalteret i Gummaruskirken i Lier.jpg",
+      "date_qualification": "A later photograph of a memorial plaque at the site associated with his exile and death; it does not depict the 1537 flight. The original image date is given as 2018-06.",
+      "display_date": "2018",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2018-06"
+      },
+      "enhanced_time": "1537-04-01",
+      "event_issue_ids": [],
+      "event_name": "The Archbishop of Norway flees from Trondheim to Lier",
+      "evidence_event_id": "evt_3ac861ef-47dd-527d-a899-0ca7a1c518aa",
+      "image_date": "2018-06",
+      "image_role": "site",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Honori_memoriaeque_sempiternae_Olai_Engelberti.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "f42883ca9d4d58c7137063b83adcff9536caa6b844275bbcb4a876311063f052",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 41772,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Honori_memoriaeque_sempiternae_Olai_Engelberti.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Honori_memoriaeque_sempiternae_Olai_Engelberti.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "c1783f4cf141aecca7cfc638fc73503f07e09bb3bb6649ea51eb5ec4c64dc5b8",
       "caption": "Portrait of Gonzalo Jiménez de Quesada, founder of Santafé de Bogotá.",
       "caption_policy": "image-caption-v2",
@@ -50442,6 +51846,33 @@
       "rights_statement": "LicenseShortName: CC BY-SA 3.0; UsageTerms: Creative Commons Attribution-Share Alike 3.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:El_Licenciado_Gonzalo_Jim%C3%A9nez_de_Quesada.png",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/0/07/El_Licenciado_Gonzalo_Jim%C3%A9nez_de_Quesada.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "96eafe4d109d5c9be5930b68d0e98a35adb37322cde814d530bcd96e67a4bf9c",
+      "caption": "A printed portrait of Alfonso d’Avalos from Guillaume Rouillé’s Promptuarii Iconum Insigniorum.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "by Guillaume Rouille (1518?-1589) — \"Promptuarii Iconum Insigniorum\"",
+      "date_qualification": "The portrait was published in 1553, after the 1537 truce; it is not a contemporary depiction of the truce.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1537-11-27",
+      "event_issue_ids": [],
+      "event_name": "Alfonso d'Avalos enters truce with French Duke",
+      "evidence_event_id": "evt_3880e1f4-e177-55e2-88fa-3105570ed66d",
+      "image_date": "published 1553",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Alfonso_d%27Avalos.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "57d67abeedbba6a694d8f3490e451bf7f6e56b21cb032227fb35cd023cd2eeee",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 41791,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Alfonso_d%27Avalos.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/f/ff/Alfonso_d%27Avalos.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -50613,6 +52044,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Bruyn_Anne_of_Cleves.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/a/af/Bruyn_Anne_of_Cleves.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "eed6d30ef3169c540f0930561597fa774c4028347fa78c060a17c54ebceaaf4c",
+      "caption": "Map of Iceland showing the Mid-Atlantic Ridge, tectonic plates, Reykjavik, Thingvellir, and active volcanoes.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "http://pubs.usgs.gov/gip/dynamic/understanding.html",
+      "date_qualification": "A geological map of Iceland, not a depiction of the adoption of Lutheranism. Original image date: 1999-05-05.",
+      "display_date": "1999-05-05",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "1999-05-05"
+      },
+      "enhanced_time": "1541-01-01",
+      "event_issue_ids": [],
+      "event_name": "Iceland adopts the Lutheran faith",
+      "evidence_event_id": "evt_3924b047-a7f8-559f-939c-a363a5577325",
+      "image_date": "1999-05-05",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/8/82/Iceland_Mid-Atlantic_Ridge_map.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "035c7f67024b6a321b24c9aed7d93a96edac66f6c6b04129bfd871039ed78372",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 41913,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Iceland_Mid-Atlantic_Ridge_map.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Iceland_Mid-Atlantic_Ridge_map.svg/960px-Iceland_Mid-Atlantic_Ridge_map.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -52110,6 +53571,36 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "03256133e135e26e32f0d9246d6916d6bb642e2d68596a29548e476851372474",
+      "caption": "A Vatican medal depicting the Temple menorah, issued in connection with Pope Urban VII’s appointment.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "הוותיקן שנת 1590",
+      "date_qualification": "The description identifies a medal produced by the Vatican in 1590 for Urban VII’s appointment; the supplied image date is 2014-08-14 and records a later digital image, not the medal’s production date.",
+      "display_date": "2014-08-14",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2014-08-14 09:53:06"
+      },
+      "enhanced_time": "1590-09-15",
+      "event_issue_ids": [],
+      "event_name": "Election of Pope Urban VII",
+      "evidence_event_id": "evt_375007c4-cb95-5d22-b21d-104dfc8c2f97",
+      "image_date": "2014-08-14 09:53:06",
+      "image_role": "symbol",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Menorah_%28Temple%29_%D7%9E%D7%A0%D7%95%D7%A8%D7%AA_%D7%91%D7%99%D7%AA_%D7%94%D7%9E%D7%A7%D7%93%D7%A9_Temple_vessels_Vatican_%D7%9E%D7%93%D7%9C%D7%99%D7%99%D7%94_%D7%A9%D7%99%D7%A6%D7%90_%D7%A2%D7%99_%D7%94%D7%95%D7%95%D7%AA%D7%99%D7%A7%D7%9F_%D7%91%D7%A9%D7%A0%D7%AA_1590_%D7%91%D7%A2%D7%AA_%D7%9E%D7%99%D7%A0%D7%95%D7%99_%D7%94%D7%90%D7%A4%D7%99%D7%A4%D7%99%D7%95%D7%A8_%D7%90%D7%95%D7%A8%D7%91%D7%A0%D7%95%D7%A1_%D7%94%D7%A9%D7%91%D7%99%D7%A2%D7%99%D7%90%D7%95%D7%A8%D7%91%D7%A0%D7%95%D7%A1.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "85643b1c870de4873b6b80721ae6d874df983b4d37791f8becdc21e31f4f30cd",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 43295,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Menorah_(Temple)_%D7%9E%D7%A0%D7%95%D7%A8%D7%AA_%D7%91%D7%99%D7%AA_%D7%94%D7%9E%D7%A7%D7%93%D7%A9_Temple_vessels_Vatican_%D7%9E%D7%93%D7%9C%D7%99%D7%99%D7%94_%D7%A9%D7%99%D7%A6%D7%90_%D7%A2%D7%99_%D7%94%D7%95%D7%95%D7%AA%D7%99%D7%A7%D7%9F_%D7%91%D7%A9%D7%A0%D7%AA_1590_%D7%91%D7%A2%D7%AA_%D7%9E%D7%99%D7%A0%D7%95%D7%99_%D7%94%D7%90%D7%A4%D7%99%D7%A4%D7%99%D7%95%D7%A8_%D7%90%D7%95%D7%A8%D7%91%D7%A0%D7%95%D7%A1_%D7%94%D7%A9%D7%91%D7%99%D7%A2%D7%99%D7%90%D7%95%D7%A8%D7%91%D7%A0%D7%95%D7%A1.JPG",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Menorah_%28Temple%29_%D7%9E%D7%A0%D7%95%D7%A8%D7%AA_%D7%91%D7%99%D7%AA_%D7%94%D7%9E%D7%A7%D7%93%D7%A9_Temple_vessels_Vatican_%D7%9E%D7%93%D7%9C%D7%99%D7%99%D7%94_%D7%A9%D7%99%D7%A6%D7%90_%D7%A2%D7%99_%D7%94%D7%95%D7%95%D7%AA%D7%99%D7%A7%D7%9F_%D7%91%D7%A9%D7%A0%D7%AA_1590_%D7%91%D7%A2%D7%AA_%D7%9E%D7%99%D7%A0%D7%95%D7%99_%D7%94%D7%90%D7%A4%D7%99%D7%A4%D7%99%D7%95%D7%A8_%D7%90%D7%95%D7%A8%D7%91%D7%A0%D7%95%D7%A1_%D7%94%D7%A9%D7%91%D7%99%D7%A2%D7%99%D7%90%D7%95%D7%A8%D7%91%D7%A0%D7%95%D7%A1.JPG?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "0bc22a0514e27db33f12891494a1082d20c32fc1ee092258d77335f6ecb9437f",
       "caption": "Map of the Virginia coast showing Native territories and the community of Roanoak.",
       "credit": "John White (artist) — Wunderbarliche, doch warhafftige Erklärung, von der Gelegenheit vnd Sitten der Wilden in Virginia ... / Erstlich in engelländischer Sprach beschrieben durch Thomam Hariot, vnd newlich durch Christ. P. in Teutsch gebracht. Franckfort am Mayn : Gedruckt bey J. Wechel, in Verlegung D. Bry, 1590, [plate] 2.",
@@ -52960,6 +54451,33 @@
     },
     {
       "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "c1a64174a2cd3bc266d818915bf933dda430b629939c04c09a54dc7827c1031b",
+      "caption": "Portrait of Noboru Takeshita, shown at his inauguration as Prime Minister.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "内閣官房内閣広報室 — 歴代総理の写真と経歴",
+      "date_qualification": "Portrait depicting Takeshita’s 1987 inauguration; the image’s original date is unknown, so it is not a photograph of his 1989 resignation.",
+      "display_date": null,
+      "display_date_evidence": null,
+      "enhanced_time": "1989-04-25",
+      "event_issue_ids": [],
+      "event_name": "Noboru Takeshita resigns as Prime Minister of Japan",
+      "evidence_event_id": "evt_38466ea6-9c9c-564c-a743-8ec5b83315f8",
+      "image_date": "Unknown date",
+      "image_role": "portrait",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Noboru_Takeshita_198711.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "pair_id": "25619bb38e77d5f8c540765ff8e0ac21ffd3e180a241223aaaadd51a209a4117",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 43839,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY 4.0; UsageTerms: Creative Commons Attribution 4.0; Copyrighted: True; Restrictions: personality",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Noboru_Takeshita_198711.jpg",
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Noboru_Takeshita_198711.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
       "baseline_record_sha256": "60b40b2b580cbaf1029e20d6d12213f546785175869cb54ee396b3afc1bcf7ab",
       "caption": "Wolf Creek affected by the Martin County coal slurry spill.",
       "credit": "The original uploader was Flashdark at English Wikipedia . — Transferred from en.wikipedia to Commons by Drilnoth using CommonsHelper .",
@@ -53255,6 +54773,36 @@
       "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
       "source_url": "https://commons.wikimedia.org/wiki/File:Canadian_Contingent_in_Hong_Kong_-_1941.jpg",
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Canadian_Contingent_in_Hong_Kong_-_1941.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "faf2b06aa7f7826c4c436d8d5f2bd2c53c6a53b332144fbfcf79d21ec7614b62",
+      "caption": "Orthographic map of Laos.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "Source file: Ssolbergj This file: Svenskbygderna ( talk ) — Own work",
+      "date_qualification": "Map of Laos, not a depiction of the 1962 signing. The image date is 2020-05-25.",
+      "display_date": "2020-05-25",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2020-05-25"
+      },
+      "enhanced_time": "1962-01-01",
+      "event_issue_ids": [],
+      "event_name": "International Agreement on the Neutrality of Laos signed",
+      "evidence_event_id": "evt_3a4af9de-a8e1-548d-a7f2-af9230337eb3",
+      "image_date": "2020-05-25",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/bc/Laos_%28orthographic_projection%29.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "1f10431e3197e98ae60aced05d769c29390473742ede68137209e0c6bb0f7b49",
+      "process_review_ref": "Round7 shared source/caption guards 706a89392e7f99b78582a0330d623ab8cea0ae06; independent audit pending",
+      "record_index": 44022,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Laos_(orthographic_projection).svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Laos_%28orthographic_projection%29.svg/960px-Laos_%28orthographic_projection%29.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -55110,6 +56658,36 @@
       "rights_statement": "LicenseShortName: CC BY 2.0; UsageTerms: Creative Commons Attribution 2.0; Copyrighted: True",
       "source_url": "https://commons.wikimedia.org/wiki/File:Stelae_Field_in_Axum,_Ethiopia_(2830293765).jpg",
       "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Stelae_Field_in_Axum%2C_Ethiopia_%282830293765%29.jpg/960px-Stelae_Field_in_Axum%2C_Ethiopia_%282830293765%29.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    },
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "95c173b810dac04a20a231d38132b356de079acc9201a25095a679dad51f86e2",
+      "caption": "Photograph of a Maya limestone relief depicting captives presented to a ruler.",
+      "caption_policy": "image-caption-v2",
+      "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
+      "credit": "User:FA2010 — Own work",
+      "date_qualification": "The relief is dated c. A.D. 785 and is a Late Classic Maya artwork, not a depiction established as specific to the prosperity peak in 501. The saved image date is 2009-10.",
+      "display_date": "2009",
+      "display_date_evidence": {
+        "field": "image_date",
+        "quote": "2009-10"
+      },
+      "enhanced_time": "501",
+      "event_issue_ids": [],
+      "event_name": "The Maya are peaking in economic prosperity",
+      "evidence_event_id": "evt_3b17906d-7c48-5f92-b551-7339394e3477",
+      "image_date": "2009-10",
+      "image_role": "retrospective_illustration",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Maya_Presentation_of_Captives_Kimbell.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "Public domain",
+      "license_url": "",
+      "pair_id": "bf524be466ab3e606e3c19512677fe3c9e2e634a8235fe0dad69d57407f6e185",
+      "process_review_ref": "Round7 continuation shared source/caption guards 5f58ebabbf1c7200c23e29870934a00e1269cf1a; independent audit pending",
+      "record_index": 47370,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: Public domain; UsageTerms: Public domain; Copyrighted: False",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Maya_Presentation_of_Captives_Kimbell.jpg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Maya_Presentation_of_Captives_Kimbell.jpg/960px-Maya_Presentation_of_Captives_Kimbell.jpg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
     },
     {
       "acceptance_method": "ai_source_review",
@@ -58866,7 +60444,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "41acbce4508d731f463d17952133f5a3eb90beb69fb146efe2fb856323bac434",
+      "baseline_record_sha256": "f966950745d72d9dc6eb8e32a5076cc5e981e95e8913a8a648ed3899287b74eb",
       "caption": "Le Constellation bar building in Crans-Montana, Switzerland.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -58896,7 +60474,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "a06b0a2417cb9f83ae37a726357f27ee88d04a3304b31bb6707b175ca53515ea",
+      "baseline_record_sha256": "8c9ae2202890a7641b24d4f20ff1ac0320ce99bff929e365653452035d34c39c",
       "caption": "Official photograph of President Donald Trump monitoring U.S. military operations in Venezuela at Mar-a-Lago.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -58926,7 +60504,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "80526f98b8729dd0ae447c17173e4ba1627f185c4355d280f574fa51ecd19e4a",
+      "baseline_record_sha256": "411e405cc335ca3f36823578acb6312c73aac56675cf0af4ecb8ddfd50f3a9e9",
       "caption": "Map showing the 2026 Beninese parliamentary election results across 24 multi-member constituencies.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -58956,7 +60534,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "7db9b304578d98f3321d15a358fcec7cc7a1d39ef19a76dfd598495c29d4d7cd",
+      "baseline_record_sha256": "2abca5a54f9132500a1e8214bab3f12b810c359d469f286e104cb20dd3b0d5df",
       "caption": "Collapsed exterior of Gul Plaza shopping mall.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -58986,7 +60564,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "ead757d268e8d1c260f117e22c8389f3b43a276fef1d77524b3e4d5bd7d6496b",
+      "baseline_record_sha256": "4d24750a4714281bf036b1c6f5035be81b7acd6472210b90414a991424aa629a",
       "caption": "Korpasgat personnel evacuate victims of the Cisarua landslide in West Bandung.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59016,7 +60594,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "3c7f8e034f6c22739d912ed488e708e1689adba186eeb26264f981a1e6299cab",
+      "baseline_record_sha256": "27ce3d0e4576c88f5845ea8276ad04df3a15b2bb417e8dba611cf64101b2d74c",
       "caption": "Aerial photograph of the Luwowo coltan mine near Rubaya, North Kivu.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59044,7 +60622,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "f812ae6ce36cc7638116e08a3a374078b5a2739dd8d6fd1d2dc7bcdaf3819900",
+      "baseline_record_sha256": "1955ddd8ba0f4b09940b13cc8661551d6efd496dcddbee31892df9a8afb2e4f0",
       "caption": "Map of CPJ candidates for the 2026 Japanese general election.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59074,7 +60652,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "b47c43b68700ef77bcf2c600ef48f181e240bd4abe0b3135b9901f1c7c793623",
+      "baseline_record_sha256": "28bdb05ec95a61f343b17779c57e463a3d0a6d6093db7327c6649e7e67a2041c",
       "caption": "Portrait of António José Seguro during an interview for Lusa.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59104,7 +60682,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "f965d6fba56654eabd463fffdc6693eb3754975efbc64c9c830e5e9903a55b95",
+      "baseline_record_sha256": "df570f219b5c0f7f9fa5de563013921ca2c4499f94be2e7b2d116cada139bc75",
       "caption": "British Columbia Premier David Eby and Public Safety Minister Nina Krieger hold a press conference.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59134,7 +60712,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "2dc8831f00e891330a47d411a185e80393fbc93373ba9800383977190962687d",
+      "baseline_record_sha256": "ef3a4a40eec0de29066acecec73aedfd49cde84e2b705212e8e5c9993a92ccce",
       "caption": "Diagram of seats in the Lao National Assembly, showing the Lao People's Revolutionary Party and independents.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59164,7 +60742,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "687ca069d1302a5e39b74b9e3786f6e0d49fdf37c23b1391a395943413dc403b",
+      "baseline_record_sha256": "8acdd416d25f418b04f062829330913365f796a82fb371216a23f82a4212084d",
       "caption": "Map showing results of the Kazakh constitutional referendum by region.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59194,7 +60772,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "a656b91f834651434ceb1b02325d89c6a6de1a0d1c831bfa5522e03ab1a17f0e",
+      "baseline_record_sha256": "3dd168828f8df5740011006296c56ed731f1614ff9ad1358e21a823e35fcd5c0",
       "caption": "Beirut following Israeli attacks.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59225,7 +60803,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "ee851cdb1a3d264736248e2981e8ce9763e2aca7a097647ffdc59d97d51aa8f7",
+      "baseline_record_sha256": "a377077a70eea98e1b1ba0f4a28aec0b96fb96491d298eb6c2337bcc1a6acd1d",
       "caption": "Map of confirmed United States tornadoes during the outbreak sequence.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59256,7 +60834,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "6d653f92e97f966e18f26ff3a261417325a5005ca3cd365c046e42197ab05b4b",
+      "baseline_record_sha256": "ac03e52134469740cb0458c94b2506cb9c852c6dca48b3dd3562ab6608094519",
       "caption": "Aftermath of the Liuyang fireworks plant explosion, shown in a still image.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59286,7 +60864,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "7cf90d12abe2c41b4b6cdf3caf2574332ab4e893a8d26883817869d0b240f59d",
+      "baseline_record_sha256": "69a37cf5ce68cba956d9e5679e73326db377240c884056ec335972abc8ba56fd",
       "caption": "Highway in Glan, Sarangani, following the Mindanao earthquake.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59343,7 +60921,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "56169607db0d3eed6e77d60e9229c64c3a35978a60fb1d188e3fdd322807b387",
+      "baseline_record_sha256": "5070a12849de494baaa20d1bf3d14f8be955c2c70a6d0bf241963338535a5a7a",
       "caption": "USGS ShakeMap for the magnitude 7.5 earthquake west of Catia La Mar, Venezuela.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59373,7 +60951,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "215537d0c4b8ac08b649d98cf08603f808916443a9c70cb2258cb9dc6c47d4ae",
+      "baseline_record_sha256": "43208060834b01e6f1fea6adbd95b432399d3634b8a3fdbbd9f877d0e1743be2",
       "caption": "Spain's players lift the World Cup trophy after the final.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59403,7 +60981,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "857645df618a20a704e543df5913e8ffd304e5bf4d9dfada695a32919ba9db30",
+      "baseline_record_sha256": "f5e78da014897f5957e8c44e88d18c34af4cf8ba0a6b6a59bff4e35e93d092a7",
       "caption": "Building debris in Pereira, Colombia, photographed by World Central Kitchen.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59433,7 +61011,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "7179a73710212865f5d3843afe301715e96376dcb0e5378658a9ecbbf9af843a",
+      "baseline_record_sha256": "1870d0b5921221158895f54146f7e0f35c89ae05fad28a530ccf4dc301a04b09",
       "caption": "Equal Earth world map with a 15° graticule, rendered using the Geocart map projection software.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59463,7 +61041,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "2858390a0ce802037ccfc6501ff28ba42f59b6e0f2c1117692cad867f22a1698",
+      "baseline_record_sha256": "6a55cc2010eab7c5d64caf7703705c4bcbe3631b300ceacf0eded4c6752b3687",
       "caption": "Social Democratic leader Magdalena Andersson poses after leaving Liseberg amusement park in Gothenburg, Sweden.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59493,7 +61071,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "89ad1d3d15a381690369814305fa25b5d12e8df2c8b19d9f1a0979e547ab4e04",
+      "baseline_record_sha256": "9f400568fdd0bb8e4f0f4091afce2f3c1f5ef443222879e6f1ecbcde3c435241",
       "caption": "CCTV footage shows the Karak church shooters entering the building.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59523,7 +61101,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "4ab097e0e549cdf58e1c3b2c1e45ebedb6849551948c4c287bac91a7186a09da",
+      "baseline_record_sha256": "58096586a5a2a32747edb4f3c4cd04ce44e1be752cb428d933bd42f7df24fd72",
       "caption": "Map of countries participating, intending to participate, or having previously participated in the Junior Eurovision Song Contest 2026.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59553,7 +61131,7 @@
     },
     {
       "acceptance_method": "ai_source_review",
-      "baseline_record_sha256": "349a507c1b7e39dc9aecfaefe663cbae8645fcbd8533ac5055fea0ab628636e5",
+      "baseline_record_sha256": "6098ee098fe67c5e3079f3187c584a13a7c03255151830daf6db4ba5bb42fefc",
       "caption": "Map showing preliminary winners by municipality and vote shares in Serbia’s parliamentary election.",
       "caption_policy": "image-caption-v2",
       "caption_policy_sha256": "ee83fd6235b71564d9feb19d76caa7fe1a81211f572e7ec1db1e70319ecb4512",
@@ -59588,7 +61166,7 @@
     "early_times_input_manifest_sha256": "314e9bee0af980d986a1d0a9289a8cdf860daf2f17603da1f11a9384eb0e3e10",
     "early_times_prior_sidecar_sha256": "e469489ba1c8bbf054ec5f7d561264a168a1d52537e84b61fb968d7ffbf1b88f",
     "event_count": 52687,
-    "events_sha256": "d12b4f7a658d3cf131ef5e7d43c255ec3bc66c87727f8f950d0cb5ad67eb4f79",
+    "events_sha256": "34426820cc48148df80fe21417e18b428ea36588cfec0c35b60cf87b036d3358",
     "prior_events_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
     "prior_release_sha256": "2b4920708f59784e2eb2f8941fe4206ce92a9a484807a75e6933ee047175ac0a",
     "prior_sidecar_sha256": "e26db9c900573d7dcb369b8eb6dc8bb9d11f77a08a884f8cc39e74faa5b48fa8",
@@ -59747,7 +61325,356 @@
     "round6_176_union_predecessor_manifest_sha256": "f4a7fc9223fcb32f62ef48e3dcf92b7605c1e9e1fc91f080bbcc33651d2ce7df",
     "round6_176_release_artifact_sha256": "0085901ed4f72a206ab1bcf8396e1b817052bb3ed05f82d9a4282130c49021bc",
     "round6_176_candidate_artifact_sha256": "b52928c25d579abf32a7ba469886cc75d10df70e94ac09f0362ac8b515c6232f",
-    "round6_176_strict_readiness_sha256": "6ac2cfd31e130f17fd731110f24b4ad7e02ee508405d24ce852db2e158376dfb"
+    "round6_176_strict_readiness_sha256": "6ac2cfd31e130f17fd731110f24b4ad7e02ee508405d24ce852db2e158376dfb",
+    "combined_release_inputs": {
+      "round7": {
+        "artifact_sha256": "a914c21e3cdbf857cc047af7bf2c73c61db9b525bc989487976f5c90d047e976",
+        "acceptance_sha256": "119c6b13649f4f766af549a904a4d49915f168deac732eee6eda72d23e6670f0",
+        "sidecar_sha256": "176bc0099d18927ce85bb8db4d970ea8df99bf914afd9849c742bb3f8ed2275b",
+        "original_source": {
+          "combination_recipe_sha256": "a5cd99e00f924bb7ea14c54b477e525033e279f4ff9a462b0b2af85068c44ab4",
+          "early_expansion_accepted_manifest_sha256": "df803d652f048cbf1c28e8eec62bc09bb2a25af1320f05d522a42b40f1735b55",
+          "early_expansion_export_acceptance_sha256": "be832cc2967578df16c02fbec7c970909ffa60c7d84d48c61df9736bd302b190",
+          "early_expansion_prior_sidecar_sha256": "3731e1bcf0797e54c297ae0345602bf88eaf2010a37ceb922978d6766bd48156",
+          "early_times_input_manifest_sha256": "314e9bee0af980d986a1d0a9289a8cdf860daf2f17603da1f11a9384eb0e3e10",
+          "early_times_prior_sidecar_sha256": "e469489ba1c8bbf054ec5f7d561264a168a1d52537e84b61fb968d7ffbf1b88f",
+          "event_count": 52687,
+          "events_sha256": "d12b4f7a658d3cf131ef5e7d43c255ec3bc66c87727f8f950d0cb5ad67eb4f79",
+          "prior_events_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+          "prior_release_sha256": "2b4920708f59784e2eb2f8941fe4206ce92a9a484807a75e6933ee047175ac0a",
+          "prior_sidecar_sha256": "597d5ebe0a4601a5da8bfdc4a871d5bc9601379d396969ab7c376c4f67a03620",
+          "processing_sources": [
+            {
+              "packet_sha256": "bdf480d155c7ccffb7972dc84c4a4dd7c508092b97cffe6351b12a08929c2fef",
+              "review_sha256": "36c9fb5f55a89d0b8bbc90f4b7f62d5c57a1e17fa7a89dd00a435d903cb6fd68"
+            },
+            {
+              "packet_sha256": "ec4bd6e92d71c4fb23fd06383bb75598cffc0009ef7b6ede73c7e00b764c3aaa",
+              "review_sha256": "3b1c21bd010ac9e3cd0a1108ddbf63495e22417553765287077bcf360bb43897"
+            },
+            {
+              "packet_sha256": "e5edafbb73bf1fb2c069d836735b3a32222e9ac5aec35b14b5471ffbe9f3dae0",
+              "review_sha256": "29e9d754ecb52c7680c26346ee5053fdaaa32fa5a842b15119a727c67b6b85a4"
+            },
+            {
+              "packet_sha256": "e2733437509c12334f35fe77937daebc284f294bf222bec39512b77e42fe0d66",
+              "review_sha256": "40257db7cc3ee2db63b0a60fd0eb91acd8cea971dd39e521f204bf6023922280"
+            },
+            {
+              "packet_sha256": "5530547864b3e12fdbd16a55ae4faf5ffe3bf0126583c6ae67c4768c6ee110d9",
+              "review_sha256": "93bb8bb38aa8c26f82a3cb17ebaacadc3d0f9e4a0d2f139438bcd4fbaeed4409"
+            },
+            {
+              "packet_sha256": "a318e2e1ee1f91840b08981dc48baea5a672cd7c2e7134883650b2af2623edfd",
+              "review_sha256": "9883383ca673d44f470db6b2b36bf64bed7fec6422c837978e21e6e2bd520670"
+            },
+            {
+              "packet_sha256": "259b16cede93df0bba43ea276e08d8fac2d6017c65610bc99ef7000405862bd2",
+              "review_sha256": "89c2d4aa8399338c6feb3b9764bddd877f4616f7e2780d736a6d0b1747d6fdde"
+            },
+            {
+              "packet_sha256": "d816b772b5da05ffe1e81d6c2e78901763ecd976414c81c68deae8186fe3e859",
+              "review_sha256": "489f808eb36948ab54a3e925412c145931390c5caf634ca37ea8f18a1eb943f0"
+            },
+            {
+              "packet_sha256": "a98b38a49a9324dd7a70479289f71d0b48fda5dad46e5ae8370a534318bae301",
+              "review_sha256": "72a88c1bc31e09a81ee248a3cbd2f5a3c03ced2fc6ac5cd96b132259e5cc8be0"
+            },
+            {
+              "packet_sha256": "5f16081a7198954102bcaea2158322d4aa7e7f699991fd579f50db8d503d8614",
+              "review_sha256": "abf3f2c9d434d0e960b0195048978a7b7300c4fe7f278aa1f411ed09787ac1b3"
+            },
+            {
+              "packet_sha256": "51a6bf6d5b42d4dbba5bda1045d849f63d7b07ed77bdadf490a7b8a835cbb1c8",
+              "review_sha256": "62b26ed02c54b32dea080e62091bd83bed047923bbb7482e805cad97ab673273"
+            },
+            {
+              "packet_sha256": "d71bcc3889422145a524b5b0cbe1d1af9e0a4fe0d60541662fc97f272c8581cc",
+              "review_sha256": "0ebd163a6839f187dbeb43c81e960d1881c4c22c383cb8b5507a6e718437f3f3"
+            },
+            {
+              "packet_sha256": "03a750a76e0c2339bd7a0aa77583f01b80cb360d955385619a3e905860777c4a",
+              "review_sha256": "75c5ffb067f88cdaf52290b5e5631c2ca309756cc9cab259a0ed24a5d9f59133"
+            },
+            {
+              "packet_sha256": "b11eebad26bd097728178d98156fed1cc1cea64af95db5bcd2060a83910959dc",
+              "review_sha256": "bdefafbeb9527579fd5b6eb15ffa50a8e00dd1414461aafae434c709da2c96f8"
+            },
+            {
+              "packet_sha256": "31d3d54c53fd8ac7183836c92bbf0b0a04ed5dcf49955d243ef883c0d616f2b9",
+              "review_sha256": "60edefd0374206df702313ff93a1e43bccfe67297aa6eee65ca321af306802bd"
+            },
+            {
+              "packet_sha256": "a5583062e9b0398d3fb0b66281f3214209fc46622e6174a3e5059e1946db3e86",
+              "review_sha256": "88ca7fc26ab5a2a657e180a7f92e7fd808cf1edb9043b6265238fca3134b8da4"
+            },
+            {
+              "packet_sha256": "6820e740d94b595a0451ccb4c8281bbefa41622e245079f244a6abb6125efb1d",
+              "review_sha256": "6b23b71fb4b3b2868a14f7a347c904f054a0d4655d2920a985e2908b0fc6c396"
+            },
+            {
+              "packet_sha256": "c38a7853bc5a385d859793a8db5aec2949385500525ea0df34e5e66c733396be",
+              "review_sha256": "c74c5b28103401eb8de8fe2a1e34c5e62cd1f7a603a85085ac4bd2c89de59c42"
+            },
+            {
+              "packet_sha256": "d80349a5cace87f76759cafeb42a82ed51fde3f0d0f34c4c98b8f0c37e690de3",
+              "review_sha256": "95da4553bc8588460ae59e5f017912ffaba0f16f7718aef17fe343674657d4fe"
+            },
+            {
+              "packet_sha256": "a5632f2fe545e06fd4bd0e04c31af3b1392ffe4d5b6bfec99867ed68ff430352",
+              "review_sha256": "5c277d1fa372beba5de1ec93bb36c9741e197497f757811c00f8a86b90eaef36"
+            },
+            {
+              "packet_sha256": "60494682435694524b73cfb3d1c73238d66f8828e679442d7230dc85dab1649c",
+              "review_sha256": "ef7e0e72b91c96b7093e1f261193c410be5bf03eb5e974ce713e33795c2938fe"
+            },
+            {
+              "packet_sha256": "ab1cd9166cb99c759c22971c45c6ba5620d8453e519c949ae565cf7c7f554166",
+              "review_sha256": "c0369e7ca57c8763e18ff441d18dcb267b85aee1f95ad28163e7524d9773db86"
+            },
+            {
+              "packet_sha256": "a2b98817dfcba9c9917d6d389f57384e0d7991c4889bdf3e519afcd620b75382",
+              "review_sha256": "836ac6f22db70d7ab2e2a0682944efab1a40a54ab38610bd5e090e3526e18266"
+            },
+            {
+              "packet_sha256": "951bf77676eef9097d80b595f3b1afd8f7fdbfd8fa42f6b0aecba287a57688fd",
+              "review_sha256": "2422e3d816aa06019846f3d9a09b56b8e986a342494c04b87632d0e5f11fe661"
+            },
+            {
+              "packet_sha256": "9121bd3cb31b5e847559f5f93277f6399916960dd9d0162e2d704e4e67dcac2f",
+              "review_sha256": "fc667003033393b94855070a91ea795e32d5c316bef7e14e01a53e4b9d5ae186"
+            },
+            {
+              "packet_sha256": "b93d48b1c2aba5ad5ac6cd2a98d0a40d7632f173d8e8173e0418c412c19e38fb",
+              "review_sha256": "d267013074c8cec57b2ec66a6180040437ec90470ce0711568723f017cd161a3"
+            },
+            {
+              "packet_sha256": "9c3ee312bccd9c4c782e1a61d17dc4adf7332aa6fc8b996ef54a5dda25724718",
+              "review_sha256": "fae2ddb08ea2e338400ea9a4021d0e85e2f5990ae27d10b08a69822e0c77db1f"
+            },
+            {
+              "packet_sha256": "3972f48042647700eb854fe0e15d5167099d94617986fca3dfef7e33c72c3b2a",
+              "review_sha256": "8a6421482bcfd30d894209e29e429f1bfd576c6f0c3398df17d5e4619fc50646"
+            },
+            {
+              "packet_sha256": "28371f85c1c7593ac85f203d0829337d1b1b0aa9c1d49a89260b2d55393b68ab",
+              "review_sha256": "91a3ccfc5d19cb50b4de170af89b4b06ad4b02f57f994806f5699a4d606afbb6"
+            },
+            {
+              "packet_sha256": "a845e17c72a26559c9bfe2350f076e7584400a96eb0ca104467ee2a51a4a995c",
+              "review_sha256": "29ce60a8710347dd75b378175b4a6853a57fc09f494afb2d186be8fa653c2f2b"
+            },
+            {
+              "packet_sha256": "a5537ef316d665057d28c5753f6593e35e2255d99545a1c2934a7e03e3ba555f",
+              "review_sha256": "7fbf223279ae4c5d558f56809c717269770d980d6c8a3f69608f24063f8e6867"
+            }
+          ],
+          "recent2026_image_review_sha256": "8b35fb924d530213df9b3ad6583c38097a5fe60fdfc48d2eb3658e41b869327b",
+          "recent2026_pre_union_sidecar_sha256": "dcf824d2489b2618bd7875b08129220e1a6886fdd023e07cdc20535c39a50e03",
+          "recent2026_prior_sidecar_sha256": "a014f8d1f33cbee0674e0b5577213f04d297c71bde3eaa46b31fbddca0ea3525",
+          "recent2026_union_predecessor_manifest_sha256": "922a83142e13664ee169d03937e075a760453e831196d4008a08d8f23aa30fa7",
+          "recent2026_union_recipe_sha256": "e69136dce38cfa7aafa72a59bb6bab9eeada3765c1e27fb79c6f0cbaee3bfcd1",
+          "round3_corrections_sha256": "07eaed6fbd39f1cf4ae13707b40827a7f6f7e2ebc35cb093b45e4f9ca0591fb4",
+          "round3_parent_artifact_sha256": "1e733b4e51d9cbbcc80a6040cd3507daac2a765b8bed32d82ee0ac50e4f6d630",
+          "round4_acceptance_sha256": "9904fb8fa197a31a89a565f59661593e0a9c776a4e1f2d598493200a22adc3b4",
+          "round4_accepted_artifact_sha256": "ed93e6a7a98b7fb080d100f0ed849ae34dc355746d0f63077ffc6018dc7dc353",
+          "round5_corrected_parent_artifact_sha256": "645ceda921803631fc9232e8cd74fb633cc7d184b8a64d353488137504bb33ad",
+          "round5_corrections_sha256": "e50a5433b0281d1f236ef667b29ed753390428a888af5dc9754f9b8811278fed",
+          "round5_delta_acceptance_sha256": "ad178a4c38f5d2b9440033aa368181830c19f37c13f70fcef0367044396a6766",
+          "round5_delta_corrections_sha256": "e4cbb6836cbc125a3ad638ce29e1f370c1e706632c0027192e946455e9a9d975",
+          "round5_original_audit_verdict_sha256": "4e04f7a886848d942f98dd0d104be28c9d2a88cae4964724968722cbedafb5b3",
+          "round5_packet_sha256": "2b0d40365f5000d78a1b5e338630811129e9243f32b8ea57e37a952838e285e2",
+          "round5_raw_artifact_sha256": "8af60d7bf1d0aa0933fc8012311d7f23f1a3f209c8862ab3ee7e5b4da7bc63e9",
+          "round5_release_package_sha256": "fd1c4c294cdd6dc213fab296bc31db18407622c989299eacd2cafb6629f98961",
+          "round6_176_accepted_sidecar_sha256": "d165e5f8d7091d0d69c2f98f55a055fb3b72d1dad3f7a48ae7ffdd9a6914c9f5",
+          "round6_176_candidate_artifact_sha256": "b52928c25d579abf32a7ba469886cc75d10df70e94ac09f0362ac8b515c6232f",
+          "round6_176_prior_sidecar_sha256": "f930e76ef54b87bae618175a5981e46ff98b35eaa07d4509043e9d1556870f13",
+          "round6_176_release_artifact_sha256": "0085901ed4f72a206ab1bcf8396e1b817052bb3ed05f82d9a4282130c49021bc",
+          "round6_176_strict_readiness_sha256": "6ac2cfd31e130f17fd731110f24b4ad7e02ee508405d24ce852db2e158376dfb",
+          "round6_176_union_predecessor_manifest_sha256": "f4a7fc9223fcb32f62ef48e3dcf92b7605c1e9e1fc91f080bbcc33651d2ce7df",
+          "round6_176_union_recipe_sha256": "adec21c0bdd9d7e395d5bed2681ea6c8af86695b9711f4b39f43b7c0a42a9b2c",
+          "round6_accepted_sidecar_sha256": "a014f8d1f33cbee0674e0b5577213f04d297c71bde3eaa46b31fbddca0ea3525",
+          "round6_release_artifact_sha256": "130d3c1ba14ce634ebbe753e2c1b1b8b305dabb6a59b0944ccaca2c0e640df9e",
+          "round6_source_acceptance_sha256": "8258d0d452a2c6d0a6df089e1368d379610659546e86fcedee83614098ff2f69",
+          "round7_raw_artifact_sha256": "ced9be104a22e38e234b35210a19fb9c49aea2bdbfe1feef3c394b8f5d55bee1",
+          "source_guard_revision": "706a89392e7f99b78582a0330d623ab8cea0ae06"
+        }
+      },
+      "continuation": {
+        "artifact_sha256": "d5b6a94613d91d553c6aad24f94d9425590761d6b6dbb7df6692d5cca676891d",
+        "acceptance_sha256": "eb6f47bae20df263c526f321e689d1bafb94cb9ff8c80c8404bb4f2afe986dc6",
+        "sidecar_sha256": "7fb2a2bbfb28ae17a5403a240e83239e9fa4232cc1c6d4ba2bfcde5b6638c3b4",
+        "original_source": {
+          "combination_recipe_sha256": "a5cd99e00f924bb7ea14c54b477e525033e279f4ff9a462b0b2af85068c44ab4",
+          "early_expansion_accepted_manifest_sha256": "df803d652f048cbf1c28e8eec62bc09bb2a25af1320f05d522a42b40f1735b55",
+          "early_expansion_export_acceptance_sha256": "be832cc2967578df16c02fbec7c970909ffa60c7d84d48c61df9736bd302b190",
+          "early_expansion_prior_sidecar_sha256": "3731e1bcf0797e54c297ae0345602bf88eaf2010a37ceb922978d6766bd48156",
+          "early_times_input_manifest_sha256": "314e9bee0af980d986a1d0a9289a8cdf860daf2f17603da1f11a9384eb0e3e10",
+          "early_times_prior_sidecar_sha256": "e469489ba1c8bbf054ec5f7d561264a168a1d52537e84b61fb968d7ffbf1b88f",
+          "event_count": 52687,
+          "events_sha256": "d12b4f7a658d3cf131ef5e7d43c255ec3bc66c87727f8f950d0cb5ad67eb4f79",
+          "prior_events_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+          "prior_release_sha256": "2b4920708f59784e2eb2f8941fe4206ce92a9a484807a75e6933ee047175ac0a",
+          "prior_sidecar_sha256": "597d5ebe0a4601a5da8bfdc4a871d5bc9601379d396969ab7c376c4f67a03620",
+          "processing_sources": [
+            {
+              "packet_sha256": "bdf480d155c7ccffb7972dc84c4a4dd7c508092b97cffe6351b12a08929c2fef",
+              "review_sha256": "36c9fb5f55a89d0b8bbc90f4b7f62d5c57a1e17fa7a89dd00a435d903cb6fd68"
+            },
+            {
+              "packet_sha256": "ec4bd6e92d71c4fb23fd06383bb75598cffc0009ef7b6ede73c7e00b764c3aaa",
+              "review_sha256": "3b1c21bd010ac9e3cd0a1108ddbf63495e22417553765287077bcf360bb43897"
+            },
+            {
+              "packet_sha256": "e5edafbb73bf1fb2c069d836735b3a32222e9ac5aec35b14b5471ffbe9f3dae0",
+              "review_sha256": "29e9d754ecb52c7680c26346ee5053fdaaa32fa5a842b15119a727c67b6b85a4"
+            },
+            {
+              "packet_sha256": "e2733437509c12334f35fe77937daebc284f294bf222bec39512b77e42fe0d66",
+              "review_sha256": "40257db7cc3ee2db63b0a60fd0eb91acd8cea971dd39e521f204bf6023922280"
+            },
+            {
+              "packet_sha256": "5530547864b3e12fdbd16a55ae4faf5ffe3bf0126583c6ae67c4768c6ee110d9",
+              "review_sha256": "93bb8bb38aa8c26f82a3cb17ebaacadc3d0f9e4a0d2f139438bcd4fbaeed4409"
+            },
+            {
+              "packet_sha256": "a318e2e1ee1f91840b08981dc48baea5a672cd7c2e7134883650b2af2623edfd",
+              "review_sha256": "9883383ca673d44f470db6b2b36bf64bed7fec6422c837978e21e6e2bd520670"
+            },
+            {
+              "packet_sha256": "259b16cede93df0bba43ea276e08d8fac2d6017c65610bc99ef7000405862bd2",
+              "review_sha256": "89c2d4aa8399338c6feb3b9764bddd877f4616f7e2780d736a6d0b1747d6fdde"
+            },
+            {
+              "packet_sha256": "d816b772b5da05ffe1e81d6c2e78901763ecd976414c81c68deae8186fe3e859",
+              "review_sha256": "489f808eb36948ab54a3e925412c145931390c5caf634ca37ea8f18a1eb943f0"
+            },
+            {
+              "packet_sha256": "a98b38a49a9324dd7a70479289f71d0b48fda5dad46e5ae8370a534318bae301",
+              "review_sha256": "72a88c1bc31e09a81ee248a3cbd2f5a3c03ced2fc6ac5cd96b132259e5cc8be0"
+            },
+            {
+              "packet_sha256": "5f16081a7198954102bcaea2158322d4aa7e7f699991fd579f50db8d503d8614",
+              "review_sha256": "abf3f2c9d434d0e960b0195048978a7b7300c4fe7f278aa1f411ed09787ac1b3"
+            },
+            {
+              "packet_sha256": "51a6bf6d5b42d4dbba5bda1045d849f63d7b07ed77bdadf490a7b8a835cbb1c8",
+              "review_sha256": "62b26ed02c54b32dea080e62091bd83bed047923bbb7482e805cad97ab673273"
+            },
+            {
+              "packet_sha256": "d71bcc3889422145a524b5b0cbe1d1af9e0a4fe0d60541662fc97f272c8581cc",
+              "review_sha256": "0ebd163a6839f187dbeb43c81e960d1881c4c22c383cb8b5507a6e718437f3f3"
+            },
+            {
+              "packet_sha256": "03a750a76e0c2339bd7a0aa77583f01b80cb360d955385619a3e905860777c4a",
+              "review_sha256": "75c5ffb067f88cdaf52290b5e5631c2ca309756cc9cab259a0ed24a5d9f59133"
+            },
+            {
+              "packet_sha256": "b11eebad26bd097728178d98156fed1cc1cea64af95db5bcd2060a83910959dc",
+              "review_sha256": "bdefafbeb9527579fd5b6eb15ffa50a8e00dd1414461aafae434c709da2c96f8"
+            },
+            {
+              "packet_sha256": "31d3d54c53fd8ac7183836c92bbf0b0a04ed5dcf49955d243ef883c0d616f2b9",
+              "review_sha256": "60edefd0374206df702313ff93a1e43bccfe67297aa6eee65ca321af306802bd"
+            },
+            {
+              "packet_sha256": "a5583062e9b0398d3fb0b66281f3214209fc46622e6174a3e5059e1946db3e86",
+              "review_sha256": "88ca7fc26ab5a2a657e180a7f92e7fd808cf1edb9043b6265238fca3134b8da4"
+            },
+            {
+              "packet_sha256": "6820e740d94b595a0451ccb4c8281bbefa41622e245079f244a6abb6125efb1d",
+              "review_sha256": "6b23b71fb4b3b2868a14f7a347c904f054a0d4655d2920a985e2908b0fc6c396"
+            },
+            {
+              "packet_sha256": "c38a7853bc5a385d859793a8db5aec2949385500525ea0df34e5e66c733396be",
+              "review_sha256": "c74c5b28103401eb8de8fe2a1e34c5e62cd1f7a603a85085ac4bd2c89de59c42"
+            },
+            {
+              "packet_sha256": "d80349a5cace87f76759cafeb42a82ed51fde3f0d0f34c4c98b8f0c37e690de3",
+              "review_sha256": "95da4553bc8588460ae59e5f017912ffaba0f16f7718aef17fe343674657d4fe"
+            },
+            {
+              "packet_sha256": "a5632f2fe545e06fd4bd0e04c31af3b1392ffe4d5b6bfec99867ed68ff430352",
+              "review_sha256": "5c277d1fa372beba5de1ec93bb36c9741e197497f757811c00f8a86b90eaef36"
+            },
+            {
+              "packet_sha256": "60494682435694524b73cfb3d1c73238d66f8828e679442d7230dc85dab1649c",
+              "review_sha256": "ef7e0e72b91c96b7093e1f261193c410be5bf03eb5e974ce713e33795c2938fe"
+            },
+            {
+              "packet_sha256": "ab1cd9166cb99c759c22971c45c6ba5620d8453e519c949ae565cf7c7f554166",
+              "review_sha256": "c0369e7ca57c8763e18ff441d18dcb267b85aee1f95ad28163e7524d9773db86"
+            },
+            {
+              "packet_sha256": "a2b98817dfcba9c9917d6d389f57384e0d7991c4889bdf3e519afcd620b75382",
+              "review_sha256": "836ac6f22db70d7ab2e2a0682944efab1a40a54ab38610bd5e090e3526e18266"
+            },
+            {
+              "packet_sha256": "951bf77676eef9097d80b595f3b1afd8f7fdbfd8fa42f6b0aecba287a57688fd",
+              "review_sha256": "2422e3d816aa06019846f3d9a09b56b8e986a342494c04b87632d0e5f11fe661"
+            },
+            {
+              "packet_sha256": "9121bd3cb31b5e847559f5f93277f6399916960dd9d0162e2d704e4e67dcac2f",
+              "review_sha256": "fc667003033393b94855070a91ea795e32d5c316bef7e14e01a53e4b9d5ae186"
+            },
+            {
+              "packet_sha256": "b93d48b1c2aba5ad5ac6cd2a98d0a40d7632f173d8e8173e0418c412c19e38fb",
+              "review_sha256": "d267013074c8cec57b2ec66a6180040437ec90470ce0711568723f017cd161a3"
+            },
+            {
+              "packet_sha256": "9c3ee312bccd9c4c782e1a61d17dc4adf7332aa6fc8b996ef54a5dda25724718",
+              "review_sha256": "fae2ddb08ea2e338400ea9a4021d0e85e2f5990ae27d10b08a69822e0c77db1f"
+            },
+            {
+              "packet_sha256": "3972f48042647700eb854fe0e15d5167099d94617986fca3dfef7e33c72c3b2a",
+              "review_sha256": "8a6421482bcfd30d894209e29e429f1bfd576c6f0c3398df17d5e4619fc50646"
+            },
+            {
+              "packet_sha256": "28371f85c1c7593ac85f203d0829337d1b1b0aa9c1d49a89260b2d55393b68ab",
+              "review_sha256": "91a3ccfc5d19cb50b4de170af89b4b06ad4b02f57f994806f5699a4d606afbb6"
+            },
+            {
+              "packet_sha256": "a845e17c72a26559c9bfe2350f076e7584400a96eb0ca104467ee2a51a4a995c",
+              "review_sha256": "29ce60a8710347dd75b378175b4a6853a57fc09f494afb2d186be8fa653c2f2b"
+            },
+            {
+              "packet_sha256": "a5537ef316d665057d28c5753f6593e35e2255d99545a1c2934a7e03e3ba555f",
+              "review_sha256": "7fbf223279ae4c5d558f56809c717269770d980d6c8a3f69608f24063f8e6867"
+            }
+          ],
+          "recent2026_image_review_sha256": "8b35fb924d530213df9b3ad6583c38097a5fe60fdfc48d2eb3658e41b869327b",
+          "recent2026_pre_union_sidecar_sha256": "dcf824d2489b2618bd7875b08129220e1a6886fdd023e07cdc20535c39a50e03",
+          "recent2026_prior_sidecar_sha256": "a014f8d1f33cbee0674e0b5577213f04d297c71bde3eaa46b31fbddca0ea3525",
+          "recent2026_union_predecessor_manifest_sha256": "922a83142e13664ee169d03937e075a760453e831196d4008a08d8f23aa30fa7",
+          "recent2026_union_recipe_sha256": "e69136dce38cfa7aafa72a59bb6bab9eeada3765c1e27fb79c6f0cbaee3bfcd1",
+          "round3_corrections_sha256": "07eaed6fbd39f1cf4ae13707b40827a7f6f7e2ebc35cb093b45e4f9ca0591fb4",
+          "round3_parent_artifact_sha256": "1e733b4e51d9cbbcc80a6040cd3507daac2a765b8bed32d82ee0ac50e4f6d630",
+          "round4_acceptance_sha256": "9904fb8fa197a31a89a565f59661593e0a9c776a4e1f2d598493200a22adc3b4",
+          "round4_accepted_artifact_sha256": "ed93e6a7a98b7fb080d100f0ed849ae34dc355746d0f63077ffc6018dc7dc353",
+          "round5_corrected_parent_artifact_sha256": "645ceda921803631fc9232e8cd74fb633cc7d184b8a64d353488137504bb33ad",
+          "round5_corrections_sha256": "e50a5433b0281d1f236ef667b29ed753390428a888af5dc9754f9b8811278fed",
+          "round5_delta_acceptance_sha256": "ad178a4c38f5d2b9440033aa368181830c19f37c13f70fcef0367044396a6766",
+          "round5_delta_corrections_sha256": "e4cbb6836cbc125a3ad638ce29e1f370c1e706632c0027192e946455e9a9d975",
+          "round5_original_audit_verdict_sha256": "4e04f7a886848d942f98dd0d104be28c9d2a88cae4964724968722cbedafb5b3",
+          "round5_packet_sha256": "2b0d40365f5000d78a1b5e338630811129e9243f32b8ea57e37a952838e285e2",
+          "round5_raw_artifact_sha256": "8af60d7bf1d0aa0933fc8012311d7f23f1a3f209c8862ab3ee7e5b4da7bc63e9",
+          "round5_release_package_sha256": "fd1c4c294cdd6dc213fab296bc31db18407622c989299eacd2cafb6629f98961",
+          "round6_176_accepted_sidecar_sha256": "d165e5f8d7091d0d69c2f98f55a055fb3b72d1dad3f7a48ae7ffdd9a6914c9f5",
+          "round6_176_candidate_artifact_sha256": "b52928c25d579abf32a7ba469886cc75d10df70e94ac09f0362ac8b515c6232f",
+          "round6_176_prior_sidecar_sha256": "f930e76ef54b87bae618175a5981e46ff98b35eaa07d4509043e9d1556870f13",
+          "round6_176_release_artifact_sha256": "0085901ed4f72a206ab1bcf8396e1b817052bb3ed05f82d9a4282130c49021bc",
+          "round6_176_strict_readiness_sha256": "6ac2cfd31e130f17fd731110f24b4ad7e02ee508405d24ce852db2e158376dfb",
+          "round6_176_union_predecessor_manifest_sha256": "f4a7fc9223fcb32f62ef48e3dcf92b7605c1e9e1fc91f080bbcc33651d2ce7df",
+          "round6_176_union_recipe_sha256": "adec21c0bdd9d7e395d5bed2681ea6c8af86695b9711f4b39f43b7c0a42a9b2c",
+          "round6_accepted_sidecar_sha256": "a014f8d1f33cbee0674e0b5577213f04d297c71bde3eaa46b31fbddca0ea3525",
+          "round6_release_artifact_sha256": "130d3c1ba14ce634ebbe753e2c1b1b8b305dabb6a59b0944ccaca2c0e640df9e",
+          "round6_source_acceptance_sha256": "8258d0d452a2c6d0a6df089e1368d379610659546e86fcedee83614098ff2f69",
+          "round7_continuation_raw_artifact_sha256": "d7c4579c3ce314c0cba8e63ca9d6c42c582c679c75add4fc36b723176e7bac08",
+          "source_guard_revision": "5f58ebabbf1c7200c23e29870934a00e1269cf1a"
+        }
+      }
+    },
+    "combined_release_recipe_sha256": "72bb5d0043fce4c1ac443679e9c78bab8ad7e99fc9a028f0d9114e80c0174c16"
   },
   "version": 1
 }
