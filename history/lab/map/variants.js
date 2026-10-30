@@ -1,6 +1,7 @@
 // The lab's switches. Each variant has an id (used in ?lab=), a label, a one-line note on what it
 // changes against main, and apply(lab, value), which must undo itself for value = null. A plain
 // switch gets true/null; a variant with choices gets the chosen id/null and shows as a picker.
+// initial is its value when the link has no ?lab=: the picks so far.
 import { siteDot } from './lab-map-browser.js';
 import { loadMapLibre, ownStyle } from './own-style.js';
 import { ColorEditor, readColors } from './color-editor.js';
@@ -23,6 +24,17 @@ const scaledDot = point => {
     const dot = precisionDot(point);
     const metres = GROUND_METRES[point.precision] ?? (PRECISION[point.precision] ? null : GROUND_METRES.approximate);
     return metres ? { ...dot, metres } : dot;
+};
+// Selecting an event fits its rings so a ring spans about a third of the map; a site, which has no
+// ring, is shown as if it had a 2.5 km one, so the streets or valley around it stay in view.
+const SITE_VIEW_METRES = 2500;
+const precisionView = map => points => {
+    const bounds = L.latLngBounds([]);
+    for (const point of points) {
+        const metres = GROUND_METRES[point.precision] ?? (PRECISION[point.precision] ? SITE_VIEW_METRES : GROUND_METRES.approximate);
+        bounds.extend(L.latLng(point.coordinates).toBounds(metres * 3.3));
+    }
+    return { bounds, maxZoom: map.getMaxZoom() };
 };
 
 const OSM = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -145,6 +157,7 @@ export const VARIANTS = [
         note: 'The site uses OpenStreetMap’s own tiles in grayscale. These are other looks of the same OpenStreetMap data.',
         choices: BASES,
         defaultLabel: 'Site today: grayscale OpenStreetMap',
+        initial: 'osm-terrain',
         apply: setBase,
     },
     {
@@ -160,6 +173,7 @@ export const VARIANTS = [
         id: 'full-window',
         label: 'Full-window button',
         note: 'Adds a button under + / − that lets the map fill the whole window. Esc or the button returns; clicking a dot returns to its card.',
+        initial: true,
         apply(lab, on) {
             if (on) {
                 lab.fullWindow = new FullWindow().addTo(lab.map);
@@ -181,6 +195,7 @@ export const VARIANTS = [
             { id: '18', label: '18: buildings', note: 'Street level, beyond what most of our points can claim. Dims + / − at the limits.' },
         ],
         defaultLabel: 'Site today: 7, a region',
+        initial: '14',
         apply(lab, limit) {
             lab.map.setMaxZoom(limit ? Number(limit) : 7);
             document.body.classList.toggle('lab-zoom-limits', Boolean(limit));
@@ -195,8 +210,21 @@ export const VARIANTS = [
             { id: 'scale', label: 'Rings to scale', note: 'As fixed, but towns, approximate points and regions grow with the zoom to cover the ground they may stand for: towns 3 km, approximate 10 km, regions 100 km, countries 300 km.' },
         ],
         defaultLabel: 'Off: the same dot for every point',
+        initial: 'scale',
         apply(lab, mode) {
             lab.browser.dotFor = mode === 'scale' ? scaledDot : mode ? precisionDot : siteDot;
+            // with precision shown, selecting an event zooms to its ring instead of main's region view
+            lab.browser.viewFor = mode ? precisionView(lab.map) : null;
+            lab.browser.drawSelection();
+        },
+    },
+    {
+        id: 'labels',
+        label: 'Event label on the map',
+        note: 'The selected event’s name and date float above its dot, with what the dot’s precision means.',
+        initial: true,
+        apply(lab, on) {
+            lab.browser.labels = Boolean(on);
             lab.browser.drawSelection();
         },
     },

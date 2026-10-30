@@ -65,6 +65,14 @@ body.lab-map-full #toggle-map { display: none; }
 .lab-colors-actions button { flex: 1; min-height: 32px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
 .lab-colors-actions button:hover { background: var(--surface-2); }
 
+/* The selected event's label over its dot: name, date, and what the precision means. */
+.lab-event-label > span { display: flex; flex-direction: column; gap: 1px; }
+.leaflet-tooltip.lab-event-label { max-width: 240px; width: max-content; padding: 6px 9px; white-space: normal; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); box-shadow: 0 2px 10px rgb(0 0 0 / .14); font: 12px/1.35 var(--font-ui); }
+.lab-event-label strong { font-weight: 600; font-size: 13px; }
+.lab-event-label > span > span { color: var(--ink-2); }
+.lab-event-label small { color: var(--ink-2); font-size: 11px; font-style: italic; }
+.leaflet-tooltip-top.lab-event-label::before { border-top-color: var(--surface); }
+
 /* Zoom limits: base.css styles + / − with !important, which hides Leaflet's disabled look. */
 body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled { cursor: default; }
 body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }

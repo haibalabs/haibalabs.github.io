@@ -1,5 +1,5 @@
-// The "Lab" button at the map's bottom-left and its sheet of switches, mirrored in ?lab= as
-// comma-separated ids, with id:choice for a picker.
+// The "Lab" button and its sheet of switches, mirrored in ?lab= as comma-separated ids, with id:choice
+// for a picker. Without ?lab= the lab starts from each variant's initial value; ?lab=off is all off.
 const element = (tag, className, text) => {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -12,7 +12,9 @@ export class LabPanel {
         this.lab = lab;
         this.variants = variants;
         this.values = new Map();
-        for (const token of (new URLSearchParams(location.search).get('lab') || '').split(',').filter(Boolean)) {
+        const param = new URLSearchParams(location.search).get('lab');
+        if (param === null) for (const v of variants) if (v.initial) this.values.set(v.id, v.initial);
+        for (const token of (param || '').split(',').filter(Boolean)) {
             const [id, choice] = token.split(':');
             const variant = variants.find(v => v.id === id);
             if (!variant) continue;
@@ -24,7 +26,7 @@ export class LabPanel {
         this.sheet = element('div', 'lab-sheet');
         this.sheet.id = 'lab-sheet';
         this.sheet.hidden = true;
-        this.sheet.append(element('p', 'lab-title', 'Map lab'), element('p', 'lab-hint', 'All off is the site as it is on main.'));
+        this.sheet.append(element('p', 'lab-title', 'Map lab'), element('p', 'lab-hint', 'Starts with the picks so far. All off is the site as it is on main.'));
         for (const variant of variants) this.sheet.append(variant.choices ? this.picker(variant) : this.switch(variant));
         this.toggle = element('button', 'lab-toggle');
         this.toggle.type = 'button';
@@ -85,8 +87,7 @@ export class LabPanel {
         this.apply(variant, value);
         const url = new URL(location.href);
         const tokens = [...this.values].map(([id, v]) => (v === true ? id : `${id}:${v}`));
-        if (tokens.length) url.searchParams.set('lab', tokens.join(','));
-        else url.searchParams.delete('lab');
+        url.searchParams.set('lab', tokens.length ? tokens.join(',') : 'off');
         history.replaceState(null, '', url);
         this.renderToggle();
     }
