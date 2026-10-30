@@ -2,6 +2,7 @@
 // changes against main, and apply(lab, value), which must undo itself for value = null. A plain
 // switch gets true/null; a variant with choices gets the chosen id/null and shows as a picker.
 import { siteDot } from './lab-map-browser.js';
+import { loadMapLibre, ownStyle } from './own-style.js';
 
 const BLUE = '#3b82f6';
 const PRECISION = {
@@ -27,13 +28,18 @@ const OSM = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap<
 const STADIA_TILES = 'https://tiles.stadiamaps.com/tiles/';
 const STADIA_OWN = '© <a href="https://stadiamaps.com/">Stadia Maps</a> © <a href="https://openmaptiles.org/">OpenMapTiles</a> ' + OSM;
 const STADIA = '© <a href="https://stadiamaps.com/">Stadia Maps</a> © <a href="https://stamen.com/">Stamen Design</a> © <a href="https://openmaptiles.org/">OpenMapTiles</a> ' + OSM;
-// Raster base maps drawn from OpenStreetMap data. tone names a CSS filter in lab.css; maxNative is the
-// deepest zoom the server draws, beyond which Leaflet enlarges its tiles.
+// Base maps drawn from OpenStreetMap data. tone names a CSS filter in lab.css; maxNative is the
+// deepest zoom the server draws, beyond which Leaflet enlarges its tiles. A base with style is our
+// own vector style (own-style.js) rather than a provider's images.
 const BASES = [
     { id: 'osm', label: 'OpenStreetMap in colour', note: 'The site’s own tiles and server, without the gray filter.',
         url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', attribution: OSM, maxNative: 19 },
     { id: 'osm-warm', label: 'OpenStreetMap, warm paper', note: 'The site’s own tiles and server, tinted sepia instead of gray.',
         url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', attribution: OSM, maxNative: 19, tone: 'warm' },
+    { id: 'own-terrain', label: 'Our own style: terrain', note: 'OpenStreetMap data drawn in our colours, with shaded hills, today’s borders, main roads and names. Free, no key; has a dark version.',
+        style: 'terrain' },
+    { id: 'own-bare', label: 'Our own style: no modern features', note: 'Only land, forests, water and shaded hills, plus sea and river names: no borders, roads or towns from today. Free, no key; has a dark version.',
+        style: 'bare' },
     { id: 'smooth', label: 'Stadia Alidade Smooth', note: 'Calm, muted colours with English-leaning labels; has a dark version. Stadia: free on localhost, a registered Stadia account for the public site.',
         url: `${STADIA_TILES}alidade_smooth/{z}/{x}/{y}{r}.png`, dark: `${STADIA_TILES}alidade_smooth_dark/{z}/{x}/{y}{r}.png`, attribution: STADIA_OWN, maxNative: 20 },
     { id: 'terrain', label: 'Stamen Terrain', note: 'Shaded hills, forests and rivers with light labels. Same Stadia terms.',
@@ -53,19 +59,33 @@ const isDark = () => {
     return theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
 };
 
-function setBase(lab, id) {
+async function setBase(lab, id) {
     const { map } = lab;
     lab.siteTiles ??= (() => { const tiles = []; map.eachLayer(l => { if (l instanceof L.TileLayer) tiles.push(l); }); return tiles; })();
+    lab.baseId = id;
     if (lab.baseTiles) map.removeLayer(lab.baseTiles);
     lab.baseTiles = null;
+    map.setMaxBounds(null);
     const base = BASES.find(b => b.id === id);
     // A provider without a dark style is dimmed in the dark theme rather than inverted like the site's tiles.
-    document.body.dataset.labBase = !base ? '' : base.tone ?? (isDark() && !base.dark ? 'dim' : 'plain');
-    if (!base) {
-        if (!lab.siteTiles.some(l => map.hasLayer(l))) lab.siteTiles[0]?.addTo(map);
+    document.body.dataset.labBase = !base ? '' : base.tone ?? (isDark() && !base.dark && !base.style ? 'dim' : 'plain');
+    const showSiteTiles = () => { if (!lab.siteTiles.some(l => map.hasLayer(l))) lab.siteTiles[0]?.addTo(map); };
+    if (!base) return showSiteTiles();
+    for (const tiles of lab.siteTiles) map.removeLayer(tiles);
+    if (base.style) {
+        try {
+            await loadMapLibre();
+        } catch (err) {
+            console.error('Map lab: MapLibre did not load, showing the site tiles', err);
+            document.body.dataset.labBase = '';
+            return showSiteTiles();
+        }
+        if (lab.baseId !== id) return;
+        // MapLibre stops at the Mercator latitude limit; Leaflet must too, or the two drift apart at the poles.
+        map.setMaxBounds([[90, -Infinity], [-90, Infinity]]);
+        lab.baseTiles = L.maplibreGL({ style: ownStyle(base.style, isDark()) }).addTo(map);
         return;
     }
-    for (const tiles of lab.siteTiles) map.removeLayer(tiles);
     lab.baseTiles = L.tileLayer(isDark() && base.dark ? base.dark : base.url, {
         attribution: base.attribution, subdomains: base.subdomains ?? 'abc',
         maxNativeZoom: base.maxNative, maxZoom: 19,
