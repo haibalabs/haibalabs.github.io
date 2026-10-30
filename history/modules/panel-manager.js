@@ -1,5 +1,6 @@
 // panel-manager.js
 import { getCoordinates, showLocationOnMap, formatLocations } from './map-utils.js';
+import { parseWikipediaUrl } from './wikipedia-url.js';
 
 export class PanelManager {
     constructor(map, markersLayer, geocodeCache, onPanelStateChange) {
@@ -121,8 +122,6 @@ export class PanelManager {
     }
 
     async handleInfoClick(url, wikiSpan) {
-        const title = url.split('/wiki/')[1];
-        
         try {
             if (!this.infoPanel.classList.contains('open')) {
                 this.openInfoPanel();
@@ -132,19 +131,19 @@ export class PanelManager {
             this.bringInfoToFront();
             this.showInfoPanelLoading();
             
-            const content = await this.loadWikipediaContent(title);
+            const content = await this.loadWikipediaContent(url);
             this.showInfoPanel(content);
         } catch (error) {
             console.error('Error loading Wikipedia content:', error);
             this.showInfoPanelError();
-            this.showWikiError(wikiSpan, url);
+            this.showWikiError(wikiSpan, url, error.message);
         }
     }
 
-    showWikiError(wikiSpan, url) {
+    showWikiError(wikiSpan, url, message) {
         const toast = document.createElement('div');
         toast.className = 'toast';
-        toast.textContent = `Wikipedia article not found: ${decodeURIComponent(url)}`;
+        toast.textContent = `${message || 'Wikipedia article not found'}: ${String(url ?? '')}`;
         this.infoPanel.appendChild(toast);
         
         setTimeout(() => {
@@ -159,18 +158,11 @@ export class PanelManager {
         wikiSpan.replaceWith(wikiSpan.cloneNode(true));  // Remove event listeners
     }
 
-    async loadWikipediaContent(title) {
-        const api = 'https://en.wikipedia.org/w/api.php';
-        const params = new URLSearchParams({
-            action: 'parse',
-            page: decodeURIComponent(title),
-            format: 'json',
-            prop: 'text|sections',
-            redirects: 1,
-            origin: '*'
-        });
-
-        const response = await fetch(`${api}?${params}`);
+    async loadWikipediaContent(url) {
+        const source = parseWikipediaUrl(url);
+        if (!source) throw new Error('Invalid Wikipedia article or revision link');
+        const response = await fetch(source.apiUrl);
+        if (!response.ok) throw new Error('Wikipedia content not available');
         const data = await response.json();
 
         // Check for error or missing content
@@ -189,11 +181,14 @@ export class PanelManager {
         return {
             title: data.parse.title,
             content: content,
-            sections: data.parse.sections
+            sections: data.parse.sections,
+            wikipediaUrl: source.viewUrl
         };
     }
 
     showInfoPanel(content) {
+        const escapeHtml = value => String(value).replace(/[&<>"']/g, char =>
+            ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
         const cleanContent = `
             <!DOCTYPE html>
             <html>
@@ -258,11 +253,11 @@ export class PanelManager {
                 </style>
             </head>
             <body>
-                <h1>${content.title}</h1>
+                <h1>${escapeHtml(content.title)}</h1>
                 <div class="mw-parser-output">
                     ${content.content}
                 </div>
-                <a class="wiki-link" href="https://wikipedia.org/wiki/${encodeURIComponent(content.title)}" target="_blank">
+                <a class="wiki-link" href="${escapeHtml(content.wikipediaUrl)}" target="_blank">
                     View on Wikipedia ↗
                 </a>
             </body>
