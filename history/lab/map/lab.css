@@ -13,5 +13,30 @@
 .lab-switch input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--accent); }
 .lab-switch strong { display: block; font-weight: 500; }
 .lab-switch small { display: block; color: var(--ink-2); font-size: 12px; }
+/* above the attribution, which wraps to two lines on phones */
+@media (max-width: 640px) { .lab-panel { bottom: 48px; } }
 
-body.lab-colour-tiles .leaflet-tile-pane { filter: none !important; }
+.lab-picker { padding: 8px 0; border-top: 1px solid var(--line); }
+.lab-picker label { display: block; }
+.lab-picker strong { display: block; font-weight: 500; margin-bottom: 4px; }
+.lab-picker select { width: 100%; min-height: 34px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
+.lab-picker small { display: block; margin-top: 4px; color: var(--ink-2); font-size: 12px; }
+
+/* Base map tones: plain shows a provider's tiles as drawn; warm tints the site's OSM tiles. */
+body[data-lab-base="plain"] .leaflet-tile-pane { filter: none !important; }
+body[data-lab-base="warm"] .leaflet-tile-pane { filter: sepia(.45) saturate(.8) contrast(.94) brightness(1.03) !important; }
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) body[data-lab-base="warm"] .leaflet-tile-pane { filter: grayscale(1) invert(1) sepia(.35) contrast(.85) brightness(.9) !important; }
+}
+:root[data-theme="dark"] body[data-lab-base="warm"] .leaflet-tile-pane { filter: grayscale(1) invert(1) sepia(.35) contrast(.85) brightness(.9) !important; }
+
+/* Full window: the map drawer covers the page until Esc or the button. */
+body.lab-map-full #map-panel { inset: 0; width: auto; height: auto; z-index: 1000; border-left: 0; }
+body.lab-map-full #toggle-map { display: none; }
+.lab-full-control { border: 0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: 0 2px 8px rgb(0 0 0 / .12) !important; }
+.lab-full-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink) !important; background: var(--surface) !important; cursor: pointer; }
+.lab-full-control a:hover { background: var(--surface-2) !important; }
+
+/* Zoom limits: base.css styles + / − with !important, which hides Leaflet's disabled look. */
+body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled { opacity: .35; cursor: default; }
+body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled:hover { background: var(--surface) !important; }
