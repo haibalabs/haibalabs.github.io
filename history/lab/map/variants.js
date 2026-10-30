@@ -5,6 +5,7 @@
 import { siteDot } from './lab-map-browser.js';
 import { loadMapLibre, ownStyle } from './own-style.js';
 import { ColorEditor, readColors } from './color-editor.js';
+import { lookupOutline, outlineQuery } from './outlines.js';
 
 const BLUE = '#3b82f6';
 const PRECISION = {
@@ -14,7 +15,7 @@ const PRECISION = {
     region:      { tooltip: 'Somewhere in this region', options: { radius: 26, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.1 } },
     country:     { tooltip: 'Somewhere in this country', options: { radius: 34, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.08 } },
     polity:      { tooltip: 'Somewhere in this state', options: { radius: 34, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.08 } },
-    approximate: { tooltip: 'Approximate: around here', options: { radius: 16, weight: 1.5, dashArray: '3 3', color: BLUE, fillColor: BLUE, fillOpacity: 0.16 } },
+    approximate: { tooltip: 'Approximate location', options: { radius: 16, weight: 1.5, dashArray: '3 3', color: BLUE, fillColor: BLUE, fillOpacity: 0.16 } },
 };
 const precisionDot = point => PRECISION[point.precision] ?? PRECISION.approximate;
 // Ground sizes for "to scale" rings: display choices, not measured extents, since T7 records none.
@@ -152,6 +153,23 @@ const FullWindow = L.Control.extend({
 
 export const VARIANTS = [
     {
+        // first, so the base map below is built for the forced theme
+        id: 'theme',
+        label: 'Light or dark',
+        note: 'The page follows your system’s setting. Lab only: force one for the whole page and the map.',
+        choices: [
+            { id: 'light', label: 'Light', note: 'The whole page and the map in light colours.' },
+            { id: 'dark', label: 'Dark', note: 'The whole page and the map in dark colours.' },
+        ],
+        defaultLabel: 'Follow the system',
+        apply(lab, theme) {
+            if (theme) document.documentElement.dataset.theme = theme;
+            else delete document.documentElement.dataset.theme;
+            if (lab.baseId !== undefined) setBase(lab, lab.baseId);
+            lab.colorEditor?.render();
+        },
+    },
+    {
         id: 'base',
         label: 'Base map',
         note: 'The site uses OpenStreetMap’s own tiles in grayscale. These are other looks of the same OpenStreetMap data.',
@@ -215,6 +233,19 @@ export const VARIANTS = [
             lab.browser.dotFor = mode === 'scale' ? scaledDot : mode ? precisionDot : siteDot;
             // with precision shown, selecting an event zooms to its ring instead of main's region view
             lab.browser.viewFor = mode ? precisionView(lab.map) : null;
+            lab.browser.drawSelection();
+        },
+    },
+    {
+        id: 'outlines',
+        label: 'Outlines (live test)',
+        note: 'With rings to scale: looks the place up in OpenStreetMap’s place search when an event is selected, and draws today’s outline in place of the ring when it finds one. A test of the look only; the public site can’t query this service on every click.',
+        initial: true,
+        apply(lab, on) {
+            lab.browser.outlineFor = on ? (point, event) => {
+                const location = event.locations?.find(l => l.place_id === point.placeId);
+                return lookupOutline(location ? outlineQuery(location) : point.name, point.coordinates);
+            } : null;
             lab.browser.drawSelection();
         },
     },

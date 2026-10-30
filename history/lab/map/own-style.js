@@ -25,21 +25,23 @@ export function loadMapLibre() {
     return loading;
 }
 
+// Light follows Stamen Terrain, sampled from its tiles: pale yellow-green lowlands, olive forests and
+// hill shadows, blue-grey water, grey towns and roads, near-black labels. Dark keeps those hues, dimmed.
 // hills scales the hill shading (1 as designed); halo is drawn at 85% opacity.
 export const PALETTES = {
     light: {
-        land: '#efe9dc', wood: '#d5dfc0', grass: '#e4e8cd', sand: '#efe3c4', ice: '#fbfcfd', wetland: '#dde6d3',
-        water: '#a9c9dd', river: '#8db5cf', waterText: '#3d6482',
-        shadow: '#5a4f43', highlight: '#ffffff', accent: '#6e6253', hills: 1, relief: { opacity: 0.55, brightness: 1 },
-        road: '#ffffff', roadCasing: '#d6cab4', building: '#e0d6c4', border: '#9b8aa6',
-        text: '#3a342c', halo: '#fffcf5',
+        land: '#e4e6b6', wood: '#a9bd86', grass: '#ccd79f', sand: '#ece3b8', ice: '#f4f7f8', wetland: '#c3d3a8',
+        water: '#99b2ca', river: '#8aa7c3', waterText: '#47698c',
+        shadow: '#55643f', highlight: '#ffffff', accent: '#66744d', hills: 1.4, relief: { opacity: 0.7, brightness: 1 },
+        road: '#ffffff', roadCasing: '#9d9d96', building: '#dededb', border: '#56564f',
+        text: '#1f201b', halo: '#ffffff',
     },
     dark: {
-        land: '#1e2227', wood: '#232d27', grass: '#22282a', sand: '#2b2a25', ice: '#3a4048', wetland: '#202a2a',
-        water: '#122436', river: '#1d3b55', waterText: '#86a9c6',
-        shadow: '#000000', highlight: '#6b7684', accent: '#000000', hills: 1, relief: { opacity: 0.35, brightness: 0.45 },
-        road: '#3b4048', roadCasing: '#2a2e34', building: '#2a2e35', border: '#5f5a70',
-        text: '#d8d3ca', halo: '#121418',
+        land: '#22271f', wood: '#2c3826', grass: '#283022', sand: '#34322a', ice: '#3b4146', wetland: '#25302a',
+        water: '#1a2a39', river: '#2c4862', waterText: '#93b4cf',
+        shadow: '#000000', highlight: '#5f6a52', accent: '#000000', hills: 1.2, relief: { opacity: 0.35, brightness: 0.45 },
+        road: '#4a4d46', roadCasing: '#2b2d28', building: '#35382f', border: '#8c8b80',
+        text: '#e6e4da', halo: '#151812',
     },
 };
 const translucent = hex => `${hex}d9`;
@@ -212,6 +214,9 @@ function shortbreadToday(c) {
         paint: text,
     });
     return [
+        { id: 'built-up', type: 'fill', source: 'shortbread', 'source-layer': 'land',
+            filter: ['match', ['get', 'kind'], ['residential', 'commercial', 'retail', 'industrial', 'railway', 'garages'], true, false],
+            paint: { 'fill-color': c.building, 'fill-opacity': 0.85 } },
         ...road('minor-roads', ['tertiary', 'unclassified', 'residential'], 10, [[10, 0.3], [13, 2]]),
         ...road('main-roads', ['motorway', 'trunk', 'primary', 'secondary'], 5, [[5, 0.2], [9, 1], [13, 3.5]]),
         { id: 'borders', type: 'line', source: 'shortbread', 'source-layer': 'boundaries',

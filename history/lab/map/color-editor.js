@@ -7,7 +7,7 @@ const GROUPS = [
     ['Land', [['land', 'Land'], ['wood', 'Forest'], ['grass', 'Fields and grass'], ['sand', 'Sand'], ['ice', 'Ice']]],
     ['Water', [['water', 'Sea and lakes'], ['river', 'Rivers'], ['waterText', 'Water names']]],
     ['Relief', [['shadow', 'Hill shadow'], ['highlight', 'Hill light']]],
-    ['Today', [['road', 'Roads'], ['roadCasing', 'Road edges'], ['building', 'Buildings'], ['border', 'Borders']]],
+    ['Today', [['road', 'Roads'], ['roadCasing', 'Road edges'], ['building', 'Towns and buildings'], ['border', 'Borders']]],
     ['Names', [['text', 'Place names'], ['halo', 'Name outline']]],
 ];
 const HILLS = { min: 0, max: 2.5 };
