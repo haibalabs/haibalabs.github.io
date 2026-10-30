@@ -3,6 +3,8 @@
 // free and keyless. MapLibre is loaded only when one of these base maps is picked.
 const MAPLIBRE = 'https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl';
 const BINDING = 'https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js';
+// Joins Arabic letters and lays out right-to-left scripts; MapLibre fetches it the first time a label needs it.
+const RTL_TEXT = 'https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js';
 
 const script = src => new Promise((resolve, reject) => {
     const tag = document.createElement('script');
@@ -20,6 +22,7 @@ export function loadMapLibre() {
         css.href = `${MAPLIBRE}.css`;
         document.head.append(css);
         await script(`${MAPLIBRE}.js`);
+        maplibregl.setRTLTextPlugin(RTL_TEXT, true).catch(error => console.error('Map lab: right-to-left text support did not load', error));
         await script(BINDING);
     })().catch(err => { loading = null; throw err; });
     return loading;
