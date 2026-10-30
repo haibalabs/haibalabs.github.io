@@ -3,7 +3,8 @@
 // free and keyless. MapLibre is loaded only when one of these base maps is picked.
 const MAPLIBRE = 'https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl';
 const BINDING = 'https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js';
-// Joins Arabic letters and lays out right-to-left scripts; MapLibre fetches it the first time a label needs it.
+// Joins Arabic letters and lays out right-to-left scripts. Loaded before the map draws: NAME asks
+// is-supported-script, which says no to Arabic until the plugin is in, and a lazy load would never start.
 const RTL_TEXT = 'https://unpkg.com/@mapbox/mapbox-gl-rtl-text@0.3.0/dist/mapbox-gl-rtl-text.js';
 
 const script = src => new Promise((resolve, reject) => {
@@ -22,7 +23,7 @@ export function loadMapLibre() {
         css.href = `${MAPLIBRE}.css`;
         document.head.append(css);
         await script(`${MAPLIBRE}.js`);
-        maplibregl.setRTLTextPlugin(RTL_TEXT, true).catch(error => console.error('Map lab: right-to-left text support did not load', error));
+        await maplibregl.setRTLTextPlugin(RTL_TEXT, false).catch(error => console.error('Map lab: right-to-left text support did not load', error));
         await script(BINDING);
     })().catch(err => { loading = null; throw err; });
     return loading;
@@ -49,7 +50,13 @@ export const PALETTES = {
 };
 const translucent = hex => `${hex}d9`;
 
-const NAME = ['coalesce', ['get', 'name_en'], ['get', 'name']];
+// English name, else the local one. MapLibre can't shape Indic scripts, Sinhala, Tibetan, Myanmar or
+// Khmer (vowel signs land after the consonant, stacks come apart), so a local name in those is left
+// unlabelled rather than drawn wrong; is-supported-script is how MapLibre says it can draw a string.
+const NAME = ['case',
+    ['has', 'name_en'], ['get', 'name_en'],
+    ['is-supported-script', ['coalesce', ['get', 'name'], '']], ['coalesce', ['get', 'name'], ''],
+    ''];
 const ATTRIBUTION = {
     osm: '© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
     openfreemap: '<a href="https://openfreemap.org" target="_blank">OpenFreeMap</a> © <a href="https://www.openmaptiles.org/" target="_blank">OpenMapTiles</a> © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
