@@ -14,9 +14,9 @@ const PRECISION = {
     approximate: { tooltip: 'Approximate: around here', options: { radius: 16, weight: 1.5, dashArray: '3 3', color: BLUE, fillColor: BLUE, fillOpacity: 0.16 } },
 };
 const precisionDot = point => PRECISION[point.precision] ?? PRECISION.approximate;
-// Placeholder ground sizes for "to scale" rings, to settle with Hermes: about how far from its point
-// a place of each precision may be. A ring is never drawn smaller than its fixed size.
-const GROUND_METRES = { settlement: 3000, approximate: 5000, region: 100000, country: 300000, polity: 300000 };
+// Ground sizes for "to scale" rings: display choices, not measured extents, since T7 records none.
+// Approximate is the resolver's 10 km placement tolerance. A ring is never drawn smaller than its fixed size.
+const GROUND_METRES = { settlement: 3000, approximate: 10000, region: 100000, country: 300000, polity: 300000 };
 const scaledDot = point => {
     const dot = precisionDot(point);
     const metres = GROUND_METRES[point.precision] ?? (PRECISION[point.precision] ? null : GROUND_METRES.approximate);
@@ -150,7 +150,7 @@ export const VARIANTS = [
         note: 'Every point is the same blue dot on the site, whether a reviewed site or a city centre standing for “around here”.',
         choices: [
             { id: 'fixed', label: 'Rings of a fixed size', note: 'An approximate point becomes a soft dashed ring; towns stay a dot, reviewed sites a ringed dot. Hover for the meaning.' },
-            { id: 'scale', label: 'Rings to scale', note: 'As fixed, but towns, approximate points and regions grow with the zoom to cover the ground they may stand for (placeholder sizes, to settle with Hermes).' },
+            { id: 'scale', label: 'Rings to scale', note: 'As fixed, but towns, approximate points and regions grow with the zoom to cover the ground they may stand for: towns 3 km, approximate 10 km, regions 100 km, countries 300 km.' },
         ],
         defaultLabel: 'Off: the same dot for every point',
         apply(lab, mode) {
