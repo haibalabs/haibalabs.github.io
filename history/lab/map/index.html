@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Map lab: the site's page, resolved from history/ so the real modules, CSS and data load unchanged. -->
+    <base href="../../">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="copyright" content="© 2025 Haiba LLC. All rights reserved.">
+    <meta name="author" content="Haiba LLC">
+    <meta name="description" content="An interactive timeline of historical events">
+    <meta name="robots" content="noindex, nofollow">
+
+    <meta property="og:title" content="HistoriLine">
+    <meta property="og:description" content="An interactive timeline of historical events">
+    <meta property="og:type" content="website">
+
+    <title>HistoriLine map lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+         crossorigin="" />
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+         crossorigin=""></script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/47a1fab6e7.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="map-browser.css">
+    <link rel="stylesheet" href="lab/map/lab.css">
+    <link rel="stylesheet" href="timelines.css">
+    <link rel="stylesheet" href="world-edits.css">
+</head>
+<body>
+    <div class="page-container">
+        <div class="content-wrap">
+            <header class="header">
+                <div class="bar">
+                    <a class="brand" href="./" title="HistoriLine">
+                        <img src="assets/history-logo.png" alt="">
+                        <span>HistoriLine</span>
+                    </a>
+                    <div class="search-box">
+                        <i class="fa-light fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" placeholder="Search history" autocomplete="off">
+                        <button id="clearSearch" class="search-clear" title="Clear search"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="date-navigation">
+                        <button class="nav-button" id="jumpStart" title="Earliest"><i class="fa-sharp fa-light fa-backward-step"></i></button>
+                        <input type="text" id="dateInput" placeholder="Year" inputmode="numeric" autocomplete="off">
+                        <button class="nav-button" id="jumpEnd" title="Latest"><i class="fa-sharp fa-light fa-forward-step"></i></button>
+                    </div>
+                    <div class="crumbs" id="crumbs"></div>
+                    <div class="timeline-pill" id="timeline-pill" hidden>
+                        <button type="button" id="timeline-pill-btn" aria-haspopup="menu" aria-expanded="false" title="Personal timeline">
+                            <i class="fa-light fa-bookmark" aria-hidden="true"></i>
+                            <span class="timeline-pill-title"></span>
+                            <i class="fa-light fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <div class="timeline-menu" id="timeline-menu" role="menu" hidden>
+                            <button type="button" role="menuitemradio" data-view="with-world" aria-checked="true">With world history</button>
+                            <button type="button" role="menuitemradio" data-view="only" aria-checked="false">This timeline only</button>
+                            <button type="button" role="menuitem" data-action="close">Close timeline</button>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="randomEvent" class="icon-btn" title="I'm feeling lucky"><i class="fa-light fa-dice"></i></button>
+                        <button id="add-event" class="icon-btn" title="Add event"><i class="fa-light fa-plus"></i></button>
+                        <button id="suggest-event" class="icon-btn" title="Suggest a new event" aria-label="Suggest a new event" hidden><i class="fa-light fa-calendar-plus" aria-hidden="true"></i></button>
+                        <button id="settings-btn" class="icon-btn" title="Settings"><i class="fa-light fa-sliders"></i></button>
+                    </div>
+                </div>
+                <nav class="filters" aria-label="Categories"><!-- Buttons injected by JS --></nav>
+            </header>
+
+            <!-- kept for initControls(); hidden in this layout -->
+            <div class="controls-panel is-hidden"><button class="toggle-controls-btn"></button></div>
+
+            <div id="spine" class="spine" title="Drag to travel through time">
+                <div id="spine-track" class="spine-track"></div>
+                <div id="spine-thumb" class="spine-thumb"></div>
+                <div id="spine-bubble" class="spine-bubble"></div>
+            </div>
+            <div id="popover" class="popover"></div>
+
+            <div class="timeline-wrapper" id="timeline-wrapper">
+                <div class="timeline" id="timeline">
+                    <div id="timeline-placeholder"></div>
+                    <div id="timeline-content"></div>
+                </div>
+                <div id="map-panel" class="map-panel">
+                    <div id="map"></div>
+                    <button id="toggle-map" aria-label="Explore map" class="toggle-map-btn panel-tab" title="Map: click to bring forward, again to close"><i class="fa-light fa-map-location-dot ico"></i><i class="fa-light fa-xmark x"></i></button>
+                </div>
+                <div id="info-panel" class="info-panel">
+                    <iframe id="info-frame" class="info-frame"></iframe>
+                    <button id="toggle-info" class="toggle-info-btn panel-tab" title="Wikipedia: click to bring forward, again to close"><i class="fa-sharp fa-light fa-book ico"></i><i class="fa-light fa-xmark x"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-content">
+            <h3>Profile</h3>
+            <div id="auth-section">
+                <div id="login-form" class="auth-form">
+                    <input type="email" id="email" placeholder="Email">
+                    <input type="password" id="password" placeholder="Password">
+                    <button class="auth-btn" id="login-btn">Log in</button>
+                    <button type="button" class="auth-link" id="reset-password-btn">Forgot password?</button>
+                </div>
+                <div id="user-info" class="auth-info" style="display: none;">
+                    <span id="user-email"></span>
+                    <button class="auth-btn" id="logout-btn">Log out</button>
+                </div>
+                <p id="auth-status" class="auth-status" role="status" hidden></p>
+            </div>
+            <div class="settings-group" id="my-timelines" hidden>
+                <h4>My timelines</h4>
+                <ul class="timeline-list" id="timeline-list"></ul>
+                <form class="timeline-create" id="timeline-create">
+                    <input type="text" id="timeline-title" placeholder="New timeline name" maxlength="120" autocomplete="off" aria-label="New timeline name">
+                    <button type="submit" class="settings-btn">Create</button>
+                </form>
+                <p id="timeline-status" class="auth-status" role="status" hidden></p>
+            </div>
+            <div class="settings-group" id="my-edits" hidden>
+                <div class="my-edits-head"><h4>My edits</h4><span class="my-edits-count" id="my-edits-count"></span></div>
+                <label class="settings-toggle editing-toggle">Editing <input type="checkbox" role="switch" id="editing-toggle"></label>
+                <ul class="my-edits-list" id="my-edits-list"></ul>
+                <p id="my-edits-status" class="auth-status" role="status" hidden></p>
+            </div>
+        </div>
+        <div class="settings-info">
+            <p>Version <span class="version">v<span id="versionNumber"></span></span> · <span id="visibleCount">0</span> of <span id="totalCount">0</span> events</p>
+            <p class="settings-legal">© 2025 Haiba LLC. All rights reserved.<br>Unauthorized use or distribution of this website or its content is prohibited.</p>
+        </div>
+        <button class="settings-close-btn">Close</button>
+    </div>
+
+    <div class="modal-overlay" id="add-event-modal">
+        <div class="modal">
+            <div class="modal-header"><h3>Add event</h3></div>
+            <form id="add-event-form" class="modal-form">
+                <div class="form-group"><label>Event name</label><input type="text" name="name" required placeholder="This has to be a unique name"></div>
+                <div class="form-group"><label>Time</label><input type="text" name="enhanced_time" required placeholder="e.g. 1/25/1976, 750, 15 BC, March 982, Late Spring 1204"></div>
+                <div class="form-group"><label>Description</label><textarea name="enhanced_description" required rows="3"></textarea></div>
+                <div class="form-group photo-group" id="photo-group" hidden>
+                    <label for="photo-input">Photo</label>
+                    <div class="photo-preview" hidden><img alt="Photo preview"></div>
+                    <div class="photo-actions">
+                        <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif">
+                        <button type="button" class="btn btn-secondary photo-remove" hidden>Remove photo</button>
+                    </div>
+                    <p class="photo-note">Stored privately at up to 1600 px; the original and its location data are not kept.</p>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <div class="location-fields">
+                        <input type="text" name="location_name" placeholder="Name">
+                        <input type="text" name="location_city" placeholder="City">
+                        <input type="text" name="location_region" placeholder="Region">
+                        <input type="text" name="location_country" placeholder="Country">
+                        <input type="text" name="location_historical" placeholder="Historical name">
+                    </div>
+                </div>
+                <div class="form-group"><label>Categories</label><select name="categories"></select></div>
+                <div class="form-group"><label>Source URL</label><input name="wikipedia_url" pattern="^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$" placeholder="e.g. www.wikipedia.org/wiki/page"></div>
+                <p class="form-error" role="alert" hidden></p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-add">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-overlay" id="suggest-edit-modal">
+        <div class="modal suggest-edit" role="dialog" aria-modal="true" aria-labelledby="suggest-edit-title">
+            <div class="modal-header"><h3 id="suggest-edit-title">Suggest an edit</h3></div>
+            <form id="suggest-edit-form" class="modal-form" novalidate>
+                <div class="form-group" data-field="name">
+                    <div class="field-head"><label for="se-name">Event name</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <input id="se-name" name="name" type="text" maxlength="300" autocomplete="off">
+                </div>
+                <div class="form-group" data-field="enhanced_time">
+                    <div class="field-head"><label for="se-time">Date</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <input id="se-time" name="enhanced_time" type="text" autocomplete="off" placeholder="e.g. June 19, 1936, 44 BC or Spring 1950">
+                </div>
+                <div class="form-group" data-field="enhanced_description">
+                    <div class="field-head"><label for="se-description">Description</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <textarea id="se-description" class="event-text" name="enhanced_description" rows="9" maxlength="4000"></textarea>
+                </div>
+                <div class="form-group" data-field="figures">
+                    <div class="field-head"><span class="field-label" id="se-people-label">People</span><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <ul class="people-list" aria-labelledby="se-people-label"></ul>
+                    <div class="people-add">
+                        <label for="se-person" class="visually-hidden">Add a person</label>
+                        <input id="se-person" type="text" autocomplete="off" placeholder="Add a person…" aria-controls="se-person-results" aria-expanded="false">
+                        <ul class="people-results" id="se-person-results" role="listbox" aria-label="Wikipedia articles" hidden></ul>
+                    </div>
+                </div>
+                <div class="field-row">
+                    <div class="form-group" data-field="categories">
+                        <div class="field-head"><label for="se-category">Category</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                        <select id="se-category" name="categories"></select>
+                    </div>
+                    <div class="form-group" data-field="wikipedia_url">
+                        <div class="field-head"><label for="se-wiki">Wikipedia article</label><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                        <input id="se-wiki" name="wikipedia_url" type="text" autocomplete="off" placeholder="en.wikipedia.org/wiki/…">
+                    </div>
+                </div>
+                <p class="wiki-check" id="se-wiki-check" role="status" hidden></p>
+                <hr class="form-divider">
+                <div class="form-group">
+                    <label for="se-reason">Note for the reviewer <span class="optional">(optional)</span></label>
+                    <textarea id="se-reason" class="event-text" name="reason" rows="5" maxlength="1000" placeholder="Anything that helps check this change"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="se-source">Source <span class="optional">(optional)</span></label>
+                    <div class="sources" id="se-sources"><input id="se-source" class="source-input" type="url" placeholder="https://…"></div>
+                    <button type="button" class="link-btn" id="se-add-source">+ Add another source</button>
+                </div>
+                <label class="checkbox-row"><input type="checkbox" id="se-source-conflict"> Wikipedia or another source is wrong here</label>
+                <p class="form-error" role="alert" hidden></p>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="se-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="se-submit">Send for review</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="photo-viewer" id="photo-viewer" role="dialog" aria-label="Photo" hidden><img alt=""><p class="photo-viewer-error" role="status" hidden>This image could not be loaded.</p><div class="photo-viewer-details" hidden></div></div>
+    <script type="module" src="lab/map/lab.js"></script>
+</body>
+</html>
