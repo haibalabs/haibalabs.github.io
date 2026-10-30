@@ -24,6 +24,7 @@
 
 /* Base map tones: plain shows a provider's tiles as drawn; warm tints the site's OSM tiles. */
 body[data-lab-base="plain"] .leaflet-tile-pane { filter: none !important; }
+body[data-lab-base="dim"] .leaflet-tile-pane { filter: brightness(.68) saturate(.8) contrast(1.05) !important; }
 body[data-lab-base="warm"] .leaflet-tile-pane { filter: sepia(.45) saturate(.8) contrast(.94) brightness(1.03) !important; }
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) body[data-lab-base="warm"] .leaflet-tile-pane { filter: grayscale(1) invert(1) sepia(.35) contrast(.85) brightness(.9) !important; }
@@ -38,5 +39,6 @@ body.lab-map-full #toggle-map { display: none; }
 .lab-full-control a:hover { background: var(--surface-2) !important; }
 
 /* Zoom limits: base.css styles + / − with !important, which hides Leaflet's disabled look. */
-body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled { opacity: .35; cursor: default; }
+body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled { cursor: default; }
+body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }
 body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled:hover { background: var(--surface) !important; }

@@ -14,6 +14,14 @@ const PRECISION = {
     approximate: { tooltip: 'Approximate: around here', options: { radius: 16, weight: 1.5, dashArray: '3 3', color: BLUE, fillColor: BLUE, fillOpacity: 0.16 } },
 };
 const precisionDot = point => PRECISION[point.precision] ?? PRECISION.approximate;
+// Placeholder ground sizes for "to scale" rings, to settle with Hermes: about how far from its point
+// a place of each precision may be. A ring is never drawn smaller than its fixed size.
+const GROUND_METRES = { settlement: 3000, approximate: 5000, region: 100000, country: 300000, polity: 300000 };
+const scaledDot = point => {
+    const dot = precisionDot(point);
+    const metres = GROUND_METRES[point.precision] ?? (PRECISION[point.precision] ? null : GROUND_METRES.approximate);
+    return metres ? { ...dot, metres } : dot;
+};
 
 const OSM = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const STADIA_TILES = 'https://tiles.stadiamaps.com/tiles/';
@@ -51,7 +59,8 @@ function setBase(lab, id) {
     if (lab.baseTiles) map.removeLayer(lab.baseTiles);
     lab.baseTiles = null;
     const base = BASES.find(b => b.id === id);
-    document.body.dataset.labBase = base ? base.tone ?? 'plain' : '';
+    // A provider without a dark style is dimmed in the dark theme rather than inverted like the site's tiles.
+    document.body.dataset.labBase = !base ? '' : base.tone ?? (isDark() && !base.dark ? 'dim' : 'plain');
     if (!base) {
         if (!lab.siteTiles.some(l => map.hasLayer(l))) lab.siteTiles[0]?.addTo(map);
         return;
@@ -121,20 +130,31 @@ export const VARIANTS = [
         },
     },
     {
-        id: 'street-zoom',
-        label: 'Zoom to street level',
-        note: 'Raises the zoom limit from 7 to 18, and dims + / − when they can’t go further (the site already disables them, but they look active).',
-        apply(lab, on) {
-            lab.map.setMaxZoom(on ? 18 : 7);
-            document.body.classList.toggle('lab-zoom-limits', Boolean(on));
+        id: 'zoom',
+        label: 'Zoom limit',
+        note: 'How far in + can go. Any choice also dims + / − when they can’t go further (the site already disables them, but they look active).',
+        choices: [
+            { id: '13', label: '13: a city’s districts', note: 'Neighbourhoods and main streets. Dims + / − at the limits.' },
+            { id: '14', label: '14: streets', note: 'Most streets named. Dims + / − at the limits.' },
+            { id: '18', label: '18: buildings', note: 'Street level, beyond what most of our points can claim. Dims + / − at the limits.' },
+        ],
+        defaultLabel: 'Site today: 7, a region',
+        apply(lab, limit) {
+            lab.map.setMaxZoom(limit ? Number(limit) : 7);
+            document.body.classList.toggle('lab-zoom-limits', Boolean(limit));
         },
     },
     {
         id: 'precision',
         label: 'Show precision',
-        note: 'An approximate point becomes a soft dashed ring; towns stay a dot, reviewed sites a ringed dot. Hover for the meaning.',
-        apply(lab, on) {
-            lab.browser.dotFor = on ? precisionDot : siteDot;
+        note: 'Every point is the same blue dot on the site, whether a reviewed site or a city centre standing for “around here”.',
+        choices: [
+            { id: 'fixed', label: 'Rings of a fixed size', note: 'An approximate point becomes a soft dashed ring; towns stay a dot, reviewed sites a ringed dot. Hover for the meaning.' },
+            { id: 'scale', label: 'Rings to scale', note: 'As fixed, but towns, approximate points and regions grow with the zoom to cover the ground they may stand for (placeholder sizes, to settle with Hermes).' },
+        ],
+        defaultLabel: 'Off: the same dot for every point',
+        apply(lab, mode) {
+            lab.browser.dotFor = mode === 'scale' ? scaledDot : mode ? precisionDot : siteDot;
             lab.browser.drawSelection();
         },
     },
