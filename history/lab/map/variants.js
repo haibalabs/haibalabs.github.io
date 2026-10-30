@@ -41,6 +41,10 @@ const BASES = [
         style: 'terrain' },
     { id: 'own-bare', label: 'Our own style: no modern features', note: 'Only land, forests, water and shaded hills, plus sea and river names: no borders, roads or towns from today. Free, no key; has a dark version.',
         style: 'bare' },
+    { id: 'osm-terrain', label: 'Our own style: terrain, OSM’s own tiles', note: 'The terrain style drawn from OpenStreetMap’s own vector tiles: far smaller downloads, but forests appear from zoom 8, river lines from 10, and seas have no names.',
+        style: 'terrain', tiles: 'osm' },
+    { id: 'osm-bare', label: 'Our own style: no modern features, OSM’s own tiles', note: 'The no-modern-features style drawn from OpenStreetMap’s own vector tiles, with the same trade-offs.',
+        style: 'bare', tiles: 'osm' },
     { id: 'smooth', label: 'Stadia Alidade Smooth', note: 'Calm, muted colours with English-leaning labels; has a dark version. Stadia: free on localhost, a registered Stadia account for the public site.',
         url: `${STADIA_TILES}alidade_smooth/{z}/{x}/{y}{r}.png`, dark: `${STADIA_TILES}alidade_smooth_dark/{z}/{x}/{y}{r}.png`, attribution: STADIA_OWN, maxNative: 20 },
     { id: 'terrain', label: 'Stamen Terrain', note: 'Shaded hills, forests and rivers with light labels. Same Stadia terms.',
@@ -68,6 +72,7 @@ async function setBase(lab, id) {
     lab.baseTiles = null;
     map.setMaxBounds(null);
     const base = BASES.find(b => b.id === id);
+    lab.base = base;
     lab.baseStyle = base?.style ?? null;
     lab.colorEditor?.render();
     // A provider without a dark style is dimmed in the dark theme rather than inverted like the site's tiles.
@@ -86,7 +91,7 @@ async function setBase(lab, id) {
         if (lab.baseId !== id) return;
         // MapLibre stops at the Mercator latitude limit; Leaflet must too, or the two drift apart at the poles.
         map.setMaxBounds([[90, -Infinity], [-90, Infinity]]);
-        lab.baseTiles = L.maplibreGL({ style: ownStyle(base.style, isDark(), readColors(isDark())) }).addTo(map);
+        lab.baseTiles = L.maplibreGL({ style: ownStyle(base.style, isDark(), readColors(isDark()), base.tiles) }).addTo(map);
         return;
     }
     lab.baseTiles = L.tileLayer(isDark() && base.dark ? base.dark : base.url, {
@@ -97,7 +102,7 @@ async function setBase(lab, id) {
 
 // Redraws our own style from the colours in the link; MapLibre diffs the style, so only paint changes apply.
 function restyle(lab) {
-    lab.baseTiles?.getMaplibreMap?.()?.setStyle(ownStyle(lab.baseStyle, isDark(), readColors(isDark())));
+    lab.baseTiles?.getMaplibreMap?.()?.setStyle(ownStyle(lab.baseStyle, isDark(), readColors(isDark()), lab.base.tiles));
 }
 
 const FullWindow = L.Control.extend({
