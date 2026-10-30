@@ -3,6 +3,7 @@
 // switch gets true/null; a variant with choices gets the chosen id/null and shows as a picker.
 import { siteDot } from './lab-map-browser.js';
 import { loadMapLibre, ownStyle } from './own-style.js';
+import { ColorEditor, readColors } from './color-editor.js';
 
 const BLUE = '#3b82f6';
 const PRECISION = {
@@ -67,6 +68,8 @@ async function setBase(lab, id) {
     lab.baseTiles = null;
     map.setMaxBounds(null);
     const base = BASES.find(b => b.id === id);
+    lab.baseStyle = base?.style ?? null;
+    lab.colorEditor?.render();
     // A provider without a dark style is dimmed in the dark theme rather than inverted like the site's tiles.
     document.body.dataset.labBase = !base ? '' : base.tone ?? (isDark() && !base.dark && !base.style ? 'dim' : 'plain');
     const showSiteTiles = () => { if (!lab.siteTiles.some(l => map.hasLayer(l))) lab.siteTiles[0]?.addTo(map); };
@@ -83,13 +86,18 @@ async function setBase(lab, id) {
         if (lab.baseId !== id) return;
         // MapLibre stops at the Mercator latitude limit; Leaflet must too, or the two drift apart at the poles.
         map.setMaxBounds([[90, -Infinity], [-90, Infinity]]);
-        lab.baseTiles = L.maplibreGL({ style: ownStyle(base.style, isDark()) }).addTo(map);
+        lab.baseTiles = L.maplibreGL({ style: ownStyle(base.style, isDark(), readColors(isDark())) }).addTo(map);
         return;
     }
     lab.baseTiles = L.tileLayer(isDark() && base.dark ? base.dark : base.url, {
         attribution: base.attribution, subdomains: base.subdomains ?? 'abc',
         maxNativeZoom: base.maxNative, maxZoom: 19,
     }).addTo(map);
+}
+
+// Redraws our own style from the colours in the link; MapLibre diffs the style, so only paint changes apply.
+function restyle(lab) {
+    lab.baseTiles?.getMaplibreMap?.()?.setStyle(ownStyle(lab.baseStyle, isDark(), readColors(isDark())));
 }
 
 const FullWindow = L.Control.extend({
@@ -133,6 +141,15 @@ export const VARIANTS = [
         choices: BASES,
         defaultLabel: 'Site today: grayscale OpenStreetMap',
         apply: setBase,
+    },
+    {
+        id: 'colors',
+        label: 'Colour editor',
+        note: 'A panel at the map’s top right with a picker for each colour of our own styles and a hill-strength slider. Changes show as you drag and are kept in the link.',
+        apply(lab, on) {
+            lab.colorEditor?.remove();
+            lab.colorEditor = on ? new ColorEditor(lab, lab.panelManager.mapPanel, { isDark, restyle: () => restyle(lab) }) : null;
+        },
     },
     {
         id: 'full-window',

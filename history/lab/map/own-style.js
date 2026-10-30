@@ -25,22 +25,24 @@ export function loadMapLibre() {
     return loading;
 }
 
-const PALETTES = {
+// hills scales the hill shading (1 as designed); halo is drawn at 85% opacity.
+export const PALETTES = {
     light: {
         land: '#efe9dc', wood: '#d5dfc0', grass: '#e4e8cd', sand: '#efe3c4', ice: '#fbfcfd', wetland: '#dde6d3',
         water: '#a9c9dd', river: '#8db5cf', waterText: '#3d6482',
-        shadow: '#5a4f43', highlight: '#ffffff', accent: '#6e6253', relief: { opacity: 0.55, brightness: 1 },
+        shadow: '#5a4f43', highlight: '#ffffff', accent: '#6e6253', hills: 1, relief: { opacity: 0.55, brightness: 1 },
         road: '#ffffff', roadCasing: '#d6cab4', building: '#e0d6c4', border: '#9b8aa6',
-        text: '#3a342c', halo: 'rgba(255, 252, 245, 0.85)',
+        text: '#3a342c', halo: '#fffcf5',
     },
     dark: {
         land: '#1e2227', wood: '#232d27', grass: '#22282a', sand: '#2b2a25', ice: '#3a4048', wetland: '#202a2a',
         water: '#122436', river: '#1d3b55', waterText: '#86a9c6',
-        shadow: '#000000', highlight: '#6b7684', accent: '#000000', relief: { opacity: 0.35, brightness: 0.45 },
+        shadow: '#000000', highlight: '#6b7684', accent: '#000000', hills: 1, relief: { opacity: 0.35, brightness: 0.45 },
         road: '#3b4048', roadCasing: '#2a2e34', building: '#2a2e35', border: '#5f5a70',
-        text: '#d8d3ca', halo: 'rgba(18, 20, 24, 0.85)',
+        text: '#d8d3ca', halo: '#121418',
     },
 };
+const translucent = hex => `${hex}d9`;
 
 const NAME = ['coalesce', ['get', 'name_en'], ['get', 'name']];
 const ATTRIBUTION = {
@@ -57,17 +59,17 @@ function ground(c) {
     return [
         { id: 'land', type: 'background', paint: { 'background-color': c.land } },
         // Natural Earth's coloured relief carries the world view until the vector land cover takes over.
-        { id: 'natural-earth', type: 'raster', source: 'natural-earth', maxzoom: 7,
-            paint: { 'raster-opacity': ['interpolate', ['linear'], ['zoom'], 0, c.relief.opacity, 5, c.relief.opacity * 0.4, 7, 0],
+        { id: 'natural-earth', type: 'raster', source: 'natural-earth', maxzoom: 5,
+            paint: { 'raster-opacity': ['interpolate', ['linear'], ['zoom'], 0, c.relief.opacity, 3, c.relief.opacity * 0.5, 5, 0],
                 'raster-brightness-max': c.relief.brightness, 'raster-saturation': -0.25 } },
         cover('wood', ['wood', 'forest'], c.wood),
         cover('grass', ['grass', 'farmland'], c.grass),
         cover('sand', 'sand', c.sand),
         cover('wetland', 'wetland', c.wetland),
         cover('ice', 'ice', c.ice),
-        { id: 'hills', type: 'hillshade', source: 'elevation',
+        { id: 'hills', type: 'hillshade', source: 'elevation', maxzoom: 12,
             paint: { 'hillshade-shadow-color': c.shadow, 'hillshade-highlight-color': c.highlight, 'hillshade-accent-color': c.accent,
-                'hillshade-exaggeration': ['interpolate', ['linear'], ['zoom'], 2, 0.45, 8, 0.3, 12, 0.2] } },
+                'hillshade-exaggeration': ['interpolate', ['linear'], ['zoom'], ...[[2, 0.45], [8, 0.3], [12, 0.2]].flatMap(([z, e]) => [z, Math.min(1, e * c.hills)])] } },
         { id: 'water', type: 'fill', source: 'openmaptiles', 'source-layer': 'water',
             filter: ['!=', ['get', 'brunnel'], 'tunnel'], paint: { 'fill-color': c.water } },
         { id: 'rivers', type: 'line', source: 'openmaptiles', 'source-layer': 'waterway',
@@ -81,7 +83,7 @@ function ground(c) {
 }
 
 const waterLabels = c => {
-    const label = { 'text-color': c.waterText, 'text-halo-color': c.halo, 'text-halo-width': 1.2 };
+    const label = { 'text-color': c.waterText, 'text-halo-color': translucent(c.halo), 'text-halo-width': 1.2 };
     return [
         { id: 'river-names', type: 'symbol', source: 'openmaptiles', 'source-layer': 'waterway', minzoom: 8,
             filter: ['==', ['get', 'class'], 'river'],
@@ -109,7 +111,7 @@ function today(c) {
         id, type: 'symbol', source: 'openmaptiles', 'source-layer': 'place', ...extra,
         filter: ['all', ['match', ['get', 'class'], classes, true, false], ...(where ? [where] : [])],
         layout: { 'text-field': NAME, 'text-font': ['Noto Sans Regular'], 'text-max-width': 8, ...layout },
-        paint: { 'text-color': c.text, 'text-halo-color': c.halo, 'text-halo-width': 1.3 },
+        paint: { 'text-color': c.text, 'text-halo-color': translucent(c.halo), 'text-halo-width': 1.3 },
     });
     const country = { 'text-font': ['Noto Sans Bold'], 'text-transform': 'uppercase', 'text-letter-spacing': 0.12,
         'text-size': ['interpolate', ['linear'], ['zoom'], 1, 9, 5, 14] };
@@ -133,16 +135,20 @@ function today(c) {
 }
 
 // kind: 'terrain' (relief with today's borders, roads and names) or 'bare' (land, water and relief only).
-export function ownStyle(kind, dark) {
-    const c = PALETTES[dark ? 'dark' : 'light'];
+// colors overrides palette entries by name, as the lab's colour editor sets them.
+export function ownStyle(kind, dark, colors = {}) {
+    const c = { ...PALETTES[dark ? 'dark' : 'light'], ...colors };
     return {
         version: 8,
         glyphs: 'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',
         sources: {
             openmaptiles: { type: 'vector', url: 'https://tiles.openfreemap.org/planet', attribution: ATTRIBUTION.openfreemap },
-            'natural-earth': { type: 'raster', tiles: ['https://tiles.openfreemap.org/natural_earth/ne2sr/{z}/{x}/{y}.png'], tileSize: 256, maxzoom: 6 },
+            // Both relief sources are 256 px images declared as 512, so MapLibre fetches a zoom coarser
+            // (a quarter of the tiles); the shading is soft anyway. Elevation stops at 9 and is enlarged beyond,
+            // and hills fade out at street zoom, where they cost the most and show the least.
+            'natural-earth': { type: 'raster', tiles: ['https://tiles.openfreemap.org/natural_earth/ne2sr/{z}/{x}/{y}.png'], tileSize: 512, maxzoom: 6 },
             elevation: { type: 'raster-dem', tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
-                encoding: 'terrarium', tileSize: 256, maxzoom: 15, attribution: ATTRIBUTION.terrain },
+                encoding: 'terrarium', tileSize: 512, maxzoom: 9, attribution: ATTRIBUTION.terrain },
         },
         layers: kind === 'bare' ? [...ground(c), ...waterLabels(c)] : [...ground(c), ...today(c)],
     };

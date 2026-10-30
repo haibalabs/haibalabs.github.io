@@ -38,6 +38,26 @@ body.lab-map-full #toggle-map { display: none; }
 .lab-full-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink) !important; background: var(--surface) !important; cursor: pointer; }
 .lab-full-control a:hover { background: var(--surface-2) !important; }
 
+/* Colour editor for our own styles, top right under the map's floating button. */
+.lab-colors { position: absolute; z-index: 800; top: 64px; right: 12px; width: min(250px, calc(100% - 24px)); max-height: calc(100% - 150px); overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: 0 6px 24px rgb(0 0 0 / .16); font: 12px/1.4 var(--font-ui); color: var(--ink); }
+.lab-colors summary { padding: 9px 12px; font-weight: 600; font-size: 13px; cursor: pointer; }
+.lab-colors-body { padding: 0 12px 10px; }
+.lab-colors-hint { margin: 0 0 6px; color: var(--ink-2); }
+.lab-colors fieldset { margin: 0; padding: 6px 0 4px; border: 0; border-top: 1px solid var(--line); }
+.lab-colors legend { padding: 0; color: var(--ink-2); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.lab-color { display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 8px; padding: 2px 0; cursor: pointer; }
+.lab-color input[type="color"] { width: 30px; height: 22px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; cursor: pointer; }
+.lab-color input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
+.lab-color input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 4px; }
+.lab-color code { color: var(--ink-2); font-size: 11px; }
+.lab-color.changed span::after { content: ' •'; color: var(--accent); }
+.lab-hills { grid-template-columns: auto 1fr auto; }
+.lab-hills input { width: 100%; accent-color: var(--accent); }
+.lab-colors-actions { display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.lab-colors-actions button { flex: 1; min-height: 32px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.lab-colors-actions button:hover { background: var(--surface-2); }
+@media (max-width: 640px) { .lab-colors { max-height: 45%; } }
+
 /* Zoom limits: base.css styles + / − with !important, which hides Leaflet's disabled look. */
 body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled { cursor: default; }
 body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }
