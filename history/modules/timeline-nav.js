@@ -119,12 +119,20 @@ function updateCrumbs(y) {
     crumbKey = key;
     const deep = ei === 0;
     crumbs.innerHTML =
+        `<button class="nav-button step edge" data-edge="start" title="Earliest event (Home)" aria-label="Earliest event"><i class="fa-sharp fa-light fa-backward-step"></i></button>` +
         `<button class="nav-button step" data-step="-1" title="Previous decade ( [ )"><i class="fa-light fa-chevron-left"></i></button>` +
         `<button class="crumb" data-level="era" aria-expanded="${openLevel === 'era'}"><span class="era-dot" style="background:${ERAS[ei].hue}"></span>${ERAS[ei].name}</button>` +
         (deep ? '' :
             `<span class="sep">›</span><button class="crumb" data-level="cent" aria-expanded="${openLevel === 'cent'}">${centLabel(c, true)}</button>` +
             `<span class="sep">›</span><button class="crumb" data-level="dec" aria-expanded="${openLevel === 'dec'}">${decadeIn(c, y)?.label ?? decLabel(d)}</button>`) +
-        `<button class="nav-button step" data-step="1" title="Next decade ( ] )"><i class="fa-light fa-chevron-right"></i></button>`;
+        `<button class="nav-button step" data-step="1" title="Next decade ( ] )"><i class="fa-light fa-chevron-right"></i></button>` +
+        `<button class="nav-button step edge" data-edge="end" title="Latest event (End)" aria-label="Latest event"><i class="fa-sharp fa-light fa-forward-step"></i></button>`;
+}
+function jumpToEdge(edge) {
+    closePopover();
+    app.uiManager.clearDateFilter();
+    if (edge === 'start') app.uiManager.jumpToStart();
+    else app.uiManager.jumpToEnd();
 }
 // Moves the open panel's highlight to the current era/century/decade without redrawing it.
 function syncCurrent() {
@@ -247,13 +255,13 @@ export function initTimelineNav({ eventManager, uiManager }) {
     crumbs.addEventListener('click', e => {
         const b = e.target.closest('button'); if (!b) return;
         if (b.dataset.step) return stepDecade(+b.dataset.step, cur.y);
+        if (b.dataset.edge) return jumpToEdge(b.dataset.edge);
         openLevel === b.dataset.level ? closePopover() : openPopover(b.dataset.level);
     });
     pop.addEventListener('click', e => {
         const b = e.target.closest('button'); if (!b || b.disabled) return;
-        if (b.dataset.edge === 'start') uiManager.jumpToStart();
-        else if (b.dataset.edge === 'end') uiManager.jumpToEnd();
-        else if (b.dataset.go !== undefined) goToYear(+b.dataset.go);
+        if (b.dataset.edge) return jumpToEdge(b.dataset.edge);
+        if (b.dataset.go !== undefined) goToYear(+b.dataset.go);
         else return;
         closePopover();
     });
@@ -261,8 +269,9 @@ export function initTimelineNav({ eventManager, uiManager }) {
         if (pop.classList.contains('open') && !pop.contains(e.target) && !crumbs.contains(e.target)) closePopover();
     });
     document.addEventListener('keydown', e => {
-        if (e.target.closest('input, textarea')) { if (e.key === 'Escape') closePopover(); return; }
-        const k = { ']': () => stepDecade(1, cur.y), '[': () => stepDecade(-1, cur.y), '}': () => stepCentury(1, cur.y), '{': () => stepCentury(-1, cur.y), Escape: closePopover }[e.key];
+        if (e.target.closest('input, textarea, select, [contenteditable]')) { if (e.key === 'Escape') closePopover(); return; }
+        const k = { ']': () => stepDecade(1, cur.y), '[': () => stepDecade(-1, cur.y), '}': () => stepCentury(1, cur.y), '{': () => stepCentury(-1, cur.y), Escape: closePopover,
+            Home: () => jumpToEdge('start'), End: () => jumpToEdge('end') }[e.key];
         if (k) { e.preventDefault(); k(); }
     });
 

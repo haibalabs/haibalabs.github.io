@@ -119,6 +119,15 @@ describe('applyOverlay — the approved edits on a visitor\'s page', () => {
         assert.equal(events[0].enhanced_description, 'Schmeling knocks out Louis on June 19, 1936.');
         assert.equal(events[0].figures[1].wikipedia_url, 'https://en.wikipedia.org/wiki/Joe_Louis');
         assert.equal(events[0].community_edited, true);
+        assert.equal(events[0].revised_at, AT);
+    });
+    it('dates the mark by the latest approval among the fields it applied', async () => {
+        const later = '2026-11-02T09:00:00.000Z';
+        let overlay = await withApproval(null, edit('1', { name: { before: 'Max Schmeling knocks out Joe Louis', after: 'B' } }), ['name'], AT);
+        overlay = await withApproval(overlay, edit('2', { enhanced_time: { before: event().enhanced_time, after: 'June 19, 1936' } }), ['enhanced_time'], later);
+        const events = [event()];
+        applyOverlay(events, overlay);
+        assert.equal(events[0].revised_at, later);
     });
     it('moves an event holding an earlier approved value forward, and skips one already folded', async () => {
         let overlay = await withApproval(null, edit('1', { name: { before: 'Max Schmeling knocks out Joe Louis', after: 'B' } }), ['name'], AT);
@@ -144,6 +153,7 @@ describe('applyOverlay — the approved edits on a visitor\'s page', () => {
         assert.equal(added.length, 1);
         assert.equal(added[0].name, 'Founding of Example Town');
         assert.equal(added[0].community_edited, true);
+        assert.equal(added[0].revised_at, AT);
         const holding = [event(), { event_id: NEW_EVT, name: 'Founding of Example Town (folded)' }];
         assert.equal(applyOverlay(holding, overlay).added.length, 0);
     });

@@ -87,7 +87,8 @@ test('an admin approves the ticked fields; visitors see them, marked community e
   await openWorld(visitor);
   const event = card(visitor, 'Max Schmeling knocks out Joe Louis');
   await expect(event.locator('.event-description')).toHaveText('Schmeling knocks out Louis on June 19, 1936.');
-  await expect(event.locator('.community-edited')).toHaveText('Community edited');
+  await expect(event.locator('.community-edited')).toHaveText('Revised');
+  await expect(event.locator('.community-edited')).toHaveAttribute('title', /^Changed after review · /);
   await expect(event.locator('.figure-mention')).toHaveCount(2);
   await expect(card(visitor, 'Opening of the museum').locator('.community-edited')).toHaveCount(0);
 
@@ -157,7 +158,7 @@ test('a suggested new event appears for visitors once approved', async ({ page, 
   const visitor = await browser.newPage();
   await openWorld(visitor);
   await visitor.fill('#searchInput', 'Example Town');
-  await expect(card(visitor, 'Founding of Example Town').locator('.community-edited')).toHaveText('Community edited');
+  await expect(card(visitor, 'Founding of Example Town').locator('.community-edited')).toHaveText('Revised');
 });
 
 test('an edit written before another approval of the same field waits under Conflicts', async ({ page, browser }) => {
