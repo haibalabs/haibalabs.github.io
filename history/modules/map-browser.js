@@ -28,7 +28,8 @@ DOTS.polity = DOTS.country;
 // An unreviewed point may name a town or a whole region, so its ring keeps one size on screen; its
 // grey follows the theme (map-browser.css).
 const UNREVIEWED = { className: 'map-unreviewed', options: { radius: 16, weight: 2, dashArray: '3 3', color: '#6b7280', fillColor: '#6b7280', fillOpacity: 0.12 } };
-const dotFor = point => point.reviewed ? DOTS[point.precision] ?? DOTS.approximate : UNREVIEWED;
+// a reviewed point with no recorded precision is shown as a dot, never assumed to be an area
+const dotFor = point => point.reviewed ? DOTS[point.precision] ?? DOTS.site : UNREVIEWED;
 // Selecting an event fits a square 1.65 times each ring's width, rounded out to a whole zoom; a site is
 // framed as if it had a 2.5 km ring. An event with an unreviewed point zooms no closer than 6.
 const SITE_VIEW_METRES = 2500;

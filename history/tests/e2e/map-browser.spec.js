@@ -180,6 +180,7 @@ const precisionEvent = (id, precision, status, i) => ({
 const precisionFixtures = [
   ...['site', 'settlement', 'approximate', 'country'].map((precision, i) => precisionEvent(precision, precision, 'resolved', i)),
   precisionEvent('unreviewed', 'approximate', 'reused', 4),
+  precisionEvent('unrecorded', undefined, 'corrected', 5),
 ];
 async function openPrecision(page) {
   await page.route('**/*', route => {
@@ -264,4 +265,16 @@ test('the full-window button fills the window until Esc, the button or a dot ret
   await expect(page.locator('body')).not.toHaveClass(/map-full/);
   await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_19');
   await expect(page.locator('.event.map-selected')).toBeInViewport();
+});
+
+test('a reviewed point with no recorded precision is a dot, not a ring', async ({ page }) => {
+  await openPrecision(page);
+  await show(page, 'unrecorded');
+  await expect(page.locator('.map-event-label strong')).toHaveText('Precision unrecorded');
+  const dot = page.locator('.map-selected-dot');
+  await expect(dot).toHaveAttribute('fill', '#1d4ed8');
+  await expect(dot).toHaveAttribute('d', /a6,6 /);
+  await page.locator('.leaflet-control-zoom-out').click();
+  await expect(page.locator('#map')).not.toHaveClass(/leaflet-zoom-anim/);
+  await expect(dot).toHaveAttribute('d', /a6,6 /);
 });
