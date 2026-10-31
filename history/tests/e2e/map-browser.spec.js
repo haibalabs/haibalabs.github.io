@@ -1,6 +1,9 @@
 import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import { stubFirebase } from './firebase-stub.js';
 
+// the area filter's bubbles load Supercluster from unpkg; tests serve the same version from node_modules
+const SUPERCLUSTER = readFileSync(new URL('../../node_modules/supercluster/dist/supercluster.min.js', import.meta.url), 'utf8');
 
 const location = (id, coordinates) => ({ place_id: id, name: id, geography: { status: 'reused', precision: 'approximate', coordinates } });
 const fixtures = Array.from({ length: 80 }, (_, i) => ({
@@ -15,6 +18,7 @@ async function setup(page) {
     return route.abort();
   });
   await stubFirebase(page);
+  await page.route('**/unpkg.com/supercluster@8.0.1/**', route => route.fulfill({ contentType: 'text/javascript', body: SUPERCLUSTER }));
   await page.route('**/map-fixture.json', route => route.fulfill({ json: fixtures }));
   await page.route('**/unverified-locations.json', route => route.fulfill({ json: [] }));
   await page.goto('/history/index.html?file=map-fixture.json');
@@ -277,4 +281,45 @@ test('a reviewed point with no recorded precision is a dot, not a ring', async (
   await page.locator('.leaflet-control-zoom-out').click();
   await expect(page.locator('#map')).not.toHaveClass(/leaflet-zoom-anim/);
   await expect(dot).toHaveAttribute('d', /a6,6 /);
+});
+
+test('the area filter shows its events as bubbles, a bubble lists them, and the stepper goes through the list', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await setup(page);
+  const markers = page.locator('.map-cluster, .map-cluster-dot');
+  await expect(markers).toHaveCount(0);
+
+  // 78 events share the secondary spot; Fixture 19 has its own, and the remote spot is out of view
+  await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
+  const spot = page.locator('.map-cluster-spot');
+  await expect(spot).toHaveText('78');
+  await expect(page.locator('.map-cluster-dot')).toHaveCount(1);
+
+  await spot.click();
+  await expect(page.locator('.map-event-list li')).toHaveCount(25);
+  await expect(page.locator('.map-event-list-more')).toHaveText('and 53 more');
+  await expect(page.locator('.map-event-list-zoom')).toHaveCount(0);
+  await page.locator('.map-event-list li button').first().click();
+  const stepper = page.locator('.map-stepper span');
+  await expect(stepper).toHaveText('1 of 78');
+  await expect(page.locator('.map-event-label')).toHaveCount(1);
+  await expect(page.locator('.map-event-label strong')).toHaveText('Fixture 0');
+  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_0');
+  await expect(page.getByRole('button', { name: 'Previous event' })).toBeDisabled();
+  // the selected event leaves its bubbles, so its own dot and label show; the map now frames both its
+  // places, so the secondary spot may be grouped with others
+  await expect(page.locator('.map-cluster', { hasText: /^77$/ })).toHaveCount(1);
+
+  await page.getByRole('button', { name: 'Next event' }).click();
+  await expect(stepper).toHaveText('2 of 78');
+  await expect(page.locator('.map-event-label')).toHaveCount(1);
+  await expect(page.locator('.map-event-label strong')).toHaveText('Fixture 1');
+  await page.getByRole('button', { name: 'Back to the list' }).click();
+  await expect(page.locator('.map-event-list button[aria-current="true"] span')).toHaveText('Fixture 1');
+
+  await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
+  await expect(markers).toHaveCount(0);
+  await expect(page.locator('.map-stepper')).toHaveCount(0);
+  expect(errors).toEqual([]);
 });

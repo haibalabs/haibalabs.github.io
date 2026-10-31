@@ -29,3 +29,31 @@ body.map-full #toggle-map { display: none; }
 .map-full-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink-2) !important; background: var(--surface) !important; cursor: pointer; }
 .map-full-control a:hover { background: var(--surface-2) !important; }
 .map-full-control a:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+/* Events on the map while the area filter is on (modules/event-clusters.js): numbered bubbles for groups,
+   a white ring for events that share one spot and can't split, small dots for single events. */
+.map-cluster { display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--accent) 82%, transparent); color: #fff; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent), 0 1px 4px rgb(0 0 0 / .25); font: 600 11px/1 var(--font-ui); cursor: pointer; }
+.map-cluster:hover { background: var(--accent); }
+.map-cluster-spot { box-shadow: 0 0 0 2px #fff, 0 1px 4px rgb(0 0 0 / .35); }
+.map-cluster-dot { border: 2px solid #fff; border-radius: 50%; background: var(--accent); box-shadow: 0 1px 3px rgb(0 0 0 / .3); cursor: pointer; box-sizing: border-box; }
+/* A bubble's list of events, in a Leaflet popup that follows the theme. */
+.map-event-popup .leaflet-popup-content-wrapper, .map-event-popup .leaflet-popup-tip { background: var(--surface); color: var(--ink); box-shadow: 0 6px 24px rgb(0 0 0 / .18); }
+.map-event-popup .leaflet-popup-content { margin: 10px 12px; font: 12px/1.35 var(--font-ui); }
+.map-event-popup a.leaflet-popup-close-button { color: var(--ink-2); }
+.map-event-list ol { max-height: 260px; overflow: auto; margin: 0 18px 0 0; padding: 0; list-style: none; }
+.map-event-list li + li { border-top: 1px solid var(--line); }
+.map-event-list li button { display: flex; flex-direction: column; width: 100%; padding: 6px 2px; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.map-event-list li button:hover { background: var(--surface-2); }
+.map-event-list li button[aria-current="true"] { background: var(--accent-soft); }
+.map-event-list li button:focus-visible, .map-event-list-zoom:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.map-event-list li small { color: var(--ink-2); font-size: 11px; }
+.map-event-list-more { margin: 6px 0 0; color: var(--ink-2); }
+.map-event-list-zoom { width: 100%; margin-top: 8px; min-height: 32px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.map-event-list-zoom:hover { background: var(--surface-2); }
+/* Under an event picked from a list: previous, its place in the list, next, and back to the list. */
+.map-stepper-anchor { overflow: visible; }
+.map-stepper { position: absolute; left: 0; top: 26px; transform: translateX(-50%); display: flex; align-items: center; gap: 2px; padding: 2px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); box-shadow: 0 2px 8px rgb(0 0 0 / .18); font: 500 11px/1 var(--font-ui); white-space: nowrap; pointer-events: auto; }
+.map-stepper span { padding: 0 6px; color: var(--ink-2); }
+.map-stepper button { display: grid; place-items: center; width: 26px; height: 26px; border: 0; border-radius: 50%; background: none; color: var(--ink); font-size: 12px; cursor: pointer; }
+.map-stepper button:hover:not(:disabled) { background: var(--surface-2); }
+.map-stepper button:disabled { opacity: .3; cursor: default; }
+.map-stepper button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
