@@ -7,19 +7,14 @@ export const siteDot = () => ({ options: { radius: 8, stroke: false, fillColor: 
 const EARTH_CIRCUMFERENCE = 40075016.686;
 const metresPerPixel = (lat, zoom) => EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
 
-// The event label: name, date and, when the dot has one, what its precision means.
-function eventLabel(event, note) {
+// The event label: name and date only, so it covers little of the map.
+function eventLabel(event) {
     const label = document.createElement('span');
     const name = document.createElement('strong');
     name.textContent = event.name;
     const date = document.createElement('span');
     date.textContent = eventDateLabel(event);
     label.append(name, date);
-    if (note) {
-        const small = document.createElement('small');
-        small.textContent = note;
-        label.append(small);
-    }
     return label;
 }
 
@@ -27,7 +22,7 @@ function eventLabel(event, note) {
 // - dotFor(point) returns { options, tooltip, metres? }; a dot with metres is resized on zoom to cover
 //   that ground distance, never below its options.radius, and gets a small centre dot.
 // - viewFor(points) returns { bounds, maxZoom } for selectEvent to fit, in place of main's maxZoom 6.
-// - labels: the first dot of the selected event shows its name, date and place; other dots on hover.
+// - labels: the first dot of the selected event shows its name and date; other dots on hover.
 // - outlineFor(point, event) resolves to { geojson, name } or null; an outline replaces a ring, and a
 //   one-place event selected from the timeline is refitted to it when it arrives.
 // - beforeShowCard() runs before a dot scrolls the timeline.
@@ -70,12 +65,11 @@ export class LabMapBrowser extends MapBrowser {
         }
     }
     // An outline in place of the point's ring: the ring is hidden but stays as the click target and label anchor.
-    showOutline(outline, { marker, point, event, color, alone }) {
+    showOutline(outline, { marker, color, alone }) {
         const shape = L.geoJSON(outline.geojson, { style: { color, weight: 1.5, fillColor: color, fillOpacity: 0.12 }, interactive: false }).addTo(this.selection);
         shape.bringToBack();
         this.scaled = this.scaled.filter(entry => entry.marker !== marker);
         marker.setStyle({ opacity: 0, fillOpacity: 0 });
-        if (this.labels) marker.setTooltipContent(eventLabel(event, `${point.name} · outline of ${outline.name} today, from OpenStreetMap`));
         if (alone && this.fitOutlineOf === this.selectedId) {
             this.fitOutlineOf = null;
             this.map.fitBounds(shape.getBounds(), { maxZoom: this.map.getMaxZoom(), padding: [35, 60], animate: false });
@@ -99,11 +93,11 @@ export class LabMapBrowser extends MapBrowser {
                 this.scaled.push({ marker, dot: spec });
                 L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: color, fillOpacity: 1, interactive: false }).addTo(this.selection);
                 this.outlineFor?.(point, event).then(outline => {
-                    if (outline && drawn === this.drawn) this.showOutline(outline, { marker, point, event, color, alone: points.length === 1 });
+                    if (outline && drawn === this.drawn) this.showOutline(outline, { marker, color, alone: points.length === 1 });
                 });
             }
             if (this.labels) {
-                marker.bindTooltip(eventLabel(event, tooltip && `${point.name} · ${tooltip}`), { direction: 'top', permanent: i === 0, className: 'lab-event-label', offset: [0, -6], opacity: 1 });
+                marker.bindTooltip(eventLabel(event), { direction: 'top', permanent: i === 0, className: 'lab-event-label', offset: [0, -6], opacity: 1 });
             } else if (tooltip) {
                 marker.bindTooltip(document.createTextNode(tooltip), { direction: 'top' });
             }

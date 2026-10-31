@@ -65,13 +65,12 @@ body.lab-map-full #toggle-map { display: none; }
 .lab-colors-actions button { flex: 1; min-height: 32px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
 .lab-colors-actions button:hover { background: var(--surface-2); }
 
-/* The selected event's label over its dot: name, date, and what the precision means. */
-.lab-event-label > span { display: flex; flex-direction: column; gap: 1px; }
-.leaflet-tooltip.lab-event-label { max-width: 240px; width: max-content; padding: 6px 9px; white-space: normal; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); box-shadow: 0 2px 10px rgb(0 0 0 / .14); font: 12px/1.35 var(--font-ui); }
-.lab-event-label strong { font-weight: 600; font-size: 13px; }
+/* The selected event's label over its dot: name and date, small and see-through so the map shows behind it. */
+.lab-event-label > span { display: flex; flex-direction: column; gap: 0; }
+.leaflet-tooltip.lab-event-label { --label-bg: color-mix(in srgb, var(--surface) 62%, transparent); max-width: 180px; width: max-content; padding: 3px 7px; white-space: normal; border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); border-radius: 6px; background: var(--label-bg); backdrop-filter: blur(1.5px); color: var(--ink); box-shadow: 0 1px 4px rgb(0 0 0 / .1); font: 11px/1.3 var(--font-ui); }
+.lab-event-label strong { font-weight: 600; font-size: 12px; }
 .lab-event-label > span > span { color: var(--ink-2); }
-.lab-event-label small { color: var(--ink-2); font-size: 11px; font-style: italic; }
-.leaflet-tooltip-top.lab-event-label::before { border-top-color: var(--surface); }
+.leaflet-tooltip-top.lab-event-label::before { border-top-color: var(--label-bg); }
 
 /* Zoom limits: base.css styles + / − with !important, which hides Leaflet's disabled look. */
 body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled { cursor: default; }
