@@ -25,8 +25,9 @@ const DOTS = {
     country: { metres: 300000, options: { radius: 34, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.08 } },
 };
 DOTS.polity = DOTS.country;
-// An unreviewed point may name a town or a whole region, so its ring keeps one size on screen.
-const UNREVIEWED = { options: { radius: 16, weight: 1.5, dashArray: '3 3', color: '#6b7280', fillColor: '#6b7280', fillOpacity: 0.12 } };
+// An unreviewed point may name a town or a whole region, so its ring keeps one size on screen; its
+// grey follows the theme (map-browser.css).
+const UNREVIEWED = { className: 'map-unreviewed', options: { radius: 16, weight: 2, dashArray: '3 3', color: '#6b7280', fillColor: '#6b7280', fillOpacity: 0.12 } };
 const dotFor = point => point.reviewed ? DOTS[point.precision] ?? DOTS.approximate : UNREVIEWED;
 // Selecting an event fits a square 1.65 times each ring's width, rounded out to a whole zoom; a site is
 // framed as if it had a 2.5 km ring. An event with an unreviewed point zooms no closer than 6.
@@ -151,12 +152,13 @@ export class MapBrowser {
         const id = this.selectedId;
         for (const [i, point] of (index.eventPoints.get(id) || []).entries()) {
             const look = dotFor(point);
-            const marker = L.circleMarker(point.coordinates, { ...look.options, className: 'map-selected-dot' }).addTo(this.selection);
-            if (look.metres) {
-                this.rings.push({ marker, dot: look });
-                L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: look.options.fillColor, fillOpacity: 1, interactive: false }).addTo(this.selection);
+            const marker = L.circleMarker(point.coordinates, { ...look.options, className: `map-selected-dot ${look.className ?? ''}` }).addTo(this.selection);
+            if (look.metres) this.rings.push({ marker, dot: look });
+            if (look.metres || !point.reviewed) {
+                L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: look.options.fillColor, fillOpacity: 1, interactive: false, className: look.className ?? '' }).addTo(this.selection);
             }
-            marker.bindTooltip(eventLabel(event), { direction: 'top', permanent: i === 0, className: 'map-event-label', offset: [0, -6], opacity: 1 });
+            // the label sits just above the dot or the ring's smallest size
+            marker.bindTooltip(eventLabel(event), { direction: 'top', permanent: i === 0, className: 'map-event-label', offset: [0, -(look.options.radius + 2)], opacity: 1 });
             // a dot leaves full window first, so its card is there to see
             const select = () => {
                 if (this.fullWindow.full) this.fullWindow.set(false);

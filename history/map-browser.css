@@ -15,6 +15,9 @@
 .map-event-label strong { font-weight: 600; font-size: 12px; }
 .map-event-label > span > span { color: var(--ink-2); }
 .leaflet-tooltip-top.map-event-label::before { border-top-color: var(--label-bg); }
+/* An unreviewed point's grey ring and centre dot, in the theme's secondary ink so they show on light and dark maps. */
+path.map-unreviewed { fill: var(--ink-2); }
+path.map-unreviewed:not([stroke="none"]) { stroke: var(--ink-2); }
 /* base.css styles + / − with !important, which hides Leaflet's look for a button at its zoom limit. */
 .leaflet-control-zoom a.leaflet-disabled { cursor: default; }
 .leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }
