@@ -86,7 +86,7 @@ export function initMap() {
   const map = L.map('map', {
     // Adjust minZoom, maxZoom, etc. if you want to see if that’s affecting your tiles
     minZoom: 2,
-    maxZoom: 7,
+    maxZoom: 14,
     center: [20, 0],
     zoom: 3,
   });
