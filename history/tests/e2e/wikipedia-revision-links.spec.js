@@ -18,7 +18,7 @@ async function openPanel(page) {
         if (url.origin === 'http://wikipedia-panel.test') {
             if (url.pathname === '/') return route.fulfill({ contentType: 'text/html', body: html });
             const name = url.pathname.slice('/modules/'.length);
-            if (url.pathname.startsWith('/modules/') && ['panel-manager.js', 'map-utils.js', 'wikipedia-url.js'].includes(name)) {
+            if (url.pathname.startsWith('/modules/') && ['panel-manager.js', 'map-utils.js', 'map-style.js', 'wikipedia-url.js'].includes(name)) {
                 return route.fulfill({ contentType: 'application/javascript', body: readFileSync(new URL(name, modules), 'utf8') });
             }
         }

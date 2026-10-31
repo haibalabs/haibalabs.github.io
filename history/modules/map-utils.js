@@ -1,4 +1,55 @@
+import { loadMapLibre, mapStyle, supportsWebGL } from './map-style.js';
+
 let initialized = false;
+
+const isDarkTheme = () => {
+  const theme = document.documentElement.dataset.theme;
+  return theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+};
+
+// OpenStreetMap's own images, gray in the light theme and inverted in the dark one (style.css):
+// the base map when the vector map can't be drawn.
+function addTileLayers(map) {
+  const primaryTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19,
+  }).addTo(map);
+
+  const fallbackTileLayer = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19,
+  });
+
+  primaryTileLayer.on('tileerror', () => {
+    console.log('Primary tile server error, switching to fallback');
+    map.removeLayer(primaryTileLayer);
+    fallbackTileLayer.addTo(map);
+  });
+}
+
+// The vector map (map-style.js), redrawn in the other palette when the theme changes. It has its own
+// pane so the tile filters in style.css and base.css, made for the images, leave it alone.
+async function addBaseMap(map) {
+  if (!supportsWebGL()) return addTileLayers(map);
+  try {
+    await loadMapLibre();
+  } catch (err) {
+    console.error('The vector map did not load; showing OpenStreetMap images instead', err);
+    return addTileLayers(map);
+  }
+  const pane = map.createPane('basePane');
+  pane.style.zIndex = 200;
+  pane.style.pointerEvents = 'none';
+  let dark = isDarkTheme();
+  const base = L.maplibreGL({ style: mapStyle(dark), pane: 'basePane' }).addTo(map);
+  const restyle = () => {
+    if (isDarkTheme() === dark) return;
+    dark = !dark;
+    base.getMaplibreMap().setStyle(mapStyle(dark));
+  };
+  new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', restyle);
+}
 
 /**
  * Initialize the map with some optional constraints (minZoom, maxZoom, etc.).
@@ -18,23 +69,7 @@ export function initMap() {
     zoom: 3,
   });
 
-  // Add a basic tile layer (primary)
-  const primaryTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 19,
-  }).addTo(map);
-
-  // Optional: a fallback layer if primary fails
-  const fallbackTileLayer = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 19,
-  });
-
-  primaryTileLayer.on('tileerror', () => {
-    console.log('Primary tile server error, switching to fallback');
-    map.removeLayer(primaryTileLayer);
-    fallbackTileLayer.addTo(map);
-  });
+  addBaseMap(map);
 
   // Initialize marker layer
   const markersLayer = L.layerGroup().addTo(map);
