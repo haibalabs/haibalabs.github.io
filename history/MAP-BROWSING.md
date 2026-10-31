@@ -16,6 +16,12 @@ An explicit **Explore events** mode, clustered counts and queries limited to the
 
 The earlier map-specific year fields, precision checkbox, unmapped-only button and duplicate results list were removed to keep the map simple. The data layer's time-range query remains covered by tests; the existing year navigator jumps through the timeline and does not filter a year range.
 
+## Base map
+
+The map is drawn in the browser from OpenStreetMap's own vector tiles (`vector.openstreetmap.org`, Shortbread schema) by MapLibre GL under Leaflet, in colours that follow Stamen Terrain, with a dark palette for the dark theme ([modules/map-style.js](modules/map-style.js)). Hills are shaded from Mapzen's elevation tiles, Natural Earth's relief colours the world view, and the label fonts come from OpenFreeMap. None of these needs a key. Labels use the English name, else the local one. Arabic, Persian and Hebrew are joined and laid out right to left. A local name in a script MapLibre can't shape (Indic scripts, Sinhala, Tibetan, Myanmar, Khmer) is left unlabelled rather than drawn wrong.
+
+The vector map downloads more than the images did: about 7.1 MB against 3.1 MB on the same walk around Paris, plus MapLibre itself (283 KB compressed). In return, text is sharp at every zoom and the dark theme gets its own colours instead of inverted images. If MapLibre can't load, the browser has no WebGL, or OpenStreetMap's vector tile server fails before its first tile, the map shows OpenStreetMap's images as before.
+
 ## Local canonical preview
 
 The default `events.json` remains the legacy dataset. The canonical snapshot is not copied into this repository. For the full T2 data locally:
