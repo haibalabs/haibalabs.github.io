@@ -4,6 +4,12 @@ Open **Explore map** at the right edge, pan/zoom, then choose **Filter by visibl
 
 The map starts without event dots. Use the original crosshairs icon beside a timeline event's location to show only that event's saved locations as small translucent dots. Pan and zoom keep that selection; they never reveal other events. Clicking one of the selected event's dots returns to its timeline card without a popup or map recentering.
 
+A reviewed point (released by the location pipeline, or corrected by hand) is drawn by its precision. A site, or a point with no recorded precision, is a solid dot. Other points are rings drawn to scale, covering the ground the point may stand for: 3 km for a town, 10 km for an approximate place (the resolver's placement tolerance), 100 km for a region and 300 km for a country or polity. These sizes are display choices, not measured extents. Selecting an event zooms to fit its rings, or to street level for a site.
+
+Most points are still older geocoder lookups (status `reused`) that nobody has reviewed; one may stand for a town or a whole region. They are grey rings that keep one size on screen, and an event with one opens no closer than zoom 6. The event's name and date float over its first point. The map zooms in as far as 14 (streets), and + / − look disabled at the limits.
+
+The button under + / − lets the map fill the window. Esc or the button returns to the drawer, and so does clicking a selected event's dot, which also shows its card.
+
 **Filter by visible area** narrows the timeline without plotting the matching events. A selected event keeps its points if it still matches the filters; otherwise selection clears. Clearing the area restores the non-geographic results without adding points. Events with no usable coordinates remain browsable and do not offer a map action.
 
 Multiple locations express recorded event associations, not proof of simultaneous occurrence, an inferred route, or a filled historical area. Drawing historical areas is future work. Saved coordinates retain their uncertainty metadata in the index; the minimal map does not claim these points are exact or independently verified. Manual coordinate corrections take precedence; otherwise only valid saved coordinates with reused/corrected status are used. Ambiguous candidate points are excluded. No browsing action calls a geocoder.
@@ -13,6 +19,12 @@ Marker work is limited to the selected event's locations; map movement does not 
 An explicit **Explore events** mode, clustered counts and queries limited to the viewport are deferred. They must not change the selected-event-only default. The app still loads the full snapshot and filters locally; this change is not a claim of one-million-event loading performance.
 
 The earlier map-specific year fields, precision checkbox, unmapped-only button and duplicate results list were removed to keep the map simple. The data layer's time-range query remains covered by tests; the existing year navigator jumps through the timeline and does not filter a year range.
+
+## Base map
+
+The map is drawn in the browser from OpenStreetMap's own vector tiles (`vector.openstreetmap.org`, Shortbread schema) by MapLibre GL under Leaflet, in colours that follow Stamen Terrain, with a dark palette for the dark theme ([modules/map-style.js](modules/map-style.js)). Hills are shaded from Mapzen's elevation tiles, Natural Earth's relief colours the world view, and the label fonts come from OpenFreeMap. None of these needs a key. Labels use the English name, else the local one. Arabic, Persian and Hebrew are joined and laid out right to left. A local name in a script MapLibre can't shape (Indic scripts, Sinhala, Tibetan, Myanmar, Khmer) is left unlabelled rather than drawn wrong.
+
+The vector map downloads more than the images did: about 7.1 MB against 3.1 MB on the same walk around Paris, plus MapLibre itself (283 KB compressed). In return, text is sharp at every zoom and the dark theme gets its own colours instead of inverted images. If MapLibre can't load, the browser has no WebGL, or OpenStreetMap's vector tile server fails before its first tile, the map shows OpenStreetMap's images as before.
 
 ## Local canonical preview
 

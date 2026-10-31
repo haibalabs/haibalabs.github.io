@@ -409,6 +409,16 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 2
 }
 .auth-link:hover { text-decoration: underline; }
 .settings-toggle { display: flex; align-items: center; gap: .5rem; padding: .3rem 0; color: var(--ink-2); cursor: pointer; }
+/* System / Light / Dark as one segmented control; the radios stay for keyboard and screen readers */
+.theme-choice { display: flex; flex-wrap: wrap; margin: 1.25rem 0 0; padding: 0; border: 0; }
+.theme-choice legend { width: 100%; margin: 0 0 .5rem; padding: 0; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.theme-choice label { position: relative; flex: 1; padding: .45rem .5rem; border: 1px solid var(--line); text-align: center; font-size: .8125rem; color: var(--ink-2); cursor: pointer; }
+.theme-choice label + label { margin-left: -1px; }
+.theme-choice label:first-of-type { border-radius: 8px 0 0 8px; }
+.theme-choice label:last-of-type { border-radius: 0 8px 8px 0; }
+.theme-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.theme-choice label:has(input:checked) { z-index: 1; background: var(--surface-2); color: var(--ink); font-weight: 500; }
+.theme-choice label:has(input:focus-visible) { z-index: 2; outline: 2px solid var(--accent); outline-offset: -2px; }
 .settings-info { padding: 1rem 1.25rem; color: var(--ink-3); font-size: .75rem; border-top: 1px solid var(--line); }
 .settings-info p { margin: .2rem 0; }
 .settings-legal { margin-top: .6rem !important; line-height: 1.5; }

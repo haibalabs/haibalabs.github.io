@@ -7,6 +7,7 @@ import { AuthManager } from './auth-manager.js';
 import { permissionsFor, authErrorMessage } from './roles.js';
 import { attachPreviewImages, captionRuns, previewProblem, RELEASE_URL, shortCredit } from './world-images.js';
 import { applyLocations, LOCATION_RELEASE_URL, locationProblem } from './world-locations.js';
+import { clearPlaceLabels, LABEL_RELEASE_URL, labelProblem, setPlaceLabels } from './world-labels.js';
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -685,6 +686,33 @@ export class UIManager {
 
     fetchReleasedLocations() {
         return this.fetchRelease(LOCATION_RELEASE_URL);
+    }
+
+    fetchPlaceLabels() {
+        return this.fetchRelease(LABEL_RELEASE_URL);
+    }
+
+    /**
+     * Shows the released place labels (releases/README.md) in place of the written location names,
+     * all or none. Visitors see no message when they do not match; the reason goes to the console.
+     *
+     * @param {object|null} release - the released place label file
+     */
+    async showPlaceLabels(release) {
+        clearPlaceLabels();
+        if (!release) return;
+        try {
+            const problem = labelProblem(release, await this.eventManager.loadedSha256);
+            if (problem) {
+                console.info(`Place labels not shown: ${problem}`);
+                return;
+            }
+            setPlaceLabels(release);
+            this.eventManager.invalidateCache();
+        } catch (error) {
+            clearPlaceLabels();
+            console.error('Could not show the place labels:', error);
+        }
     }
 
     /**

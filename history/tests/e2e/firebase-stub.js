@@ -33,8 +33,13 @@ export const getBlob = async () => new Blob();
 export const deleteObject = async () => {};
 `;
 
-// Serves firebaseStub for every Firebase SDK module request.
+// The vector map's library, tiles and fonts need the network and WebGL, so stubbed pages show the map's
+// image fallback instead (map-utils.js). base-map.spec.js routes MapLibre to its own stub after this.
+const VECTOR_MAP = /unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/;
+
+// Serves firebaseStub for every Firebase SDK module request, and keeps the vector map offline.
 export async function stubFirebase(page) {
   await page.route('https://www.gstatic.com/firebasejs/**', route =>
     route.fulfill({ contentType: 'text/javascript', body: firebaseStub }));
+  await page.route(VECTOR_MAP, route => route.abort());
 }

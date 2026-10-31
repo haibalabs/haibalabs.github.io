@@ -13,9 +13,11 @@ export const RELEASE_URL = 'releases/released-images-v1.json';
 // The image roles a record may have; any other role is refused. The viewer shows no role label: the
 // caption and the date qualification say what the image is and when (Rachid, 2026-10-26).
 // scientific_context is a modern observation or specimen photo that is evidence for an early event,
-// such as a fossil or a zircon-bearing rock.
+// such as a fossil or a zircon-bearing rock. contextual_photo is a photograph of the event's subject on
+// another occasion, such as the bridge on its opening day for its later collapse. artifact is an object
+// from the event's history in any medium, such as the Rosetta Stone in its museum, not a picture of the event.
 export const IMAGE_ROLES = new Set(['event_photo', 'event_aftermath', 'portrait', 'site', 'map', 'symbol',
-    'retrospective_illustration', 'scientific_context']);
+    'retrospective_illustration', 'scientific_context', 'contextual_photo', 'artifact']);
 
 // Credits come from source metadata and can run to thousands of characters. The viewer shows at most
 // this many, ending at a word, so the image, license and source link stay on screen.

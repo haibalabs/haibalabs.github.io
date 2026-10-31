@@ -56,6 +56,8 @@ export function setImageFailureHandler(callback) {
  * @param {HTMLImageElement} img
  */
 export function onEventImageError(img) {
+    // a card replaced by a re-render can still report its image; only the card on the page counts
+    if (img.isConnected === false) return;
     const original = img.dataset.original;
     if (original && img.src !== original && !thumbFailedUrls.has(original)) {
         thumbFailedUrls.add(original);

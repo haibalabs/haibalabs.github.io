@@ -1,4 +1,77 @@
+import { loadMapLibre, mapStyle, supportsWebGL } from './map-style.js';
+import { placeLabel } from './world-labels.js';
+
 let initialized = false;
+
+const isDarkTheme = () => {
+  const theme = document.documentElement.dataset.theme;
+  return theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+};
+
+// OpenStreetMap's own images, gray in the light theme and inverted in the dark one (style.css):
+// the base map when the vector map can't be drawn.
+function addTileLayers(map) {
+  const primaryTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19,
+  }).addTo(map);
+
+  const fallbackTileLayer = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors',
+    maxZoom: 19,
+  });
+
+  primaryTileLayer.on('tileerror', () => {
+    console.log('Primary tile server error, switching to fallback');
+    map.removeLayer(primaryTileLayer);
+    fallbackTileLayer.addTo(map);
+  });
+}
+
+// The vector map (map-style.js), redrawn in the other palette when the theme changes. It has its own
+// pane so the tile filters in style.css and base.css, made for the images, leave it alone.
+async function addBaseMap(map) {
+  if (!supportsWebGL()) return addTileLayers(map);
+  let base = null;
+  const useImages = (reason, err) => {
+    console.error(`${reason}; showing OpenStreetMap images instead`, err);
+    if (base && map.hasLayer(base)) {
+      // Leaflet attaches the layer's map events before its onAdd starts MapLibre; if that failed,
+      // onRemove still needs a MapLibre map to remove, so it gets one that does nothing.
+      base._glMap ??= { remove() {} };
+      map.removeLayer(base);
+    }
+    base = null;
+    addTileLayers(map);
+  };
+  let dark = isDarkTheme();
+  try {
+    await loadMapLibre();
+    const pane = map.createPane('basePane');
+    pane.style.zIndex = 200;
+    pane.style.pointerEvents = 'none';
+    base = L.maplibreGL({ style: mapStyle(dark), pane: 'basePane' });
+    base.addTo(map);
+  } catch (err) {
+    return useImages('The vector map did not load', err);
+  }
+  // A vector tile server that fails before its first tile is down rather than slow, so the images take
+  // over; a failure after that leaves the map as it is. Other sources' errors are only logged.
+  let tileDrawn = false;
+  const glMap = base.getMaplibreMap();
+  glMap.on('sourcedata', e => { if (e.sourceId === 'shortbread' && e.tile) tileDrawn = true; });
+  glMap.on('error', e => {
+    if (base && !tileDrawn && e.sourceId === 'shortbread') useImages('OpenStreetMap vector tiles did not load', e.error);
+    else console.error('Map error', e.error);
+  });
+  const restyle = () => {
+    if (!base || isDarkTheme() === dark) return;
+    dark = !dark;
+    base.getMaplibreMap().setStyle(mapStyle(dark));
+  };
+  new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', restyle);
+}
 
 /**
  * Initialize the map with some optional constraints (minZoom, maxZoom, etc.).
@@ -13,28 +86,12 @@ export function initMap() {
   const map = L.map('map', {
     // Adjust minZoom, maxZoom, etc. if you want to see if that’s affecting your tiles
     minZoom: 2,
-    maxZoom: 7,
+    maxZoom: 14,
     center: [20, 0],
     zoom: 3,
   });
 
-  // Add a basic tile layer (primary)
-  const primaryTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 19,
-  }).addTo(map);
-
-  // Optional: a fallback layer if primary fails
-  const fallbackTileLayer = L.tileLayer('https://tile.openstreetmap.de/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
-    maxZoom: 19,
-  });
-
-  primaryTileLayer.on('tileerror', () => {
-    console.log('Primary tile server error, switching to fallback');
-    map.removeLayer(primaryTileLayer);
-    fallbackTileLayer.addTo(map);
-  });
+  addBaseMap(map);
 
   // Initialize marker layer
   const markersLayer = L.layerGroup().addTo(map);
@@ -166,9 +223,13 @@ export function getLocationKey(location) {
 }
 
 export function formatLocations(locations) {
-  if (!locations || locations.length === 0) 
+  if (!locations || locations.length === 0)
     return "";
-  if (locations[0].name) 
+  // a released place label (world-labels.js); null means the location names no place
+  const label = placeLabel(locations[0]);
+  if (label !== undefined)
+    return label ?? "";
+  if (locations[0].name)
     return locations[0].name;
   return getLocationKey(locations[0]);
 //  return locations.map(loc => getLocationKey(loc)).join("; ");

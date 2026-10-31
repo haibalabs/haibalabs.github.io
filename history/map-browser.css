@@ -9,3 +9,23 @@
 #map-panel:not(.open) #toggle-map { right: 12px; }
 @media (max-width: 640px) { .map-browser { right: 58px; } }
 .event.map-selected .event-header { color: var(--accent); }
+/* The selected event's name and date over its first point, small and see-through so the map shows behind it. */
+.map-event-label > span { display: flex; flex-direction: column; }
+.leaflet-tooltip.map-event-label { --label-bg: color-mix(in srgb, var(--surface) 62%, transparent); max-width: 180px; width: max-content; padding: 3px 7px; white-space: normal; border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); border-radius: 6px; background: var(--label-bg); backdrop-filter: blur(1.5px); color: var(--ink); box-shadow: 0 1px 4px rgb(0 0 0 / .1); font: 11px/1.3 var(--font-ui); }
+.map-event-label strong { font-weight: 600; font-size: 12px; }
+.map-event-label > span > span { color: var(--ink-2); }
+.leaflet-tooltip-top.map-event-label::before { border-top-color: var(--label-bg); }
+/* An unreviewed point's grey ring and centre dot, in the theme's secondary ink so they show on light and dark maps. */
+path.map-unreviewed { fill: var(--ink-2); }
+path.map-unreviewed:not([stroke="none"]) { stroke: var(--ink-2); }
+/* base.css styles + / − with !important, which hides Leaflet's look for a button at its zoom limit. */
+.leaflet-control-zoom a.leaflet-disabled { cursor: default; }
+.leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }
+.leaflet-control-zoom a.leaflet-disabled:hover { background: var(--surface) !important; }
+/* Full window: the map drawer covers the page until Esc or the button. */
+body.map-full #map-panel { inset: 0; width: auto; height: auto; z-index: 1000; border-left: 0; }
+body.map-full #toggle-map { display: none; }
+.map-full-control { border: 0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: 0 2px 8px rgb(0 0 0 / .12) !important; }
+.map-full-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink-2) !important; background: var(--surface) !important; cursor: pointer; }
+.map-full-control a:hover { background: var(--surface-2) !important; }
+.map-full-control a:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }

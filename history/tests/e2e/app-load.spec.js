@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 // Block non-essential external network requests in CI.
 // Allow: Leaflet (unpkg.com), Firebase SDK (gstatic.com/firebasejs) — required for app init.
-// Block: Firebase runtime APIs, Nominatim, Font Awesome, map tiles.
+// Block: Firebase runtime APIs, Nominatim, Font Awesome, map tiles and the vector map's library.
 const BLOCKED_DOMAINS = [
   'firebaseio.com',
   'firestore.googleapis.com',
@@ -12,6 +12,12 @@ const BLOCKED_DOMAINS = [
   'kit.fontawesome.com',
   'nominatim.openstreetmap.org',
   'tile.openstreetmap',
+  'vector.openstreetmap.org',
+  'unpkg.com/maplibre-gl',
+  'unpkg.com/@maplibre',
+  'unpkg.com/@mapbox',
+  'tiles.openfreemap.org',
+  'elevation-tiles-prod',
 ];
 
 function setupNetworkBlocking(page) {

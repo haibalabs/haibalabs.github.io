@@ -171,3 +171,110 @@ for (const [width, height] of [[390, 844], [1440, 900]]) {
     }
   });
 }
+
+const precisionEvent = (id, precision, status, i) => ({
+  event_id: `prec_${id}`, name: `Precision ${id}`, enhanced_time: String(1800 + i),
+  enhanced_description: 'One location of this precision.', categories: ['culture'], figures: [], confidence: 'high',
+  locations: [{ place_id: `place_${id}`, name: id, geography: { status, precision, coordinates: [10, 20] } }]
+});
+const precisionFixtures = [
+  ...['site', 'settlement', 'approximate', 'country'].map((precision, i) => precisionEvent(precision, precision, 'resolved', i)),
+  precisionEvent('unreviewed', 'approximate', 'reused', 4),
+  precisionEvent('unrecorded', undefined, 'corrected', 5),
+];
+async function openPrecision(page) {
+  await page.route('**/*', route => {
+    const url = route.request().url();
+    if (url.startsWith('http://localhost:8080/') || url.includes('unpkg.com/leaflet') || url.includes('www.gstatic.com/firebasejs/')) return route.continue();
+    return route.abort();
+  });
+  await stubFirebase(page);
+  await page.route('**/precision-fixture.json', route => route.fulfill({ json: precisionFixtures }));
+  await page.route('**/unverified-locations.json', route => route.fulfill({ json: [] }));
+  await page.goto('/history/index.html?file=precision-fixture.json');
+  await expect(page.locator('.event').first()).toBeVisible();
+}
+const show = (page, precision) => page.locator(`.event[data-event-id="prec_${precision}"]`).getByRole('button', { name: 'Show on map', exact: true }).click();
+
+test('a selected event is labelled with its name and date and framed by the ground its point stands for', async ({ page }) => {
+  await openPrecision(page);
+  const map = await page.locator('#map').boundingBox();
+  for (const precision of ['settlement', 'approximate', 'country']) {
+    await show(page, precision);
+    const label = page.locator('.map-event-label');
+    await expect(label).toHaveCount(1);
+    await expect(label.locator('strong')).toHaveText(`Precision ${precision}`);
+    await expect(label.locator('strong + span')).not.toBeEmpty();
+    // the ring fills a good part of the map, whatever ground it covers
+    const ring = await page.locator('.map-selected-dot').boundingBox();
+    expect(ring.height / map.height).toBeGreaterThan(0.12);
+    expect(ring.height / map.height).toBeLessThan(0.45);
+  }
+  await show(page, 'site');
+  await expect(page.locator('.map-event-label')).toHaveCount(1);
+  await expect(page.locator('.map-event-label strong')).toHaveText('Precision site');
+  expect((await page.locator('.map-selected-dot').boundingBox()).width).toBeLessThan(20);
+  // a site is framed at street zoom, a few steps from the limit of 14
+  const zoomIn = page.locator('.leaflet-control-zoom-in');
+  for (let i = 0; i < 4 && !(await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))); i++) await zoomIn.click();
+  await expect(zoomIn).toHaveClass(/leaflet-disabled/);
+  expect(await zoomIn.locator('i').evaluate(el => getComputedStyle(el).opacity)).toBe('0.3');
+  expect(await page.locator('.leaflet-control-zoom-out i').evaluate(el => getComputedStyle(el).opacity)).toBe('1');
+});
+
+test('an unreviewed point keeps one ring size on screen and its event opens no closer than zoom 6', async ({ page }) => {
+  await openPrecision(page);
+  await show(page, 'unreviewed');
+  await expect(page.locator('.map-event-label strong')).toHaveText('Precision unreviewed');
+  const ring = page.locator('.map-selected-dot');
+  await expect(ring).toHaveAttribute('stroke', '#6b7280');
+  // the circle's radius in pixels, as Leaflet writes it into the path
+  await expect(ring).toHaveAttribute('d', /a16,16 /);
+  const zoomIn = page.locator('.leaflet-control-zoom-in');
+  let steps = 0;
+  while (!(await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))) && steps < 14) {
+    await zoomIn.click();
+    await expect(page.locator('#map')).not.toHaveClass(/leaflet-zoom-anim/);
+    steps++;
+  }
+  // from zoom 6 or wider, + takes at least 8 steps to reach 14
+  expect(steps).toBeGreaterThanOrEqual(8);
+  await expect(ring).toHaveAttribute('d', /a16,16 /);
+});
+
+test('the full-window button fills the window until Esc, the button or a dot returns', async ({ page }) => {
+  await setup(page);
+  const viewport = page.viewportSize();
+  const fill = page.getByRole('button', { name: 'Fill the window', exact: true });
+  const exit = page.getByRole('button', { name: 'Exit full window', exact: true });
+  await fill.click();
+  await expect(page.locator('body')).toHaveClass(/map-full/);
+  await expect.poll(() => page.locator('#map').boundingBox()).toEqual({ x: 0, y: 0, width: viewport.width, height: viewport.height });
+  await expect(page.locator('#toggle-map')).toBeHidden();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('body')).not.toHaveClass(/map-full/);
+  await expect(page.locator('#toggle-map')).toBeVisible();
+  await fill.click();
+  await exit.click();
+  await expect(page.locator('body')).not.toHaveClass(/map-full/);
+
+  await page.locator('#searchInput').fill('Fixture 19');
+  await page.locator('.event[data-event-id="evt_19"]').getByRole('button', { name: 'Show on map', exact: true }).click();
+  await fill.click();
+  await page.locator('.map-selected-dot').first().click();
+  await expect(page.locator('body')).not.toHaveClass(/map-full/);
+  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_19');
+  await expect(page.locator('.event.map-selected')).toBeInViewport();
+});
+
+test('a reviewed point with no recorded precision is a dot, not a ring', async ({ page }) => {
+  await openPrecision(page);
+  await show(page, 'unrecorded');
+  await expect(page.locator('.map-event-label strong')).toHaveText('Precision unrecorded');
+  const dot = page.locator('.map-selected-dot');
+  await expect(dot).toHaveAttribute('fill', '#1d4ed8');
+  await expect(dot).toHaveAttribute('d', /a6,6 /);
+  await page.locator('.leaflet-control-zoom-out').click();
+  await expect(page.locator('#map')).not.toHaveClass(/leaflet-zoom-anim/);
+  await expect(dot).toHaveAttribute('d', /a6,6 /);
+});

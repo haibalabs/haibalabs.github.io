@@ -12,6 +12,7 @@ import { FirebaseImageStore } from './modules/firebase-image-store.js';
 import { releasePositions } from './modules/world-locations.js';
 import { EditUI } from './modules/edit-ui.js';
 import { EditStore } from './modules/edit-store.js';
+import { initThemeChoice } from './modules/theme.js';
 
 // Initialize map globally since it's used across different modules
 const { map, markersLayer, geocodeCache } = initMap();
@@ -30,6 +31,7 @@ function initControls() {
 
 async function initializeApp() {
     document.getElementById('versionNumber').textContent = VERSION;
+    initThemeChoice();
 
     const locationVerifier = new LocationVerifier();
     await locationVerifier.loadUnverifiedLocations('unverified-locations.json');
@@ -58,10 +60,13 @@ async function initializeApp() {
         // the released records are kept as loaded, so their checks need no second download
         const images = uiManager.fetchReleasedImages();
         const locations = uiManager.fetchReleasedLocations();
+        const labels = uiManager.fetchPlaceLabels();
         await eventManager.loadEvents(dataFile, { keepRecords: Promise.all([images, locations]).then(([i, l]) => [...releasePositions(i), ...releasePositions(l)]) });
         // images first: their checks compare each event's places as loaded
         await uiManager.showReleasedImages(await images);
         await uiManager.showReleasedLocations(await locations);
+        // labels go by each location's place_id, after the location release has merged places
+        await uiManager.showPlaceLabels(await labels);
         uiManager.mapBrowser = new MapBrowser(eventManager, uiManager, panelManager);
         uiManager.renderFilters();
         initControls();

@@ -1,12 +1,12 @@
 {
   "metadata": {
     "dataset_id": "world-history",
-    "snapshot_id": "world-history-recent2026-v3",
-    "timestamp": "2026-10-29T20:10:28.106051+00:00",
-    "parent_snapshot_id": "world-history-early-expansion-v1",
-    "parent_sha256": "c425d62ac9e6af095c4bc21fe1598a3d98ef276079cdcb5fa519495c3d78ab8a",
+    "snapshot_id": "combined-20261030-links-images-v1",
+    "timestamp": "2026-10-30T21:50:45.411402+00:00",
+    "parent_snapshot_id": "world-history-recent2026-v3",
+    "parent_sha256": "d12b4f7a658d3cf131ef5e7d43c255ec3bc66c87727f8f950d0cb5ad67eb4f79",
     "early_times_draft_manifest_sha256": "1545ac4ba518c02dfc8cea8f4a903b9dcc8cbb3f4beba0bbf6c7862522e4923b",
-    "release_status": "candidate_pending_public_release",
+    "release_status": "candidate_pending_independent_integration_review",
     "recent2026_source_artifact_sha256": "587cd23c058bad913582514ff08f7fd513447398b6c999cf56a8455d6bc82377"
   },
   "events": [
@@ -964670,7 +964670,7 @@
       "article_reference_status": "unverified_article"
     },
     {
-      "name": "Foundation of Aitchison College",
+      "name": "Formation of Punjab Chiefs' College (later Aitchison College)",
       "locations": [
         {
           "name": "Lahore, Punjab, Pakistan",
@@ -964702,8 +964702,8 @@
         "education",
         "culture"
       ],
-      "enhanced_description": "On November 3, 1886, Aitchison College was founded in Lahore during the British Raj under the auspices of Sir Charles Umpherston Aitchison. The institution has grown to become one of the largest and most prestigious boys' schools in Pakistan, emphasizing academic excellence and character development.",
-      "enhanced_time": "1886-11-03",
+      "enhanced_description": "The Punjab Chiefs' College was formed on 2 January 1886 in British India and renamed Aitchison College on 13 November 1886.",
+      "enhanced_time": "1886-01-02",
       "wikipedia_url": "https://en.wikipedia.org/wiki/Aitchison_College",
       "confidence": "high",
       "event_id": "evt_39ac0fb9-11fd-5922-a7fd-b3478ddbde69",
@@ -964712,10 +964712,21 @@
           "artifact_path": "haibalabs.github.io/history/events.json",
           "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
           "record_index": 21817
+        },
+        {
+          "artifact_path": "history-data-iris-bulk-images/pilots/t5-free-discovery-v7/candidates.raw/2e95e31bd6a66aeff1f5c51ca050cf424f60880c1903b2190cad253a660c813f.json",
+          "artifact_sha256": "2ea4b6c1d8c4626b25a6b78606361eb18c3fc6040af7220b171260cd495262dd",
+          "record_index": 0,
+          "locator": "response.query.pages[0].extract",
+          "revision_id": 1381900655
         }
       ],
       "source_lineage": "original_acquisition_unknown",
-      "article_reference_status": "unverified_article"
+      "article_reference_status": "unverified_article",
+      "source_urls": [
+        "https://en.wikipedia.org/w/index.php?oldid=1381900655"
+      ],
+      "uncertainty": "This date follows the saved institutional article's formation date for Punjab Chiefs' College (2 January 1886), distinct from its renaming as Aitchison College (13 November 1886). The inherited 3 November date conflicts with that source. The article also traces earlier institutional origins to the Wards School in Ambala in 1868; this record describes the 1886 formation stage, not the earliest predecessor."
     },
     {
       "name": "Heinrich Hertz verifies electromagnetic waves",
@@ -2311889,11 +2311900,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Crans-Montana_bar_fire",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2311941,11 +2311952,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_United_States_intervention_in_Venezuela",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312043,11 +2312054,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Beninese_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312094,11 +2312105,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Gul_Plaza_Shopping_Mall_fire",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312145,11 +2312156,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_northeastern_Syria_offensive",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312196,11 +2312207,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_West_Bandung_landslide",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312263,11 +2312274,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Rubaya_mines_collapses",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312314,11 +2312325,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Tigray_clashes_(January%E2%80%93February_2026)",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312365,11 +2312376,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/January%E2%80%93February_2026_Balochistan_attacks",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312400,11 +2312411,11 @@
         "crime"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Epstein_files",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_related_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312451,11 +2312462,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Kwara_State_attacks",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312502,11 +2312513,11 @@
         "crime"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Islamabad_mosque_bombing",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312569,11 +2312580,11 @@
         "sports"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312620,11 +2312631,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Transitional_Presidential_Council",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_related_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312671,11 +2312682,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Japanese_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312722,11 +2312733,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Thai_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312773,11 +2312784,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Portuguese_presidential_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312824,11 +2312835,11 @@
         "crime"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Tumbler_Ridge_shooting",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312875,11 +2312886,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Laotian_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312926,11 +2312937,11 @@
         "crime"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Jalisco_operation",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2312977,11 +2312988,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Colombian_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313011,11 +2313022,11 @@
         "sports"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313062,11 +2313073,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Kharg_Island_attack",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313113,11 +2313124,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Kazakh_constitutional_referendum",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313164,11 +2313175,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_North_Korean_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313215,11 +2313226,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Vietnamese_legislative_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313266,11 +2313277,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Republic_of_the_Congo_presidential_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313317,11 +2313328,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Colombian_Air_Force_Lockheed_C-130_crash",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313368,11 +2313379,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Danish_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313455,11 +2313466,11 @@
         "exploration"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Artemis_II",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313541,11 +2313552,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Vietnamese_presidential_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313576,11 +2313587,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Iran_war_ceasefire",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313627,11 +2313638,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/8_April_2026_Israeli_attacks_on_Lebanon",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313678,11 +2313689,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Djiboutian_presidential_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313781,11 +2313792,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Hungarian_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313832,11 +2313843,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Beninese_presidential_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313883,11 +2313894,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Tornado_outbreak_sequence_of_April_23%E2%80%9328%2C_2026",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313935,11 +2313946,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/OPEC",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_related_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2313986,11 +2313997,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Liuyang_fireworks_factory_explosion",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314103,11 +2314114,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Izz_al-Din_al-Haddad",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_related_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314190,11 +2314201,11 @@
         "environment"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_European_heatwaves",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314241,11 +2314252,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Liushenyu_coal_mine_explosion",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314292,11 +2314303,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Guinean_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314359,11 +2314370,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Flamingo_Revolution",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314410,11 +2314421,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Armenian_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314461,11 +2314472,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Kosovan_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314512,11 +2314523,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Peruvian_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314563,11 +2314574,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Mindanao_earthquake",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314615,11 +2314626,11 @@
         "culture"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Sagrada_Fam%C3%ADlia",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_related_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314684,11 +2314695,11 @@
         "economics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Initial_public_offering_of_SpaceX",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314735,11 +2314746,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Rio_de_Janeiro_mid-air_collision",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314786,11 +2314797,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Labour_Party_leadership_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314837,11 +2314848,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Venezuela_earthquakes",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314888,11 +2314899,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Algerian_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2314939,11 +2314950,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Gaza_peace_plan",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_related_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315025,11 +2315036,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_S%C3%A3o_Tom%C3%A9an_presidential_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315059,11 +2315070,11 @@
         "sports"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_final",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315110,11 +2315121,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Houthi_blockade_of_Saudi_Arabia",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315161,11 +2315172,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Kumamoto_earthquake",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315213,11 +2315224,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Multinational_Maritime_Defense_Alliance",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315280,11 +2315291,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Ceuta_migrant_crisis",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315331,11 +2315342,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Broad_Peak_avalanche",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315382,11 +2315393,11 @@
         "sports"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_FIVB_Men%27s_Volleyball_Nations_League",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315417,11 +2315428,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Mecca_Defence_Alliance",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315468,11 +2315479,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Colombia_earthquake",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315519,11 +2315530,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Lake_Kariba_ferry_accident",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315553,11 +2315564,11 @@
         "science"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Solar_eclipse_of_August_12%2C_2026",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315604,11 +2315615,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Flores_earthquake",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315656,11 +2315667,11 @@
         "economics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Economic_D-Day",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315723,11 +2315734,11 @@
         "natural disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Nepal%E2%80%93Tibet_floods",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315774,11 +2315785,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Icelandic_European_Union_membership_negotiations_referendum",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315826,11 +2315837,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Nigerien_coup_attempt",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315877,11 +2315888,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Estonian_presidential_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315912,11 +2315923,11 @@
         "science"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Equal_Earth_projection",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_related_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2315998,11 +2316009,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/MV_June_Aster_ship_fire",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316049,11 +2316060,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Swedish_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316100,11 +2316111,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Sinking_of_the_Virgo_Transport_8",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316220,11 +2316231,11 @@
         "education"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_French_student_protests",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316271,11 +2316282,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Moroccan_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316322,11 +2316333,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Ethiopian_offensive",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316408,11 +2316419,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Bosnian_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316459,11 +2316470,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Peshawar_school_roof_collapse",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316544,11 +2316555,11 @@
         "war"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Amiet_market_massacre",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316595,11 +2316606,11 @@
         "crime"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Karak_church_shooting",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316646,11 +2316657,11 @@
         "culture"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/Junior_Eurovision_Song_Contest_2026",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316697,11 +2316708,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Brazilian_general_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316748,11 +2316759,11 @@
         "politics"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Serbian_parliamentary_election",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
@@ -2316799,11 +2316810,11 @@
         "disaster"
       ],
       "confidence": "medium",
-      "wikipedia_url": "https://en.wikipedia.org/w/index.php?oldid=1382417751",
+      "wikipedia_url": "https://en.wikipedia.org/wiki/2026_Toledo_train_collision",
       "source_urls": [
         "https://en.wikipedia.org/w/index.php?oldid=1382417751"
       ],
-      "article_reference_status": "source_timeline",
+      "article_reference_status": "source_linked_event_article",
       "source_lineage": "revision_bound_source_collection",
       "source_refs": [
         {
