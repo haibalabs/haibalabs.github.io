@@ -33,6 +33,7 @@
 /* Events on the map (event-clusters.js): numbered bubbles for groups, small dots for single events. */
 .lab-cluster { display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--accent) 82%, transparent); color: #fff; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent), 0 1px 4px rgb(0 0 0 / .25); font: 600 11px/1 var(--font-ui); cursor: pointer; }
 .lab-cluster:hover { background: var(--accent); }
+.lab-cluster-spot { box-shadow: 0 0 0 2px #fff, 0 1px 4px rgb(0 0 0 / .35); }
 .lab-event-dot { border: 2px solid #fff; border-radius: 50%; background: var(--accent); box-shadow: 0 1px 3px rgb(0 0 0 / .3); cursor: pointer; box-sizing: border-box; }
 .lab-events-note:empty { display: none; }
 

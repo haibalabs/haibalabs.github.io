@@ -117,20 +117,24 @@ export class EventClusters {
         const selected = this.browser.selectedId;
         if (this.shown && this.shown.source === source && this.shown.period === period && this.shown.selected === selected) return;
         this.shown = { source, period, selected };
-        // one feature per place, carrying the ids of its events
+        // One feature per spot on the map, carrying the ids of its events. Grouped by coordinates, not by
+        // place: about 1,000 spots hold several place records (Asunción and "Asunción, Paraguay" share one
+        // point), which zooming can never split, so as separate features they would stack and hide each other.
         this.groups = new Map();
         for (const event of events) {
             const id = this.index.idFor(event);
             if (id === selected) continue;
             for (const point of this.index.eventPoints.get(id) || []) {
-                if (!this.groups.has(point.key)) this.groups.set(point.key, { point, ids: [] });
-                this.groups.get(point.key).ids.push(id);
+                const spot = point.coordinates.map(c => c.toFixed(5)).join(',');
+                if (!this.groups.has(spot)) this.groups.set(spot, { coordinates: point.coordinates, ids: new Set() });
+                this.groups.get(spot).ids.add(id);
             }
         }
-        const features = [...this.groups.values()].map(({ point, ids }) => ({
+        for (const group of this.groups.values()) group.ids = [...group.ids];
+        const features = [...this.groups.entries()].map(([spot, { coordinates, ids }]) => ({
             type: 'Feature',
-            geometry: { type: 'Point', coordinates: [point.coordinates[1], point.coordinates[0]] },
-            properties: { key: point.key, count: ids.length },
+            geometry: { type: 'Point', coordinates: [coordinates[1], coordinates[0]] },
+            properties: { key: spot, count: ids.length },
         }));
         this.clusters = new Supercluster({
             // Supercluster measures in 512-pixel tiles and Leaflet's are 256, so 80 keeps bubbles about 40 px apart
@@ -159,9 +163,11 @@ export class EventClusters {
     bubble(latlng, feature) {
         const { count } = feature.properties;
         const size = Math.round(24 + 7 * Math.log10(count));
+        // events that share one spot can't split however far you zoom, so their bubble looks different
+        const spot = !feature.properties.cluster;
         const marker = L.marker(latlng, {
-            pane: 'labEvents', title: `${count.toLocaleString()} events`,
-            icon: L.divIcon({ className: 'lab-cluster', html: `<span>${countText(count)}</span>`, iconSize: [size, size] }),
+            pane: 'labEvents', title: spot ? `${count.toLocaleString()} events at this spot` : `${count.toLocaleString()} events`,
+            icon: L.divIcon({ className: spot ? 'lab-cluster lab-cluster-spot' : 'lab-cluster', html: `<span>${countText(count)}</span>`, iconSize: [size, size] }),
         }).addTo(this.layer);
         marker.on('click', () => {
             const expansion = feature.properties.cluster ? this.clusters.getClusterExpansionZoom(feature.properties.cluster_id) : null;
