@@ -211,7 +211,7 @@ export class EventClusters {
             item.type = 'button';
             if (start + offset === current) item.setAttribute('aria-current', 'true');
             item.append(element('span', null, event.name), element('small', null, eventDateLabel(event)));
-            item.addEventListener('click', () => this.pick(ids, start + offset));
+            item.addEventListener('click', () => this.pick(ids, start + offset, L.latLng(latlng)));
             const row = element('li');
             row.append(item);
             items.append(row);
@@ -229,10 +229,16 @@ export class EventClusters {
         L.popup({ className: 'lab-event-popup', maxWidth: 300, minWidth: 220, autoPanPaddingTopLeft: [60, 110], autoPanPaddingBottomRight: [20, 30] })
             .setLatLng(latlng).setContent(box).openOn(this.map);
     }
-    // From a list the map goes to the event, whose place the bubble hid, zooming in but never out: the
-    // selection's own framing (zoom 6 for an unreviewed point) is wider than a list opened at street level.
-    // From a dot the map stays put.
-    select(id, { moveMap }) {
+    // The event's place nearest the bubble it was listed in: an event can have places far apart.
+    nearestPoint(id, near) {
+        const points = this.index.eventPoints.get(id) || [];
+        return points.reduce((best, point) => !best || near.distanceTo(point.coordinates) < near.distanceTo(best.coordinates) ? point : best, null);
+    }
+    // From a list (near: the bubble's position) the map goes to the event, whose place the bubble hid,
+    // zooming in but never out: the selection's own framing (zoom 6 for an unreviewed point, or all of an
+    // event's places) is wider than a list opened close in. Kept at that zoom, it centres on the place
+    // nearest the bubble. From a dot the map stays put.
+    select(id, { moveMap, near = null }) {
         this.map.closePopup();
         if (!moveMap) this.clearStepper();
         const { browser } = this;
@@ -240,7 +246,8 @@ export class EventClusters {
             const zoom = this.map.getZoom();
             browser.selectEvent(id);
             browser.fitOutlineOf = null;
-            if (this.map.getZoom() < zoom) this.map.setView(this.map.getCenter(), zoom, { animate: false });
+            const point = near && this.nearestPoint(id, near);
+            if (point && this.map.getZoom() < zoom) this.map.setView(point.coordinates, zoom, { animate: false });
         } else {
             browser.selectedId = id;
             browser.drawSelection();
@@ -249,15 +256,15 @@ export class EventClusters {
     }
     // Picks the event at this position of a list, and keeps the list as a stepper under it:
     // ‹ and › go to the previous and next event, and the list button reopens the list there.
-    pick(ids, position) {
-        this.stepper = { ids, position };
-        this.select(ids[position], { moveMap: true });
+    pick(ids, position, near) {
+        this.stepper = { ids, position, near };
+        this.select(ids[position], { moveMap: true, near });
         this.showStepper();
     }
     showStepper() {
         this.stepperLayer.clearLayers();
-        const { ids, position } = this.stepper;
-        const point = (this.index.eventPoints.get(ids[position]) || [])[0];
+        const { ids, position, near } = this.stepper;
+        const point = this.nearestPoint(ids[position], near);
         if (!point) return;
         const bar = element('div', 'lab-stepper');
         const control = (icon, label, disabled, action) => {
@@ -271,10 +278,10 @@ export class EventClusters {
             return node;
         };
         bar.append(
-            control('fa-chevron-left', 'Previous event', position === 0, () => this.pick(ids, position - 1)),
+            control('fa-chevron-left', 'Previous event', position === 0, () => this.pick(ids, position - 1, near)),
             element('span', null, `${(position + 1).toLocaleString()} of ${ids.length.toLocaleString()}`),
-            control('fa-chevron-right', 'Next event', position === ids.length - 1, () => this.pick(ids, position + 1)),
-            control('fa-list', 'Back to the list', false, () => this.showList(L.latLng(point.coordinates), ids, null, position)),
+            control('fa-chevron-right', 'Next event', position === ids.length - 1, () => this.pick(ids, position + 1, near)),
+            control('fa-list', 'Back to the list', false, () => this.showList(near, ids, null, position)),
         );
         L.DomEvent.disableClickPropagation(bar);
         // a zero-size icon at the event's point; the bar hangs below it in CSS, clear of the label above
