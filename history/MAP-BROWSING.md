@@ -4,6 +4,8 @@ Open **Explore map** at the right edge, pan/zoom, then choose **Filter by visibl
 
 The map starts without event dots. Use the original crosshairs icon beside a timeline event's location to show only that event's saved locations as small translucent dots. Pan and zoom keep that selection; they never reveal other events. Clicking one of the selected event's dots returns to its timeline card without a popup or map recentering.
 
+The button under + / − lets the map fill the window. Esc or the button returns to the drawer, and so does clicking a selected event's dot, which also shows its card.
+
 **Filter by visible area** narrows the timeline without plotting the matching events. A selected event keeps its points if it still matches the filters; otherwise selection clears. Clearing the area restores the non-geographic results without adding points. Events with no usable coordinates remain browsable and do not offer a map action.
 
 Multiple locations express recorded event associations, not proof of simultaneous occurrence, an inferred route, or a filled historical area. Drawing historical areas is future work. Saved coordinates retain their uncertainty metadata in the index; the minimal map does not claim these points are exact or independently verified. Manual coordinate corrections take precedence; otherwise only valid saved coordinates with reused/corrected status are used. Ambiguous candidate points are excluded. No browsing action calls a geocoder.
