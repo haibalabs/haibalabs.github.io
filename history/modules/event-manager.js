@@ -2,6 +2,7 @@
 import { PlaceEventIndex } from './place-event-index.js';
 import { eventSortableValue, eventTiebreak } from './date-handlers.js';
 import { sha256Hex } from './world-images.js';
+import { placeLabel } from './world-labels.js';
 
 import { initializeApp as firebaseInit } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
 import { getFirestore, connectFirestoreEmulator } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
@@ -230,7 +231,10 @@ export class EventManager {
                     const matchesSearch = !searchTerm || (
                         (event.name && event.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
                         (event.description && event.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        (event.enhanced_description && event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase()))
+                        (event.enhanced_description && event.enhanced_description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+                        // a place is found by its label or by its written name
+                        (event.locations || []).some(location => [location?.name, placeLabel(location)]
+                            .some(text => text && text.toLowerCase().includes(searchTerm.toLowerCase())))
                     );
                     const id = this.placeIndex.idFor(event);
                     const year = this.placeIndex.years.get(id);
