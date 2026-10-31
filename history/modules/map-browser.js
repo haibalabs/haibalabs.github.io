@@ -1,3 +1,5 @@
+import { eventDateLabel } from './date-handlers.js';
+
 const element = (tag, text, className) => {
     const node = document.createElement(tag);
     if (text) node.textContent = text;
@@ -11,6 +13,33 @@ const button = (text, action) => {
     return node;
 };
 
+// How a selected event's point is drawn, by its precision. A dot with metres is a ring that grows with
+// the zoom to cover that much ground, never below its radius; the sizes are display choices, and 10 km
+// is the resolver's placement tolerance for approximate points.
+const BLUE = '#3b82f6';
+const DOTS = {
+    site: { options: { radius: 6, weight: 2, color: '#fff', fillColor: '#1d4ed8', fillOpacity: 1 } },
+    settlement: { metres: 3000, options: { radius: 7, stroke: false, fillColor: BLUE, fillOpacity: 0.9 } },
+    approximate: { metres: 10000, options: { radius: 16, weight: 1.5, dashArray: '3 3', color: BLUE, fillColor: BLUE, fillOpacity: 0.16 } },
+    region: { metres: 100000, options: { radius: 26, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.1 } },
+    country: { metres: 300000, options: { radius: 34, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.08 } },
+};
+DOTS.polity = DOTS.country;
+const dotFor = point => DOTS[point.precision] ?? DOTS.approximate;
+// Selecting an event fits its rings so a ring spans about a third of the map; a site is framed as if
+// it had a 2.5 km ring, so the streets or valley around it stay in view.
+const SITE_VIEW_METRES = 2500;
+
+const EARTH_CIRCUMFERENCE = 40075016.686;
+const metresPerPixel = (lat, zoom) => EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
+
+// The selected event's name and date over its first point.
+function eventLabel(event) {
+    const label = element('span');
+    label.append(element('strong', event.name), element('span', eventDateLabel(event)));
+    return label;
+}
+
 export class MapBrowser {
     constructor(manager, ui, panels) {
         this.manager = manager;
@@ -22,6 +51,8 @@ export class MapBrowser {
         this.selectedId = null;
         this.lastEvents = null;
         this.selection = panels.markersLayer;
+        this.rings = [];
+        this.map.on('zoomend', () => this.resizeRings());
         const controls = element('section', null, 'map-browser');
         controls.setAttribute('aria-label', 'Map area filter');
         const actions = element('div', null, 'map-actions');
@@ -69,17 +100,29 @@ export class MapBrowser {
         this.status.textContent = filter.bounds ? `${events.length.toLocaleString()} ${events.length === 1 ? 'event' : 'events'} in selected area` : '';
         this.status.hidden = !this.status.textContent;
     }
+    resizeRings() {
+        const zoom = this.map.getZoom();
+        for (const { marker, dot } of this.rings) {
+            const radius = Math.max(dot.options.radius, dot.metres / metresPerPixel(marker.getLatLng().lat, zoom));
+            // a ring wider than the dot fades its fill, so it tints rather than covers the map
+            marker.setRadius(radius).setStyle({ fillOpacity: dot.options.fillOpacity * Math.min(1, Math.max(0.4, dot.options.radius * 2 / radius)) });
+        }
+    }
     drawSelection() {
         this.selection.clearLayers();
+        this.rings = [];
         const index = this.manager.placeIndex;
         const event = index.events.get(this.selectedId);
         if (!event) return;
         const id = this.selectedId;
-        for (const point of index.eventPoints.get(id) || []) {
-            const marker = L.circleMarker(point.coordinates, {
-                radius: 8, stroke: false, fillColor: '#60a5fa', fillOpacity: 0.85,
-                className: 'map-selected-dot'
-            }).addTo(this.selection);
+        for (const [i, point] of (index.eventPoints.get(id) || []).entries()) {
+            const look = dotFor(point);
+            const marker = L.circleMarker(point.coordinates, { ...look.options, className: 'map-selected-dot' }).addTo(this.selection);
+            if (look.metres) {
+                this.rings.push({ marker, dot: look });
+                L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: look.options.fillColor, fillOpacity: 1, interactive: false }).addTo(this.selection);
+            }
+            marker.bindTooltip(eventLabel(event), { direction: 'top', permanent: i === 0, className: 'map-event-label', offset: [0, -6], opacity: 1 });
             const select = () => this.ui.scrollToEventId(id);
             marker.on('click', select);
             const dot = marker.getElement();
@@ -90,6 +133,7 @@ export class MapBrowser {
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
             });
         }
+        this.resizeRings();
     }
     selectEvent(id) {
         const index = this.manager.placeIndex;
@@ -100,9 +144,11 @@ export class MapBrowser {
         this.drawSelection();
         const points = index.eventPoints.get(id) || [];
         this.map.invalidateSize();
-        if (points.length) this.map.fitBounds(L.latLngBounds(points.map(point => point.coordinates)), {
-            maxZoom: 6, padding: [35, 60], animate: false
-        });
+        if (points.length) {
+            const bounds = L.latLngBounds([]);
+            for (const point of points) bounds.extend(L.latLng(point.coordinates).toBounds((dotFor(point).metres ?? SITE_VIEW_METRES) * 3.3));
+            this.map.fitBounds(bounds, { padding: [35, 60], animate: false });
+        }
         this.ui.renderEvents();
     }
 }

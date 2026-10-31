@@ -9,3 +9,13 @@
 #map-panel:not(.open) #toggle-map { right: 12px; }
 @media (max-width: 640px) { .map-browser { right: 58px; } }
 .event.map-selected .event-header { color: var(--accent); }
+/* The selected event's name and date over its first point, small and see-through so the map shows behind it. */
+.map-event-label > span { display: flex; flex-direction: column; }
+.leaflet-tooltip.map-event-label { --label-bg: color-mix(in srgb, var(--surface) 62%, transparent); max-width: 180px; width: max-content; padding: 3px 7px; white-space: normal; border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); border-radius: 6px; background: var(--label-bg); backdrop-filter: blur(1.5px); color: var(--ink); box-shadow: 0 1px 4px rgb(0 0 0 / .1); font: 11px/1.3 var(--font-ui); }
+.map-event-label strong { font-weight: 600; font-size: 12px; }
+.map-event-label > span > span { color: var(--ink-2); }
+.leaflet-tooltip-top.map-event-label::before { border-top-color: var(--label-bg); }
+/* base.css styles + / − with !important, which hides Leaflet's look for a button at its zoom limit. */
+.leaflet-control-zoom a.leaflet-disabled { cursor: default; }
+.leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }
+.leaflet-control-zoom a.leaflet-disabled:hover { background: var(--surface) !important; }

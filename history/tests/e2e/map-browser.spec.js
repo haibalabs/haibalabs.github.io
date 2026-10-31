@@ -171,3 +171,48 @@ for (const [width, height] of [[390, 844], [1440, 900]]) {
     }
   });
 }
+
+const precisionFixtures = ['site', 'settlement', 'approximate', 'country'].map((precision, i) => ({
+  event_id: `prec_${precision}`, name: `Precision ${precision}`, enhanced_time: String(1800 + i),
+  enhanced_description: 'One location of this precision.', categories: ['culture'], figures: [], confidence: 'high',
+  locations: [{ place_id: `place_${precision}`, name: precision, geography: { status: 'reused', precision, coordinates: [10, 20] } }]
+}));
+async function openPrecision(page) {
+  await page.route('**/*', route => {
+    const url = route.request().url();
+    if (url.startsWith('http://localhost:8080/') || url.includes('unpkg.com/leaflet') || url.includes('www.gstatic.com/firebasejs/')) return route.continue();
+    return route.abort();
+  });
+  await stubFirebase(page);
+  await page.route('**/precision-fixture.json', route => route.fulfill({ json: precisionFixtures }));
+  await page.route('**/unverified-locations.json', route => route.fulfill({ json: [] }));
+  await page.goto('/history/index.html?file=precision-fixture.json');
+  await expect(page.locator('.event').first()).toBeVisible();
+}
+const show = (page, precision) => page.locator(`.event[data-event-id="prec_${precision}"]`).getByRole('button', { name: 'Show on map', exact: true }).click();
+
+test('a selected event is labelled with its name and date and framed by the ground its point stands for', async ({ page }) => {
+  await openPrecision(page);
+  const map = await page.locator('#map').boundingBox();
+  for (const precision of ['settlement', 'approximate', 'country']) {
+    await show(page, precision);
+    const label = page.locator('.map-event-label');
+    await expect(label).toHaveCount(1);
+    await expect(label.locator('strong')).toHaveText(`Precision ${precision}`);
+    await expect(label.locator('strong + span')).not.toBeEmpty();
+    // the ring spans roughly a third of the map, whatever ground it covers
+    const ring = await page.locator('.map-selected-dot').boundingBox();
+    expect(ring.height / map.height).toBeGreaterThan(0.12);
+    expect(ring.height / map.height).toBeLessThan(0.45);
+  }
+  await show(page, 'site');
+  await expect(page.locator('.map-event-label')).toHaveCount(1);
+  await expect(page.locator('.map-event-label strong')).toHaveText('Precision site');
+  expect((await page.locator('.map-selected-dot').boundingBox()).width).toBeLessThan(20);
+  // a site is framed at street zoom, a few steps from the limit of 14
+  const zoomIn = page.locator('.leaflet-control-zoom-in');
+  for (let i = 0; i < 4 && !(await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))); i++) await zoomIn.click();
+  await expect(zoomIn).toHaveClass(/leaflet-disabled/);
+  expect(await zoomIn.locator('i').evaluate(el => getComputedStyle(el).opacity)).toBe('0.3');
+  expect(await page.locator('.leaflet-control-zoom-out i').evaluate(el => getComputedStyle(el).opacity)).toBe('1');
+});
