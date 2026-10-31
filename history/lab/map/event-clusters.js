@@ -27,7 +27,7 @@ const element = (tag, className, text) => {
     if (text) node.textContent = text;
     return node;
 };
-const countText = count => count >= 10000 ? `${Math.round(count / 1000)}k` : count >= 1000 ? `${(count / 1000).toFixed(1)}k` : String(count);
+const countText = count => count >= 1000 ? '1000+' : String(count);
 // Years as the note shows them: deep time in millions or billions of years ago, then BC and AD.
 const yearText = year => {
     const ago = 2026 - year;
@@ -51,6 +51,8 @@ export class EventClusters {
         this.click = click;
         if (!this.map.getPane('labEvents')) this.map.createPane('labEvents').style.zIndex = 450;
         this.layer = L.layerGroup().addTo(this.map);
+        this.stepperLayer = L.layerGroup().addTo(this.map);
+        this.stepper = null;
         this.note = element('p', 'map-status lab-events-note');
         this.note.setAttribute('role', 'status');
         browser.panels.mapPanel.querySelector('.map-browser').append(this.note);
@@ -65,6 +67,7 @@ export class EventClusters {
         this.map.off('moveend', this.onMove);
         this.map.closePopup();
         this.layer.remove();
+        this.stepperLayer.remove();
         this.note.remove();
     }
     get index() { return this.browser.manager.placeIndex; }
@@ -89,6 +92,7 @@ export class EventClusters {
         }
     }
     hide() {
+        this.clearStepper();
         if (!this.clusters) return;
         this.clusters = null;
         this.shown = null;
@@ -117,6 +121,8 @@ export class EventClusters {
         const selected = this.browser.selectedId;
         if (this.shown && this.shown.source === source && this.shown.period === period && this.shown.selected === selected) return;
         this.shown = { source, period, selected };
+        // an event selected some other way (its card, a dot) ends the stepping
+        if (this.stepper && this.stepper.ids[this.stepper.position] !== selected) this.clearStepper();
         // One feature per spot on the map, carrying the ids of its events. Grouped by coordinates, not by
         // place: about 1,000 spots hold several place records (Asunción and "Asunción, Paraguay" share one
         // point), which zooming can never split, so as separate features they would stack and hide each other.
@@ -190,21 +196,29 @@ export class EventClusters {
             : [feature.properties.key];
         const ids = [...new Set(keys.flatMap(key => this.groups.get(key).ids))]
             .sort((a, b) => (this.index.years.get(a) ?? 0) - (this.index.years.get(b) ?? 0));
+        this.showList(latlng, ids, expansion);
+    }
+    // current: the position of the event picked last, when the stepper reopens the list; the list then
+    // starts just before it, so it is in view.
+    showList(latlng, ids, expansion = null, current = null) {
         const box = element('div', 'lab-event-list');
-        box.append(element('p', 'lab-event-list-head', `${ids.length.toLocaleString()} ${ids.length === 1 ? 'event' : 'events'}${keys.length > 1 ? ` in ${keys.length.toLocaleString()} places` : ' here'}`));
+        const start = current === null ? 0 : Math.max(0, Math.min(current - 2, ids.length - LIST_LIMIT));
+        if (start > 0) box.append(element('p', 'lab-event-list-more', `${start.toLocaleString()} earlier`));
         const items = element('ol');
-        for (const id of ids.slice(0, LIST_LIMIT)) {
+        for (const [offset, id] of ids.slice(start, start + LIST_LIMIT).entries()) {
             const event = this.index.events.get(id);
             const item = element('button');
             item.type = 'button';
+            if (start + offset === current) item.setAttribute('aria-current', 'true');
             item.append(element('span', null, event.name), element('small', null, eventDateLabel(event)));
-            item.addEventListener('click', () => this.select(id, { moveMap: true }));
+            item.addEventListener('click', () => this.pick(ids, start + offset));
             const row = element('li');
             row.append(item);
             items.append(row);
         }
         box.append(items);
-        if (ids.length > LIST_LIMIT) box.append(element('p', 'lab-event-list-more', `and ${(ids.length - LIST_LIMIT).toLocaleString()} more`));
+        const after = ids.length - start - LIST_LIMIT;
+        if (after > 0) box.append(element('p', 'lab-event-list-more', `and ${after.toLocaleString()} more`));
         if (expansion !== null && expansion <= this.map.getMaxZoom()) {
             const zoom = element('button', 'lab-event-list-zoom', 'Zoom in');
             zoom.type = 'button';
@@ -220,6 +234,7 @@ export class EventClusters {
     // From a dot the map stays put.
     select(id, { moveMap }) {
         this.map.closePopup();
+        if (!moveMap) this.clearStepper();
         const { browser } = this;
         if (moveMap) {
             const zoom = this.map.getZoom();
@@ -231,5 +246,43 @@ export class EventClusters {
             browser.drawSelection();
         }
         browser.ui.scrollToEventId(id);
+    }
+    // Picks the event at this position of a list, and keeps the list as a stepper under it:
+    // ‹ and › go to the previous and next event, and the list button reopens the list there.
+    pick(ids, position) {
+        this.stepper = { ids, position };
+        this.select(ids[position], { moveMap: true });
+        this.showStepper();
+    }
+    showStepper() {
+        this.stepperLayer.clearLayers();
+        const { ids, position } = this.stepper;
+        const point = (this.index.eventPoints.get(ids[position]) || [])[0];
+        if (!point) return;
+        const bar = element('div', 'lab-stepper');
+        const control = (icon, label, disabled, action) => {
+            const node = element('button');
+            node.type = 'button';
+            node.title = label;
+            node.setAttribute('aria-label', label);
+            node.disabled = disabled;
+            node.innerHTML = `<i class="fa-light ${icon}" aria-hidden="true"></i>`;
+            node.addEventListener('click', action);
+            return node;
+        };
+        bar.append(
+            control('fa-chevron-left', 'Previous event', position === 0, () => this.pick(ids, position - 1)),
+            element('span', null, `${(position + 1).toLocaleString()} of ${ids.length.toLocaleString()}`),
+            control('fa-chevron-right', 'Next event', position === ids.length - 1, () => this.pick(ids, position + 1)),
+            control('fa-list', 'Back to the list', false, () => this.showList(L.latLng(point.coordinates), ids, null, position)),
+        );
+        L.DomEvent.disableClickPropagation(bar);
+        // a zero-size icon at the event's point; the bar hangs below it in CSS, clear of the label above
+        L.marker(point.coordinates, { pane: 'labEvents', interactive: false, keyboard: false,
+            icon: L.divIcon({ className: 'lab-stepper-anchor', html: bar, iconSize: [0, 0] }) }).addTo(this.stepperLayer);
+    }
+    clearStepper() {
+        this.stepper = null;
+        this.stepperLayer.clearLayers();
     }
 }
