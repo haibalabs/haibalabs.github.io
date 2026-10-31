@@ -410,8 +410,14 @@ export class UIManager {
     
         // Check if target is within current visible range
         if (targetIndex >= this.startIndex && targetIndex < this.endIndex) {
-            // Target is visible, clear the target
             this.scrollTarget = null;
+            // Rendered isn't on screen: a jump to an estimated height can stop short of the target's
+            // measured position, as Latest did, so finish the scroll there (or to the end).
+            const targetPosition = this.positions.get(targetIndex);
+            if (targetPosition !== undefined && (targetPosition < scrollTop || targetPosition > scrollTop + viewportHeight - 40)) {
+                const max = this.timelineContainer.scrollHeight - viewportHeight;
+                this.timelineContainer.scrollTo({ top: Math.min(targetPosition, max), behavior: 'smooth' });
+            }
         } else {
             // Target not visible, scroll more
             const targetPosition = this.positions.get(targetIndex);
@@ -425,6 +431,9 @@ export class UIManager {
     }
 
     handleNoResults(contentContainer, placeholder) {
+        placeholder.style.height = '0px';
+        // before the world events arrive, the loading trip (time-travel.js) fills this space
+        if (!this.eventManager.events.length) return;
         const noResultsDiv = document.createElement('div');
         noResultsDiv.className = 'no-results';
         noResultsDiv.innerHTML = `
@@ -434,7 +443,6 @@ export class UIManager {
             </div>
         `;
         contentContainer.appendChild(noResultsDiv);
-        placeholder.style.height = '0px';
     }
 
     getEventHeight(event) {
@@ -517,38 +525,6 @@ export class UIManager {
         }
     }
 
-    handleLoadingState(contentContainer, placeholder) {
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'no-results loading';
-        loadingDiv.innerHTML = `
-            <div class="empty-message">
-                <p>traveling back in time...</p>
-                <span class="empty-emoji" id="loading-clock">🕐</span>
-            </div>
-        `;
-        contentContainer.appendChild(loadingDiv);
-        placeholder.style.height = '0px';
-    
-        // Animate the clock
-        const clockEmojis = ['🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚', '🕛'];
-        let index = 0;
-        const clockElement = loadingDiv.querySelector('#loading-clock');
-        
-        const clockInterval = setInterval(() => {
-            index = (index + 1) % clockEmojis.length;
-            clockElement.textContent = clockEmojis[index];
-        }, 166.66); // 2000ms / 12 = ~166.66ms for a full rotation every 2 seconds
-    
-        // Clean up interval when content changes
-        const observer = new MutationObserver((mutations) => {
-            if (!document.contains(loadingDiv)) {
-                clearInterval(clockInterval);
-                observer.disconnect();
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
-
     // keepCards: a scroll moved the visible range and nothing else changed, so cards still in range
     // keep their elements. Rebuilding them would make the browser decode their images again,
     // which flickers on phones.
@@ -568,16 +544,8 @@ export class UIManager {
         // Clear current content
         contentContainer.innerHTML = '';
 
-        // Force loading state and delay for testing
-//      this.handleLoadingState(contentContainer, placeholder);
-//      await new Promise(resolve => setTimeout(resolve, 50000)); // 2 second delay
-
-        // Show loading state if we haven't calibrated heights yet
-        if (!this.heightEstimateParams.calibrated && filteredEvents.length > 0) {
-            this.handleLoadingState(contentContainer, placeholder);
-        }
         // Handle no results case
-        else if (filteredEvents.length === 0) {
+        if (filteredEvents.length === 0) {
             this.updateEventCounts();
             this.handleNoResults(contentContainer, placeholder);
             return;
@@ -1056,9 +1024,13 @@ export class UIManager {
             `).join(' ')}
         </div>
         ` : '';
-        // visitors see that an approved edit changed the event, never who made it (WORLD-EDITS.md)
+        // visitors see that an approved edit changed the event, and when, never who made it (WORLD-EDITS.md)
+        const revisedOn = event.revised_at ? new Date(event.revised_at) : null;
+        const revisedTitle = revisedOn && !Number.isNaN(revisedOn.getTime())
+            ? `Changed after review · ${revisedOn.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`
+            : 'Changed after review';
         const communityMark = event.community_edited
-            ? '<span class="community-edited" title="Changed by a reviewed community edit">Community edited</span>' : '';
+            ? `<span class="community-edited" title="${escapeHtml(revisedTitle)}"><i class="fa-light fa-clock-rotate-left" aria-hidden="true"></i>Revised</span>` : '';
 
 
         const highlightedName = this.highlightSearchTerms(event.name, this.currentSearch);

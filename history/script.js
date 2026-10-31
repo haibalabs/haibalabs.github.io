@@ -6,6 +6,7 @@ import { PanelManager } from './modules/panel-manager.js';
 import { ModalManager } from './modules/modal-manager.js';
 import { initMap, LocationVerifier } from './modules/map-utils.js';
 import { initTimelineNav } from './modules/timeline-nav.js';
+import { startTimeTravel } from './modules/time-travel.js';
 import { TimelineUI }   from './modules/timeline-ui.js';
 import { TimelineStore } from './modules/timeline-store.js';
 import { FirebaseImageStore } from './modules/firebase-image-store.js';
@@ -55,6 +56,7 @@ async function initializeApp() {
     // the canonical world dataset, with stable event IDs; ?file=events.json still opens the legacy file
     const dataFile = params.get('file') || 'canonical-t2.json';
 
+    const endTimeTravel = startTimeTravel();
     try {
         document.body.classList.add('hide-low-confidence');
         // the released records are kept as loaded, so their checks need no second download
@@ -76,9 +78,11 @@ async function initializeApp() {
 
         // Calculate initial visible range and render
         uiManager.resetWindow();
+        endTimeTravel();
         initTimelineNav({ eventManager, uiManager });
         uiManager.timelineUI.worldReady();
     } catch (error) {
+        endTimeTravel();
         console.error('Failed to initialize app:', error);
     }
 }

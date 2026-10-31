@@ -27,7 +27,8 @@ function sourceValues(patch) {
 
 /**
  * Adds the published new events and applies the patches to the loaded world events, in place.
- * Edited and added events get community_edited: true, for their mark.
+ * Edited and added events get community_edited: true and revised_at, the latest approval time, for
+ * their mark.
  *
  * @param {object[]} events - the loaded world events, in file order
  * @param {object} overlay - world_overlay/current; call only when overlayProblem() returns null
@@ -39,7 +40,7 @@ export function applyOverlay(events, overlay) {
     for (const [eventId, entry] of Object.entries(overlay.created ?? {})) {
         // once the dataset holds the event, it wins; later changes to it are ordinary patches
         if (byId.has(eventId)) continue;
-        const event = { ...structuredClone(entry.record), community_edited: true };
+        const event = { ...structuredClone(entry.record), community_edited: true, revised_at: entry.approved_at };
         byId.set(eventId, event);
         added.push(event);
     }
@@ -57,6 +58,8 @@ export function applyOverlay(events, overlay) {
             }
             event[field] = structuredClone(patch.value);
             event.community_edited = true;
+            const approvedAt = patch.chain?.at(-1)?.approved_at;
+            if (approvedAt && !(event.revised_at > approvedAt)) event.revised_at = approvedAt;
             patched++;
         }
     }

@@ -36,7 +36,8 @@
 }
 .edit-pending.rejected { color: #912018; background: #fef3f2; border-color: #fecdca; }
 /* every visitor sees it on an event an approved edit changed */
-.community-edited { font-size: .6875rem; color: var(--ink-3); }
+.community-edited { display: inline-flex; align-items: center; gap: 4px; font-size: .6875rem; color: var(--ink-3); cursor: default; }
+.community-edited i { font-size: .625rem; }
 .review-link:not([hidden]) { display: inline-block; margin-bottom: .5rem; font-size: .8125rem; color: var(--accent); }
 
 /* the form */
