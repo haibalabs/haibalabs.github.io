@@ -2,13 +2,13 @@
 .brand::after { content: 'map lab'; padding: 2px 7px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); font: 500 11px/1.4 var(--font-ui); }
 @media (max-width: 640px) { .brand::after { content: 'lab'; } }
 
-/* The dock stacks the colour editor over the Lab panel. On desktop it stands beside the open drawer, over
-   the timeline, so the whole map stays visible; on phones and in full window it sits over the map. */
+/* The dock holds the Lab panel. On desktop it stands beside the open drawer, over the timeline, so the
+   whole map stays visible; on phones and in full window it sits over the map. */
 .lab-dock { position: absolute; z-index: 800; left: 12px; bottom: 12px; top: 120px; width: min(340px, calc(100% - 24px)); display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; pointer-events: none; }
 .lab-dock > * { pointer-events: auto; min-height: 0; }
 @media (min-width: 641px) {
-    body:not(.lab-map-full) .lab-dock { position: fixed; left: auto; right: calc(var(--panel-width) + 12px); top: calc(var(--header-height) + 100px); bottom: calc(var(--footer-height, 0px) + 12px); }
-    body:not(.lab-map-full) .map-panel:not(.open) .lab-dock { display: none; }
+    body:not(.map-full) .lab-dock { position: fixed; left: auto; right: calc(var(--panel-width) + 12px); top: calc(var(--header-height) + 100px); bottom: calc(var(--footer-height, 0px) + 12px); }
+    body:not(.map-full) .map-panel:not(.open) .lab-dock { display: none; }
 }
 .lab-panel { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 100%; font: 12px/1.4 var(--font-ui); color: var(--ink); }
 .lab-toggle { flex: none; min-height: 40px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; box-shadow: 0 2px 10px rgb(0 0 0 / .12); }
@@ -30,49 +30,23 @@
 .lab-picker select { width: 100%; min-height: 34px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
 .lab-picker small { display: block; margin-top: 4px; color: var(--ink-2); font-size: 12px; }
 
-/* Base map tones: plain shows a provider's tiles as drawn; warm tints the site's OSM tiles. */
-body[data-lab-base="plain"] .leaflet-tile-pane { filter: none !important; }
-body[data-lab-base="dim"] .leaflet-tile-pane { filter: brightness(.68) saturate(.8) contrast(1.05) !important; }
-body[data-lab-base="warm"] .leaflet-tile-pane { filter: sepia(.45) saturate(.8) contrast(.94) brightness(1.03) !important; }
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) body[data-lab-base="warm"] .leaflet-tile-pane { filter: grayscale(1) invert(1) sepia(.35) contrast(.85) brightness(.9) !important; }
-}
-:root[data-theme="dark"] body[data-lab-base="warm"] .leaflet-tile-pane { filter: grayscale(1) invert(1) sepia(.35) contrast(.85) brightness(.9) !important; }
+/* Events on the map (event-clusters.js): numbered bubbles for groups, small dots for single events. */
+.lab-cluster { display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--accent) 82%, transparent); color: #fff; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent), 0 1px 4px rgb(0 0 0 / .25); font: 600 11px/1 var(--font-ui); cursor: pointer; }
+.lab-cluster:hover { background: var(--accent); }
+.lab-event-dot { border: 2px solid #fff; border-radius: 50%; background: var(--accent); box-shadow: 0 1px 3px rgb(0 0 0 / .3); cursor: pointer; box-sizing: border-box; }
+.lab-events-note:empty { display: none; }
 
-/* Full window: the map drawer covers the page until Esc or the button. */
-body.lab-map-full #map-panel { inset: 0; width: auto; height: auto; z-index: 1000; border-left: 0; }
-body.lab-map-full #toggle-map { display: none; }
-.lab-full-control { border: 0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: 0 2px 8px rgb(0 0 0 / .12) !important; }
-.lab-full-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink) !important; background: var(--surface) !important; cursor: pointer; }
-.lab-full-control a:hover { background: var(--surface-2) !important; }
-
-/* Colour editor for our own styles, in the dock above the Lab panel. */
-.lab-colors { flex: 0 1 auto; width: 100%; box-sizing: border-box; overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: 0 6px 24px rgb(0 0 0 / .16); font: 12px/1.4 var(--font-ui); color: var(--ink); }
-.lab-colors summary { padding: 9px 12px; font-weight: 600; font-size: 13px; cursor: pointer; }
-.lab-colors-body { padding: 0 12px 10px; }
-.lab-colors-hint { margin: 0 0 6px; color: var(--ink-2); }
-.lab-colors fieldset { margin: 0; padding: 6px 0 4px; border: 0; border-top: 1px solid var(--line); }
-.lab-colors legend { padding: 0; color: var(--ink-2); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
-.lab-color { display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 8px; padding: 2px 0; cursor: pointer; }
-.lab-color input[type="color"] { width: 30px; height: 22px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; cursor: pointer; }
-.lab-color input[type="color"]::-webkit-color-swatch-wrapper { padding: 2px; }
-.lab-color input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 4px; }
-.lab-color code { color: var(--ink-2); font-size: 11px; }
-.lab-color.changed span::after { content: ' •'; color: var(--accent); }
-.lab-hills { grid-template-columns: auto 1fr auto; }
-.lab-hills input { width: 100%; accent-color: var(--accent); }
-.lab-colors-actions { display: flex; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
-.lab-colors-actions button { flex: 1; min-height: 32px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
-.lab-colors-actions button:hover { background: var(--surface-2); }
-
-/* The selected event's label over its dot: name and date, small and see-through so the map shows behind it. */
-.lab-event-label > span { display: flex; flex-direction: column; gap: 0; }
-.leaflet-tooltip.lab-event-label { --label-bg: color-mix(in srgb, var(--surface) 62%, transparent); max-width: 180px; width: max-content; padding: 3px 7px; white-space: normal; border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); border-radius: 6px; background: var(--label-bg); backdrop-filter: blur(1.5px); color: var(--ink); box-shadow: 0 1px 4px rgb(0 0 0 / .1); font: 11px/1.3 var(--font-ui); }
-.lab-event-label strong { font-weight: 600; font-size: 12px; }
-.lab-event-label > span > span { color: var(--ink-2); }
-.leaflet-tooltip-top.lab-event-label::before { border-top-color: var(--label-bg); }
-
-/* Zoom limits: base.css styles + / − with !important, which hides Leaflet's disabled look. */
-body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled { cursor: default; }
-body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }
-body.lab-zoom-limits .leaflet-control-zoom a.leaflet-disabled:hover { background: var(--surface) !important; }
+/* A bubble's list of events, in a Leaflet popup that follows the theme. */
+.lab-event-popup .leaflet-popup-content-wrapper, .lab-event-popup .leaflet-popup-tip { background: var(--surface); color: var(--ink); box-shadow: 0 6px 24px rgb(0 0 0 / .18); }
+.lab-event-popup .leaflet-popup-content { margin: 10px 12px; font: 12px/1.35 var(--font-ui); }
+.lab-event-popup a.leaflet-popup-close-button { color: var(--ink-2); }
+.lab-event-list-head { margin: 0 18px 6px 0; font-weight: 600; font-size: 13px; }
+.lab-event-list ol { max-height: 260px; overflow: auto; margin: 0; padding: 0; list-style: none; }
+.lab-event-list li + li { border-top: 1px solid var(--line); }
+.lab-event-list li button { display: flex; flex-direction: column; width: 100%; padding: 6px 2px; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.lab-event-list li button:hover { background: var(--surface-2); }
+.lab-event-list li button:focus-visible, .lab-event-list-zoom:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.lab-event-list li small { color: var(--ink-2); font-size: 11px; }
+.lab-event-list-more { margin: 6px 0 0; color: var(--ink-2); }
+.lab-event-list-zoom { width: 100%; margin-top: 8px; min-height: 32px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; }
+.lab-event-list-zoom:hover { background: var(--surface-2); }
