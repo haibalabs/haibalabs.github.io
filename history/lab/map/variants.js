@@ -17,7 +17,7 @@ export const VARIANTS = [
     {
         id: 'events',
         label: 'Events on the map',
-        note: 'The site shows only the selected event. These show many at once, as numbered bubbles that split into places as you zoom in.',
+        note: 'While "Filter by visible area" is on, the map also shows the filtered events, as numbered bubbles that split into places as you zoom in. Off, or with no area filter, it shows only the selected event, as on the site.',
         choices: [
             { id: 'results', label: 'Every event in the timeline', note: 'All events the search and category filters match. A single event is a dot; click it to select it.' },
             { id: 'period', label: 'The time on screen', note: 'Only events from the years of the cards in view, at least 20 years, following the timeline as you scroll.' },

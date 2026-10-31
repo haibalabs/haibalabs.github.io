@@ -69,10 +69,12 @@ export class EventClusters {
     }
     get index() { return this.browser.manager.placeIndex; }
 
-    // Called with the timeline's filtered events on every render, scrolls included.
+    // Called with the timeline's filtered events on every render, scrolls included. Events show only
+    // while "Filter by visible area" is on (Rachid, 2026-10-31); otherwise the map shows just the selection.
     update(events) {
         this.events = events;
         if (!events || !window.Supercluster || this.removed) return;
+        if (!this.browser.manager.geographicFilter.bounds) return this.hide();
         if (this.scope === 'period') {
             // after the timeline has laid out the cards this render produced
             requestAnimationFrame(() => {
@@ -85,6 +87,14 @@ export class EventClusters {
         } else {
             this.build(events, events, '');
         }
+    }
+    hide() {
+        if (!this.clusters) return;
+        this.clusters = null;
+        this.shown = null;
+        this.map.closePopup();
+        this.layer.clearLayers();
+        this.note.textContent = '';
     }
     // The years of the cards on screen, widened to MIN_PERIOD_YEARS around their middle.
     period() {
@@ -130,7 +140,8 @@ export class EventClusters {
         });
         this.clusters.load(features);
         const shown = new Set([...this.groups.values()].flatMap(group => group.ids)).size;
-        this.note.textContent = `${period ? `${period} · ` : ''}${shown.toLocaleString()} ${shown === 1 ? 'event' : 'events'} on the map`;
+        // the area filter's own status already counts the events; the note adds the years in "period" scope
+        this.note.textContent = period ? `${period} · ${shown.toLocaleString()} ${shown === 1 ? 'event' : 'events'} on the map` : '';
         this.render();
     }
     render() {
@@ -198,12 +209,17 @@ export class EventClusters {
         L.popup({ className: 'lab-event-popup', maxWidth: 300, minWidth: 220, autoPanPaddingTopLeft: [60, 110], autoPanPaddingBottomRight: [20, 30] })
             .setLatLng(latlng).setContent(box).openOn(this.map);
     }
-    // From a list the map zooms to the event, whose place the bubble hid; from a dot the map stays put.
+    // From a list the map goes to the event, whose place the bubble hid, zooming in but never out: the
+    // selection's own framing (zoom 6 for an unreviewed point) is wider than a list opened at street level.
+    // From a dot the map stays put.
     select(id, { moveMap }) {
         this.map.closePopup();
         const { browser } = this;
         if (moveMap) {
+            const zoom = this.map.getZoom();
             browser.selectEvent(id);
+            browser.fitOutlineOf = null;
+            if (this.map.getZoom() < zoom) this.map.setView(this.map.getCenter(), zoom, { animate: false });
         } else {
             browser.selectedId = id;
             browser.drawSelection();

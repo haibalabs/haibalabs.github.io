@@ -15,12 +15,13 @@
     <meta property="og:type" content="website">
 
     <title>HistoriLine map lab</title>
-    <!-- the theme chosen in settings (modules/theme.js), applied before the page first paints -->
+    <!-- the theme chosen in settings (modules/theme.js), applied before the page first paints; light unless Dark was chosen -->
     <script>
+        let theme = 'light';
         try {
-            const theme = localStorage.getItem('historiline.theme');
-            if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+            if (localStorage.getItem('historiline.theme') === 'dark') theme = 'dark';
         } catch {}
+        document.documentElement.dataset.theme = theme;
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
@@ -147,7 +148,6 @@
             </div>
             <fieldset class="settings-group theme-choice">
                 <legend>Theme</legend>
-                <label><input type="radio" name="theme" value="system"> System</label>
                 <label><input type="radio" name="theme" value="light"> Light</label>
                 <label><input type="radio" name="theme" value="dark"> Dark</label>
             </fieldset>
