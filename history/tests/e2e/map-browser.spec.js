@@ -240,3 +240,28 @@ test('an unreviewed point keeps one ring size on screen and its event opens no c
   expect(steps).toBeGreaterThanOrEqual(8);
   await expect(ring).toHaveAttribute('d', /a16,16 /);
 });
+
+test('the full-window button fills the window until Esc, the button or a dot returns', async ({ page }) => {
+  await setup(page);
+  const viewport = page.viewportSize();
+  const fill = page.getByRole('button', { name: 'Fill the window', exact: true });
+  const exit = page.getByRole('button', { name: 'Exit full window', exact: true });
+  await fill.click();
+  await expect(page.locator('body')).toHaveClass(/map-full/);
+  await expect.poll(() => page.locator('#map').boundingBox()).toEqual({ x: 0, y: 0, width: viewport.width, height: viewport.height });
+  await expect(page.locator('#toggle-map')).toBeHidden();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('body')).not.toHaveClass(/map-full/);
+  await expect(page.locator('#toggle-map')).toBeVisible();
+  await fill.click();
+  await exit.click();
+  await expect(page.locator('body')).not.toHaveClass(/map-full/);
+
+  await page.locator('#searchInput').fill('Fixture 19');
+  await page.locator('.event[data-event-id="evt_19"]').getByRole('button', { name: 'Show on map', exact: true }).click();
+  await fill.click();
+  await page.locator('.map-selected-dot').first().click();
+  await expect(page.locator('body')).not.toHaveClass(/map-full/);
+  await expect(page.locator('.event.map-selected')).toHaveAttribute('data-event-id', 'evt_19');
+  await expect(page.locator('.event.map-selected')).toBeInViewport();
+});

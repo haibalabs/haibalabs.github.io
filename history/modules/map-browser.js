@@ -43,6 +43,36 @@ function eventLabel(event) {
     return label;
 }
 
+// The button under + / − that lets the map fill the window; Esc or the button returns.
+const fullWindowControl = () => new (L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd(map) {
+        const bar = L.DomUtil.create('div', 'leaflet-bar map-full-control');
+        this.link = L.DomUtil.create('a', '', bar);
+        this.link.href = '#';
+        this.link.setAttribute('role', 'button');
+        L.DomEvent.disableClickPropagation(bar);
+        L.DomEvent.on(this.link, 'click', e => { L.DomEvent.preventDefault(e); this.set(!this.full); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape' && this.full) this.set(false); });
+        this.map = map;
+        this.full = false;
+        this.render();
+        return bar;
+    },
+    set(full) {
+        this.full = full;
+        document.body.classList.toggle('map-full', full);
+        this.render();
+        requestAnimationFrame(() => this.map.invalidateSize({ pan: false }));
+    },
+    render() {
+        const label = this.full ? 'Exit full window' : 'Fill the window';
+        this.link.title = label;
+        this.link.setAttribute('aria-label', label);
+        this.link.innerHTML = `<i class="fa-light ${this.full ? 'fa-compress' : 'fa-expand'}" aria-hidden="true"></i>`;
+    },
+}))();
+
 export class MapBrowser {
     constructor(manager, ui, panels) {
         this.manager = manager;
@@ -56,6 +86,7 @@ export class MapBrowser {
         this.selection = panels.markersLayer;
         this.rings = [];
         this.map.on('zoomend', () => this.resizeRings());
+        this.fullWindow = fullWindowControl().addTo(this.map);
         const controls = element('section', null, 'map-browser');
         controls.setAttribute('aria-label', 'Map area filter');
         const actions = element('div', null, 'map-actions');
@@ -126,7 +157,11 @@ export class MapBrowser {
                 L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: look.options.fillColor, fillOpacity: 1, interactive: false }).addTo(this.selection);
             }
             marker.bindTooltip(eventLabel(event), { direction: 'top', permanent: i === 0, className: 'map-event-label', offset: [0, -6], opacity: 1 });
-            const select = () => this.ui.scrollToEventId(id);
+            // a dot leaves full window first, so its card is there to see
+            const select = () => {
+                if (this.fullWindow.full) this.fullWindow.set(false);
+                this.ui.scrollToEventId(id);
+            };
             marker.on('click', select);
             const dot = marker.getElement();
             dot?.setAttribute('aria-label', `Select ${event.name} in timeline`);

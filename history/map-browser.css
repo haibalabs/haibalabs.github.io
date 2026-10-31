@@ -19,3 +19,10 @@
 .leaflet-control-zoom a.leaflet-disabled { cursor: default; }
 .leaflet-control-zoom a.leaflet-disabled > * { opacity: .3; }
 .leaflet-control-zoom a.leaflet-disabled:hover { background: var(--surface) !important; }
+/* Full window: the map drawer covers the page until Esc or the button. */
+body.map-full #map-panel { inset: 0; width: auto; height: auto; z-index: 1000; border-left: 0; }
+body.map-full #toggle-map { display: none; }
+.map-full-control { border: 0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: 0 2px 8px rgb(0 0 0 / .12) !important; }
+.map-full-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink-2) !important; background: var(--surface) !important; cursor: pointer; }
+.map-full-control a:hover { background: var(--surface-2) !important; }
+.map-full-control a:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }

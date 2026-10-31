@@ -7,6 +7,7 @@ The map starts without event dots. Use the original crosshairs icon beside a tim
 A reviewed point (released by the location pipeline, or corrected by hand) is drawn by its precision. A site is a solid dot. Other points are rings drawn to scale, covering the ground the point may stand for: 3 km for a town, 10 km for an approximate place (the resolver's placement tolerance), 100 km for a region and 300 km for a country or polity. These sizes are display choices, not measured extents. Selecting an event zooms to fit its rings, or to street level for a site.
 
 Most points are still older geocoder lookups (status `reused`) that nobody has reviewed; one may stand for a town or a whole region. They are grey rings that keep one size on screen, and an event with one opens no closer than zoom 6. The event's name and date float over its first point. The map zooms in as far as 14 (streets), and + / − look disabled at the limits.
+The button under + / − lets the map fill the window. Esc or the button returns to the drawer, and so does clicking a selected event's dot, which also shows its card.
 
 **Filter by visible area** narrows the timeline without plotting the matching events. A selected event keeps its points if it still matches the filters; otherwise selection clears. Clearing the area restores the non-geographic results without adding points. Events with no usable coordinates remain browsable and do not offer a map action.
 
