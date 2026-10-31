@@ -227,4 +227,13 @@ describe('onEventImageError — fallback to the original, then drop', () => {
     assert.equal(wrapper.style.display, 'none');
     assert.equal(calls, 1);
   });
+
+  it('ignores an error from an image whose card a re-render has already replaced', () => {
+    const img = { ...fakeImg(thumb), isConnected: false };
+    onEventImageError(img);
+    assert.equal(img.src, thumb);
+    assert.ok(!thumbFailedUrls.has(original));
+    assert.ok(!failedImageUrls.has(original));
+    assert.equal(calls, 0);
+  });
 });

@@ -35,7 +35,12 @@ async function addBaseMap(map) {
   let base = null;
   const useImages = (reason, err) => {
     console.error(`${reason}; showing OpenStreetMap images instead`, err);
-    if (base) map.removeLayer(base);
+    if (base && map.hasLayer(base)) {
+      // Leaflet attaches the layer's map events before its onAdd starts MapLibre; if that failed,
+      // onRemove still needs a MapLibre map to remove, so it gets one that does nothing.
+      base._glMap ??= { remove() {} };
+      map.removeLayer(base);
+    }
     base = null;
     addTileLayers(map);
   };
@@ -45,7 +50,8 @@ async function addBaseMap(map) {
     const pane = map.createPane('basePane');
     pane.style.zIndex = 200;
     pane.style.pointerEvents = 'none';
-    base = L.maplibreGL({ style: mapStyle(dark), pane: 'basePane' }).addTo(map);
+    base = L.maplibreGL({ style: mapStyle(dark), pane: 'basePane' });
+    base.addTo(map);
   } catch (err) {
     return useImages('The vector map did not load', err);
   }
