@@ -27,3 +27,13 @@ The release file is copied byte for byte from data revision `811b28a761ca1039982
 - The map shows a point for a `resolved` place, as for `reused` and `corrected`; anything less precise than `site` counts as approximate in the map's area filter. The location's tooltip says "Reviewed location" with its precision. A manual correction from the site's own corrections file still takes precedence: a location whose manual point differs from its released place keeps its loaded values (reported in the console), so the map never labels the manual point with the release's precision; one whose manual point agrees is updated.
 
 To withdraw a release, empty its records or revert the commit that added them; the events' own locations come back.
+
+## released-place-labels-v1.json
+
+One display label for every place, so a place reads the same way on every event: the most specific place, the city it lies in, and the country, such as "Execution Dock, London, United Kingdom", with the state or province kept in six federal countries and a historical state shown alone (rules decided by Rachid, 2026-10-30). Exported by history-dp `place_labels.py` (format and rules in its `docs/place-labels.md`) from Hermes's place resolver, and accepted by Atlas at history-dp `f9ea120` (PR 91). The file is copied byte for byte from data commit `5789da8`, `pilots/place-labels-v1/released-place-labels-v1.json`, SHA256 `46b32ed4…`. It holds 22,004 labels, 6 of them null, and covers every place the events and the location release use. On the current data, 30,256 events show a label that differs from their written location and 151 show no location text.
+
+- `source.events_sha256` binds the file to `canonical-t2.json` (`34426820…`). `labels` maps each `place_id` to its label, or to `null` when the location names no place, such as "N/A".
+- The site applies all labels or none (`modules/world-labels.js`): the loaded bytes must have `events_sha256`. A location's label is looked up by its `place_id` when it is shown, so a place the location release merged shows its own label. The card and the info panel show the label in place of the written name; the edit form keeps the written fields. Search finds an event by either its label or its written location name.
+- The label file has to be rebuilt whenever `canonical-t2.json` changes; Hermes rebuilds it with each release (one offline command).
+
+To withdraw it, remove the file; the written names come back.

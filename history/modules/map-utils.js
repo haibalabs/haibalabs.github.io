@@ -1,3 +1,5 @@
+import { placeLabel } from './world-labels.js';
+
 let initialized = false;
 
 /**
@@ -166,9 +168,13 @@ export function getLocationKey(location) {
 }
 
 export function formatLocations(locations) {
-  if (!locations || locations.length === 0) 
+  if (!locations || locations.length === 0)
     return "";
-  if (locations[0].name) 
+  // a released place label (world-labels.js); null means the location names no place
+  const label = placeLabel(locations[0]);
+  if (label !== undefined)
+    return label ?? "";
+  if (locations[0].name)
     return locations[0].name;
   return getLocationKey(locations[0]);
 //  return locations.map(loc => getLocationKey(loc)).join("; ");
