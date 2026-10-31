@@ -69,6 +69,7 @@ const NAME = ['case',
 const ATTRIBUTION = {
     osm: '© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
     terrain: 'relief <a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" target="_blank">Mapzen</a>, <a href="https://www.naturalearthdata.com/" target="_blank">Natural Earth</a>',
+    openfreemap: 'fonts <a href="https://openfreemap.org" target="_blank">OpenFreeMap</a>',
 };
 
 // Natural Earth's coloured relief carries the world view until the vector land cover takes over.
@@ -183,7 +184,7 @@ export function mapStyle(dark) {
             // Both relief sources are 256 px images declared as 512, so MapLibre fetches a zoom coarser
             // (a quarter of the tiles); the shading is soft anyway. Elevation stops at 9 and is enlarged beyond,
             // and hills fade out at street zoom, where they cost the most and show the least.
-            'natural-earth': { type: 'raster', tiles: ['https://tiles.openfreemap.org/natural_earth/ne2sr/{z}/{x}/{y}.png'], tileSize: 512, maxzoom: 6 },
+            'natural-earth': { type: 'raster', tiles: ['https://tiles.openfreemap.org/natural_earth/ne2sr/{z}/{x}/{y}.png'], tileSize: 512, maxzoom: 6, attribution: ATTRIBUTION.openfreemap },
             elevation: { type: 'raster-dem', tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
                 encoding: 'terrarium', tileSize: 512, maxzoom: 9, attribution: ATTRIBUTION.terrain },
         },

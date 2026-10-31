@@ -32,19 +32,34 @@ function addTileLayers(map) {
 // pane so the tile filters in style.css and base.css, made for the images, leave it alone.
 async function addBaseMap(map) {
   if (!supportsWebGL()) return addTileLayers(map);
+  let base = null;
+  const useImages = (reason, err) => {
+    console.error(`${reason}; showing OpenStreetMap images instead`, err);
+    if (base) map.removeLayer(base);
+    base = null;
+    addTileLayers(map);
+  };
+  let dark = isDarkTheme();
   try {
     await loadMapLibre();
+    const pane = map.createPane('basePane');
+    pane.style.zIndex = 200;
+    pane.style.pointerEvents = 'none';
+    base = L.maplibreGL({ style: mapStyle(dark), pane: 'basePane' }).addTo(map);
   } catch (err) {
-    console.error('The vector map did not load; showing OpenStreetMap images instead', err);
-    return addTileLayers(map);
+    return useImages('The vector map did not load', err);
   }
-  const pane = map.createPane('basePane');
-  pane.style.zIndex = 200;
-  pane.style.pointerEvents = 'none';
-  let dark = isDarkTheme();
-  const base = L.maplibreGL({ style: mapStyle(dark), pane: 'basePane' }).addTo(map);
+  // A vector tile server that fails before its first tile is down rather than slow, so the images take
+  // over; a failure after that leaves the map as it is. Other sources' errors are only logged.
+  let tileDrawn = false;
+  const glMap = base.getMaplibreMap();
+  glMap.on('sourcedata', e => { if (e.sourceId === 'shortbread' && e.tile) tileDrawn = true; });
+  glMap.on('error', e => {
+    if (base && !tileDrawn && e.sourceId === 'shortbread') useImages('OpenStreetMap vector tiles did not load', e.error);
+    else console.error('Map error', e.error);
+  });
   const restyle = () => {
-    if (isDarkTheme() === dark) return;
+    if (!base || isDarkTheme() === dark) return;
     dark = !dark;
     base.getMaplibreMap().setStyle(mapStyle(dark));
   };
