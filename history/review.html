@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Review edits · HistoriLine</title>
+    <!-- the theme chosen in settings (modules/theme.js), applied before the page first paints -->
+    <script>
+        try {
+            const theme = localStorage.getItem('historiline.theme');
+            if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+        } catch {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="review.css">
+</head>
+<body class="review-page">
+    <!-- The admin review page (WORLD-EDITS.md, Admin review page). The rules decide who may read
+         or decide edits; the page only shows what the signed-in account is allowed to see. -->
+    <header class="review-header">
+        <div class="review-bar">
+            <a class="review-home" href="index.html">HistoriLine</a>
+            <h1>Review edits</h1>
+            <span class="review-usage" id="review-usage"></span>
+        </div>
+        <div class="review-tabs" role="tablist" aria-label="Edit queues">
+            <button type="button" role="tab" id="tab-waiting" data-tab="waiting" aria-selected="true">Waiting</button>
+            <button type="button" role="tab" id="tab-conflicts" data-tab="conflicts" aria-selected="false">Conflicts</button>
+            <button type="button" role="tab" id="tab-history" data-tab="history" aria-selected="false">History</button>
+        </div>
+    </header>
+    <main class="review-main">
+        <p class="review-status" id="review-status" role="status" hidden></p>
+        <div id="review-list" role="tabpanel"></div>
+    </main>
+    <script type="module" src="modules/review-ui.js"></script>
+</body>
+</html>

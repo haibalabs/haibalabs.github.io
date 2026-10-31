@@ -55,7 +55,7 @@ service cloud.firestore {
     // Proposed edits to world events (../WORLD-EDITS.md). Editors, reviewers and admins write
     // their own; only the author and admins read them. Authors never write review results:
     // checks.automatic comes from the agents' checker (Admin SDK, outside these rules), and review
-    // fields, field dispositions and publication come from admins (phase 2). Nothing is deleted.
+    // fields, field dispositions and publication come from admins. Nothing is deleted.
     function editFieldNames() {
       return ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url'];
     }
@@ -76,7 +76,7 @@ service cloud.firestore {
     function validEditContent(data) {
       return data.keys().hasOnly(['edit_id', 'kind', 'event_id', 'event_name', 'dataset', 'changes',
           'reason', 'sources', 'source_conflict', 'author', 'created_at', 'revised_at', 'revision',
-          'content_sha256', 'status', 'checks'])
+          'content_sha256', 'status', 'checks', 'review', 'reviews', 'fields'])
         && (data.kind == 'update' || (data.kind == 'create' && validNewEvent(data.changes)))
         && data.event_id is string
         && data.event_id.matches('evt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
@@ -98,6 +98,7 @@ service cloud.firestore {
         && editId.matches('edt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
         && request.resource.data.edit_id == editId
         && validEditContent(request.resource.data)
+        && !request.resource.data.keys().hasAny(['review', 'reviews', 'fields'])
         && request.resource.data.status == 'submitted'
         && request.resource.data.revision == 1
         && request.resource.data.author.keys().hasOnly(['uid', 'email'])
@@ -121,6 +122,48 @@ service cloud.firestore {
                 'checks', 'dataset', 'event_name'])
             && validEditContent(request.resource.data))
         );
+      // An admin decides an open edit: its approved fields published with the overlay in the same
+      // write, or the whole edit rejected. The decision names the exact revision shown and is signed
+      // with the admin's own account and the server time; earlier decisions move to reviews.
+      allow update: if isAdmin()
+        && resource.data.status in ['submitted', 'flagged', 'ready', 'conflict', 'auto_rejected']
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'review', 'reviews', 'fields', 'published'])
+        && validReview(request.resource.data.review)
+        && request.resource.data.reviews is list
+        && request.resource.data.fields is map
+        && (
+          (request.resource.data.status == 'rejected' && request.resource.data.review.decision == 'rejected')
+          || (request.resource.data.status == 'published' && request.resource.data.review.decision == 'approved'
+            && request.resource.data.published.at == request.time
+            && request.resource.data.published.overlay_version
+              == getAfter(/databases/$(database)/documents/world_overlay/current).data.version)
+        );
+      allow delete: if false;
+    }
+
+    function validReview(review) {
+      return review.keys().hasOnly(['by', 'revision', 'content_sha256', 'decision', 'fields', 'note', 'self_approved', 'at'])
+        && review.by.keys().hasOnly(['uid', 'email', 'role'])
+        && review.by.uid == request.auth.uid
+        && review.by.email == request.auth.token.email
+        && review.by.role == 'admin'
+        && review.revision == resource.data.revision
+        && review.content_sha256 == resource.data.content_sha256
+        && review.note is string && review.note.size() <= 1000
+        && review.self_approved == (resource.data.author.uid == request.auth.uid)
+        && review.at == request.time;
+    }
+
+    // Approved edits every visitor sees (../WORLD-EDITS.md, Publishing to visitors). Anyone reads
+    // it; admins write it, each time one version higher. It names edits, never people.
+    match /world_overlay/{docId} {
+      allow read: if docId == 'current';
+      allow create, update: if isAdmin() && docId == 'current'
+        && request.resource.data.keys().hasOnly(['version', 'patches', 'created', 'updated_at'])
+        && request.resource.data.version == (resource == null ? 0 : resource.data.version) + 1
+        && request.resource.data.patches is map
+        && request.resource.data.created is map
+        && request.resource.data.updated_at == request.time;
       allow delete: if false;
     }
 

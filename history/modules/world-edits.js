@@ -234,6 +234,165 @@ export const editorStatus = (edit) => EDITOR_STATUS[edit?.status] ?? 'waiting';
 // Waiting for review and rejected edits can still be revised or withdrawn by their author.
 export const isOpen = (edit) => ['waiting', 'rejected'].includes(editorStatus(edit));
 
+// --- review and publication (WORLD-EDITS.md: Merging several edits on one event, Publishing to visitors) ---
+
+// Edits an admin can decide. Without the agents' checker (phase 3), new edits stay submitted.
+export const REVIEWABLE_STATUSES = ['submitted', 'flagged', 'ready', 'conflict', 'auto_rejected'];
+
+// The overlay stays well under Firestore's 1 MiB document limit; past this, approved edits must be
+// folded into the dataset before more are approved.
+export const OVERLAY_MAX_BYTES = 900 * 1024;
+
+export const emptyOverlay = () => ({ version: 0, patches: {}, created: {} });
+
+/**
+ * The value visitors see for a field: the overlay's approved value when it has one, else the value
+ * the edit was written against.
+ *
+ * @param {object|null} overlay - world_overlay/current
+ * @param {string} eventId
+ * @param {string} field
+ * @param {*} fallback - the dataset's value, as far as the caller knows it
+ */
+export function publishedValue(overlay, eventId, field, fallback) {
+    const patch = overlay?.patches?.[eventId]?.[field];
+    if (patch) return patch.value;
+    const created = overlay?.created?.[eventId]?.record;
+    return created && field in created ? normalizeField(field, created[field]) : fallback;
+}
+
+/**
+ * The fields of an update edit whose `before` is no longer the published value, because another
+ * approval changed them since the edit was written.
+ *
+ * @param {object} edit
+ * @param {object|null} overlay
+ * @returns {string[]}
+ */
+export function conflictingFields(edit, overlay) {
+    if (edit.kind === 'create') return [];
+    return Object.entries(edit.changes ?? {})
+        .filter(([field, change]) => !sameValue(publishedValue(overlay, edit.event_id, field, change.before), change.before))
+        .map(([field]) => field);
+}
+
+// The world event a new-event edit describes, in the dataset's shape.
+export function newEventRecord(edit) {
+    const record = { event_id: edit.event_id, confidence: 'high', locations: [], figures: [], categories: [] };
+    for (const [field, change] of Object.entries(edit.changes)) {
+        if (change.after !== null) record[field] = change.after;
+    }
+    return record;
+}
+
+export const recordSha256 = (record) => sha256Hex(new TextEncoder().encode(canonicalJson(record)));
+
+/**
+ * The overlay with an edit's approved fields published (WORLD-EDITS.md, Publishing to visitors).
+ * Every field is judged against the value visitors see now, so successive approvals compose: A→B
+ * then B→C leaves one patch from base A to value C, with both receipts in its chain. A new event
+ * is published whole. The overlay is public, so receipts name the edit and the time, never a
+ * person (Rachid, 2026-10-31); who approved stays in the private edit.
+ *
+ * @param {object|null} overlay - world_overlay/current, or null before the first approval
+ * @param {object} edit - the edit as stored
+ * @param {string[]} fields - the fields being approved (all of them for a new event)
+ * @param {string} approvedAt - ISO time of the approval
+ * @returns {Promise<object>} the next overlay, its version one higher
+ */
+export async function withApproval(overlay, edit, fields, approvedAt) {
+    const next = structuredClone(overlay ?? emptyOverlay());
+    next.patches ??= {};
+    next.created ??= {};
+    next.version = (overlay?.version ?? 0) + 1;
+    const receipt = { edit_id: edit.edit_id, revision: edit.revision, approved_at: approvedAt };
+    if (edit.kind === 'create') {
+        if (next.created[edit.event_id]) throw new Error('This new event is already published.');
+        const record = newEventRecord(edit);
+        next.created[edit.event_id] = { record, record_sha256: await recordSha256(record), ...receipt };
+        return next;
+    }
+    for (const field of fields) {
+        const change = edit.changes[field];
+        if (!change) throw new Error(`The edit doesn't change "${field}".`);
+        const patches = (next.patches[edit.event_id] ??= {});
+        const patch = patches[field];
+        const before = publishedValue(next, edit.event_id, field, change.before);
+        const step = { ...receipt, before, after: change.after };
+        if (patch) {
+            patch.chain.push(step);
+            patch.value = change.after;
+        } else {
+            patches[field] = { base: change.before, prior_bases: [], value: change.after, chain: [step] };
+        }
+    }
+    return next;
+}
+
+/**
+ * A word-level diff of two texts, for the review page: runs of unchanged, removed and added text,
+ * spaces kept with the words they follow.
+ *
+ * @param {string|null} before
+ * @param {string|null} after
+ * @returns {{ kind: 'same'|'removed'|'added', text: string }[]}
+ */
+export function wordDiff(before, after) {
+    const a = String(before ?? '').split(/(?<=\s)/);
+    const b = String(after ?? '').split(/(?<=\s)/);
+    // longest common subsequence of words, from the end, so the walk below goes forward
+    const lcs = Array.from({ length: a.length + 1 }, () => new Uint16Array(b.length + 1));
+    for (let i = a.length - 1; i >= 0; i--) {
+        for (let j = b.length - 1; j >= 0; j--) {
+            lcs[i][j] = a[i] === b[j] ? lcs[i + 1][j + 1] + 1 : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+        }
+    }
+    const runs = [];
+    const push = (kind, text) => {
+        if (!text) return;
+        if (runs.at(-1)?.kind === kind) runs.at(-1).text += text;
+        else runs.push({ kind, text });
+    };
+    let i = 0;
+    let j = 0;
+    while (i < a.length || j < b.length) {
+        if (i < a.length && j < b.length && a[i] === b[j]) {
+            push('same', a[i]);
+            i++;
+            j++;
+        } else if (i < a.length && (j === b.length || lcs[i + 1][j] >= lcs[i][j + 1])) {
+            push('removed', a[i++]);
+        } else {
+            push('added', b[j++]);
+        }
+    }
+    return runs;
+}
+
+// The overlay's size as Firestore will store it, near enough to keep under OVERLAY_MAX_BYTES.
+export const overlayBytes = (overlay) => new TextEncoder().encode(JSON.stringify(overlay)).length;
+
+/**
+ * The edit that reverts an approved edit's fields (WORLD-EDITS.md, Revert): each field goes back
+ * to the value it had before that approval, starting from the value visitors see now. It is an
+ * ordinary edit, approved like any other, so the revert keeps its own receipt.
+ *
+ * @param {object} edit - a published update edit
+ * @param {object} overlay
+ * @returns {Object<string, { before: *, after: * }>} its changes, empty when nothing is left to revert
+ */
+export function revertChanges(edit, overlay) {
+    const changes = {};
+    for (const [field, disposition] of Object.entries(edit.fields ?? {})) {
+        if (disposition.status !== 'approved') continue;
+        const step = overlay?.patches?.[edit.event_id]?.[field]?.chain?.find(s => s.edit_id === edit.edit_id);
+        if (!step) continue;
+        const current = publishedValue(overlay, edit.event_id, field, step.after);
+        if (!sameValue(current, step.before)) changes[field] = { before: current, after: step.before };
+    }
+    return changes;
+}
+
 /**
  * The document a new edit is stored as, without the server-set times, which edit-store.js adds.
  * For a new event, event is { event_id, name } with the ID assigned at submission.
