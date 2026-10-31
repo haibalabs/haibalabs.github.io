@@ -25,7 +25,7 @@ Accounts are invite-only. Each invited account has a document `users/{uid}`, whe
 
 A signed-in account without a `users` document can read and write nothing. Collections not listed in the rules are denied. The app hides controls by role, but the rules are what enforce access.
 
-Proposed edits to world events live in `edits/{editId}` (see [../WORLD-EDITS.md](../WORLD-EDITS.md)). Editors, reviewers and admins create their own, attributed to their UID and email with the server time; only the author and admins can read one. A suggested new event is a `create` edit: it must carry a name, a date and a description, with no `before` values, and a revision keeps its kind and `event_id`. The author can revise or withdraw an edit that is still waiting for review or was rejected. Authors can't write review results, and nobody deletes an edit. Deploy the rules (below) after any change to them is merged; until then the deployed rules refuse what the change adds, such as new events.
+Proposed edits to world events live in `edits/{editId}` (see [../WORLD-EDITS.md](../WORLD-EDITS.md)). Editors, reviewers and admins create their own, attributed to their UID and email with the server time; only the author and admins can read one. A suggested new event is a `create` edit: it must carry a name, a date and a description, with no `before` values, and a revision keeps its kind and `event_id`. The author can revise or withdraw an edit that is still waiting for review or was rejected. Authors can't write review results, and nobody deletes an edit. Admins decide an open edit on the review page: a rejection with a reason, or an approval that publishes the approved fields to `world_overlay/current` in the same write. Each decision names the revision it judged and is signed with the admin's account and the server time. Everyone can read the overlay; only admins write it, one version at a time, and it names no one. Deploy the rules (below) after any change to them is merged; until then the deployed rules refuse what the change adds, such as new events.
 
 Personal timelines (`timelines/{id}` and their `events` subcollection) are private to their owner and listed members, whatever the role; admins cannot read them through the app. See [../PERSONAL-TIMELINES.md](../PERSONAL-TIMELINES.md).
 
@@ -120,7 +120,7 @@ Requirements: Node 20+ and Java 21 for the emulators (macOS: `brew install openj
 ```
 npm ci
 npm run test:rules        # Firestore and Storage rules against the emulators
-npm run test:auth-flow    # sign-in, timelines, photos and edits in the browser against the emulators
+npm run test:auth-flow    # sign-in, timelines, photos, edits and review in the browser against the emulators
 ```
 
 `test:auth-flow` also needs the app's dependencies and browser: `npm ci` and `npx playwright install chromium` in `../`.

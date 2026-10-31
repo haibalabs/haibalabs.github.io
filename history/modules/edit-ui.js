@@ -118,8 +118,9 @@ export class EditUI {
         const session = this.session;
         this.user = user;
         this.canEdit = Boolean(user) && permissionsFor(role).canEdit;
-        // the Editing switch is in this section of the profile drawer
+        // the Editing switch is in this section of the profile drawer, with admins' link to the review page
         this.section.hidden = !this.canEdit;
+        document.getElementById('review-link').hidden = !(Boolean(user) && permissionsFor(role).isAdmin);
         this.edits = [];
         this.list.replaceChildren();
         this.close();

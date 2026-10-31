@@ -61,12 +61,15 @@ async function initializeApp() {
         const images = uiManager.fetchReleasedImages();
         const locations = uiManager.fetchReleasedLocations();
         const labels = uiManager.fetchPlaceLabels();
+        const publishedEdits = uiManager.fetchPublishedEdits();
         await eventManager.loadEvents(dataFile, { keepRecords: Promise.all([images, locations]).then(([i, l]) => [...releasePositions(i), ...releasePositions(l)]) });
         // images first: their checks compare each event's places as loaded
         await uiManager.showReleasedImages(await images);
         await uiManager.showReleasedLocations(await locations);
         // labels go by each location's place_id, after the location release has merged places
         await uiManager.showPlaceLabels(await labels);
+        // approved edits last: the release checks above compare the events as the file has them
+        uiManager.showPublishedEdits(await publishedEdits);
         uiManager.mapBrowser = new MapBrowser(eventManager, uiManager, panelManager);
         uiManager.renderFilters();
         initControls();

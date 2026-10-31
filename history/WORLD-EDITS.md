@@ -1,6 +1,6 @@
 # Editing world history with review (U2)
 
-Status: design approved by Rachid on 2026-10-28 (PR 31), after review by Atlas, Iris and Hermes; mockups signed off the same day. **Phase 1 is built**: the edits model and rules, the Editing switch, Suggest an edit (name, date, description, people with article links, category, Wikipedia article), browser checks and My edits (`modules/world-edits.js`, `edit-store.js`, `edit-ui.js`, `wikipedia-lookup.js`; tests in `tests/unit/world-edits.test.js`, `tests/e2e/edits-flow.spec.js` and `firebase/tests/rules.test.js`). **Phase 5 is built** too: Suggest a new event, the same form empty, sent as a `create` edit. Edits wait for review: nothing reaches visitors until phase 2's review page and overlay. The older admin-only contribution path is described in `WORLD-CONTRIBUTIONS.md`.
+Status: design approved by Rachid on 2026-10-28 (PR 31), after review by Atlas, Iris and Hermes; mockups signed off the same day. **Phase 1 is built**: the edits model and rules, the Editing switch, Suggest an edit (name, date, description, people with article links, category, Wikipedia article), browser checks and My edits (`modules/world-edits.js`, `edit-store.js`, `edit-ui.js`, `wikipedia-lookup.js`; tests in `tests/unit/world-edits.test.js`, `tests/e2e/edits-flow.spec.js` and `firebase/tests/rules.test.js`). **Phase 5 is built** too: Suggest a new event, the same form empty, sent as a `create` edit. **Phase 2 is built**, with review by hand and no automatic checks (Rachid, 2026-10-31): the admin review page (`review.html`, `modules/review-ui.js`, `review-store.js`), approval into the public overlay, which every visitor's page applies (`modules/world-overlay.js`), rejection, conflicts, history and revert (tests in `tests/unit/world-overlay.test.js`, `tests/e2e/review-flow.spec.js` and `firebase/tests/rules.test.js`). What differs from the design below is listed under Admin review page, "As built in phase 2". Public records name no one (see Accountability). The older admin-only contribution path is described in `WORLD-CONTRIBUTIONS.md`.
 
 Invited editors and reviewers can fix any world event: its name, date, description, Wikipedia link, category, location and image. They can also propose a new event. Every change is stored as an **edit** in a review bucket. An edit is first **checked automatically**, then **reviewed by an admin**, and only an approved edit changes the event that visitors see. One event can collect several edits from different people; edits to different fields merge on their own, and edits that clash are settled by the reviewer.
 
@@ -291,6 +291,13 @@ Mockup: the "Phase 2: admin review" board at https://claude.ai/artifact/DWUjqw24
 
 Approving runs in one Firestore transaction. The transaction sets the edit to `approved`, then `published`, updates the overlay (below) and marks clashing pending edits `conflict`.
 
+**As built in phase 2 (Rachid, 2026-10-31: review by hand, no automatic checks yet).** Without the checker, edits stay `submitted`, so the queue tabs are:
+- **Waiting**: every open edit;
+- **Conflicts**: open edits with a field whose `before` is no longer the published value. A conflict is worked out when the page loads, from the overlay, rather than stored as a `conflict` status, so an approval writes only the edit it decides and the overlay. The admin sees the published value under the proposal and can approve it on top, recorded as starting from the published value, or reject it;
+- **History**: every edit of each event, oldest first, from the event's original values on, with who proposed and who decided each one, any earlier decisions on revisions (kept in `reviews`), and **Revert** on published edits.
+
+Approve anyway and Approve all checked wait for phase 3, since nothing is automatically rejected or checked yet. A partial approval rejects the fields left unticked, so every decided edit is final; there is no "decide later". A new event is approved whole and can't be reverted from the page yet. The review page reads no dataset: it judges each edit against the overlay and the edit's own `before`, and visitors' pages skip a patch whose base the dataset no longer holds (see At load).
+
 ## Editor screens
 
 Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau, the "Phase 1" boards (Editing switch and card, Suggest an edit, My edits), revised with Rachid's comments of 2026-10-28. The canvas is private to Rachid's account; share it from its Share menu for anyone else to open it.
@@ -317,12 +324,14 @@ world_overlay/current
                  base         the dataset's value the patch applies to (A)
                  prior_bases  earlier dataset values still accepted, for pages loading an older dataset
                  value        the effective approved value (C)
-                 chain        ordered approval receipts: [{ edit_id, revision, before, after, approved_by, approved_at }]
+                 chain        ordered approval receipts: [{ edit_id, revision, before, after, approved_at }]
                } }
-  created      map, event_id -> { record, record_sha256, edit_id, revision, approved_by, approved_at }
+  created      map, event_id -> { record, record_sha256, edit_id, revision, approved_at }
   supported_datasets  SHA-256 values of the datasets this overlay may be applied to (see Folding)
-               approved_by is an opaque reviewer reference (see Accountability)
+  updated_at   server time of the last change
 ```
+
+The overlay names edits and times, never a person, not even by an opaque reference (Rachid, 2026-10-31; see Accountability). `approved_at` is the admin's clock, since Firestore can't put a server time inside a list; the server time is in the private edit's receipt. Phase 2 writes `version`, `patches`, `created` and `updated_at`; `dataset` and `supported_datasets` arrive with folding (phase 6). Until then a patch applies by value alone, under the load rules below.
 
 Everyone can read it; only admins write it, inside the approval transaction.
 
@@ -385,11 +394,9 @@ Every change to what visitors see can be traced to a person, at every stage:
 - **Private and public records are kept apart.** Hiding a name in the UI doesn't make a public document private. So identities (emails, uids) are kept only in private places:
   - the `edits` documents, readable by authors and admins;
   - the `users` collection;
-  - a private intake file outside any public repository, for example `history-data-private/edit-identities.jsonl` (location to confirm with Rachid when phase 6 is built), which maps each opaque reference to the person.
-
-  Everything public, meaning the overlay, the canonical dataset, releases and anything committed to a public repository, carries only **opaque references**, plus edit IDs. Visitors see no names, only a small "community edited" mark in the event's details (Rachid, 2026-10-27). Each person gets one stable reference, `ref_` followed by a random UUID, created on their first edit and stored only in the private mapping. It is random rather than a hash of the uid or email, so nobody can recompute it from public information.
-- **The overlay** stores, with each patch, the chain of approval receipts with `approved_by` as an opaque reference, edit IDs and times.
-- **The dataset export** carries the opaque author and approver references, approval times, override flags, edit IDs and revisions into the manifest and the rebuild. A folded change stays attributable after it leaves the overlay: the private intake file resolves each reference to a person.
+  Everything public, meaning the overlay, the canonical dataset, releases and anything committed to a public repository, carries **no person reference at all**, only edit IDs and times (Rachid, 2026-10-31). This replaces the opaque `ref_…` references of the earlier design: a stable pseudonym, even a random one, would let anyone group every edit one person approved, which matters for politically sensitive events. Visitors see no names, only a small "community edited" mark (Rachid, 2026-10-27). A public edit ID leads to its author and approver only through the private `edits` document, which admins alone can read.
+- **The overlay** stores, with each patch, the chain of approval receipts: edit IDs, revisions, values and times.
+- **The dataset export** carries edit IDs, revisions, approval times and override flags into the manifest and the rebuild. A folded change stays attributable after it leaves the overlay, through its edit ID and the private `edits` document.
 - **The review page's History** lists each decision with its approver and can be filtered by approver.
 
 ## Revert

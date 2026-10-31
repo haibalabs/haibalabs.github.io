@@ -8,6 +8,10 @@ import { permissionsFor, authErrorMessage } from './roles.js';
 import { attachPreviewImages, captionRuns, previewProblem, RELEASE_URL, shortCredit } from './world-images.js';
 import { applyLocations, LOCATION_RELEASE_URL, locationProblem } from './world-locations.js';
 import { clearPlaceLabels, LABEL_RELEASE_URL, labelProblem, setPlaceLabels } from './world-labels.js';
+import { applyOverlay, overlayProblem } from './world-overlay.js';
+import { readOverlay } from './review-store.js';
+
+const figureName = (figure) => (typeof figure === 'string' ? figure : figure?.name ?? '');
 
 function escapeHtml(str) {
     if (!str || typeof str !== 'string') return '';
@@ -207,12 +211,12 @@ export class UIManager {
         figures.forEach(figureSpan => {
             figureSpan.addEventListener('click', async (e) => {
                 e.stopPropagation();
-                const figureName = figureSpan.dataset.figure;
-                
+                const name = figureSpan.dataset.figure;
+
                 try {
-                    // Convert figure name to Wikipedia URL format
-                    const wikiTitle = figureName.replace(/ /g, '_');
-                    const url = `https://en.wikipedia.org/wiki/${encodeURIComponent(wikiTitle)}`;
+                    // the linked article, else the article titled with the person's name
+                    const url = figureSpan.dataset.url
+                        || `https://en.wikipedia.org/wiki/${encodeURIComponent(name.replace(/ /g, '_'))}`;
                     
                     await this.panelManager.handleInfoClick(url, figureSpan);
                 } catch (error) {
@@ -322,7 +326,7 @@ export class UIManager {
         
         // Calculate additional height for figures section
         const figuresHeight = event.figures?.length ? 
-            Math.ceil(event.figures.join(' ').length / charsPerLine) * lineHeight + 16 : 0;
+            Math.ceil(event.figures.map(figureName).join(' ').length / charsPerLine) * lineHeight + 16 : 0;
                 
         // Add image height if present
         const hasImage = (event.personal && event.image)
@@ -692,6 +696,44 @@ export class UIManager {
         return this.fetchRelease(LABEL_RELEASE_URL);
     }
 
+    // The approved edits (world_overlay/current), or null if they cannot be read; like the release
+    // files, a slow read gives up after five seconds.
+    fetchPublishedEdits() {
+        const request = readOverlay(this.eventManager.db).catch(() => null);
+        const timeout = new Promise(resolve => setTimeout(() => resolve(null), 5000));
+        return Promise.race([request, timeout]);
+    }
+
+    /**
+     * Applies the approved edits every visitor sees (WORLD-EDITS.md, Publishing to visitors), after
+     * the released images, locations and labels: published new events are added and approved fields
+     * replace the loaded values they were approved from. A field the dataset has since changed keeps
+     * its loaded value; the reason goes to the console.
+     *
+     * @param {object|null} overlay - world_overlay/current
+     */
+    showPublishedEdits(overlay) {
+        if (!overlay) return;
+        try {
+            const problem = overlayProblem(overlay);
+            if (problem) {
+                console.info(`Published edits not shown: ${problem}`);
+                return;
+            }
+            const { added, patched, stale } = applyOverlay(this.eventManager.events.filter(event => !event.personal), overlay);
+            if (stale.length) {
+                console.info(`Published edits: ${stale.length} no longer match the loaded events (${stale[0].event_id}, ${stale[0].field}).`);
+            }
+            for (const event of added) this.eventManager.events.push(this.eventManager.normalizeEvent(event));
+            if (added.length || patched) {
+                this.eventManager.sortEvents();
+                this.eventManager.invalidateCache();
+            }
+        } catch (error) {
+            console.error('Could not show the published edits:', error);
+        }
+    }
+
     /**
      * Shows the released place labels (releases/README.md) in place of the written location names,
      * all or none. Visitors see no message when they do not match; the reason goes to the console.
@@ -1006,13 +1048,17 @@ export class UIManager {
         `;
         }
 
+        // a person is a name, or { name, wikipedia_url } once an approved edit links their article
         const figuresSection = event.figures?.length ? `
         <div class="event-figures">
             ${event.figures.map(figure => `
-                <span class="figure-mention" data-figure="${escapeHtml(figure)}">@${escapeHtml(figure)}</span>
+                <span class="figure-mention" data-figure="${escapeHtml(figureName(figure))}"${figure?.wikipedia_url ? ` data-url="${escapeHtml(figure.wikipedia_url)}"` : ''}>@${escapeHtml(figureName(figure))}</span>
             `).join(' ')}
         </div>
         ` : '';
+        // visitors see that an approved edit changed the event, never who made it (WORLD-EDITS.md)
+        const communityMark = event.community_edited
+            ? '<span class="community-edited" title="Changed by a reviewed community edit">Community edited</span>' : '';
 
 
         const highlightedName = this.highlightSearchTerms(event.name, this.currentSearch);
@@ -1028,6 +1074,7 @@ export class UIManager {
             </div>
             <div class="event-time">
                 <span class="event-date">${escapeHtml(formattedDate)}</span>
+                ${communityMark}
             </div>
             <div class="event-description">${highlightedDesc}</div>
             ${figuresSection}

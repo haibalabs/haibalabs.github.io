@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { after, before, beforeEach, describe, it } from 'node:test';
 import { assertFails, assertSucceeds, initializeTestEnvironment } from '@firebase/rules-unit-testing';
-import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, Timestamp, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, Timestamp, updateDoc, where, writeBatch } from 'firebase/firestore';
 
 const RULES = readFileSync(new URL('../firestore.rules', import.meta.url), 'utf8');
 const ROLES = { viewer: 'viewer', editor: 'editor', reviewer: 'reviewer', admin: 'admin' };
@@ -485,5 +485,93 @@ describe('proposed edits to world events', () => {
     await assertFails(setDoc(editRef(db), { ...revised, event_id: WORLD_EVT }));
     await assertFails(setDoc(editRef(db), { ...revised, changes: { name: revised.changes.name } }));
     await assertSucceeds(setDoc(editRef(db), revised));
+  });
+
+  // Admin review (WORLD-EDITS.md, Admin review page): a decision names the revision it judged and
+  // is signed by the admin; an approval publishes to the overlay in the same write.
+  const overlayRef = (db) => doc(db, 'world_overlay', 'current');
+  const review = (uid, extra = {}) => ({
+    by: { uid, email: email(uid), role: 'admin' }, revision: 1, content_sha256: 'b'.repeat(64),
+    decision: 'approved', fields: ['enhanced_description'], note: '', self_approved: false, at: serverTimestamp(), ...extra,
+  });
+  const overlay = (version, extra = {}) => ({
+    version, created: {}, updated_at: serverTimestamp(),
+    patches: { [WORLD_EVT]: { enhanced_description: { base: 'June 13', prior_bases: [], value: 'June 19',
+      chain: [{ edit_id: EDIT, revision: 1, before: 'June 13', after: 'June 19', approved_at: '2026-10-31T12:00:00Z' }] } } },
+    ...extra,
+  });
+  const approval = (uid, extra = {}) => ({
+    status: 'published', review: review(uid), reviews: [],
+    fields: { enhanced_description: { status: 'approved', receipt: { by: { uid, email: email(uid), role: 'admin' }, revision: 1,
+      content_sha256: 'b'.repeat(64), value: 'June 19', at: serverTimestamp() } } },
+    published: { overlay_version: 1, at: serverTimestamp() }, ...extra,
+  });
+  const approve = (db, uid, { edit = {}, publish = overlay(1) } = {}) => {
+    const batch = writeBatch(db);
+    if (publish) batch.set(overlayRef(db), publish);
+    batch.update(editRef(db), approval(uid, edit));
+    return batch.commit();
+  };
+
+  it('an admin approves an open edit and publishes it to the overlay in the same write', async () => {
+    await seedEdit('editor');
+    await assertSucceeds(approve(asUser('admin'), 'admin'));
+    const stored = (await getDoc(editRef(asUser('admin')))).data();
+    if (stored.status !== 'published') throw new Error('not published');
+  });
+  it('an approval without its overlay write, or with another overlay version, is refused', async () => {
+    await seedEdit('editor');
+    await assertFails(approve(asUser('admin'), 'admin', { publish: null }));
+    await assertFails(approve(asUser('admin'), 'admin', { publish: overlay(2) }));
+  });
+  it('an approval naming the existing overlay version without raising it is refused', async () => {
+    await seedEdit('editor');
+    await env.withSecurityRulesDisabled(async (ctx) => { await setDoc(overlayRef(ctx.firestore()), overlay(3)); });
+    const db = asUser('admin');
+    await assertFails(approve(db, 'admin', { edit: { published: { overlay_version: 3, at: serverTimestamp() } }, publish: null }));
+    await assertSucceeds(approve(db, 'admin', { edit: { published: { overlay_version: 4, at: serverTimestamp() } }, publish: overlay(4) }));
+  });
+  it('a decision must be signed by the admin, on the current revision, with the server time', async () => {
+    await seedEdit('editor');
+    const db = asUser('admin');
+    await assertFails(approve(db, 'admin', { edit: { review: review('admin', { by: { uid: 'editor', email: email('editor'), role: 'admin' } }) } }));
+    await assertFails(approve(db, 'admin', { edit: { review: review('admin', { revision: 2 }) } }));
+    await assertFails(approve(db, 'admin', { edit: { review: review('admin', { content_sha256: 'c'.repeat(64) }) } }));
+    await assertFails(approve(db, 'admin', { edit: { review: review('admin', { at: Timestamp.fromMillis(0) }) } }));
+  });
+  it('an admin approving their own edit records it as self-approved', async () => {
+    await seedEdit('admin');
+    const db = asUser('admin');
+    await assertFails(approve(db, 'admin'));
+    await assertSucceeds(approve(db, 'admin', { edit: { review: review('admin', { self_approved: true }) } }));
+  });
+  it('an admin rejects an open edit with a note, and the author can then revise it', async () => {
+    await seedEdit('editor');
+    await assertSucceeds(updateDoc(editRef(asUser('admin')), {
+      status: 'rejected', review: review('admin', { decision: 'rejected', fields: [], note: 'Needs a source.' }), reviews: [],
+      fields: { enhanced_description: { status: 'rejected' } },
+    }));
+    const db = asUser('editor');
+    const current = (await getDoc(editRef(db))).data();
+    await assertSucceeds(setDoc(editRef(db), { ...current, status: 'submitted', revision: 2, revised_at: serverTimestamp(),
+      content_sha256: 'c'.repeat(64) }));
+    await assertFails(updateDoc(editRef(db), { review: review('editor') }));
+  });
+  it('only admins decide, and a decided edit is not decided again', async () => {
+    await seedEdit('editor');
+    for (const uid of ['editor', 'reviewer']) await assertFails(approve(asUser(uid), uid));
+    await seedEdit('editor', { status: 'published' });
+    await assertFails(approve(asUser('admin'), 'admin'));
+  });
+  it('everyone reads the overlay; only admins write it, one version at a time, with no other fields', async () => {
+    await assertSucceeds(getDoc(overlayRef(anonymous())));
+    await assertFails(setDoc(overlayRef(asUser('editor')), overlay(1)));
+    await assertFails(setDoc(overlayRef(asUser('admin')), overlay(2)));
+    await assertFails(setDoc(overlayRef(asUser('admin')), overlay(1, { approvers: ['admin'] })));
+    await assertSucceeds(setDoc(overlayRef(asUser('admin')), overlay(1)));
+    await assertFails(setDoc(overlayRef(asUser('admin')), overlay(1)));
+    await assertSucceeds(setDoc(overlayRef(asUser('admin')), overlay(2)));
+    await assertFails(deleteDoc(overlayRef(asUser('admin'))));
+    await assertFails(setDoc(doc(asUser('admin'), 'world_overlay', 'other'), overlay(1)));
   });
 });
