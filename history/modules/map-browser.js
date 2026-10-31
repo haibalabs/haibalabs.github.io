@@ -1,4 +1,5 @@
 import { eventDateLabel } from './date-handlers.js';
+import { EventClusters } from './event-clusters.js';
 
 const element = (tag, text, className) => {
     const node = document.createElement(tag);
@@ -89,6 +90,7 @@ export class MapBrowser {
         this.rings = [];
         this.map.on('zoomend', () => this.resizeRings());
         this.fullWindow = fullWindowControl().addTo(this.map);
+        this.clusters = new EventClusters(this);
         const controls = element('section', null, 'map-browser');
         controls.setAttribute('aria-label', 'Map area filter');
         const actions = element('div', null, 'map-actions');
@@ -114,12 +116,14 @@ export class MapBrowser {
             const { south, north, west, east } = filter.bounds;
             this.areaOutline = L.rectangle([[south, west], [north, east]], { color: '#9b783f', weight: 1, fill: false, interactive: false }).addTo(this.map);
         }
-        // Area filtering changes the timeline and never adds unrelated map points.
+        // Area filtering changes the timeline and shows the area's events as bubbles (event-clusters.js).
         // Keep the selection if it still matches; refresh clears it otherwise.
         this.ui.timelineContainer.scrollTop = 0;
         this.ui.resetWindow();
     }
     refresh(events) {
+        // before the early return: a new selection re-renders with the same events, and the bubbles leave it out
+        this.clusters.update(events);
         const index = this.manager.placeIndex;
         if (events === this.lastEvents && index === this.lastIndex) return;
         const indexChanged = index !== this.lastIndex;

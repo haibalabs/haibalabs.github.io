@@ -10,13 +10,23 @@ Most points are still older geocoder lookups (status `reused`) that nobody has r
 
 The button under + / − lets the map fill the window. Esc or the button returns to the drawer, and so does clicking a selected event's dot, which also shows its card.
 
-**Filter by visible area** narrows the timeline without plotting the matching events. A selected event keeps its points if it still matches the filters; otherwise selection clears. Clearing the area restores the non-geographic results without adding points. Events with no usable coordinates remain browsable and do not offer a map action.
+**Filter by visible area** narrows the timeline and shows the matching events on the map (see "Events on the map" below). A selected event keeps its points if it still matches the filters; otherwise selection clears. Clearing the area restores the non-geographic results and takes the events off the map. Events with no usable coordinates remain browsable and do not offer a map action.
 
 Multiple locations express recorded event associations, not proof of simultaneous occurrence, an inferred route, or a filled historical area. Drawing historical areas is future work. Saved coordinates retain their uncertainty metadata in the index; the minimal map does not claim these points are exact or independently verified. Manual coordinate corrections take precedence; otherwise only valid saved coordinates with reused/corrected status are used. Ambiguous candidate points are excluded. No browsing action calls a geocoder.
 
-Marker work is limited to the selected event's locations; map movement does not scan the full place index. The index still retains every event/place link for area filtering, including unmapped locations. Conflicting coordinate/precision records for a place remain separate. Canonical IDs are preserved; legacy files use session-only fallback identities. Duplicate persisted event IDs fail loading rather than selecting the wrong record.
+Without an area filter, marker work is limited to the selected event's locations; map movement does not scan the full place index. The index still retains every event/place link for area filtering, including unmapped locations. Conflicting coordinate/precision records for a place remain separate. Canonical IDs are preserved; legacy files use session-only fallback identities. Duplicate persisted event IDs fail loading rather than selecting the wrong record.
 
-An explicit **Explore events** mode, clustered counts and queries limited to the viewport are deferred. They must not change the selected-event-only default. The app still loads the full snapshot and filters locally; this change is not a claim of one-million-event loading performance.
+## Events on the map
+
+While **Filter by visible area** is on, the map shows the filtered events, grouped by Supercluster 8.0.1 (ISC, loaded from unpkg the first time the filter is used) in [modules/event-clusters.js](modules/event-clusters.js).
+- **Bubbles:** spots close together on screen merge into a numbered bubble, which splits as you zoom in. Counts of 1,000 or more read "1000+".
+- **Same-spot bubbles:** events that share one point have a white ring, because zooming can't split them. Several place records can share a point, such as "Asunción" and "Asunción, Paraguay", so grouping is by spot, not by place.
+- **Single events:** a spot with one event is a small dot; clicking it selects the event without moving the map.
+- **Lists:** clicking a bubble lists its events, earliest first, 25 at a time, with **Zoom in** while it can still split. Picking one selects it and scrolls the timeline to its card. The map zooms in to it if needed, but never out, centred on the event's place nearest the bubble.
+- **Stepper:** a picked event gets a small bar below it. ‹ and › go to the previous and next event of the list, and the list button reopens the list there.
+- **Selection:** the selected event is left out of the bubbles, so its own ring and label show. Selecting an event any other way ends the stepping.
+
+Without an area filter the map shows only the selected event, as before. The app still loads the full snapshot and filters locally; this change is not a claim of one-million-event loading performance.
 
 The earlier map-specific year fields, precision checkbox, unmapped-only button and duplicate results list were removed to keep the map simple. The data layer's time-range query remains covered by tests; the existing year navigator jumps through the timeline and does not filter a year range.
 
