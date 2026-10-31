@@ -3,10 +3,8 @@ import { placeLabel } from './world-labels.js';
 
 let initialized = false;
 
-const isDarkTheme = () => {
-  const theme = document.documentElement.dataset.theme;
-  return theme === 'dark' || (theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
-};
+// the Theme setting (theme.js), which doesn't follow the operating system
+const isDarkTheme = () => document.documentElement.dataset.theme === 'dark';
 
 // OpenStreetMap's own images, gray in the light theme and inverted in the dark one (style.css):
 // the base map when the vector map can't be drawn.
@@ -70,7 +68,6 @@ async function addBaseMap(map) {
     base.getMaplibreMap().setStyle(mapStyle(dark));
   };
   new MutationObserver(restyle).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', restyle);
 }
 
 /**
