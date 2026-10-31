@@ -7,16 +7,7 @@
     --column: 680px;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-        --bg: #0e0e10; --surface: #17171a; --surface-2: #222226;
-        --ink: #f4f4f5; --ink-2: #b4b4bb; --ink-3: #75757e; --line: #2a2a2f;
-        --accent: #7cb2ff; --accent-soft: rgb(124 178 255 / .12); --mark: rgb(250 204 21 / .28);
-        --chip-tint: rgb(23 23 26 / .72); --logo-filter: invert(1);
-        --thumb-bg: #3b3b42; --thumb-shadow: 0 0 0 1px rgb(255 255 255 / .22), 0 0 14px rgb(255 255 255 / .28);
-    }
-    :root:not([data-theme="light"]) .leaflet-tile-pane { filter: grayscale(1) invert(1) contrast(.85) brightness(.9); }
-}
+/* Dark only when chosen in settings (modules/theme.js); the operating system's setting is not followed. */
 :root[data-theme="dark"] {
     --bg: #0e0e10; --surface: #17171a; --surface-2: #222226;
     --ink: #f4f4f5; --ink-2: #b4b4bb; --ink-3: #75757e; --line: #2a2a2f;

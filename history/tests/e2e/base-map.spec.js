@@ -73,13 +73,13 @@ test('the map is drawn from OpenStreetMap vector tiles in its own pane and follo
   await expect.poll(() => page.evaluate(() => window.baseMap.styles.length)).toBe(2);
   expect(landColour(await page.evaluate(() => window.baseMap.styles[1]))).toBe(LAND.dark);
 
-  // System follows the operating system, which is light here
-  await page.getByText('System', { exact: true }).click();
+  await page.getByText('Light', { exact: true }).click();
   await expect.poll(() => page.evaluate(() => window.baseMap.styles.length)).toBe(3);
   expect(landColour(await page.evaluate(() => window.baseMap.styles[2]))).toBe(LAND.light);
+  // the operating system's setting doesn't restyle the map
   await page.emulateMedia({ colorScheme: 'dark' });
-  await expect.poll(() => page.evaluate(() => window.baseMap.styles.length)).toBe(4);
-  expect(landColour(await page.evaluate(() => window.baseMap.styles[3]))).toBe(LAND.dark);
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => window.baseMap.styles.length)).toBe(3);
 
   expect(imageTiles).toEqual([]);
   expect(errors).toEqual([]);
