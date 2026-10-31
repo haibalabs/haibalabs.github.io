@@ -135,7 +135,7 @@ describe('previewProblem — attach only to the exact data file reviewed', () =>
     assert.match(previewProblem({ ...preview, records: [record(-1)] }, 'abc', 5), /invalid or repeated/);
   });
   it('accepts the contextual roles the review assigns, and refuses a role the site does not know', () => {
-    for (const role of ['portrait', 'site', 'map', 'symbol', 'retrospective_illustration', 'scientific_context', 'contextual_photo']) {
+    for (const role of ['portrait', 'site', 'map', 'symbol', 'retrospective_illustration', 'scientific_context', 'contextual_photo', 'artifact']) {
       assert.equal(previewProblem({ ...preview, records: [record(1, { image_role: role })] }, 'abc', 5), null, role);
     }
     for (const role of ['unknown', 'contemporary_event', undefined]) {
@@ -313,5 +313,49 @@ describe('attachPreviewImages and detachPreviewImages — all reviewed records o
     const { attached } = attachPreviewImages(events, records, originals);
     detachPreviewImages(attached);
     assert.deepEqual(events, before);
+  });
+});
+
+
+describe('source-backed museum objects use the medium-agnostic artifact role', () => {
+  const fixture = JSON.parse(readFileSync(new URL('../fixtures/artifact-role-round8.json', import.meta.url), 'utf8'));
+  it('attaches the actual Rosetta Stone and Soyuz module records through normal preflight without changing provenance', async () => {
+    const records = structuredClone(fixture.records);
+    const before = structuredClone(records);
+    const originals = parseKeepingNumbers(CANONICAL_BYTES).events;
+    const events = originals.map(o => structuredClone(o));
+    const hash = await sha256Hex(CANONICAL_BYTES);
+    const release = { source: { events_sha256: hash }, records };
+    for (const r of records) {
+      assert.equal(recordSha256(originals[r.record_index]), r.baseline_record_sha256);
+      assert.ok(r.date_qualification.trim());
+    }
+    assert.equal(previewProblem(release, hash, events.length), null);
+    const { attached, problems } = attachPreviewImages(events, records, originals);
+    assert.equal(attached.length, 2);
+    assert.deepEqual(problems, []);
+    for (const r of records) {
+      assert.equal(events[r.record_index].image_url, r.image_url);
+      assert.deepEqual(events[r.record_index].image_preview, {
+        caption: displayCaption(r.caption), role: 'artifact', credit: r.credit,
+        license_name: r.license_name, license_url: r.license_url, source_url: r.source_url,
+        date: recordDisplayDate(r), under_review: false,
+      });
+    }
+    assert.deepEqual(records, before); // qualifications, dates, rights and source bindings remain intact
+  });
+  it('refuses a mixed artifact release with an unknown role before any attachment', () => {
+    const records = structuredClone(fixture.records);
+    records[1].image_role = 'unreviewed_object_kind';
+    const originals = parseKeepingNumbers(CANONICAL_BYTES).events;
+    const events = originals.map(o => structuredClone(o));
+    const release = { source: { events_sha256: 'same-bytes' }, records };
+    const problem = previewProblem(release, 'same-bytes', events.length);
+    assert.match(problem, /role the site does not know/);
+    if (problem === null) attachPreviewImages(events, records, originals);
+    for (const r of records) {
+      assert.equal(events[r.record_index].image_url, undefined);
+      assert.equal(events[r.record_index].image_preview, undefined);
+    }
   });
 });

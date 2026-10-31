@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_location_sidecar",
   "source": {
-    "events_sha256": "d12b4f7a658d3cf131ef5e7d43c255ec3bc66c87727f8f950d0cb5ad67eb4f79",
+    "events_sha256": "34426820cc48148df80fe21417e18b428ea36588cfec0c35b60cf87b036d3358",
     "snapshot": {
       "events_sha256": "6b7234e304f96654cc132bd82a3a413f918acd9df512f3f064c6e6255fc59669",
       "places_sha256": "3ae455e2da05dc41a63cc21977b0c5a97a36fd14407ceadb345f3cc0877c5c09",
@@ -38336,7 +38336,7 @@
       "event_id": "evt_71c8e21c-e3a2-56b6-b39b-61d78af5bf38",
       "event_name": "Crans-Montana bar fire",
       "enhanced_time": "2026-01-01",
-      "baseline_record_sha256": "41acbce4508d731f463d17952133f5a3eb90beb69fb146efe2fb856323bac434",
+      "baseline_record_sha256": "f966950745d72d9dc6eb8e32a5076cc5e981e95e8913a8a648ed3899287b74eb",
       "locations": [
         {
           "location_index": 0,
@@ -38350,7 +38350,7 @@
       "event_id": "evt_7a7923ff-e6dc-5019-ae20-50b5ab109ccd",
       "event_name": "U.S. strikes in Venezuela and capture of Nicolás Maduro",
       "enhanced_time": "2026-01-03",
-      "baseline_record_sha256": "a06b0a2417cb9f83ae37a726357f27ee88d04a3304b31bb6707b175ca53515ea",
+      "baseline_record_sha256": "8c9ae2202890a7641b24d4f20ff1ac0320ce99bff929e365653452035d34c39c",
       "locations": [
         {
           "location_index": 0,
@@ -38378,7 +38378,7 @@
       "event_id": "evt_ccb0ff3d-87c4-519c-b432-0074233910b0",
       "event_name": "2026 Beninese parliamentary election",
       "enhanced_time": "2026-01-11",
-      "baseline_record_sha256": "80526f98b8729dd0ae447c17173e4ba1627f185c4355d280f574fa51ecd19e4a",
+      "baseline_record_sha256": "411e405cc335ca3f36823578acb6312c73aac56675cf0af4ecb8ddfd50f3a9e9",
       "locations": [
         {
           "location_index": 0,
@@ -38392,7 +38392,7 @@
       "event_id": "evt_375ef8d8-33cd-56fb-b8f4-6bed3ce652f3",
       "event_name": "Karachi shopping mall fire",
       "enhanced_time": "2026-01-17",
-      "baseline_record_sha256": "7db9b304578d98f3321d15a358fcec7cc7a1d39ef19a76dfd598495c29d4d7cd",
+      "baseline_record_sha256": "2abca5a54f9132500a1e8214bab3f12b810c359d469f286e104cb20dd3b0d5df",
       "locations": [
         {
           "location_index": 0,
@@ -38406,7 +38406,7 @@
       "event_id": "evt_00c1c624-df16-5e7e-8883-677ae4a33b00",
       "event_name": "Syrian government gains territory after offensive",
       "enhanced_time": "2026-01-20",
-      "baseline_record_sha256": "ac3685430716df4d1d2a193b60ebba9f4145f17433f7921392bc60c0f60701e2",
+      "baseline_record_sha256": "1f0674ecad8fff7b5543fa137e1110fb6dc7e91dc8a5ce30088850fcb01d7446",
       "locations": [
         {
           "location_index": 0,
@@ -38420,7 +38420,7 @@
       "event_id": "evt_35bd8574-796f-5151-9003-d21940594a23",
       "event_name": "West Java landslides",
       "enhanced_time": "2026-01-24",
-      "baseline_record_sha256": "ead757d268e8d1c260f117e22c8389f3b43a276fef1d77524b3e4d5bd7d6496b",
+      "baseline_record_sha256": "4d24750a4714281bf036b1c6f5035be81b7acd6472210b90414a991424aa629a",
       "locations": [
         {
           "location_index": 0,
@@ -38434,7 +38434,7 @@
       "event_id": "evt_fcc5d2e9-0e39-5041-9f54-ecb099b7e95f",
       "event_name": "Rubaya mine collapses",
       "enhanced_time": "2026-01-28",
-      "baseline_record_sha256": "3c7f8e034f6c22739d912ed488e708e1689adba186eeb26264f981a1e6299cab",
+      "baseline_record_sha256": "27ce3d0e4576c88f5845ea8276ad04df3a15b2bb417e8dba611cf64101b2d74c",
       "locations": [
         {
           "location_index": 1,
@@ -38448,7 +38448,7 @@
       "event_id": "evt_ee39fb04-9e5d-5f11-9d22-83d079785844",
       "event_name": "Clashes erupt in Ethiopia’s Tigray region",
       "enhanced_time": "2026-01-29",
-      "baseline_record_sha256": "87b46b50e43cdf50f8287834ee8c8090eba4ac0730fbc81216dcf8b9f72b7530",
+      "baseline_record_sha256": "e2ff1b602e4e4a7691b9b34a966eb2088a1a13254e0cfc7c5479f6758e342364",
       "locations": [
         {
           "location_index": 0,
@@ -38462,7 +38462,7 @@
       "event_id": "evt_79f9147e-5d5b-5fd2-9642-ba7bf0b0f5df",
       "event_name": "Balochistan attacks and fighting",
       "enhanced_time": "2026-01-29",
-      "baseline_record_sha256": "adfe4bfebfedb2f989b68c32a2f27f7d4baf4b3db3ab571a892bc06fd3a6c7bf",
+      "baseline_record_sha256": "81d0ed701c1e0b1b375f658af56289802ea09d257bca84e2fff587ed837c94a2",
       "locations": [
         {
           "location_index": 0,
@@ -38476,7 +38476,7 @@
       "event_id": "evt_2a53f706-3d4b-5c08-b81f-8ff36517acdb",
       "event_name": "Boko Haram attacks villages in Kwara State",
       "enhanced_time": "2026-02-03",
-      "baseline_record_sha256": "8fcd12a2c2a6d8697ccf5160b331759b2574963d77f058d68a7b1f8c8d6729a6",
+      "baseline_record_sha256": "258f3c5a25e6b94e6d8ef70ad4968d5bb1060dd590fb2c6a94761d156e77e135",
       "locations": [
         {
           "location_index": 0,
@@ -38490,7 +38490,7 @@
       "event_id": "evt_1543d241-b7e8-59ee-bd42-af76b7085da6",
       "event_name": "Islamabad mosque bombing",
       "enhanced_time": "2026-02-06",
-      "baseline_record_sha256": "0115e24fd1ebccbacc7e7b96dcfb3bce33ac26fcefee9141914643f341ea1821",
+      "baseline_record_sha256": "c80bec8af699dd2481a8f913b418aab704aadd59a15ef4a2bb2b15eb9bc04391",
       "locations": [
         {
           "location_index": 0,
@@ -38504,7 +38504,7 @@
       "event_id": "evt_804970ee-1e06-58b1-aef8-7963e6f90918",
       "event_name": "2026 Men’s T20 World Cup begins",
       "enhanced_time": "2026-02-07",
-      "baseline_record_sha256": "8aa14d98fa9be6e78720d70be980eb4dcbd84a966984ee0824f33995268d3bb3",
+      "baseline_record_sha256": "4bafd13e79174e0c4a383e6166b64c71b8f20cd1642ee389360b841a3c16b351",
       "locations": [
         {
           "location_index": 0,
@@ -38523,7 +38523,7 @@
       "event_id": "evt_90129881-d863-5ec0-b076-78173fb8e2f4",
       "event_name": "Haiti’s Transitional Presidential Council dissolves",
       "enhanced_time": "2026-02-07",
-      "baseline_record_sha256": "b69a69bd89200e3af711fe7577c3d2e06d9935bfaecf4698e94eca77dde13427",
+      "baseline_record_sha256": "4db7e1f083ea59fe25664693363a96911a421b09396c221671023c9664f8442d",
       "locations": [
         {
           "location_index": 0,
@@ -38537,7 +38537,7 @@
       "event_id": "evt_b33c7b6d-d69a-54c4-9886-45dfd2775f6a",
       "event_name": "2026 Japanese general election",
       "enhanced_time": "2026-02-08",
-      "baseline_record_sha256": "f812ae6ce36cc7638116e08a3a374078b5a2739dd8d6fd1d2dc7bcdaf3819900",
+      "baseline_record_sha256": "1955ddd8ba0f4b09940b13cc8661551d6efd496dcddbee31892df9a8afb2e4f0",
       "locations": [
         {
           "location_index": 0,
@@ -38551,7 +38551,7 @@
       "event_id": "evt_8bf438de-f559-5034-bc1d-8a4f5042fe85",
       "event_name": "Thai election and constitutional referendum",
       "enhanced_time": "2026-02-08",
-      "baseline_record_sha256": "77fd2bb92e5b3e8aa377bc1b47c273ebc202e1ab589dbad191a742e13dd66fbf",
+      "baseline_record_sha256": "1a765d7cd3131eadcddea5d9e3ead371455b95f62274399a7053fd6482b71385",
       "locations": [
         {
           "location_index": 0,
@@ -38565,7 +38565,7 @@
       "event_id": "evt_94323432-e445-5f98-b2f3-16ae37f04e10",
       "event_name": "António José Seguro wins Portuguese presidential runoff",
       "enhanced_time": "2026-02-08",
-      "baseline_record_sha256": "b47c43b68700ef77bcf2c600ef48f181e240bd4abe0b3135b9901f1c7c793623",
+      "baseline_record_sha256": "28bdb05ec95a61f343b17779c57e463a3d0a6d6093db7327c6649e7e67a2041c",
       "locations": [
         {
           "location_index": 0,
@@ -38579,7 +38579,7 @@
       "event_id": "evt_59211f4f-b704-5a7f-83d4-9520302a784d",
       "event_name": "Tumbler Ridge mass shooting",
       "enhanced_time": "2026-02-10",
-      "baseline_record_sha256": "f965d6fba56654eabd463fffdc6693eb3754975efbc64c9c830e5e9903a55b95",
+      "baseline_record_sha256": "df570f219b5c0f7f9fa5de563013921ca2c4499f94be2e7b2d116cada139bc75",
       "locations": [
         {
           "location_index": 0,
@@ -38593,7 +38593,7 @@
       "event_id": "evt_896197dc-9f3b-5620-a518-6c6d7133ef83",
       "event_name": "2026 Laotian parliamentary election",
       "enhanced_time": "2026-02-22",
-      "baseline_record_sha256": "2dc8831f00e891330a47d411a185e80393fbc93373ba9800383977190962687d",
+      "baseline_record_sha256": "ef3a4a40eec0de29066acecec73aedfd49cde84e2b705212e8e5c9993a92ccce",
       "locations": [
         {
           "location_index": 0,
@@ -38607,7 +38607,7 @@
       "event_id": "evt_42d0479f-c409-52df-a283-a1d74c6a0f58",
       "event_name": "Jalisco military operation kills El Mencho",
       "enhanced_time": "2026-02-22",
-      "baseline_record_sha256": "832db6e47fd1cd566885fe6888ccb718309724217ca62af06e206426ae03dadb",
+      "baseline_record_sha256": "a4d08ba4e79a6b0763b893bde2a6120780dcbb2c73fa95aa073d6ae819e27ddc",
       "locations": [
         {
           "location_index": 0,
@@ -38621,7 +38621,7 @@
       "event_id": "evt_e3048151-644e-56c7-a2a7-f5fe4f31c5f0",
       "event_name": "2026 Colombian parliamentary election",
       "enhanced_time": "2026-03-08",
-      "baseline_record_sha256": "8795c36b5c7b041e808962a309d367e63b653a1191b4281f386b214320c6138b",
+      "baseline_record_sha256": "15726cd2d38652a899fcf5015a80eae2eb425b7b42f2e16c4ec23807b61115b8",
       "locations": [
         {
           "location_index": 0,
@@ -38635,7 +38635,7 @@
       "event_id": "evt_1e196d67-e3ea-5d9f-b256-3e9a87a706ca",
       "event_name": "U.S. bombing raid on Kharg Island",
       "enhanced_time": "2026-03-13",
-      "baseline_record_sha256": "4b1fc3d0f71c5483d049137861ef19b2a0ab2a16258baad373106abe1732bf80",
+      "baseline_record_sha256": "80bd984d32441cb2e7b43a573ce86daa9b0d02111223d144a1925eeac70d066c",
       "locations": [
         {
           "location_index": 0,
@@ -38649,7 +38649,7 @@
       "event_id": "evt_18d19cc4-1a1a-559e-83ef-ec9ec8889cee",
       "event_name": "Kazakhstan approves a new constitution",
       "enhanced_time": "2026-03-15",
-      "baseline_record_sha256": "687ca069d1302a5e39b74b9e3786f6e0d49fdf37c23b1391a395943413dc403b",
+      "baseline_record_sha256": "8acdd416d25f418b04f062829330913365f796a82fb371216a23f82a4212084d",
       "locations": [
         {
           "location_index": 0,
@@ -38663,7 +38663,7 @@
       "event_id": "evt_37b77862-c1d0-5199-88bb-011f2200a861",
       "event_name": "2026 North Korean parliamentary election",
       "enhanced_time": "2026-03-15",
-      "baseline_record_sha256": "40a2e0c9a653d3c735157326719ce6f31292262f62dc2d392e5badfaf5f5b1e2",
+      "baseline_record_sha256": "eb2ad1fa4a563ef6186067d1719b6e9cd4e438e7a55e8029f7a51eedf8924ffa",
       "locations": [
         {
           "location_index": 0,
@@ -38677,7 +38677,7 @@
       "event_id": "evt_34555d8d-058c-5011-a207-eb90c82044b7",
       "event_name": "2026 Vietnamese legislative election",
       "enhanced_time": "2026-03-15",
-      "baseline_record_sha256": "294ef7b2e0c1dd99f632f917062ca797af8469119c4cf870f9ee52c6b623fe28",
+      "baseline_record_sha256": "c0c46eb286c29d1a9a080ae92ee7aaef540cb0f303614723ebbd0106f8100e1c",
       "locations": [
         {
           "location_index": 0,
@@ -38691,7 +38691,7 @@
       "event_id": "evt_ac128078-97d9-58a9-982c-eb9f705b0feb",
       "event_name": "Denis Sassou Nguesso wins reelection in Congo",
       "enhanced_time": "2026-03-15",
-      "baseline_record_sha256": "1544d58eed91b2a9a693c731cc4a392ed1c7389e4bc044481b90cb24d7972489",
+      "baseline_record_sha256": "97f00b7947421a4b09d022cd24a7e4990728337dba68875f0929826d78557fd4",
       "locations": [
         {
           "location_index": 0,
@@ -38705,7 +38705,7 @@
       "event_id": "evt_03e7c20f-77c7-56ee-9958-c505c7eb54e1",
       "event_name": "Colombian military aircraft crashes near Puerto Leguízamo",
       "enhanced_time": "2026-03-23",
-      "baseline_record_sha256": "a71ec82f193e7fb0250049f1843864acdb99f6de085aeba78ac442d7e7a2ffa4",
+      "baseline_record_sha256": "0631b9a897030f5c91882c7250b6a16f30abf33a45386da5e70d2c0edc4b4b5f",
       "locations": [
         {
           "location_index": 0,
@@ -38719,7 +38719,7 @@
       "event_id": "evt_f1a5075e-f1c4-5dd2-a4c9-21cd03b43370",
       "event_name": "2026 Danish general election",
       "enhanced_time": "2026-03-24",
-      "baseline_record_sha256": "1c8c90e0a0c96213f042eae129147d51be58c860fe6c8b18a6b1e7bc5443234f",
+      "baseline_record_sha256": "86b26b345f7f0d78ff42a2c25baaf29904f8b4cf6d0834f33931284769c7efb0",
       "locations": [
         {
           "location_index": 0,
@@ -38747,7 +38747,7 @@
       "event_id": "evt_bf4c08e8-05ce-5cd4-8b47-b9131582a117",
       "event_name": "Tô Lâm elected president of Vietnam",
       "enhanced_time": "2026-04-07",
-      "baseline_record_sha256": "9fbdb7ef22090673a6e17f68103a04d09a9ce56dc6b5ddfde4b2ce27ee5ae46a",
+      "baseline_record_sha256": "0988bb33947d272c2b971c7123fd58213b2209ca94adbf80b59a57d3501def7f",
       "locations": [
         {
           "location_index": 0,
@@ -38761,7 +38761,7 @@
       "event_id": "evt_69b8e8d1-2a8c-5a6e-8d25-4c8a95bef577",
       "event_name": "Israeli airstrikes across Lebanon",
       "enhanced_time": "2026-04-08",
-      "baseline_record_sha256": "a656b91f834651434ceb1b02325d89c6a6de1a0d1c831bfa5522e03ab1a17f0e",
+      "baseline_record_sha256": "3dd168828f8df5740011006296c56ed731f1614ff9ad1358e21a823e35fcd5c0",
       "locations": [
         {
           "location_index": 0,
@@ -38775,7 +38775,7 @@
       "event_id": "evt_4ffe6de7-a48f-514b-92ef-15d345b7fd4e",
       "event_name": "Ismaïl Omar Guelleh reelected in Djibouti",
       "enhanced_time": "2026-04-10",
-      "baseline_record_sha256": "0ceea533cf298cc45a4aa099da3cd0540d0c54a2940f75cedbd79d79c5d6a0ae",
+      "baseline_record_sha256": "891ffeb9b97ecef96f132fe3d0e58abeafef5adea7583224e0f6799ef1a5a9e9",
       "locations": [
         {
           "location_index": 0,
@@ -38803,7 +38803,7 @@
       "event_id": "evt_eff76ba7-b706-533d-82c8-03660b516cbb",
       "event_name": "Péter Magyar defeats Viktor Orbán in Hungarian election",
       "enhanced_time": "2026-04-12",
-      "baseline_record_sha256": "0704d434ca2d03487ce7ffaa1511474a832c75108acc5f78fe6b2f4d8f9a7987",
+      "baseline_record_sha256": "f009a5b8c63da4c69c39622d2f280c268c6d84f31bd194231c68bfb81fdf1cf9",
       "locations": [
         {
           "location_index": 0,
@@ -38817,7 +38817,7 @@
       "event_id": "evt_718166ee-000b-5c74-ac65-ad694a8b047f",
       "event_name": "Romuald Wadagni wins Beninese presidential election",
       "enhanced_time": "2026-04-12",
-      "baseline_record_sha256": "6b5144d354d1f5d08381606a8a9ead7a4884be1b3a543acd6aa87a20b5f0bff5",
+      "baseline_record_sha256": "644bf1e3147d5a20954346e703a2ebaa7b1587d0a17390090c17d0f3d1b7f490",
       "locations": [
         {
           "location_index": 0,
@@ -38831,7 +38831,7 @@
       "event_id": "evt_1035e5a5-0f9e-5e4b-bb80-2f91e466b590",
       "event_name": "Tornado strikes Vance Air Force Base",
       "enhanced_time": "2026-04-23",
-      "baseline_record_sha256": "ee851cdb1a3d264736248e2981e8ce9763e2aca7a097647ffdc59d97d51aa8f7",
+      "baseline_record_sha256": "a377077a70eea98e1b1ba0f4a28aec0b96fb96491d298eb6c2337bcc1a6acd1d",
       "locations": [
         {
           "location_index": 0,
@@ -38845,7 +38845,7 @@
       "event_id": "evt_9bd384af-551b-5806-862c-4ddf8be36649",
       "event_name": "United Arab Emirates leaves OPEC",
       "enhanced_time": "2026-05-01",
-      "baseline_record_sha256": "390241347114aa1a9220676ef1d91e4a6d54bbbd05c28c8ab71613c3fa337001",
+      "baseline_record_sha256": "33c0de4457f31ecd0c7ddb61384ce8494b433f0c729fd6d0ac941d5c05fe24d6",
       "locations": [
         {
           "location_index": 0,
@@ -38859,7 +38859,7 @@
       "event_id": "evt_9cf243ed-f2f3-56bb-9003-e2c5e2dc7762",
       "event_name": "Liuyang fireworks factory explosion",
       "enhanced_time": "2026-05-04",
-      "baseline_record_sha256": "6d653f92e97f966e18f26ff3a261417325a5005ca3cd365c046e42197ab05b4b",
+      "baseline_record_sha256": "ac03e52134469740cb0458c94b2506cb9c852c6dca48b3dd3562ab6608094519",
       "locations": [
         {
           "location_index": 0,
@@ -38911,7 +38911,7 @@
       "event_id": "evt_2267f437-8284-54c7-a482-b4b2935dd055",
       "event_name": "Liushenyu coal mine explosion",
       "enhanced_time": "2026-05-22",
-      "baseline_record_sha256": "9147ec2057fa094776faa269b723e386fd81aae0295ea7d78051b1b0d2159468",
+      "baseline_record_sha256": "abc78119c1a2f21b73e5fd000e6fb3651b76cfda039dbf917fd0c59036b1241f",
       "locations": [
         {
           "location_index": 0,
@@ -38925,7 +38925,7 @@
       "event_id": "evt_579aec86-86c6-5723-a613-46cc38f1f09c",
       "event_name": "2026 Guinean parliamentary election",
       "enhanced_time": "2026-05-31",
-      "baseline_record_sha256": "08cad96dc6136006e13e54b4ca83241ea5d2e9de6168f404e76d879140297a92",
+      "baseline_record_sha256": "20b8933ebb4cb7be2474fb97ab74e234ee3a8cc04b4abdcb1c4d13c5c94dd0e9",
       "locations": [
         {
           "location_index": 0,
@@ -38939,7 +38939,7 @@
       "event_id": "evt_8a33e7ce-0cdd-5b34-aba9-555a9bc88df5",
       "event_name": "Flamingo Revolution protests spread in Albania",
       "enhanced_time": "2026-05-31",
-      "baseline_record_sha256": "2252544229c280395f8b99df8ce2ba1266598d5e591a7cdb72e054f1e250c04d",
+      "baseline_record_sha256": "f12d04170e81269269001b4afd924c347c866111baa11dac6c6731db241e2425",
       "locations": [
         {
           "location_index": 0,
@@ -38958,7 +38958,7 @@
       "event_id": "evt_6920b3f3-1ee0-5410-be96-ae2f8407bea5",
       "event_name": "2026 Armenian parliamentary election",
       "enhanced_time": "2026-06-07",
-      "baseline_record_sha256": "c0acf1fb8f4bb119312eb94606e5b1a18245630138ee89dc52f57ecde5091208",
+      "baseline_record_sha256": "e21b49c947a3a553e622a1803f62c51432f25f83c4341f35a2f121c22909810c",
       "locations": [
         {
           "location_index": 0,
@@ -38972,7 +38972,7 @@
       "event_id": "evt_775fefa1-facb-5385-a358-0baa4b1c3b98",
       "event_name": "2026 Kosovan parliamentary election",
       "enhanced_time": "2026-06-07",
-      "baseline_record_sha256": "bc14b295ce2d55894d415e14dfabfe405b339bc13a1f47e87f4455a0933f7e96",
+      "baseline_record_sha256": "e97a6bd65da9d5c72c6fb1000a761f6cf961ae652b75baacf9d35cc47a4b36ed",
       "locations": [
         {
           "location_index": 0,
@@ -38986,7 +38986,7 @@
       "event_id": "evt_879ad24e-5aa3-5835-9d10-9391a1ea8580",
       "event_name": "Keiko Fujimori wins Peruvian presidential runoff",
       "enhanced_time": "2026-06-07",
-      "baseline_record_sha256": "d8baf65cad964486aaf69b3214bfd4931e2059df86b295df08a43f4bbab6889b",
+      "baseline_record_sha256": "ff1c39b398f57e98db1d1c958027112f673cc1ba80f14cacb0f62c29a273cdff",
       "locations": [
         {
           "location_index": 0,
@@ -39000,7 +39000,7 @@
       "event_id": "evt_42840205-1ab1-5437-8252-2819c8bfee78",
       "event_name": "Magnitude 7.8 earthquake strikes the Philippines",
       "enhanced_time": "2026-06-08",
-      "baseline_record_sha256": "7cf90d12abe2c41b4b6cdf3caf2574332ab4e893a8d26883817869d0b240f59d",
+      "baseline_record_sha256": "69a37cf5ce68cba956d9e5679e73326db377240c884056ec335972abc8ba56fd",
       "locations": [
         {
           "location_index": 0,
@@ -39014,7 +39014,7 @@
       "event_id": "evt_ee26baa9-102a-54b5-bbb8-4d270b8dac86",
       "event_name": "Sagrada Família’s central tower opens",
       "enhanced_time": "2026-06-10",
-      "baseline_record_sha256": "d2f7d06cf02003166394f78004c90cc164f2c81819649cdd6f8917a7e100579e",
+      "baseline_record_sha256": "f57f7ef70a7561d28cebf2e9d37d5a1bc5ce02e7d8ad3d2fe7c8e23316347b13",
       "locations": [
         {
           "location_index": 0,
@@ -39028,7 +39028,7 @@
       "event_id": "evt_28742d64-1d7b-5c88-a10f-26e901d58920",
       "event_name": "Rio de Janeiro helicopter collision",
       "enhanced_time": "2026-06-14",
-      "baseline_record_sha256": "1e5550876af632a85905e7a1b9ef7bebbf602c41a2cb3ccb45619ff2e9c2a1e0",
+      "baseline_record_sha256": "1e05542885648371df5057d8c2032fe29c5f6e0f9ba9d7170b3897a61bc3d4a7",
       "locations": [
         {
           "location_index": 0,
@@ -39042,7 +39042,7 @@
       "event_id": "evt_eebcc441-fa10-594f-852e-2ee8e3c77444",
       "event_name": "Keir Starmer announces resignation",
       "enhanced_time": "2026-06-22",
-      "baseline_record_sha256": "5f4ed6e15bf6b6cd65c41bad57c2cfdca1e0cb835fcf8358b314bf6f0302ba05",
+      "baseline_record_sha256": "a6ed948d7203b96543333c1b5f23ab4e23ca085939da424ad50c80a4cb9bfbb2",
       "locations": [
         {
           "location_index": 0,
@@ -39056,7 +39056,7 @@
       "event_id": "evt_015536f9-3c47-5864-a0c5-3f6ee223babb",
       "event_name": "Two major earthquakes strike western Venezuela",
       "enhanced_time": "2026-06-24",
-      "baseline_record_sha256": "56169607db0d3eed6e77d60e9229c64c3a35978a60fb1d188e3fdd322807b387",
+      "baseline_record_sha256": "5070a12849de494baaa20d1bf3d14f8be955c2c70a6d0bf241963338535a5a7a",
       "locations": [
         {
           "location_index": 0,
@@ -39070,7 +39070,7 @@
       "event_id": "evt_44ea5b05-8df5-5713-90b5-81f63ce2e782",
       "event_name": "2026 Algerian parliamentary election",
       "enhanced_time": "2026-07-02",
-      "baseline_record_sha256": "80ee10cb4dee5c86de7a8482d6dd4e603666cabd5776191f27b36599050f7d7d",
+      "baseline_record_sha256": "58ce9054ae0c7fd7419b5c6e26c991de2cfb930e93103556145219e694998c1c",
       "locations": [
         {
           "location_index": 0,
@@ -39084,7 +39084,7 @@
       "event_id": "evt_88529b3c-2fc5-552d-95c9-d04f0d21ac5d",
       "event_name": "Hamas announces civil administration’s resignation",
       "enhanced_time": "2026-07-06",
-      "baseline_record_sha256": "29f339dac3f5fd54d09bbe02cc75fad3c6098b157ed5fd044409cb16519e3e41",
+      "baseline_record_sha256": "7353c66cbc575cb774f7e9a1ce8c26189b3ad60694eb3301c7813235a2698652",
       "locations": [
         {
           "location_index": 0,
@@ -39098,7 +39098,7 @@
       "event_id": "evt_bacc641e-59a9-5f8e-9bbb-27b7f1c95964",
       "event_name": "Carlos Vila Nova reelected president",
       "enhanced_time": "2026-07-19",
-      "baseline_record_sha256": "5c7f3e774b2e7336adff3a8b6c34b6bcb93776d33de568cbd707adfed041a9ff",
+      "baseline_record_sha256": "4c8646bab458d27075d755d67d4f7482eae05bc1a6b9f4f1b2a9b72254c878e5",
       "locations": [
         {
           "location_index": 0,
@@ -39112,7 +39112,7 @@
       "event_id": "evt_de690350-6a7c-5a9f-ae64-cb6bef6e045e",
       "event_name": "Houthis announce blockade against Saudi Arabia",
       "enhanced_time": "2026-07-20",
-      "baseline_record_sha256": "c2cdbfd6266e28c1dcfee7c00c7de9c0aac6cf550de1d8f529b539556b5b380b",
+      "baseline_record_sha256": "2222ba6c81dc3ed9200e09149f747e15b6772f0e5bf29ba5e37f2b4fd3bdaccb",
       "locations": [
         {
           "location_index": 0,
@@ -39126,7 +39126,7 @@
       "event_id": "evt_9549e73c-665d-55d1-b7b6-180bfde87917",
       "event_name": "Earthquake strikes Kumamoto Prefecture",
       "enhanced_time": "2026-07-28",
-      "baseline_record_sha256": "6a2dd14292961ba8e04694640f06413e11c1efc3d95b6980e133337a8fe004cd",
+      "baseline_record_sha256": "066aa7ac039a348218b6f625b942bdfcff7a6509906b7e907bf2a1931185434a",
       "locations": [
         {
           "location_index": 0,
@@ -39140,7 +39140,7 @@
       "event_id": "evt_be0968ac-bcc7-5026-9c28-54af4ea3b7e9",
       "event_name": "Saudi Arabia announces a maritime military alliance",
       "enhanced_time": "2026-07-30",
-      "baseline_record_sha256": "c0ee20a884bc48a1a703322a5aea3c7c3288382e8a884ce2db6cbf8c62b579c9",
+      "baseline_record_sha256": "bbf35bcdeca20a7bc281e57947b2cfe59c88bb96cbd26adf2fdaf17ee368f0de",
       "locations": [
         {
           "location_index": 0,
@@ -39154,7 +39154,7 @@
       "event_id": "evt_cf5e14ff-1f26-54ff-9324-bb3109941b31",
       "event_name": "Ceuta migrant crisis",
       "enhanced_time": "2026-07-30",
-      "baseline_record_sha256": "2cd61de24db8cace507f49af0f781995bb9a053635b2de84ef2bd6635983f781",
+      "baseline_record_sha256": "766cd6beb6cd47199622ba495f7443c666a0fa325e89b95ad5ff4bed7d56e6e9",
       "locations": [
         {
           "location_index": 0,
@@ -39173,7 +39173,7 @@
       "event_id": "evt_fd30d4af-2063-5cd3-9287-05dd7fe40401",
       "event_name": "Broad Peak avalanche kills ten climbers",
       "enhanced_time": "2026-07-30",
-      "baseline_record_sha256": "c5f659e5e93b4c783a8bd331a5f6b2cf3d71b5f58e82871b36d9babd8f2ef27b",
+      "baseline_record_sha256": "238a32bfa543ed7edfef6e1f1a7721c90409b4f4de91373ee33a9803b0e9d1d8",
       "locations": [
         {
           "location_index": 0,
@@ -39187,7 +39187,7 @@
       "event_id": "evt_867a6c92-7f58-5d6e-a0dd-daf8478b3cb6",
       "event_name": "Poland wins the Men’s Volleyball Nations League",
       "enhanced_time": "2026-08-02",
-      "baseline_record_sha256": "94962e398cb459ebb13c1bacf22e207d30c3efa7e0afa578fe81530229920343",
+      "baseline_record_sha256": "fb83fd0b670d94c85e0f5ea2b78a69f0c6707ad6a526b20b15507f101daf90aa",
       "locations": [
         {
           "location_index": 0,
@@ -39201,7 +39201,7 @@
       "event_id": "evt_8cc6d991-1db7-5eaa-bfaf-82fbd19bfc2a",
       "event_name": "Magnitude 7.4 earthquake strikes Colombia",
       "enhanced_time": "2026-08-10",
-      "baseline_record_sha256": "857645df618a20a704e543df5913e8ffd304e5bf4d9dfada695a32919ba9db30",
+      "baseline_record_sha256": "f5e78da014897f5957e8c44e88d18c34af4cf8ba0a6b6a59bff4e35e93d092a7",
       "locations": [
         {
           "location_index": 0,
@@ -39215,7 +39215,7 @@
       "event_id": "evt_04a2a5ed-7e00-5cc6-83a4-ad8c738f5cfc",
       "event_name": "Lake Kariba ferry capsizes",
       "enhanced_time": "2026-08-11",
-      "baseline_record_sha256": "d81fa2b6cbfe0c4f72c860935160cf379ff5cea01c2e9995f8834a93fbf551b8",
+      "baseline_record_sha256": "f4cd0a733b767c7cde5d3ee5283fafa4566f90f43834e46bbf2a6ed572c44381",
       "locations": [
         {
           "location_index": 0,
@@ -39229,7 +39229,7 @@
       "event_id": "evt_5e18422e-7d4e-5e56-b412-4dcd37ee2940",
       "event_name": "Earthquake strikes off Flores",
       "enhanced_time": "2026-08-15",
-      "baseline_record_sha256": "383b14643245a39edc69b67a6fc426ac2066c823bd1124681d5c98439d7446a6",
+      "baseline_record_sha256": "75daa4d78ea8278818a40bfe6bd6198dd8888d4573443d086a05145c8739e704",
       "locations": [
         {
           "location_index": 0,
@@ -39243,7 +39243,7 @@
       "event_id": "evt_d51d54ff-0c69-5a38-b089-086cb5927da2",
       "event_name": "Trump announces “Economic D-Day” against Iran",
       "enhanced_time": "2026-08-20",
-      "baseline_record_sha256": "092625f593fce8aa9a4529d150098f13e47fe36483c9fa1222336f901a67b469",
+      "baseline_record_sha256": "f04ae1a2b9aa6b1db60f53e1c5099036b41b92dec033d1143a232e4f51a2a7f1",
       "locations": [
         {
           "location_index": 0,
@@ -39257,7 +39257,7 @@
       "event_id": "evt_d425f004-2f49-5eaf-850e-b93e2f76ad48",
       "event_name": "Nepal–Tibet floods",
       "enhanced_time": "2026-08-26",
-      "baseline_record_sha256": "c04bd8c74c1d5f8444d751d7a5f4be3954ddf76849c4b7e9267ce79c6bd594b8",
+      "baseline_record_sha256": "11d888b6a9dc3e0d82405903b6a7bb2733484a300a36b1f82be9c5529b1f38d2",
       "locations": [
         {
           "location_index": 0,
@@ -39276,7 +39276,7 @@
       "event_id": "evt_a0ef3f73-0141-5ff8-ad83-07924f283b2c",
       "event_name": "Iceland rejects continuation of EU membership talks",
       "enhanced_time": "2026-08-29",
-      "baseline_record_sha256": "8619948ae1fa3d7a5defcf40ecb32ba9a5f82fdfc1c5219958d083c4b0735417",
+      "baseline_record_sha256": "6d357e5dc6850ddbb073b44b07746ac3284a2e52845fe22b0b3b281a4172b04b",
       "locations": [
         {
           "location_index": 0,
@@ -39290,7 +39290,7 @@
       "event_id": "evt_dd51e395-5eb2-54a9-87e8-6e9bc0da1c0f",
       "event_name": "Coup attempt in Niger",
       "enhanced_time": "2026-08-29",
-      "baseline_record_sha256": "7c3efcb24d108486bcd13ebcdc8c4a287337747fc9bc0ad2766d1ce2131f62c6",
+      "baseline_record_sha256": "300a332c79761acf6341c299f1048930818fab43c7980e4261a76494447c39fe",
       "locations": [
         {
           "location_index": 0,
@@ -39304,7 +39304,7 @@
       "event_id": "evt_4fa04906-5814-5247-ae11-c0c8dd951be7",
       "event_name": "Ülle Madise elected president of Estonia",
       "enhanced_time": "2026-09-02",
-      "baseline_record_sha256": "51ac35d3e173aed6233c660f71097f5eeac1462b8944c2cf9d78305917335569",
+      "baseline_record_sha256": "0ac5bd37de8494a167ca4d94a15294f46222d0d5840a3122bd43e18dd32ac613",
       "locations": [
         {
           "location_index": 0,
@@ -39318,7 +39318,7 @@
       "event_id": "evt_8e8a80c4-2974-5df2-9b3a-9b471db0b13d",
       "event_name": "MV June Aster ferry fire",
       "enhanced_time": "2026-09-09",
-      "baseline_record_sha256": "b5dfd47e936b1d92ebacbd79bf7a02767a5e315dec45bb398439e865f88a716c",
+      "baseline_record_sha256": "174738d371d2179e5e52522559a654d3af55457a83e9233a17d271a040a6d8bb",
       "locations": [
         {
           "location_index": 0,
@@ -39332,7 +39332,7 @@
       "event_id": "evt_1e76ea92-d57b-5aeb-9811-6616e281532c",
       "event_name": "2026 Swedish general election",
       "enhanced_time": "2026-09-13",
-      "baseline_record_sha256": "2858390a0ce802037ccfc6501ff28ba42f59b6e0f2c1117692cad867f22a1698",
+      "baseline_record_sha256": "6a55cc2010eab7c5d64caf7703705c4bcbe3631b300ceacf0eded4c6752b3687",
       "locations": [
         {
           "location_index": 0,
@@ -39346,7 +39346,7 @@
       "event_id": "evt_c270f4f6-49a3-5379-87aa-6ed51678988d",
       "event_name": "Virgo Transport 8 sinks in the Java Sea",
       "enhanced_time": "2026-09-13",
-      "baseline_record_sha256": "840e0c38c66d9362df6412ab85b022b2c89e1c3c6cadf25b1582b94c6a8653a7",
+      "baseline_record_sha256": "467d14a139e6d39d1a286f6cac58b58bf4b0677bbbdd3c8d1cefdba5f6991a54",
       "locations": [
         {
           "location_index": 0,
@@ -39374,7 +39374,7 @@
       "event_id": "evt_9b8bf7f1-830b-5969-9988-7daa1aae45fe",
       "event_name": "French student protests begin",
       "enhanced_time": "2026-09-18",
-      "baseline_record_sha256": "e2af32777b3d4f10ebca208e049bb2498bf293cc15dc84ac53b9b5d3aaa133de",
+      "baseline_record_sha256": "662f1cc5429e09d6a1b1c24f01ba289a929dde4b938677ecf7166a900fa9be94",
       "locations": [
         {
           "location_index": 0,
@@ -39393,7 +39393,7 @@
       "event_id": "evt_c651d592-fb14-53e3-afa3-293fdd53585d",
       "event_name": "2026 Moroccan general election",
       "enhanced_time": "2026-09-23",
-      "baseline_record_sha256": "9fdc7cf9b889a5e91efbf7475cfa7f1aa4b9a530122cf706372897671d403eb5",
+      "baseline_record_sha256": "1506f02388b33779a28dcabd4eaa054da2c5f8e0491a37d88e9f3b49bf732a8f",
       "locations": [
         {
           "location_index": 0,
@@ -39407,7 +39407,7 @@
       "event_id": "evt_541e687c-9c3f-58ff-8cf8-137c87f133c6",
       "event_name": "TPLF and allies launch offensive in northern Ethiopia",
       "enhanced_time": "2026-09-23",
-      "baseline_record_sha256": "cf4f06ba26188f46ca1911a64f6b297a1b0041f0e5ecd5085c2534725cbbd849",
+      "baseline_record_sha256": "14ba005566b82b6c03ef8a76181e6620066e321fd9d9d0e657bccd865759b16e",
       "locations": [
         {
           "location_index": 0,
@@ -39421,7 +39421,7 @@
       "event_id": "evt_325693e0-d263-5254-b1d7-15ba73adeeeb",
       "event_name": "2026 Bosnian general election",
       "enhanced_time": "2026-10-04",
-      "baseline_record_sha256": "08acba7b7168e38f9de8bdc2011dba79dfbd568d43afee35ec25f463bdcf4374",
+      "baseline_record_sha256": "3d226d161df78a0009a89c1b00ed908b7bb333182f222707e6adbdd66949ef1d",
       "locations": [
         {
           "location_index": 0,
@@ -39435,7 +39435,7 @@
       "event_id": "evt_c43d0d97-f358-5642-91e7-8b1c33e86039",
       "event_name": "Peshawar school roof collapse",
       "enhanced_time": "2026-10-15",
-      "baseline_record_sha256": "707d3625d65fb52e5fcc405e65f09d9bf620517ddae053649aa5488661e1386b",
+      "baseline_record_sha256": "8da5007d0ac802e6981c40309a3dfc9e618f7946d2954598471ca57799c4e34d",
       "locations": [
         {
           "location_index": 0,
@@ -39449,7 +39449,7 @@
       "event_id": "evt_de58dc09-dd54-5910-8d79-582009d3f437",
       "event_name": "Drone attack on a market in Abyei",
       "enhanced_time": "2026-10-19",
-      "baseline_record_sha256": "a33db75ccb843d1c14815a309776b572d222cac6f0767bf974f31a572dda665b",
+      "baseline_record_sha256": "b44755a4432d8289c04ca33132e1863b81b377344beff0fb332c8d4940395cdf",
       "locations": [
         {
           "location_index": 0,
@@ -39463,7 +39463,7 @@
       "event_id": "evt_f41393ab-403c-53c3-9ff6-12e0116473f4",
       "event_name": "Karak church mass shooting",
       "enhanced_time": "2026-10-23",
-      "baseline_record_sha256": "89ad1d3d15a381690369814305fa25b5d12e8df2c8b19d9f1a0979e547ab4e04",
+      "baseline_record_sha256": "9f400568fdd0bb8e4f0f4091afce2f3c1f5ef443222879e6f1ecbcde3c435241",
       "locations": [
         {
           "location_index": 0,
@@ -39477,7 +39477,7 @@
       "event_id": "evt_0bb3c40d-b4de-5d40-8a56-01a1c95c4e3b",
       "event_name": "Armenia wins Junior Eurovision 2026",
       "enhanced_time": "2026-10-24",
-      "baseline_record_sha256": "4ab097e0e549cdf58e1c3b2c1e45ebedb6849551948c4c287bac91a7186a09da",
+      "baseline_record_sha256": "58096586a5a2a32747edb4f3c4cd04ce44e1be752cb428d933bd42f7df24fd72",
       "locations": [
         {
           "location_index": 0,
@@ -39491,7 +39491,7 @@
       "event_id": "evt_25e82d4a-6eb7-509b-9df9-f760258a0c2f",
       "event_name": "Lula wins Brazilian presidential runoff",
       "enhanced_time": "2026-10-25",
-      "baseline_record_sha256": "23d797d4a1817c755dbbed310940bdac62e5f17019f2dcc22822ea474cfc3528",
+      "baseline_record_sha256": "a2b1e1e578a07a2061ae54c0ed3b6aa578c75b277202742fcd91129549cb6e68",
       "locations": [
         {
           "location_index": 0,
@@ -39505,7 +39505,7 @@
       "event_id": "evt_1f862d9d-b3cd-5441-909b-8bb4642a9410",
       "event_name": "Student List wins Serbian parliamentary election",
       "enhanced_time": "2026-10-25",
-      "baseline_record_sha256": "349a507c1b7e39dc9aecfaefe663cbae8645fcbd8533ac5055fea0ab628636e5",
+      "baseline_record_sha256": "6098ee098fe67c5e3079f3187c584a13a7c03255151830daf6db4ba5bb42fefc",
       "locations": [
         {
           "location_index": 0,
@@ -39519,7 +39519,7 @@
       "event_id": "evt_38adc551-4baf-5833-8b6b-9fd4e61b64c0",
       "event_name": "High-speed trains collide in Los Yébenes, Spain",
       "enhanced_time": "2026-10-28",
-      "baseline_record_sha256": "ddbfd9e6a8231e1a9b95364217c15727698f8164caf4d68c1c205fe4ddd55487",
+      "baseline_record_sha256": "7c7f19d7a4df01e9897df1a7f3c09819c1112f5b53664171fb55237ff1f12629",
       "locations": [
         {
           "location_index": 0,
