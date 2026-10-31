@@ -13,22 +13,25 @@ const button = (text, action) => {
     return node;
 };
 
-// How a selected event's point is drawn, by its precision. A dot with metres is a ring that grows with
-// the zoom to cover that much ground, never below its radius; the sizes are display choices, and 10 km
-// is the resolver's placement tolerance for approximate points.
+// How a selected event's reviewed point is drawn, by its precision. A dot with metres is a ring that grows
+// with the zoom to cover that much ground, never below its radius; the sizes are display choices, and
+// 10 km is the resolver's placement tolerance for approximate points.
 const BLUE = '#3b82f6';
 const DOTS = {
     site: { options: { radius: 6, weight: 2, color: '#fff', fillColor: '#1d4ed8', fillOpacity: 1 } },
-    settlement: { metres: 3000, options: { radius: 7, stroke: false, fillColor: BLUE, fillOpacity: 0.9 } },
+    settlement: { metres: 3000, options: { radius: 7, weight: 1.5, color: BLUE, fillColor: BLUE, fillOpacity: 0.2 } },
     approximate: { metres: 10000, options: { radius: 16, weight: 1.5, dashArray: '3 3', color: BLUE, fillColor: BLUE, fillOpacity: 0.16 } },
     region: { metres: 100000, options: { radius: 26, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.1 } },
     country: { metres: 300000, options: { radius: 34, weight: 1, dashArray: '2 4', color: BLUE, fillColor: BLUE, fillOpacity: 0.08 } },
 };
 DOTS.polity = DOTS.country;
-const dotFor = point => DOTS[point.precision] ?? DOTS.approximate;
-// Selecting an event fits its rings so a ring spans about a third of the map; a site is framed as if
-// it had a 2.5 km ring, so the streets or valley around it stay in view.
+// An unreviewed point may name a town or a whole region, so its ring keeps one size on screen.
+const UNREVIEWED = { options: { radius: 16, weight: 1.5, dashArray: '3 3', color: '#6b7280', fillColor: '#6b7280', fillOpacity: 0.12 } };
+const dotFor = point => point.reviewed ? DOTS[point.precision] ?? DOTS.approximate : UNREVIEWED;
+// Selecting an event fits a square 1.65 times each ring's width, rounded out to a whole zoom; a site is
+// framed as if it had a 2.5 km ring. An event with an unreviewed point zooms no closer than 6.
 const SITE_VIEW_METRES = 2500;
+const UNREVIEWED_MAX_ZOOM = 6;
 
 const EARTH_CIRCUMFERENCE = 40075016.686;
 const metresPerPixel = (lat, zoom) => EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
@@ -147,7 +150,8 @@ export class MapBrowser {
         if (points.length) {
             const bounds = L.latLngBounds([]);
             for (const point of points) bounds.extend(L.latLng(point.coordinates).toBounds((dotFor(point).metres ?? SITE_VIEW_METRES) * 3.3));
-            this.map.fitBounds(bounds, { padding: [35, 60], animate: false });
+            const maxZoom = points.every(point => point.reviewed) ? this.map.getMaxZoom() : UNREVIEWED_MAX_ZOOM;
+            this.map.fitBounds(bounds, { maxZoom, padding: [35, 60], animate: false });
         }
         this.ui.renderEvents();
     }

@@ -54,6 +54,8 @@ export class PlaceEventIndex {
                 if (!this.points.has(key)) this.points.set(key, {
                     key, placeId, coordinates, precision,
                     approximate: !['exact', 'site'].includes(precision),
+                    // 'reused' points are older geocoder lookups nobody has reviewed; their precision is a guess
+                    reviewed: isValidCoordinates(location.corrected) || geography.status !== 'reused',
                     name: location.name || location.city || location.country || 'Unnamed place',
                     eventIds: new Set()
                 });

@@ -172,11 +172,15 @@ for (const [width, height] of [[390, 844], [1440, 900]]) {
   });
 }
 
-const precisionFixtures = ['site', 'settlement', 'approximate', 'country'].map((precision, i) => ({
-  event_id: `prec_${precision}`, name: `Precision ${precision}`, enhanced_time: String(1800 + i),
+const precisionEvent = (id, precision, status, i) => ({
+  event_id: `prec_${id}`, name: `Precision ${id}`, enhanced_time: String(1800 + i),
   enhanced_description: 'One location of this precision.', categories: ['culture'], figures: [], confidence: 'high',
-  locations: [{ place_id: `place_${precision}`, name: precision, geography: { status: 'reused', precision, coordinates: [10, 20] } }]
-}));
+  locations: [{ place_id: `place_${id}`, name: id, geography: { status, precision, coordinates: [10, 20] } }]
+});
+const precisionFixtures = [
+  ...['site', 'settlement', 'approximate', 'country'].map((precision, i) => precisionEvent(precision, precision, 'resolved', i)),
+  precisionEvent('unreviewed', 'approximate', 'reused', 4),
+];
 async function openPrecision(page) {
   await page.route('**/*', route => {
     const url = route.request().url();
@@ -200,7 +204,7 @@ test('a selected event is labelled with its name and date and framed by the grou
     await expect(label).toHaveCount(1);
     await expect(label.locator('strong')).toHaveText(`Precision ${precision}`);
     await expect(label.locator('strong + span')).not.toBeEmpty();
-    // the ring spans roughly a third of the map, whatever ground it covers
+    // the ring fills a good part of the map, whatever ground it covers
     const ring = await page.locator('.map-selected-dot').boundingBox();
     expect(ring.height / map.height).toBeGreaterThan(0.12);
     expect(ring.height / map.height).toBeLessThan(0.45);
@@ -215,4 +219,24 @@ test('a selected event is labelled with its name and date and framed by the grou
   await expect(zoomIn).toHaveClass(/leaflet-disabled/);
   expect(await zoomIn.locator('i').evaluate(el => getComputedStyle(el).opacity)).toBe('0.3');
   expect(await page.locator('.leaflet-control-zoom-out i').evaluate(el => getComputedStyle(el).opacity)).toBe('1');
+});
+
+test('an unreviewed point keeps one ring size on screen and its event opens no closer than zoom 6', async ({ page }) => {
+  await openPrecision(page);
+  await show(page, 'unreviewed');
+  await expect(page.locator('.map-event-label strong')).toHaveText('Precision unreviewed');
+  const ring = page.locator('.map-selected-dot');
+  await expect(ring).toHaveAttribute('stroke', '#6b7280');
+  // the circle's radius in pixels, as Leaflet writes it into the path
+  await expect(ring).toHaveAttribute('d', /a16,16 /);
+  const zoomIn = page.locator('.leaflet-control-zoom-in');
+  let steps = 0;
+  while (!(await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))) && steps < 14) {
+    await zoomIn.click();
+    await expect(page.locator('#map')).not.toHaveClass(/leaflet-zoom-anim/);
+    steps++;
+  }
+  // from zoom 6 or wider, + takes at least 8 steps to reach 14
+  expect(steps).toBeGreaterThanOrEqual(8);
+  await expect(ring).toHaveAttribute('d', /a16,16 /);
 });
