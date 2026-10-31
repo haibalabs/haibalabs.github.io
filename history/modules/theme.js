@@ -1,32 +1,28 @@
 // theme.js
-// The Theme choice in the settings drawer. System follows the operating system's light or dark setting
-// (style.css); Light and Dark set data-theme on the page root and are remembered. index.html applies a
-// remembered choice before the page first paints.
+// The Theme choice in the settings drawer: Light, the default, or Dark, set as data-theme on the page root
+// and remembered. The site doesn't follow the operating system's setting (Rachid, 2026-10-31). index.html
+// applies the remembered choice before the page first paints.
 
 export const THEME_KEY = 'historiline.theme';
-const THEMES = new Set(['light', 'dark']);
 
 function readTheme() {
     try {
-        const theme = localStorage.getItem(THEME_KEY);
-        return THEMES.has(theme) ? theme : 'system';
+        return localStorage.getItem(THEME_KEY) === 'dark' ? 'dark' : 'light';
     } catch {
-        return 'system';
+        return 'light';
     }
 }
 
 function writeTheme(theme) {
     try {
-        if (theme === 'system') localStorage.removeItem(THEME_KEY);
-        else localStorage.setItem(THEME_KEY, theme);
+        localStorage.setItem(THEME_KEY, theme);
     } catch {
         // private windows may refuse storage; the choice still applies to this page
     }
 }
 
 function applyTheme(theme) {
-    if (THEMES.has(theme)) document.documentElement.dataset.theme = theme;
-    else delete document.documentElement.dataset.theme;
+    document.documentElement.dataset.theme = theme;
 }
 
 export function initThemeChoice() {
