@@ -136,9 +136,17 @@ service cloud.firestore {
           || (request.resource.data.status == 'published' && request.resource.data.review.decision == 'approved'
             && request.resource.data.published.at == request.time
             && request.resource.data.published.overlay_version
-              == getAfter(/databases/$(database)/documents/world_overlay/current).data.version)
+              == getAfter(/databases/$(database)/documents/world_overlay/current).data.version
+            && overlayBumpedInThisWrite())
         );
       allow delete: if false;
+    }
+
+    // getAfter returns the overlay unchanged when the write doesn't touch it, so an approval must also
+    // raise the overlay's version in the same write: 1 for the first, one higher after that.
+    function overlayBumpedInThisWrite() {
+      let path = /databases/$(database)/documents/world_overlay/current;
+      return getAfter(path).data.version == (exists(path) ? get(path).data.version + 1 : 1);
     }
 
     function validReview(review) {

@@ -524,6 +524,13 @@ describe('proposed edits to world events', () => {
     await assertFails(approve(asUser('admin'), 'admin', { publish: null }));
     await assertFails(approve(asUser('admin'), 'admin', { publish: overlay(2) }));
   });
+  it('an approval naming the existing overlay version without raising it is refused', async () => {
+    await seedEdit('editor');
+    await env.withSecurityRulesDisabled(async (ctx) => { await setDoc(overlayRef(ctx.firestore()), overlay(3)); });
+    const db = asUser('admin');
+    await assertFails(approve(db, 'admin', { edit: { published: { overlay_version: 3, at: serverTimestamp() } }, publish: null }));
+    await assertSucceeds(approve(db, 'admin', { edit: { published: { overlay_version: 4, at: serverTimestamp() } }, publish: overlay(4) }));
+  });
   it('a decision must be signed by the admin, on the current revision, with the server time', async () => {
     await seedEdit('editor');
     const db = asUser('admin');
