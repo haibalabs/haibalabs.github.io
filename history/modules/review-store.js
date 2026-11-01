@@ -61,8 +61,11 @@ export class ReviewStore {
      * @param {object} edit - the edit as the page shows it
      * @param {string[]} fields - the fields to approve; a new event is approved whole
      * @param {string} [note]
+     * @param {object} [values] - field -> what to publish instead of the proposal: the image with the
+     *   reviewer's confirmed credit and license (and its public URL for an upload), or null to publish
+     *   a new event without its image
      */
-    async approve(edit, fields, note = '') {
+    async approve(edit, fields, note = '', values = {}) {
         const editRef = doc(this.db, 'edits', edit.edit_id);
         const by = this.admin();
         const approvedAt = new Date().toISOString();
@@ -74,18 +77,20 @@ export class ReviewStore {
                 throw new Error('This edit changed since the page loaded it. Reload to see the current version.');
             }
             const approved = current.kind === 'create' ? Object.keys(current.changes) : fields;
-            const next = await withApproval(overlaySnap.exists() ? overlaySnap.data() : null, current, approved, approvedAt);
+            const next = await withApproval(overlaySnap.exists() ? overlaySnap.data() : null, current, approved, approvedAt, values);
             if (overlayBytes(next) > OVERLAY_MAX_BYTES) {
                 throw new Error('The published edits are full: fold the approved edits into the dataset first.');
             }
-            const receipts = Object.fromEntries(Object.keys(current.changes).map(field => [field, approved.includes(field)
+            // a field published as null instead of its proposal (a new event's image) counts as not approved
+            const published = (field) => approved.includes(field) && !(field in values && values[field] === null && current.changes[field].after !== null);
+            const receipts = Object.fromEntries(Object.keys(current.changes).map(field => [field, published(field)
                 ? { status: 'approved', receipt: { by, revision: current.revision, content_sha256: current.content_sha256,
-                    value: current.changes[field].after, at: serverTimestamp() } }
+                    value: field in values ? values[field] : current.changes[field].after, at: serverTimestamp() } }
                 : { status: 'rejected' }]));
             tx.set(this.overlayRef(), { ...next, updated_at: serverTimestamp() });
             tx.update(editRef, {
                 status: 'published',
-                review: this.review(current, 'approved', approved, note),
+                review: this.review(current, 'approved', approved.filter(published), note),
                 reviews: this.earlierReviews(current),
                 fields: receipts,
                 published: { overlay_version: next.version, at: serverTimestamp() },

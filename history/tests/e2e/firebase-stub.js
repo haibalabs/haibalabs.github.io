@@ -31,6 +31,7 @@ export const ref = () => ({});
 export const uploadBytes = async () => ({});
 export const getBlob = async () => new Blob();
 export const deleteObject = async () => {};
+export const getDownloadURL = async () => "";
 `;
 
 // The vector map's library, tiles and fonts need the network and WebGL, so stubbed pages show the map's

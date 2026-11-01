@@ -116,24 +116,19 @@ export class UIManager {
             const randomIndex = Math.floor(Math.random() * filteredEvents.length);
             const targetPosition = this.positions.get(randomIndex) || 0;
 
-            this.glideTo(targetPosition);
+            this.moveTo(targetPosition);
         });
     }
 
     /**
-     * Scrolls the timeline to `top`. A smooth scroll across the whole timeline (millions of pixels) takes
-     * seconds, so a long one first jumps to a screen short of the target and glides the rest.
+     * Moves the timeline to `top` at once. A smooth scroll across the whole timeline (millions of pixels)
+     * takes seconds, and one still running would carry on over the visitor's own scrolling, so jumps
+     * don't animate; scrollend still follows, for handleScrollEnd's corrections.
      *
      * @param {number} top
      */
-    glideTo(top) {
-        const container = this.timelineContainer, screen = container.clientHeight;
-        // an estimated target can lie past the end; measure from where the scroll can actually stop
-        const reachable = Math.min(top, container.scrollHeight - screen);
-        if (Math.abs(reachable - container.scrollTop) > 2 * screen) {
-            container.scrollTop = reachable > container.scrollTop ? reachable - screen : reachable + screen;
-        }
-        container.scrollTo({ top, behavior: 'smooth' });
+    moveTo(top) {
+        this.timelineContainer.scrollTo({ top, behavior: 'instant' });
     }
 
     /** Says in the timeline that the world events couldn't be loaded, and keeps saying it on later renders. */
@@ -457,7 +452,7 @@ export class UIManager {
             if (targetPosition !== undefined && (targetPosition < scrollTop || targetPosition > scrollTop + viewportHeight - 40)
                     && Math.abs(stop - scrollTop) > 1 && corrections < 3) {
                 this.scrollTarget.corrections = corrections + 1;
-                this.glideTo(stop);
+                this.moveTo(stop);
             } else {
                 this.scrollTarget = null;
             }
@@ -465,7 +460,7 @@ export class UIManager {
             // Target not visible, scroll more
             const targetPosition = this.positions.get(targetIndex);
             if (targetPosition && targetPosition > scrollTop) {
-                this.glideTo(targetPosition);
+                this.moveTo(targetPosition);
             }
         }
     }
@@ -1044,7 +1039,7 @@ export class UIManager {
             const loadingClass = alreadyLoaded ? '' : ' loading';
             // a reviewed preview image opens full size with its credits; the card keeps a one-line caption
             const zoomClass = event.image_preview ? ' zoomable' : '';
-            const caption = event.image_preview
+            const caption = event.image_preview?.caption
                 ? `<p class="event-image-caption">${captionRuns(event.image_preview.caption)
                     .map(run => (run.italic ? `<em>${escapeHtml(run.text)}</em>` : escapeHtml(run.text))).join('')}</p>`
                 : '';
@@ -1280,7 +1275,7 @@ export class UIManager {
             this.scrollTarget = { index: targetIndex };
 
             // Scroll to the position
-            this.glideTo(this.lastScrollPosition);
+            this.moveTo(this.lastScrollPosition);
 
             document.getElementById('dateInput').value = `${targetYear}`;
         } else {
@@ -1292,7 +1287,7 @@ export class UIManager {
                 this.lastScrollPosition = this.positions.get(lastIndex) || filteredEvents.length * this.defaultEventHeight;
                 this.scrollTarget = { index: targetIndex };
 
-                this.glideTo(this.lastScrollPosition);
+                this.moveTo(this.lastScrollPosition);
                 
                 document.getElementById('dateInput').value = `${targetYear}`;
             }
@@ -1303,7 +1298,7 @@ export class UIManager {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         if (filteredEvents.length > 0) {
             this.scrollTarget = { index: 0 };
-            this.glideTo(0);
+            this.moveTo(0);
         }
     }
 
@@ -1314,7 +1309,7 @@ export class UIManager {
             this.scrollTarget = { index: lastIndex };
     
             const estimatedTotalHeight = filteredEvents.length * this.defaultEventHeight;
-            this.glideTo(estimatedTotalHeight);
+            this.moveTo(estimatedTotalHeight);
         }
     }
 

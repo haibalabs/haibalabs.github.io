@@ -4,7 +4,7 @@
 // released images, locations and labels. A patch applies only to an event whose field still holds a
 // value the patch was approved from, so a rebuilt or already folded dataset is never overwritten by
 // mistake. The overlay names edits, never people. Writes are in review-store.js.
-import { normalizeField, sameValue } from './world-edits.js';
+import { compactLocations, editVerification, eventFieldValue, sameValue, setEventField } from './world-edits.js';
 
 /**
  * Why the overlay can't be applied, or null if it can.
@@ -49,19 +49,22 @@ export function applyOverlay(events, overlay) {
     for (const [eventId, fields] of Object.entries(overlay.patches ?? {})) {
         const event = byId.get(eventId);
         if (!event) continue;
+        // every location is compared at the position the author saw, before any removal shifts the rest
+        const loadedValues = Object.fromEntries(Object.keys(fields).map(field => [field, eventFieldValue(event, field)]));
         for (const [field, patch] of Object.entries(fields)) {
-            const loaded = normalizeField(field, event[field]);
+            const loaded = loadedValues[field];
             if (sameValue(loaded, patch.value)) continue;
             if (!sourceValues(patch).some(value => sameValue(loaded, value))) {
                 stale.push({ event_id: eventId, field });
                 continue;
             }
-            event[field] = structuredClone(patch.value);
+            const last = patch.chain?.at(-1);
+            setEventField(event, field, patch.value, last ? editVerification(last) : 'community_edit');
             event.community_edited = true;
-            const approvedAt = patch.chain?.at(-1)?.approved_at;
-            if (approvedAt && !(event.revised_at > approvedAt)) event.revised_at = approvedAt;
+            if (last?.approved_at && !(event.revised_at > last.approved_at)) event.revised_at = last.approved_at;
             patched++;
         }
+        compactLocations(event);
     }
     return { added, patched, stale };
 }

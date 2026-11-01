@@ -6,12 +6,18 @@
 // rules decide what is actually allowed.
 import { PROMINENT_LABELS } from './config.js';
 import { newEventId } from './event-id.js';
+import { ImageLinkInput, imageCard, modeSwitch, WorldUpload } from './image-field.js';
+import { LocationPicker } from './location-picker.js';
 import { permissionsFor } from './roles.js';
 import {
     changesFor, contentSha256, DAILY_LIMIT, EDIT_FIELDS, editorStatus, EDITOR_STATUS_LABELS, editProblem,
-    FIELD_LABELS, isOpen, newEditId, newEventChanges, normalizeField, normalizeFigures, normalizeWikipediaUrl, sameValue,
+    eventFieldValue, fieldLabel, isOpen, LOCATION_SLOTS, locationField, newEditId, newEventChanges, normalizeField,
+    normalizeFigures, normalizeWikipediaUrl, sameValue, UPLOAD_LICENSE, UPLOAD_RIGHTS,
 } from './world-edits.js';
 import { articleInfo, searchArticles } from './wikipedia-lookup.js';
+
+// Form groups whose value isn't a single input's
+const COMPOSITE_FIELDS = ['figures', 'locations', 'image'];
 
 const EDITING_KEY = 'historiline.editing';
 const SEARCH_DELAY_MS = 300;
@@ -39,10 +45,17 @@ const isToday = (timestamp) => {
 };
 
 export class EditUI {
-    constructor(eventManager, uiManager, store) {
+    /**
+     * @param {object} eventManager
+     * @param {object} uiManager
+     * @param {import('./edit-store.js').EditStore} store
+     * @param {{ placeSearch: import('./place-search.js').PlaceSearch, uploads: import('./edit-uploads.js').EditUploads }} services
+     */
+    constructor(eventManager, uiManager, store, { placeSearch, uploads }) {
         this.eventManager = eventManager;
         this.uiManager = uiManager;
         this.store = store;
+        this.uploads = uploads;
         this.user = null;
         this.canEdit = false;
         this.editing = false;
@@ -61,6 +74,10 @@ export class EditUI {
         this.personInput = document.getElementById('se-person');
         this.personResults = document.getElementById('se-person-results');
         this.wikiCheckLine = document.getElementById('se-wiki-check');
+        this.locations = new LocationPicker(document.getElementById('se-locations'), {
+            search: placeSearch, max: LOCATION_SLOTS, idPrefix: 'se-loc', onChange: () => this.markChanged('locations'),
+        });
+        this.buildImageField(document.getElementById('se-image'));
 
         this.populateCategories();
         this.setupListeners();
@@ -94,7 +111,7 @@ export class EditUI {
         for (const group of this.form.querySelectorAll('.form-group[data-field]')) {
             const field = group.dataset.field;
             group.querySelector('.undo-change').addEventListener('click', () => this.undo(field));
-            if (field === 'figures') continue;
+            if (COMPOSITE_FIELDS.includes(field)) continue;
             group.querySelector('input, textarea, select').addEventListener('input', () => {
                 this.markChanged(field);
                 if (field === 'wikipedia_url') this.scheduleWikiCheck();
@@ -228,7 +245,7 @@ export class EditUI {
         fields.className = 'my-edit-fields';
         fields.textContent = edit.kind === 'create'
             ? 'New event'
-            : Object.keys(edit.changes ?? {}).map(f => FIELD_LABELS[f] ?? f).join(', ');
+            : [...new Set(Object.keys(edit.changes ?? {}).map(f => (f.startsWith('location[') ? 'Location' : fieldLabel(f))))].join(', ');
         item.append(head, title, fields);
 
         const reason = status === 'rejected' ? (edit.review?.note || this.firstFailure(edit)) : '';
@@ -303,9 +320,17 @@ export class EditUI {
         document.getElementById('suggest-edit-title').textContent = creating ? 'Suggest a new event' : 'Suggest an edit';
         this.form.reset();
         this.showError('');
-        this.original = Object.fromEntries(EDIT_FIELDS.map(f => [f, normalizeField(f, event[f])]));
+        this.original = Object.fromEntries(EDIT_FIELDS.map(f => [f, eventFieldValue(event, f)]));
         const values = { ...this.original };
         for (const [field, change] of Object.entries(edit?.changes ?? {})) values[field] = change.after;
+        // each place at its position, with a revision's proposals in place of the event's own
+        const locations = (event.locations ?? []).slice(0, LOCATION_SLOTS);
+        this.locations.set(locations);
+        for (const [field, change] of Object.entries(edit?.changes ?? {})) {
+            const index = Number(/^location\[(\d+)\]$/.exec(field)?.[1]);
+            if (Number.isInteger(index)) this.locations.propose(index, change.after);
+        }
+        this.resetImage(this.original.image, edit?.changes?.image);
         this.form.elements.name.value = values.name ?? '';
         this.form.elements.enhanced_time.value = values.enhanced_time ?? '';
         this.form.elements.enhanced_description.value = values.enhanced_description ?? '';
@@ -321,7 +346,7 @@ export class EditUI {
         document.getElementById('se-source-conflict').checked = Boolean(edit?.source_conflict);
         this.cancelWikiCheck();
         this.wikiCheckLine.hidden = true;
-        for (const field of EDIT_FIELDS) this.markChanged(field);
+        for (const field of [...EDIT_FIELDS, 'locations']) this.markChanged(field);
         if (edit?.changes?.wikipedia_url) this.scheduleWikiCheck(0);
         document.getElementById('se-submit').textContent = edit ? 'Send revision' : 'Send for review';
         this.modal.style.display = 'flex';
@@ -358,14 +383,27 @@ export class EditUI {
 
     markChanged(field) {
         const group = this.form.querySelector(`.form-group[data-field="${field}"]`);
+        if (!group || !this.original) return;
+        let differs;
+        if (field === 'locations') differs = this.locations.changed();
+        else if (field === 'image') differs = this.imageChanged();
+        else differs = !sameValue(normalizeField(field, this.value(field)), this.original[field]);
         // every field of a new event is new, so none is marked
-        const changed = !this.creating && !sameValue(normalizeField(field, this.value(field)), this.original[field]);
+        const changed = !this.creating && differs;
         group.classList.toggle('changed', changed);
         group.querySelector('.changed-tag').hidden = !changed;
         group.querySelector('.undo-change').hidden = !changed;
     }
 
     undo(field) {
+        if (field === 'locations') {
+            this.locations.set((this.event.locations ?? []).slice(0, LOCATION_SLOTS));
+            return this.markChanged(field);
+        }
+        if (field === 'image') {
+            this.resetImage(this.original.image);
+            return this.markChanged(field);
+        }
         const original = this.original[field];
         if (field === 'figures') {
             this.people = normalizeFigures(original).map(person => ({ ...person, description: '' }));
@@ -380,6 +418,131 @@ export class EditUI {
             this.wikiCheckLine.hidden = true;
         }
         this.markChanged(field);
+    }
+
+    // --- image (WORLD-EDITS.md, The image record) ---
+
+    buildImageField(root) {
+        this.imageCurrent = document.createElement('div');
+        this.imageCurrent.className = 'image-current';
+        this.imageMode = modeSwitch(mode => this.showImagePane(mode));
+        this.worldUpload = new WorldUpload('se-img', { onChange: () => this.markChanged('image'), onError: (message) => this.showError(message) });
+        this.imageLink = new ImageLinkInput('se-img', { askRights: true, onChange: () => this.markChanged('image') });
+        const caption = document.createElement('div');
+        caption.className = 'form-subgroup';
+        const label = document.createElement('label');
+        label.htmlFor = 'se-img-caption';
+        label.append('Caption ');
+        const optional = document.createElement('span');
+        optional.className = 'optional';
+        optional.textContent = '(what the image shows)';
+        label.append(optional);
+        this.imageCaption = document.createElement('input');
+        this.imageCaption.type = 'text';
+        this.imageCaption.id = 'se-img-caption';
+        this.imageCaption.maxLength = 500;
+        caption.append(label, this.imageCaption);
+        root.append(this.imageCurrent, this.imageMode, this.worldUpload.root, this.imageLink.root, caption);
+    }
+
+    showImagePane(mode) {
+        this.imageMode.set(mode, true);
+        this.worldUpload.root.hidden = mode !== 'upload';
+        this.imageLink.root.hidden = mode !== 'link';
+        this.markChanged('image');
+    }
+
+    /**
+     * Starts the image section over: the event's image, and a revision's proposal. A proposed link
+     * is put back in the link box; a proposed upload is kept as it is unless replaced or discarded.
+     */
+    resetImage(current, proposed = undefined) {
+        this.worldUpload.reset();
+        this.imageLink.set('');
+        this.imageCaption.value = '';
+        this.imageRemoved = proposed !== undefined && proposed.after === null;
+        this.keptProposal = null;
+        let mode = 'upload';
+        const after = proposed?.after;
+        if (after?.source === 'upload') {
+            this.keptProposal = after;
+        } else if (after) {
+            this.imageLink.set(after.source === 'commons' ? after.source_url : after.image_url, after.rights_statement ?? '');
+            this.imageCaption.value = after.caption ?? '';
+            mode = 'link';
+        }
+        this.renderImageCurrent(current);
+        this.showImagePane(mode);
+    }
+
+    renderImageCurrent(current = this.original?.image) {
+        const parts = [];
+        const action = (label, handler) => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'link-btn';
+            button.textContent = label;
+            button.addEventListener('click', handler);
+            return button;
+        };
+        if (this.keptProposal) {
+            parts.push(imageCard(this.keptProposal, { src: null, note: 'Your uploaded photo, kept from the earlier revision.' }),
+                action('Discard it', () => {
+                    this.keptProposal = null;
+                    this.renderImageCurrent();
+                    this.markChanged('image');
+                }));
+        } else if (current) {
+            const card = imageCard(current, { note: this.imageRemoved ? 'Will be removed' : 'The image visitors see now' });
+            card.classList.toggle('removed', this.imageRemoved);
+            parts.push(card, action(this.imageRemoved ? 'Keep it' : 'Remove image', () => {
+                this.imageRemoved = !this.imageRemoved;
+                this.renderImageCurrent();
+                this.markChanged('image');
+            }));
+        }
+        this.imageCurrent.replaceChildren(...parts);
+        this.imageCurrent.hidden = !parts.length;
+    }
+
+    imageChanged() {
+        if (!this.worldUpload) return false;
+        const mode = this.imageMode.dataset.mode;
+        return Boolean(this.imageRemoved || this.keptProposal
+            || (mode === 'upload' && this.worldUpload.resized)
+            || (mode === 'link' && this.imageLink.input.value.trim()));
+    }
+
+    /**
+     * The image the form proposes, uploading a new photo under the edit's revision first.
+     *
+     * @returns {Promise<{ skip: true } | { value: object|null } | { problem: string }>}
+     */
+    async imageValue({ editId, revision }) {
+        const mode = this.imageMode.dataset.mode;
+        const caption = this.imageCaption.value.trim() || null;
+        if (mode === 'upload') {
+            const chosen = await this.worldUpload.settled();
+            if (chosen) {
+                if (!chosen.credit) return { problem: 'Say who took the photo, for its credit.' };
+                if (!chosen.granted) return { problem: 'Confirm that you may share this photo.' };
+                let asset;
+                try {
+                    asset = await this.uploads.upload(this.store.author().uid, editId, revision, chosen.resized);
+                } catch (error) {
+                    console.error('Could not upload the photo:', error);
+                    return { problem: 'Could not upload the photo. Check your connection and try again.' };
+                }
+                return { value: { source: 'upload', image_url: null, caption, credit: chosen.credit, license_name: UPLOAD_LICENSE, rights_statement: UPLOAD_RIGHTS, asset } };
+            }
+        } else if (this.imageLink.input.value.trim()) {
+            const result = await this.imageLink.image();
+            if (!result.ok) return { problem: result.problem };
+            return { value: { ...result.image, caption: caption ?? result.image.caption } };
+        }
+        if (this.keptProposal) return { value: { ...this.keptProposal, caption: caption ?? this.keptProposal.caption } };
+        if (this.imageRemoved) return { value: null };
+        return { skip: true };
     }
 
     // --- people ---
@@ -568,16 +731,34 @@ export class EditUI {
         this.submitting = true;
         buttons.forEach(button => button.disabled = true);
         try {
-            const values = Object.fromEntries(EDIT_FIELDS.map(f => [f, this.value(f)]));
-            const changes = kind === 'create' ? newEventChanges(values) : changesFor(event, values);
+            const values = Object.fromEntries(EDIT_FIELDS.filter(f => f !== 'image').map(f => [f, this.value(f)]));
+            // each position's place; a new event lists only the places it has
+            this.locations.values().forEach((location, index) => {
+                if (location || kind === 'update') values[locationField(index)] = location;
+            });
             const reason = document.getElementById('se-reason').value.trim();
             const sources = this.sources();
             const sourceConflict = document.getElementById('se-source-conflict').checked;
-            const problem = editProblem({ kind, changes, reason, sources });
-            if (problem) return this.showError(problem);
+            const changesFrom = (fieldValues) => (kind === 'create' ? newEventChanges(fieldValues) : changesFor(event, fieldValues));
+            // everything but the image is checked first, so a photo isn't uploaded for an edit that can't be sent
+            const textChanges = changesFrom(values);
+            if (kind === 'create' || Object.keys(textChanges).length) {
+                const problem = editProblem({ kind, changes: textChanges, reason, sources });
+                if (problem) return this.showError(problem);
+            }
             if (!revising && this.edits.filter(edit => isToday(edit.created_at)).length >= DAILY_LIMIT) {
                 return this.showError(`You've sent ${DAILY_LIMIT} edits today. You can send more tomorrow.`);
             }
+            // a new event gets its ID now, and keeps it through revisions; an upload is filed under the revision
+            const editId = revising?.edit_id ?? newEditId();
+            const revision = revising ? revising.revision + 1 : 1;
+            const image = await this.imageValue({ editId, revision });
+            if (!current()) return;
+            if (image.problem) return this.showError(image.problem);
+            if (!image.skip) values.image = image.value;
+            const changes = changesFrom(values);
+            const problem = editProblem({ kind, changes, reason, sources });
+            if (problem) return this.showError(problem);
             const browserChecks = [{ check: 'format', outcome: 'pass' }];
             if (changes.wikipedia_url?.after) {
                 const result = await (this.wikiCheck?.done ?? articleInfo(changes.wikipedia_url.after));
@@ -594,9 +775,8 @@ export class EditUI {
                 if (revising) {
                     await this.store.revise(revising, { changes, reason, sources, sourceConflict, contentSha, browserChecks, eventName, datasetSha256 });
                 } else {
-                    // a new event gets its ID now, and keeps it through revisions
                     const target = kind === 'create' ? { event_id: newEventId(), name: eventName } : event;
-                    await this.store.submit({ editId: newEditId(), kind, event: target, changes, reason, sources, sourceConflict, datasetSha256, contentSha, browserChecks });
+                    await this.store.submit({ editId, kind, event: target, changes, reason, sources, sourceConflict, datasetSha256, contentSha, browserChecks });
                 }
             } catch (error) {
                 console.error('Could not send the edit:', error);

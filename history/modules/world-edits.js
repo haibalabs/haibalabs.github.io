@@ -6,12 +6,149 @@
 import { eventProblem, NAME_MAX } from './timeline-model.js';
 import { sha256Hex } from './world-images.js';
 
-// Phase 1 fields; location and image arrive in phase 4.
-export const EDIT_FIELDS = ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url'];
+// The fields every form has. Locations are edited per position as location[0] … location[4]
+// (WORLD-EDITS.md, Location edits); isEditField() accepts both.
+export const EDIT_FIELDS = ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url', 'image'];
 export const FIELD_LABELS = {
     name: 'Name', enhanced_time: 'Date', enhanced_description: 'Description',
-    figures: 'People', categories: 'Category', wikipedia_url: 'Wikipedia article',
+    figures: 'People', categories: 'Category', wikipedia_url: 'Wikipedia article', image: 'Image',
 };
+// Positions an edit can reach, as firestore.rules lists them; events with more keep the rest as they are.
+export const LOCATION_SLOTS = 5;
+export const locationField = (index) => `location[${index}]`;
+
+/** The position a location field names, or null for any other field. */
+export function locationIndex(field) {
+    const match = /^location\[(\d+)\]$/.exec(String(field));
+    return match && Number(match[1]) < LOCATION_SLOTS ? Number(match[1]) : null;
+}
+
+export const isEditField = (field) => EDIT_FIELDS.includes(field) || locationIndex(field) !== null;
+
+export function fieldLabel(field) {
+    const index = locationIndex(field);
+    return index === null ? FIELD_LABELS[field] ?? field : `Location ${index + 1}`;
+}
+
+// --- locations (WORLD-EDITS.md, Location edits) ---
+
+export const LOCATION_TEXT_FIELDS = ['name', 'city', 'region', 'country', 'historical_name'];
+export const LOCATION_TEXT_MAX = 200;
+// What a point stands for, finest first; a point with none recorded is drawn as a dot (Rachid, 10-31).
+export const PRECISIONS = ['site', 'settlement', 'region', 'country'];
+
+const validPoint = (point) => Array.isArray(point) && point.length === 2
+    && point.every(Number.isFinite) && Math.abs(point[0]) <= 90 && Math.abs(point[1]) <= 180;
+
+/**
+ * A location in the form edits compare: its five text fields trimmed, its point (from `point`, or an
+ * event location's geography) and that point's precision, and the identified place or Wikidata item
+ * it was picked from. Null when it names nothing.
+ *
+ * @param {object|null|undefined} value - an edit's location, or an event location
+ * @returns {{ name: string, city: string, region: string, country: string, historical_name: string,
+ *   point: number[]|null, precision: string|null, place_id?: string, wikidata?: string }|null}
+ */
+export function normalizeLocation(value) {
+    if (!value || typeof value !== 'object') return null;
+    const location = Object.fromEntries(LOCATION_TEXT_FIELDS.map(key => [key, String(value[key] ?? '').normalize('NFC').trim()]));
+    const point = value.point ?? value.geography?.coordinates ?? null;
+    location.point = validPoint(point) ? [Number(point[0]), Number(point[1])] : null;
+    const precision = value.precision ?? value.geography?.precision;
+    location.precision = location.point && PRECISIONS.includes(precision) ? precision : null;
+    if (value.place_id) location.place_id = String(value.place_id);
+    if (value.wikidata) location.wikidata = String(value.wikidata);
+    return LOCATION_TEXT_FIELDS.some(key => location[key]) || location.point ? location : null;
+}
+
+/** A location's text as one line: "Allianz Arena, Munich, Germany". */
+export function locationText(location) {
+    const parts = [location?.name, location?.city, location?.region, location?.country].map(part => String(part ?? '').trim()).filter(Boolean);
+    return parts.filter((part, i) => parts.indexOf(part) === i).join(', ');
+}
+
+/**
+ * An edit's location in the dataset's shape, for the events visitors see. A point lands as
+ * geography status "corrected", which T7 leaves alone, tagged with where it came from.
+ *
+ * @param {object} location - normalized
+ * @param {string} verification - e.g. "community_edit:edt_…@r2" or "personal"
+ */
+export function toEventLocation(location, verification) {
+    const event = Object.fromEntries(LOCATION_TEXT_FIELDS.map(key => [key, location[key] ?? '']));
+    if (location.place_id) event.place_id = location.place_id;
+    if (location.wikidata) event.wikidata = location.wikidata;
+    event.geography = location.point
+        ? { status: 'corrected', precision: location.precision ?? 'approximate', coordinates: [...location.point], verification }
+        : null;
+    return event;
+}
+
+// --- images (WORLD-EDITS.md, The image record) ---
+
+export const IMAGE_SOURCES = ['commons', 'upload', 'link'];
+const IMAGE_TEXT_FIELDS = ['source', 'image_url', 'source_url', 'caption', 'credit', 'license_name', 'license_url',
+    'rights_statement', 'file_page', 'display_date', 'image_role'];
+export const CAPTION_MAX = 500;
+export const CREDIT_MAX = 300;
+export const RIGHTS_MAX = 1000;
+// The uploader's grant (Rachid, 2026-10-27): permission to show, not an open license.
+export const UPLOAD_RIGHTS = 'I took this photo or have the right to share it, and I give HistoriLine permission to show it on the site with the credit below.';
+export const UPLOAD_LICENSE = 'Used with permission';
+
+/**
+ * An image record in the form edits compare: every displayed field trimmed (null when empty) and,
+ * for an upload, its file. Null when it has neither a URL nor a file.
+ */
+export function normalizeImage(value) {
+    if (!value || typeof value !== 'object') return null;
+    const image = Object.fromEntries(IMAGE_TEXT_FIELDS.map(key => {
+        const text = value[key] == null ? '' : String(value[key]).normalize('NFC').trim();
+        return [key, text || null];
+    }));
+    if (value.asset) {
+        const { path, sha256, bytes, width, height } = value.asset;
+        image.asset = { path: String(path ?? ''), sha256: String(sha256 ?? ''), bytes: Number(bytes) || 0, width: Number(width) || 0, height: Number(height) || 0 };
+    }
+    if (value.release_pair_id) image.release_pair_id = String(value.release_pair_id);
+    return image.image_url || image.asset ? image : null;
+}
+
+/** The image a world event shows now, as an image record ("release" for one the data file or a release gave it). */
+export function eventImage(event) {
+    if (!event?.image_url) return null;
+    const preview = event.image_preview ?? {};
+    return normalizeImage({
+        source: preview.source ?? 'release', image_url: event.image_url, source_url: preview.source_url,
+        caption: preview.caption, credit: preview.credit, license_name: preview.license_name, license_url: preview.license_url,
+        display_date: preview.date, image_role: preview.role, rights_statement: preview.rights_statement, file_page: preview.file_page,
+        release_pair_id: preview.release_pair_id,
+    });
+}
+
+/** Shows an image record on an event the way released images are shown, or removes the event's image (null). */
+export function setEventImage(event, image) {
+    if (!image) {
+        delete event.image_url;
+        delete event.image_preview;
+        return;
+    }
+    event.image_url = image.image_url;
+    event.image_preview = {
+        source: image.source, caption: image.caption, role: image.image_role, credit: image.credit,
+        license_name: image.license_name, license_url: image.license_url, source_url: image.source_url,
+        date: image.display_date, rights_statement: image.rights_statement, file_page: image.file_page,
+        ...(image.release_pair_id ? { release_pair_id: image.release_pair_id } : {}),
+    };
+}
+
+/** A field's value as an event holds it, in the form edits compare. */
+export function eventFieldValue(event, field) {
+    const index = locationIndex(field);
+    if (index !== null) return normalizeLocation(event?.locations?.[index]);
+    if (field === 'image') return eventImage(event);
+    return normalizeField(field, event?.[field]);
+}
 export const DAILY_LIMIT = 50;
 export const DESCRIPTION_MAX = 4000;
 export const PERSON_MAX = 200;
@@ -75,7 +212,9 @@ export const normalizeFigures = (figures) => (Array.isArray(figures) ? figures :
  * @param {*} value
  */
 export function normalizeField(field, value) {
+    if (locationIndex(field) !== null) return normalizeLocation(value);
     switch (field) {
+        case 'image': return normalizeImage(value);
         case 'figures': return normalizeFigures(value);
         case 'categories': return (Array.isArray(value) ? value : [value]).map(c => String(c ?? '').trim()).filter(Boolean);
         case 'wikipedia_url': {
@@ -105,14 +244,13 @@ export const sameValue = (a, b) => canonicalJson(a) === canonicalJson(b);
  * the value the author saw (before) and the proposed one (after).
  *
  * @param {object} event - the world event as shown
- * @param {object} values - field -> the form's value, for any of EDIT_FIELDS
+ * @param {object} values - field -> the form's value, for any edit field (location[i] included)
  * @returns {Object<string, { before: *, after: * }>}
  */
 export function changesFor(event, values) {
     const changes = {};
-    for (const field of EDIT_FIELDS) {
-        if (!(field in values)) continue;
-        const before = normalizeField(field, event[field]);
+    for (const field of Object.keys(values).filter(isEditField)) {
+        const before = eventFieldValue(event, field);
         const after = normalizeField(field, values[field]);
         if (!sameValue(before, after)) changes[field] = { before, after };
     }
@@ -128,12 +266,12 @@ const REQUIRED_MESSAGES = {
 /**
  * The changes a new event proposes: every field the form fills in, each with before: null.
  *
- * @param {object} values - field -> the form's value, for any of EDIT_FIELDS
+ * @param {object} values - field -> the form's value, for any edit field (location[i] included)
  * @returns {Object<string, { before: null, after: * }>}
  */
 export function newEventChanges(values) {
     const changes = {};
-    for (const field of EDIT_FIELDS) {
+    for (const field of Object.keys(values).filter(isEditField)) {
         const after = normalizeField(field, values[field]);
         if (after !== null && !(Array.isArray(after) && !after.length)) changes[field] = { before: null, after };
     }
@@ -167,7 +305,19 @@ export function editProblem({ kind = 'update', changes, reason = '', sources = [
     const texts = [];
     for (const field of fields) {
         const after = changes[field].after;
+        if (locationIndex(field) !== null) {
+            const problem = locationProblem(after, kind);
+            if (problem) return problem;
+            if (after) texts.push(...LOCATION_TEXT_FIELDS.map(key => after[key]));
+            continue;
+        }
         switch (field) {
+            case 'image': {
+                const problem = imageProblem(after);
+                if (problem) return problem;
+                if (after) texts.push(after.caption ?? '', after.credit ?? '', after.rights_statement ?? '');
+                break;
+            }
             case 'name':
                 if (!after) return REQUIRED_MESSAGES.name;
                 if (after.length > NAME_MAX) return `Keep the event name under ${NAME_MAX + 1} characters.`;
@@ -205,6 +355,48 @@ export function editProblem({ kind = 'update', changes, reason = '', sources = [
     if (String(reason).length > REASON_MAX) return `Keep the note under ${REASON_MAX + 1} characters.`;
     if (sources.length > SOURCES_MAX) return `Give at most ${SOURCES_MAX} sources.`;
     if (sources.some(source => !isHttpUrl(source))) return 'Each source must be a web link starting with http:// or https://.';
+    return null;
+}
+
+// Why a proposed location can't be sent, or null. Removing one (null) is an update only.
+function locationProblem(location, kind) {
+    if (location === null) return kind === 'create' ? 'Remove the empty place, or fill it in.' : null;
+    if (LOCATION_TEXT_FIELDS.some(key => location[key].length > LOCATION_TEXT_MAX)) {
+        return `Keep each part of a place under ${LOCATION_TEXT_MAX + 1} characters.`;
+    }
+    if (!location.name && !location.city && !location.country) return 'Give each place a name, a city or a country.';
+    return null;
+}
+
+const isHttps = (text) => {
+    try {
+        return new URL(text).protocol === 'https:';
+    } catch {
+        return false;
+    }
+};
+
+/**
+ * Why a proposed image can't be sent, or null. Removing the image (null) is allowed. A Commons image
+ * or a link carries its URL; an upload carries its file and the uploader's grant, and gets its public
+ * URL only when it is approved.
+ *
+ * @param {object|null} image - normalized
+ * @returns {string|null}
+ */
+export function imageProblem(image) {
+    if (image === null) return null;
+    if (!IMAGE_SOURCES.includes(image.source)) return 'Add the image as an upload or a link.';
+    if (image.source !== 'upload' && !isHttps(image.image_url)) return 'Use an image link that starts with https://.';
+    if ((image.caption ?? '').length > CAPTION_MAX) return `Keep the caption under ${CAPTION_MAX + 1} characters.`;
+    if ((image.credit ?? '').length > CREDIT_MAX) return `Keep the credit under ${CREDIT_MAX + 1} characters.`;
+    if ((image.rights_statement ?? '').length > RIGHTS_MAX) return `Keep the note on the image's rights under ${RIGHTS_MAX + 1} characters.`;
+    if (image.source === 'upload') {
+        if (!image.credit) return 'Say who took the photo, for its credit.';
+        if (image.rights_statement !== UPLOAD_RIGHTS) return 'Confirm that you may share this photo.';
+        const asset = image.asset;
+        if (!asset || !/^[0-9a-f]{64}$/.test(asset.sha256) || !asset.path || !(asset.bytes > 0)) return 'The photo has not finished uploading.';
+    }
     return null;
 }
 
@@ -258,7 +450,7 @@ export function publishedValue(overlay, eventId, field, fallback) {
     const patch = overlay?.patches?.[eventId]?.[field];
     if (patch) return patch.value;
     const created = overlay?.created?.[eventId]?.record;
-    return created && field in created ? normalizeField(field, created[field]) : fallback;
+    return created ? eventFieldValue(created, field) : fallback;
 }
 
 /**
@@ -276,14 +468,56 @@ export function conflictingFields(edit, overlay) {
         .map(([field]) => field);
 }
 
-// The world event a new-event edit describes, in the dataset's shape.
-export function newEventRecord(edit) {
+// Where an approved location came from, on the event visitors see (WORLD-EDITS.md, Location edits).
+export const editVerification = (edit) => `community_edit:${edit.edit_id}@r${edit.revision}`;
+
+/**
+ * Sets one field on an event in the dataset's shape: a location at its position (null marks it for
+ * removal; compactLocations drops it), the image as released images are shown, or a plain field.
+ */
+export function setEventField(event, field, value, verification) {
+    const index = locationIndex(field);
+    if (index !== null) {
+        event.locations = [...(event.locations ?? [])];
+        while (event.locations.length < index) event.locations.push(null);
+        event.locations[index] = value ? toEventLocation(value, verification) : null;
+    } else if (field === 'image') {
+        setEventImage(event, value);
+    } else {
+        event[field] = structuredClone(value);
+    }
+}
+
+// Drops the locations setEventField marked for removal, once every patch on the event is applied.
+export function compactLocations(event) {
+    if (event.locations?.some(location => location === null)) event.locations = event.locations.filter(Boolean);
+}
+
+/**
+ * The world event a new-event edit describes, in the dataset's shape.
+ *
+ * @param {object} edit
+ * @param {string[]} [fields] - the approved fields; a new event can be approved without its image
+ * @param {object} [values] - field -> the value to publish instead of the proposal (an image's confirmed credit)
+ */
+export function newEventRecord(edit, fields = Object.keys(edit.changes), values = {}) {
     const record = { event_id: edit.event_id, confidence: 'high', locations: [], figures: [], categories: [] };
     for (const [field, change] of Object.entries(edit.changes)) {
-        if (change.after !== null) record[field] = change.after;
+        const value = field in values ? values[field] : change.after;
+        if (fields.includes(field) && value !== null) setEventField(record, field, value, editVerification(edit));
     }
+    compactLocations(record);
     return record;
 }
+
+// Free licenses a Commons image can carry without a reviewer confirming it (WORLD-EDITS.md, checks).
+const FREE_LICENSE = /^(cc0|cc[ -]by(-sa)?( \d(\.\d)?)?|public domain|pd\b)/i;
+
+/**
+ * Whether a reviewer must confirm an image's license before it is published: every upload and link
+ * from another site, and a Commons image without a free license (Rachid, 2026-10-31).
+ */
+export const imageNeedsConfirmation = (image) => Boolean(image) && !(image.source === 'commons' && FREE_LICENSE.test(image.license_name ?? ''));
 
 export const recordSha256 = (record) => sha256Hex(new TextEncoder().encode(canonicalJson(record)));
 
@@ -298,9 +532,12 @@ export const recordSha256 = (record) => sha256Hex(new TextEncoder().encode(canon
  * @param {object} edit - the edit as stored
  * @param {string[]} fields - the fields being approved (all of them for a new event)
  * @param {string} approvedAt - ISO time of the approval
+ * @param {object} [values] - field -> the value to publish instead of the proposal: an image with the
+ *   reviewer's confirmed credit and license, its public URL for an upload, or null to approve a new
+ *   event without its image
  * @returns {Promise<object>} the next overlay, its version one higher
  */
-export async function withApproval(overlay, edit, fields, approvedAt) {
+export async function withApproval(overlay, edit, fields, approvedAt, values = {}) {
     const next = structuredClone(overlay ?? emptyOverlay());
     next.patches ??= {};
     next.created ??= {};
@@ -308,22 +545,23 @@ export async function withApproval(overlay, edit, fields, approvedAt) {
     const receipt = { edit_id: edit.edit_id, revision: edit.revision, approved_at: approvedAt };
     if (edit.kind === 'create') {
         if (next.created[edit.event_id]) throw new Error('This new event is already published.');
-        const record = newEventRecord(edit);
+        const record = newEventRecord(edit, Object.keys(edit.changes), values);
         next.created[edit.event_id] = { record, record_sha256: await recordSha256(record), ...receipt };
         return next;
     }
     for (const field of fields) {
         const change = edit.changes[field];
         if (!change) throw new Error(`The edit doesn't change "${field}".`);
+        const value = field in values ? normalizeField(field, values[field]) : change.after;
         const patches = (next.patches[edit.event_id] ??= {});
         const patch = patches[field];
         const before = publishedValue(next, edit.event_id, field, change.before);
-        const step = { ...receipt, before, after: change.after };
+        const step = { ...receipt, before, after: value };
         if (patch) {
             patch.chain.push(step);
-            patch.value = change.after;
+            patch.value = value;
         } else {
-            patches[field] = { base: change.before, prior_bases: [], value: change.after, chain: [step] };
+            patches[field] = { base: change.before, prior_bases: [], value, chain: [step] };
         }
     }
     return next;
