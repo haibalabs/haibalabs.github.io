@@ -107,12 +107,40 @@ export class UIManager {
             const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, '');
             const randomIndex = Math.floor(Math.random() * filteredEvents.length);
             const targetPosition = this.positions.get(randomIndex) || 0;
-            
-            this.timelineContainer.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-        });    
+
+            this.glideTo(targetPosition);
+        });
+    }
+
+    /**
+     * Scrolls the timeline to `top`. A smooth scroll across the whole timeline (millions of pixels) takes
+     * seconds, so a long one first jumps to a screen short of the target and glides the rest.
+     *
+     * @param {number} top
+     */
+    glideTo(top) {
+        const container = this.timelineContainer, screen = container.clientHeight;
+        // an estimated target can lie past the end; measure from where the scroll can actually stop
+        const reachable = Math.min(top, container.scrollHeight - screen);
+        if (Math.abs(reachable - container.scrollTop) > 2 * screen) {
+            container.scrollTop = reachable > container.scrollTop ? reachable - screen : reachable + screen;
+        }
+        container.scrollTo({ top, behavior: 'smooth' });
+    }
+
+    /** Says in the timeline that the world events couldn't be loaded, and keeps saying it on later renders. */
+    showLoadFailure() {
+        this.loadFailed = true;
+        const content = document.getElementById('timeline-content');
+        if (!content.querySelector('.load-failure')) content.append(this.loadFailureMessage());
+    }
+
+    loadFailureMessage() {
+        const div = document.createElement('div');
+        div.className = 'no-results load-failure';
+        div.setAttribute('role', 'alert');
+        div.innerHTML = `<div class="empty-message"><p>The events couldn't be loaded.</p><p>Check your connection, then reload the page.</p></div>`;
+        return div;
     }
 
     setupSettings() {
@@ -403,29 +431,33 @@ export class UIManager {
     // Check if we were trying to reach a specific target
     handleScrollEnd() {
         if (!this.scrollTarget) return;
-    
+
         const viewportHeight = this.timelineContainer.clientHeight;
         const scrollTop = this.timelineContainer.scrollTop;
         const targetIndex = this.scrollTarget.index;
-    
+
         // Check if target is within current visible range
         if (targetIndex >= this.startIndex && targetIndex < this.endIndex) {
-            this.scrollTarget = null;
             // Rendered isn't on screen: a jump to an estimated height can stop short of the target's
-            // measured position, as Latest did, so finish the scroll there (or to the end).
+            // measured position, as Latest did, so finish the scroll there (or to the end). Measuring the
+            // cards there can lengthen the timeline after the scroll set off, so the target stays set and
+            // the next scrollend checks again, up to three corrections.
             const targetPosition = this.positions.get(targetIndex);
-            if (targetPosition !== undefined && (targetPosition < scrollTop || targetPosition > scrollTop + viewportHeight - 40)) {
-                const max = this.timelineContainer.scrollHeight - viewportHeight;
-                this.timelineContainer.scrollTo({ top: Math.min(targetPosition, max), behavior: 'smooth' });
+            const max = this.timelineContainer.scrollHeight - viewportHeight;
+            const stop = Math.min(targetPosition, max);
+            const corrections = this.scrollTarget.corrections || 0;
+            if (targetPosition !== undefined && (targetPosition < scrollTop || targetPosition > scrollTop + viewportHeight - 40)
+                    && Math.abs(stop - scrollTop) > 1 && corrections < 3) {
+                this.scrollTarget.corrections = corrections + 1;
+                this.glideTo(stop);
+            } else {
+                this.scrollTarget = null;
             }
         } else {
             // Target not visible, scroll more
             const targetPosition = this.positions.get(targetIndex);
             if (targetPosition && targetPosition > scrollTop) {
-                this.timelineContainer.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+                this.glideTo(targetPosition);
             }
         }
     }
@@ -433,7 +465,10 @@ export class UIManager {
     handleNoResults(contentContainer, placeholder) {
         placeholder.style.height = '0px';
         // before the world events arrive, the loading trip (time-travel.js) fills this space
-        if (!this.eventManager.events.length) return;
+        if (!this.eventManager.events.length) {
+            if (this.loadFailed) contentContainer.appendChild(this.loadFailureMessage());
+            return;
+        }
         const noResultsDiv = document.createElement('div');
         noResultsDiv.className = 'no-results';
         noResultsDiv.innerHTML = `
@@ -1233,12 +1268,9 @@ export class UIManager {
             this.lastScrollPosition = this.positions.get(targetIndex) || targetIndex * this.defaultEventHeight;
 
             this.scrollTarget = { index: targetIndex };
-            
+
             // Scroll to the position
-            this.timelineContainer.scrollTo({
-                top: this.lastScrollPosition,
-                behavior: 'smooth'
-            });
+            this.glideTo(this.lastScrollPosition);
 
             document.getElementById('dateInput').value = `${targetYear}`;
         } else {
@@ -1249,11 +1281,8 @@ export class UIManager {
                 this.endIndex = lastIndex + 1;
                 this.lastScrollPosition = this.positions.get(lastIndex) || filteredEvents.length * this.defaultEventHeight;
                 this.scrollTarget = { index: targetIndex };
-                
-                this.timelineContainer.scrollTo({
-                    top: this.lastScrollPosition,
-                    behavior: 'smooth'
-                });
+
+                this.glideTo(this.lastScrollPosition);
                 
                 document.getElementById('dateInput').value = `${targetYear}`;
             }
@@ -1264,10 +1293,7 @@ export class UIManager {
         const filteredEvents = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         if (filteredEvents.length > 0) {
             this.scrollTarget = { index: 0 };
-            this.timelineContainer.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            this.glideTo(0);
         }
     }
 
@@ -1278,10 +1304,7 @@ export class UIManager {
             this.scrollTarget = { index: lastIndex };
     
             const estimatedTotalHeight = filteredEvents.length * this.defaultEventHeight;
-            this.timelineContainer.scrollTo({
-                top: estimatedTotalHeight,
-                behavior: 'smooth'
-            });
+            this.glideTo(estimatedTotalHeight);
         }
     }
 

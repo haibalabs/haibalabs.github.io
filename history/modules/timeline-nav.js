@@ -3,8 +3,8 @@
 // timeline with uiManager's jumpToDate / jumpToStart / jumpToEnd.
 import { eventSortableValue, extractYear } from './date-handlers.js';
 
-// Conventional, mostly Western periodization.
-const ERAS = [
+// Conventional, mostly Western periodization. time-travel.js colours the loading trip from it too.
+export const ERAS = [
     { name: 'Deep time',               from: -Infinity, to: -3000, hue: '#5b6075' },
     { name: 'Ancient world',           from: -3000, to: -500, hue: '#b06a35' },
     { name: 'Classical antiquity',     from: -500,  to: 500,  hue: '#c0533a' },
@@ -16,6 +16,8 @@ const ERAS = [
     { name: 'Contemporary',            from: 1991,  to: Infinity, hue: '#2a8fa0' },
 ];
 const eraOf = y => Math.max(0, ERAS.findIndex(e => y >= e.from && y < e.to));
+const timelineCovered = () => document.body.classList.contains('map-full') ||
+    [...document.querySelectorAll('.modal-overlay')].some(m => getComputedStyle(m).display !== 'none');
 
 // Years use historical numbering, as date-handlers.js does: -44 is 44 BC and there is no year 0.
 const ord = n => n + (n % 100 >= 11 && n % 100 <= 13 ? 'th' : ['th', 'st', 'nd', 'rd'][n % 10] || 'th');
@@ -270,6 +272,8 @@ export function initTimelineNav({ eventManager, uiManager }) {
     });
     document.addEventListener('keydown', e => {
         if (e.target.closest('input, textarea, select, [contenteditable]')) { if (e.key === 'Escape') closePopover(); return; }
+        // behind an open dialog or the full-window map, the keys aren't meant for the timeline
+        if (e.key !== 'Escape' && timelineCovered()) return;
         const k = { ']': () => stepDecade(1, cur.y), '[': () => stepDecade(-1, cur.y), '}': () => stepCentury(1, cur.y), '{': () => stepCentury(-1, cur.y), Escape: closePopover,
             Home: () => jumpToEdge('start'), End: () => jumpToEdge('end') }[e.key];
         if (k) { e.preventDefault(); k(); }
