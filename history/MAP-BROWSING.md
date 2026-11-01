@@ -18,7 +18,7 @@ Without an area filter, marker work is limited to the selected event's locations
 
 ## Events on the map
 
-While **Filter by visible area** is on, the map shows the filtered events, grouped by Supercluster 8.0.1 (ISC, loaded from unpkg the first time the filter is used) in [modules/event-clusters.js](modules/event-clusters.js).
+While **Filter by visible area** is on, the map shows the filtered events, grouped by Supercluster 8.0.1 (ISC, loaded from unpkg the first time the filter is used, with an integrity check) in [modules/event-clusters.js](modules/event-clusters.js). If it can't load, the filter still narrows the timeline without bubbles, and the page doesn't try again until it reloads.
 - **Bubbles:** spots close together on screen merge into a numbered bubble, which splits as you zoom in. Counts of 1,000 or more read "1000+".
 - **Same-spot bubbles:** events that share one point have a white ring, because zooming can't split them. Several place records can share a point, such as "Asunción" and "Asunción, Paraguay", so grouping is by spot, not by place.
 - **Single events:** a spot with one event is a small dot; clicking it selects the event without moving the map.
