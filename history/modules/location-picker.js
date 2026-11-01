@@ -10,8 +10,8 @@ import { locationText, normalizeLocation, sameValue } from './world-edits.js';
 const SEARCH_DELAY_MS = 250;
 const TILE_SIZE = 256;
 // how close the row's map is for what the point stands for
-const ZOOM = { site: 15, settlement: 11, region: 6, country: 4 };
-const PRECISION_TEXT = { site: 'site', settlement: 'town or city', region: 'region', country: 'country' };
+const ZOOM = { site: 15, settlement: 11, approximate: 10, region: 6, country: 4, polity: 4 };
+const PRECISION_TEXT = { site: 'site', settlement: 'town or city', approximate: 'approximate point', region: 'region', country: 'country', polity: 'state or empire' };
 const HAND_FIELDS = [['name', 'Name'], ['city', 'City'], ['region', 'Region'], ['country', 'Country'], ['historical_name', 'Historical name']];
 
 function element(tag, className, text) {
@@ -34,7 +34,7 @@ export function tileFor([lat, lon], zoom) {
     const y = ((1 - Math.log(Math.tan(rad) + 1 / Math.cos(rad)) / Math.PI) / 2) * n;
     const tx = Math.floor(x);
     const ty = Math.floor(y);
-    return { url: `https://tile.openstreetmap.org/${zoom}/${tx}/${ty}.png`, px: (x - tx) * TILE_SIZE, py: (y - ty) * TILE_SIZE };
+    return { url: `https://tile.openstreetmap.org/${zoom}/${tx}/${ty}.png`, tx, ty, px: (x - tx) * TILE_SIZE, py: (y - ty) * TILE_SIZE };
 }
 
 /** A small map centred on a location's point, with a pin; a plain box when it has none. */
@@ -46,16 +46,28 @@ export function miniMap(location, className = 'loc-map') {
         box.append(element('i', 'fa-light fa-location-dot'));
         return box;
     }
-    const { url, px, py } = tileFor(location.point, ZOOM[location.precision] ?? 8);
-    const img = element('img');
-    img.src = url;
-    img.alt = '';
-    img.loading = 'lazy';
-    img.referrerPolicy = 'strict-origin-when-cross-origin';
-    // the tile is placed so the point sits at the box's centre (CSS: 96 × 72)
-    img.style.left = `calc(50% - ${px.toFixed(0)}px)`;
-    img.style.top = `calc(50% - ${py.toFixed(0)}px)`;
-    box.append(img, element('span', 'loc-pin'));
+    const zoom = ZOOM[location.precision] ?? 8;
+    const { tx, ty, px, py } = tileFor(location.point, zoom);
+    // Four tiles, the point's and the three nearest it, so a point near a tile's edge never leaves the box
+    // half blank; the grid is placed so the point sits at the box's centre (CSS: 96 × 72).
+    const left = px < TILE_SIZE / 2 ? tx - 1 : tx;
+    const top = py < TILE_SIZE / 2 ? ty - 1 : ty;
+    const n = 2 ** zoom;
+    for (const [dx, dy] of [[0, 0], [1, 0], [0, 1], [1, 1]]) {
+        const x = left + dx;
+        const y = top + dy;
+        if (y < 0 || y >= n) continue;
+        const img = element('img');
+        img.src = `https://tile.openstreetmap.org/${zoom}/${((x % n) + n) % n}/${y}.png`;
+        img.alt = '';
+        img.loading = 'lazy';
+        img.referrerPolicy = 'strict-origin-when-cross-origin';
+        img.style.left = `calc(50% - ${((tx - x) * TILE_SIZE + px).toFixed(0)}px)`;
+        img.style.top = `calc(50% - ${((ty - y) * TILE_SIZE + py).toFixed(0)}px)`;
+        box.append(img);
+    }
+    // OpenStreetMap's tile policy asks for attribution wherever its tiles are shown
+    box.append(element('span', 'loc-pin'), element('span', 'loc-attribution', '© OpenStreetMap'));
     return box;
 }
 

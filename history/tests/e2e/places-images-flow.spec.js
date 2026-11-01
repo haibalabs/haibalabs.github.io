@@ -106,6 +106,8 @@ test('a new event with a picked place and a Commons image reaches visitors with 
   const edit = admin.locator('.review-edit');
   await expect(edit.locator('.review-place-label')).toHaveText('Munich, Germany');
   await expect(edit.locator('.image-card-credit')).toHaveText('Photo: Jane Doe · CC BY-SA 4.0 · Wikimedia Commons');
+  // the license is read from Commons again before Approve opens, since the author's browser wrote the record
+  await expect(edit.locator('.review-commons-check')).toHaveText('✓ Commons confirms CC BY-SA 4.0');
   await expect(edit.locator('.review-license')).toHaveCount(0);
   await edit.getByRole('button', { name: 'Approve new event' }).click();
   await expect(admin.locator('#tab-waiting')).toHaveText('Waiting · 0');
@@ -119,6 +121,31 @@ test('a new event with a picked place and a Commons image reaches visitors with 
   const [overlay] = await listAsOwner(request, 'world_overlay');
   expect(JSON.stringify(overlay)).not.toMatch(/example\.test|"uid"/);
   expect(JSON.stringify(overlay)).toContain('community_edit:edt_');
+});
+
+test('a Commons image whose license on Commons differs from the edit’s waits for the reviewer’s check', async ({ page, browser }) => {
+  await openWorld(page);
+  await signInAs(page, 'editor@example.test');
+  await editing(page);
+  await card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-pencil').click();
+  await page.locator('#se-image .mode-switch button', { hasText: 'Link' }).click();
+  await page.fill('#se-img-link', COMMONS_FILE);
+  await expect(page.locator('#se-image .image-link-status')).toHaveText('✓ Found on Wikimedia Commons · CC BY-SA 4.0');
+  await page.click('#se-submit');
+  await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);
+
+  const admin = await browser.newPage();
+  await openReview(admin);
+  // Commons now says something else (or the record was written by hand): the edit's claim isn't trusted
+  await admin.route('https://commons.wikimedia.org/w/api.php**', route => route.fulfill({ json: { query: { pages: { 7: {
+    title: 'File:Allianz Arena final.jpg', imageinfo: [{ url: COMMONS_IMAGE, thumburl: COMMONS_IMAGE, descriptionurl: COMMONS_FILE,
+      extmetadata: { Artist: { value: 'Jane Doe' }, LicenseShortName: { value: 'All rights reserved' } } }],
+  } } } } }));
+  await admin.reload();
+  const edit = admin.locator('.review-edit');
+  await expect(edit.locator('.review-commons-check')).toHaveText('Commons says the license is All rights reserved, not CC BY-SA 4.0.');
+  await expect(edit.getByLabel('License', { exact: true })).toHaveValue('All rights reserved');
+  await expect(edit.getByRole('button', { name: 'Approve 1 change' })).toBeDisabled();
 });
 
 test('an image from another site waits for the reviewer to confirm its license and credit', async ({ page, browser, request }) => {

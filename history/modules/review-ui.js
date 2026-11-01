@@ -10,6 +10,7 @@ import { EditStore } from './edit-store.js';
 import { EditUploads } from './edit-uploads.js';
 import { EventManager } from './event-manager.js';
 import { imageCard } from './image-field.js';
+import { commonsImage } from './image-link.js';
 import { miniMap, pointNote } from './location-picker.js';
 import { ReviewStore } from './review-store.js';
 import { permissionsFor } from './roles.js';
@@ -62,6 +63,8 @@ class ReviewPage {
         this.store = new ReviewStore(events.db, events.auth);
         this.editStore = new EditStore(events.db, events.auth);
         this.uploads = new EditUploads(events.firebaseApp, { emulator: events.usesEmulators });
+        // reads a Commons file's license again for the review (image-link.js)
+        this.commonsLookup = (link) => commonsImage(link);
         this.tab = 'waiting';
         this.edits = [];
         this.overlay = null;
@@ -173,6 +176,7 @@ class ReviewPage {
         const grid = element('div', creating ? 'review-fields no-select' : 'review-fields');
         const boxes = [];
         let confirmation = null;
+        let imageBox = null;
         for (const [field, change] of Object.entries(edit.changes)) {
             const label = fieldLabel(field);
             if (!creating) {
@@ -186,6 +190,7 @@ class ReviewPage {
             }
             grid.append(element('span', 'review-field-label', label));
             const value = this.change(field, creating ? null : change.before, change.after);
+            if (field === 'image') imageBox = value;
             if (field === 'image' && imageNeedsConfirmation(change.after)) {
                 confirmation = this.licenseConfirmation(edit, change.after);
                 value.append(confirmation.root);
@@ -228,12 +233,39 @@ class ReviewPage {
             if (n < boxes.length) return `Approve ${n} of ${boxes.length} changes`;
             return n === 1 ? 'Approve 1 change' : `Approve ${n} changes`;
         };
-        // Approve waits for the license check and a credit when the image needs them (WORLD-EDITS.md)
+        // A Commons image's license is read from Commons again, since the author's browser wrote the record;
+        // Approve waits for that, and for the reviewer's check and a credit when the image needs them.
+        let commonsCheck = 'none';
+        const imageAfter = edit.changes.image?.after;
         const refresh = () => {
             approveButton.textContent = label();
-            approveButton.disabled = Boolean(confirmation && imageTicked() && !confirmation.ready());
-            approveButton.title = approveButton.disabled ? 'Confirm the image license and its credit first, or leave the image out.' : '';
+            approveButton.disabled = imageTicked() && (commonsCheck === 'pending' || Boolean(confirmation && !confirmation.ready()));
+            approveButton.title = approveButton.disabled
+                ? (commonsCheck === 'pending' ? 'Checking the image license on Wikimedia Commons…' : 'Confirm the image license and its credit first, or leave the image out.')
+                : '';
         };
+        if (imageAfter && !confirmation) {
+            commonsCheck = 'pending';
+            const status = element('p', 'review-commons-check', 'Checking the license on Wikimedia Commons…');
+            imageBox.append(status);
+            this.commonsLookup(imageAfter.source_url).then((result) => {
+                const confirmed = result.ok && result.image.license_name === imageAfter.license_name && !imageNeedsConfirmation(result.image);
+                commonsCheck = confirmed ? 'ok' : 'differs';
+                status.classList.toggle('ok', confirmed);
+                status.textContent = confirmed ? `✓ Commons confirms ${result.image.license_name}`
+                    : result.ok ? `Commons says the license is ${result.image.license_name || 'not given'}, not ${imageAfter.license_name}.` : result.problem;
+                if (!confirmed) {
+                    // what Commons says now goes in the reviewer's check, not what the edit claimed
+                    confirmation = this.licenseConfirmation(edit, result.ok
+                        ? { ...imageAfter, credit: result.image.credit, license_name: result.image.license_name, license_url: result.image.license_url }
+                        : imageAfter);
+                    imageBox.append(confirmation.root);
+                    confirmation.onChange(refresh);
+                    withoutImage.hidden = !creating;
+                }
+                refresh();
+            });
+        }
         refresh();
         for (const box of boxes) box.addEventListener('change', refresh);
         confirmation?.onChange(refresh);

@@ -104,3 +104,7 @@
 .form-group .checkbox-row { font-size: .8125rem; font-weight: 400; color: var(--ink); line-height: 1.4; align-items: flex-start; }
 .form-group .checkbox-row input { flex: none; margin-top: .15rem; padding: 0; }
 .form-group .form-subgroup label { font-size: .75rem; font-weight: 600; color: var(--ink-2); }
+.loc-attribution {
+    position: absolute; right: 0; bottom: 0; padding: 0 3px; font-size: 7px; line-height: 10px;
+    color: var(--ink-2); background: color-mix(in srgb, var(--surface) 75%, transparent); border-top-left-radius: 4px;
+}

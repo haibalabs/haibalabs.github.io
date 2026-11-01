@@ -34,8 +34,9 @@ export function fieldLabel(field) {
 
 export const LOCATION_TEXT_FIELDS = ['name', 'city', 'region', 'country', 'historical_name'];
 export const LOCATION_TEXT_MAX = 200;
-// What a point stands for, finest first; a point with none recorded is drawn as a dot (Rachid, 10-31).
-export const PRECISIONS = ['site', 'settlement', 'region', 'country'];
+// What a point stands for, the map's vocabulary (DOTS in map-browser.js); a point with none recorded
+// is drawn as a dot (Rachid, 10-31).
+export const PRECISIONS = ['site', 'settlement', 'approximate', 'region', 'country', 'polity'];
 
 const validPoint = (point) => Array.isArray(point) && point.length === 2
     && point.every(Number.isFinite) && Math.abs(point[0]) <= 90 && Math.abs(point[1]) <= 180;
@@ -69,7 +70,8 @@ export function locationText(location) {
 
 /**
  * An edit's location in the dataset's shape, for the events visitors see. A point lands as
- * geography status "corrected", which T7 leaves alone, tagged with where it came from.
+ * geography status "corrected", which T7 leaves alone, tagged with where it came from. A point
+ * with no recorded precision keeps none, so the map draws it as a dot.
  *
  * @param {object} location - normalized
  * @param {string} verification - e.g. "community_edit:edt_…@r2" or "personal"
@@ -79,7 +81,7 @@ export function toEventLocation(location, verification) {
     if (location.place_id) event.place_id = location.place_id;
     if (location.wikidata) event.wikidata = location.wikidata;
     event.geography = location.point
-        ? { status: 'corrected', precision: location.precision ?? 'approximate', coordinates: [...location.point], verification }
+        ? { status: 'corrected', ...(location.precision ? { precision: location.precision } : {}), coordinates: [...location.point], verification }
         : null;
     return event;
 }
@@ -513,11 +515,18 @@ export function newEventRecord(edit, fields = Object.keys(edit.changes), values 
 // Free licenses a Commons image can carry without a reviewer confirming it (WORLD-EDITS.md, checks).
 const FREE_LICENSE = /^(cc0|cc[ -]by(-sa)?( \d(\.\d)?)?|public domain|pd\b)/i;
 
+// The author's browser writes the whole record, so "Commons" counts only for an image served from Commons
+// with a Commons file page; the review page also reads the license from Commons again (review-ui.js).
+const COMMONS_IMAGE = /^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\//;
+const COMMONS_PAGE = /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/;
+export const isCommonsImage = (image) => image?.source === 'commons' && COMMONS_IMAGE.test(image.image_url ?? '')
+    && COMMONS_PAGE.test(image.source_url ?? '') && /^File:/.test(image.file_page ?? '');
+
 /**
  * Whether a reviewer must confirm an image's license before it is published: every upload and link
- * from another site, and a Commons image without a free license (Rachid, 2026-10-31).
+ * from another site, and anything but a Commons file with a free license (Rachid, 2026-10-31).
  */
-export const imageNeedsConfirmation = (image) => Boolean(image) && !(image.source === 'commons' && FREE_LICENSE.test(image.license_name ?? ''));
+export const imageNeedsConfirmation = (image) => Boolean(image) && !(isCommonsImage(image) && FREE_LICENSE.test(image.license_name ?? ''));
 
 export const recordSha256 = (record) => sha256Hex(new TextEncoder().encode(canonicalJson(record)));
 

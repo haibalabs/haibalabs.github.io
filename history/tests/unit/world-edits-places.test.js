@@ -22,7 +22,7 @@ const event = () => ({
 const edit = (changes, extra = {}) => ({
     edit_id: 'edt_1', kind: 'update', event_id: EVT, event_name: 'PSG', revision: 2, content_sha256: 'b'.repeat(64), changes, ...extra,
 });
-const commons = { source: 'commons', image_url: 'https://upload.wikimedia.org/a.jpg', source_url: 'https://commons.wikimedia.org/wiki/File:A.jpg', credit: 'Jane Doe', license_name: 'CC BY-SA 4.0', license_url: 'https://creativecommons.org/licenses/by-sa/4.0' };
+const commons = { source: 'commons', image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/ab/A.jpg', source_url: 'https://commons.wikimedia.org/wiki/File:A.jpg', file_page: 'File:A.jpg', credit: 'Jane Doe', license_name: 'CC BY-SA 4.0', license_url: 'https://creativecommons.org/licenses/by-sa/4.0' };
 
 describe('location fields — one per position', () => {
     it('names positions 0 to 4 only', () => {
@@ -34,17 +34,30 @@ describe('location fields — one per position', () => {
 
     it('reads an event location as its text, point and place, dropping what it did not record', () => {
         const value = normalizeLocation(datasetLocation('Munich', [48.137, 11.575]));
-        assert.deepEqual(value, { name: 'Munich', city: '', region: '', country: '', historical_name: '', point: [48.137, 11.575], precision: null, place_id: 'plc_Munich' });
+        assert.deepEqual(value, { name: 'Munich', city: '', region: '', country: '', historical_name: '', point: [48.137, 11.575], precision: 'approximate', place_id: 'plc_Munich' });
         assert.equal(normalizeLocation({ name: ' ', city: '' }), null);
         assert.equal(normalizeLocation({ name: 'Somewhere', point: [120, 0] }).point, null);
+        // the data file's "unknown" is no precision at all
+        assert.equal(normalizeLocation({ name: 'Somewhere', geography: { precision: 'unknown', coordinates: [1, 2] } }).precision, null);
     });
 
     it('lands an approved point as corrected, with where it came from', () => {
         const location = toEventLocation(ARENA, 'community_edit:edt_1@r2');
         assert.deepEqual(location.geography, { status: 'corrected', precision: 'site', coordinates: [48.2188, 11.6247], verification: 'community_edit:edt_1@r2' });
         assert.deepEqual(normalizeLocation(location), ARENA);
-        // a point with no precision recorded is drawn as a dot (Rachid, 10-31)
-        assert.equal(toEventLocation({ ...ARENA, precision: null }, 'x').geography.precision, 'approximate');
+        // a point with no precision recorded keeps none, so the map draws a dot, never a ring (Rachid, 10-31)
+        assert.equal('precision' in toEventLocation({ ...ARENA, precision: null }, 'x').geography, false);
+    });
+
+    it('keeps every precision the map knows through an edit and back', () => {
+        for (const precision of ['site', 'settlement', 'approximate', 'region', 'country', 'polity', null]) {
+            const place = normalizeLocation({ ...ARENA, precision });
+            assert.deepEqual(normalizeLocation(toEventLocation(place, 'x')), place, String(precision));
+        }
+        // a name-only change to a polity's place republishes it as a polity
+        const empire = datasetLocation('Ottoman Empire', [39, 35], { geography: { status: 'resolved', precision: 'polity', coordinates: [39, 35] } });
+        const renamed = { ...normalizeLocation(empire), historical_name: 'Sublime State' };
+        assert.equal(toEventLocation(renamed, 'x').geography.precision, 'polity');
     });
 
     it('proposes only the positions that changed: the second place changed, a third added', () => {
@@ -94,6 +107,13 @@ describe('image field — the record visitors will see', () => {
         assert.equal(imageNeedsConfirmation(normalizeImage({ ...commons, license_name: 'Fair use' })), true);
         assert.equal(imageNeedsConfirmation(normalizeImage({ source: 'link', image_url: 'https://news.example/p.jpg' })), true);
         assert.equal(imageNeedsConfirmation(null), false);
+    });
+
+    it('counts an image as Commons only when it is served from Commons with a Commons file page', () => {
+        // the author's browser writes the record, so a free license_name alone doesn't skip the check
+        assert.equal(imageNeedsConfirmation(normalizeImage({ ...commons, image_url: 'https://news.example/p.jpg' })), true);
+        assert.equal(imageNeedsConfirmation(normalizeImage({ ...commons, source_url: 'https://news.example/page' })), true);
+        assert.equal(imageNeedsConfirmation(normalizeImage({ ...commons, file_page: null })), true);
     });
 
     it('treats a caption-only change on the same picture as a real change', () => {

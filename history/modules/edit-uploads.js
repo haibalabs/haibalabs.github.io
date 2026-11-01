@@ -5,6 +5,7 @@
 // read, and only then is the overlay written with its URL. storage.rules enforce both paths.
 import { connectStorageEmulator, getBlob, getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
 import { extensionFor } from './image-store.js';
+import { sha256Hex } from './world-images.js';
 
 export const uploadPath = (uid, editId, revision, sha256, mime) => `edit_uploads/${uid}/${editId}/r${revision}-${sha256}.${extensionFor(mime)}`;
 export const publicPath = (eventId, editId, revision, sha256, mime) => `world_images/${eventId}/${editId}-r${revision}-${sha256}.${extensionFor(mime)}`;
@@ -43,13 +44,17 @@ export class EditUploads {
     }
 
     /**
-     * Copies an approved upload to its public path and returns the URL visitors load it from.
+     * Copies an approved upload to its public path and returns the URL visitors load it from. The file
+     * must still be the one the edit names (its SHA-256 and size), so what the reviewer saw is what is
+     * published.
      *
      * @param {object} edit
-     * @param {{ path: string, sha256: string }} asset
+     * @param {{ path: string, sha256: string, bytes: number }} asset
      */
     async publish(edit, asset) {
         const blob = await getBlob(storageRef(this.storage, asset.path));
+        const sha256 = await sha256Hex(new Uint8Array(await blob.arrayBuffer()));
+        if (sha256 !== asset.sha256 || blob.size !== asset.bytes) throw new Error("The uploaded photo isn't the file this edit names.");
         const target = storageRef(this.storage, publicPath(edit.event_id, edit.edit_id, edit.revision, asset.sha256, blob.type || 'image/webp'));
         try {
             await uploadBytes(target, blob, { contentType: blob.type || 'image/webp' });

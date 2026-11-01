@@ -361,11 +361,11 @@ New events are never added twice, whatever the order of deployment and cleanup. 
 An approved image is shown through the same viewer as released images, from its image record (caption, date, credit and license). The image patch is applied after the released images are attached: it replaces the released image, or hides it when `after` is `null`.
 
 Uploaded images are stored under `edit_uploads/{uid}/{editId}/r{revision}-{sha256}.webp`, readable by the author and admins only. Approving an upload is staged so visitors never get a pointer to a missing or different file:
-1. The admin's browser copies the file to `world_images/{event_id}/{editId}-r{revision}-{sha256}.webp`, which everyone can read. Storage rules allow creating it but not overwriting it.
-2. It reads the public copy back and checks that its SHA-256 and size equal the edit's `asset`.
-3. Only then does it run the approval transaction, which writes the overlay with `image_url` and `thumbnail_url` pointing at the verified public copy.
+1. The admin's browser reads the private file and checks that its SHA-256 and size equal the edit's `asset`, so what the reviewer saw is what is published.
+2. It copies the file to `world_images/{event_id}/{editId}-r{revision}-{sha256}.webp`, which everyone can read. Storage rules allow creating it but not overwriting it; a retry after a failed approval reuses the copy already there.
+3. Only then does it run the approval transaction, which writes the overlay with `image_url` pointing at the public copy.
 
-If the copy or the check fails, nothing is approved and the admin sees why. A public copy left behind by a failed transaction is never referenced. It is listed in the review page's History for an admin to delete.
+If the check or the copy fails, nothing is approved and the admin sees why. The copy is made before the transaction on purpose, so the overlay never points at a missing file; the cost is that an approval that then fails, or that the admin abandons, leaves a readable file that nothing references. It stays until removed by hand from Storage (`modules/edit-uploads.js`).
 
 ## Folding into the dataset
 
