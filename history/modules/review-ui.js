@@ -10,7 +10,7 @@ import { EditStore } from './edit-store.js';
 import { EditUploads } from './edit-uploads.js';
 import { EventManager } from './event-manager.js';
 import { imageCard } from './image-field.js';
-import { commonsImage } from './image-link.js';
+import { commonsImage, creditLine } from './image-link.js';
 import { miniMap, pointNote } from './location-picker.js';
 import { ReviewStore } from './review-store.js';
 import { permissionsFor } from './roles.js';
@@ -244,11 +244,18 @@ class ReviewPage {
                 ? (commonsCheck === 'pending' ? 'Checking the image license on Wikimedia Commons…' : 'Confirm the image license and its credit first, or leave the image out.')
                 : '';
         };
+        let commonsRecord = null;
         if (imageAfter && !confirmation) {
             commonsCheck = 'pending';
             const status = element('p', 'review-commons-check', 'Checking the license on Wikimedia Commons…');
             imageBox.append(status);
             this.commonsLookup(imageAfter.source_url).then((result) => {
+                // what is published is Commons' own record for the file the page names: its URL, credit and
+                // license, never the author's, who could pair one file's page with another file's URL
+                if (result.ok) {
+                    commonsRecord = result.image;
+                    imageBox.append(element('p', 'review-commons-record', `Publishes Commons' file and credit: ${creditLine(result.image)}`));
+                }
                 const confirmed = result.ok && result.image.license_name === imageAfter.license_name && !imageNeedsConfirmation(result.image);
                 commonsCheck = confirmed ? 'ok' : 'differs';
                 status.classList.toggle('ok', confirmed);
@@ -307,7 +314,7 @@ class ReviewPage {
             try {
                 const values = {};
                 if (dropImage) values.image = null;
-                else if (fields.includes('image') && edit.changes.image?.after) values.image = await this.publishedImage(edit, confirmation);
+                else if (fields.includes('image') && edit.changes.image?.after) values.image = await this.publishedImage(edit, confirmation, commonsRecord);
                 await this.store.approve(edit, fields, '', values);
             } catch (e) {
                 console.error('Could not approve the edit:', e);
@@ -360,11 +367,18 @@ class ReviewPage {
     }
 
     /**
-     * The image record to publish: the proposal with the reviewer's credit and license where they had
-     * to confirm it, and for an upload the URL of its public copy, made before the approval is written.
+     * The image record to publish: for a Commons image, Commons' own record for its file (URL, page,
+     * credit, license) with the author's caption, date and role; then the reviewer's credit and license
+     * where they had to confirm it; and for an upload, the URL of its public copy, made before the
+     * approval is written.
      */
-    async publishedImage(edit, confirmation) {
-        const image = { ...edit.changes.image.after, ...(confirmation ? confirmation.values() : {}) };
+    async publishedImage(edit, confirmation, commons = null) {
+        const proposed = edit.changes.image.after;
+        const fromCommons = commons
+            ? { source: 'commons', image_url: commons.image_url, source_url: commons.source_url, file_page: commons.file_page,
+                credit: commons.credit, license_name: commons.license_name, license_url: commons.license_url, rights_statement: commons.rights_statement }
+            : {};
+        const image = { ...proposed, ...fromCommons, ...(confirmation ? confirmation.values() : {}) };
         if (image.source === 'upload') image.image_url = await this.uploads.publish(edit, image.asset);
         return image;
     }

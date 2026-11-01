@@ -118,3 +118,4 @@
 .review-actions button[hidden] { display: none; }
 .review-commons-check { margin: 4px 0 0; font-size: .75rem; color: #b54708; }
 .review-commons-check.ok { color: #067647; }
+.review-commons-record { margin: 2px 0 0; font-size: .75rem; color: var(--ink-2); }

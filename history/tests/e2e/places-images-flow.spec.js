@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { EMULATORS_RUNNING, STORAGE, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
+import { EMULATORS_RUNNING, STORAGE, createAccount, listAsOwner, resetEmulators, signIn, writeAsOwner } from './emulator.js';
 
 // Locations and images in event forms (WORLD-EDITS.md, phase 4; Rachid, 2026-10-31): Suggest an edit and
 // the personal Add event form share one place picker and one image link; world images whose license
@@ -146,6 +146,36 @@ test('a Commons image whose license on Commons differs from the edit’s waits f
   await expect(edit.locator('.review-commons-check')).toHaveText('Commons says the license is All rights reserved, not CC BY-SA 4.0.');
   await expect(edit.getByLabel('License', { exact: true })).toHaveValue('All rights reserved');
   await expect(edit.getByRole('button', { name: 'Approve 1 change' })).toBeDisabled();
+});
+
+test('an approved Commons image publishes Commons’ own file and credit, not what the edit claimed', async ({ browser, request }) => {
+  // an edit written outside the form: the CC BY-SA page, with another file's URL and a made-up credit
+  const editId = 'edt_0a1b2c3d-0000-4000-8000-0000000000e1';
+  await writeAsOwner(request, `edits/${editId}`, {
+    edit_id: editId, kind: 'update', event_id: id(1), event_name: 'Max Schmeling knocks out Joe Louis',
+    dataset: { id: 'world-history', sha256: null, locations_release_sha256: null },
+    changes: { image: { before: null, after: {
+      source: 'commons', image_url: 'https://upload.wikimedia.org/wikipedia/commons/c/cd/Another_file.jpg',
+      source_url: COMMONS_FILE, file_page: 'File:Allianz Arena final.jpg', credit: 'Someone Else', license_name: 'CC BY-SA 4.0',
+      caption: 'The arena', license_url: null, rights_statement: null, display_date: null, image_role: null,
+    } } },
+    reason: '', sources: [], source_conflict: false, author: { uid: 'someone', email: 'editor@example.test' },
+    created_at: new Date(), revised_at: new Date(), revision: 1, content_sha256: 'b'.repeat(64), status: 'submitted', checks: { browser: [] },
+  });
+  const admin = await browser.newPage();
+  await openReview(admin);
+  const edit = admin.locator('.review-edit');
+  await expect(edit.locator('.review-commons-check')).toHaveText('✓ Commons confirms CC BY-SA 4.0');
+  await expect(edit.locator('.review-commons-record')).toHaveText("Publishes Commons' file and credit: Photo: Jane Doe · CC BY-SA 4.0 · Wikimedia Commons");
+  await edit.getByRole('button', { name: 'Approve 1 change' }).click();
+  await expect(admin.locator('#tab-waiting')).toHaveText('Waiting · 0');
+  const [overlay] = await listAsOwner(request, 'world_overlay');
+  const published = JSON.stringify(overlay);
+  expect(published).toContain(COMMONS_IMAGE);
+  expect(published).toContain('Jane Doe');
+  expect(published).not.toContain('Another_file');
+  expect(published).not.toContain('Someone Else');
+  expect(published).toContain('The arena');
 });
 
 test('an image from another site waits for the reviewer to confirm its license and credit', async ({ page, browser, request }) => {
