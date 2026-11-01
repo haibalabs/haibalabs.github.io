@@ -18,7 +18,7 @@ async function setup(page) {
     return route.abort();
   });
   await stubFirebase(page);
-  await page.route('**/unpkg.com/supercluster@8.0.1/**', route => route.fulfill({ contentType: 'text/javascript', body: SUPERCLUSTER }));
+  await page.route('**/unpkg.com/supercluster@8.0.1/**', route => route.fulfill({ contentType: 'text/javascript', headers: { 'Access-Control-Allow-Origin': '*' }, body: SUPERCLUSTER }));
   await page.route('**/map-fixture.json', route => route.fulfill({ json: fixtures }));
   await page.route('**/unverified-locations.json', route => route.fulfill({ json: [] }));
   await page.goto('/history/index.html?file=map-fixture.json');
@@ -296,7 +296,15 @@ test('the area filter shows its events as bubbles, a bubble lists them, and the 
   await expect(spot).toHaveText('78');
   await expect(page.locator('.map-cluster-dot')).toHaveCount(1);
 
+  // a dot selects its event and gives way to its ring and label at once
+  await page.locator('.map-cluster-dot').click();
+  // the pointer still rests on that point, so its hover label can show beside the permanent one
+  await expect(page.locator('.map-event-label strong').first()).toHaveText('Fixture 19');
+  await expect(page.locator('.map-cluster-dot')).toHaveCount(0);
+
   await spot.click();
+  await expect(page.getByRole('group', { name: '78 events here' })).toBeVisible();
+  await expect(page.locator('.map-event-list li button').first()).toBeFocused();
   await expect(page.locator('.map-event-list li')).toHaveCount(25);
   await expect(page.locator('.map-event-list-more')).toHaveText('and 53 more');
   await expect(page.locator('.map-event-list-zoom')).toHaveCount(0);
@@ -317,9 +325,29 @@ test('the area filter shows its events as bubbles, a bubble lists them, and the 
   await expect(page.locator('.map-event-label strong')).toHaveText('Fixture 1');
   await page.getByRole('button', { name: 'Back to the list' }).click();
   await expect(page.locator('.map-event-list button[aria-current="true"] span')).toHaveText('Fixture 1');
+  await expect(page.locator('.map-event-list button[aria-current="true"]')).toBeFocused();
 
   await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
   await expect(markers).toHaveCount(0);
   await expect(page.locator('.map-stepper')).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
+
+test('when the bubble library fails to load, the area filter still works and filtering again does not retry it', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await setup(page);
+  // registered last, so it wins over setup's route
+  await page.route('**/unpkg.com/supercluster@8.0.1/**', route => route.abort());
+  const filter = page.getByRole('button', { name: 'Filter by visible area', exact: true });
+  await filter.click();
+  await expect(page.getByText(/events? in selected area/)).toBeVisible();
+  for (let i = 0; i < 3; i++) {
+    await page.waitForTimeout(300);
+    await filter.click();
+  }
+  await page.waitForTimeout(300);
+  await expect(page.locator('script[src*="supercluster"]')).toHaveCount(1);
+  await expect(page.locator('.map-cluster, .map-cluster-dot')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
