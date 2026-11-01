@@ -4,19 +4,23 @@
 // events (Rachid's pick from the UI lab, 2026-10-31). timeline-nav.js takes the pill over once the first
 // events are drawn.
 
-// Matches timeline-nav.js's eras; only the colour and upper bound are needed here.
-const ERA_HUES = [[-3000, '#5b6075'], [-500, '#b06a35'], [500, '#c0533a'], [1000, '#7058a0'], [1450, '#b08a25'],
-    [1750, '#3d7a5f'], [1914, '#4a6890'], [1991, '#7d7448'], [Infinity, '#2a8fa0']];
+import { ERAS } from './timeline-nav.js';
+
 // The trip's stops, evenly spaced in time, so recent centuries get as long as deep time.
 const STOPS = [-13.8e9, -4.5e9, -540e6, -66e6, -2.5e6, -300000, -10000, -3000, -500, 500, 1000, 1450, 1750, 1914, 1991, 2026];
 const TRIP_MS = 1900;
 
-const hueOf = (year) => ERA_HUES.find(([to]) => year < to)[1];
-function label(year) {
-    if (year <= -1e9) return `${(-year / 1e9).toFixed(1)} billion years ago`;
-    if (year <= -1e6) return `${Math.round(-year / 1e6)} million years ago`;
-    if (year <= -10000) return `${Math.round(-year / 1000).toLocaleString()},000 years ago`;
-    return year < 0 ? `${-year} BC` : `${year} AD`;
+const hueOf = (year) => ERAS.find(e => year < e.to).hue;
+/** The readout for a year. Each unit is chosen after rounding, so no value reads as "1,000,000 years ago". */
+export function label(year) {
+    const ago = -year;
+    const billions = +(ago / 1e9).toFixed(1), millions = +(ago / 1e6).toFixed(1), thousands = Math.round(ago / 1000);
+    if (billions >= 1) return `${billions} billion years ago`;
+    if (millions >= 1) return `${millions} million years ago`;
+    if (thousands >= 10) return `${(thousands * 1000).toLocaleString('en-US')} years ago`;
+    // historical numbering has no year 0, and years from 1000 read as the pill writes them
+    if (year <= 0) return `${Math.max(1, ago)} BC`;
+    return year < 1000 ? `${year} AD` : String(year);
 }
 function yearAt(t) {
     const f = t * (STOPS.length - 1), i = Math.min(STOPS.length - 2, Math.floor(f));
@@ -40,6 +44,7 @@ export function startTimeTravel() {
     const band = document.createElement('div');
     band.className = 'travel-band';
     band.innerHTML = '<i></i>';
+    band.firstChild.style.background = `linear-gradient(90deg, ${ERAS.map(e => e.hue).join(', ')})`;
     header.append(band);
     const skeleton = document.createElement('div');
     skeleton.className = 'travel-skeleton';

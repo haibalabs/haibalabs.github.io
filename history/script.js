@@ -83,6 +83,7 @@ async function initializeApp() {
         uiManager.timelineUI.worldReady();
     } catch (error) {
         endTimeTravel();
+        uiManager.showLoadFailure();
         console.error('Failed to initialize app:', error);
     }
 }
