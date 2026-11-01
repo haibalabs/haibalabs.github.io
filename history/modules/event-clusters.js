@@ -5,13 +5,19 @@
 import { eventDateLabel } from './date-handlers.js';
 
 const SUPERCLUSTER = 'https://unpkg.com/supercluster@8.0.1/dist/supercluster.min.js';
+// the file's sha384, the same as node_modules/supercluster/dist/supercluster.min.js
+const SUPERCLUSTER_INTEGRITY = 'sha384-HkQmq7PC2BUVUkCsRUnOyzpliMb5M4pVPnjEiyI92tdS8buRHN6ZnehP1n1Acj84';
+// A failed load stays failed until the page reloads; trying again on every map move added a script tag each time.
 let loading = null;
+let loadFailed = false;
 function loadSupercluster() {
     loading ??= new Promise((resolve, reject) => {
         const tag = document.createElement('script');
         tag.src = SUPERCLUSTER;
+        tag.integrity = SUPERCLUSTER_INTEGRITY;
+        tag.crossOrigin = 'anonymous';
         tag.onload = resolve;
-        tag.onerror = () => { loading = null; reject(new Error(`Could not load ${SUPERCLUSTER}`)); };
+        tag.onerror = () => { loadFailed = true; reject(new Error(`Could not load ${SUPERCLUSTER}`)); };
         document.head.append(tag);
     });
     return loading;
@@ -48,6 +54,7 @@ export class EventClusters {
         this.events = events;
         if (!events || !this.browser.manager.geographicFilter.bounds) return this.hide();
         if (!window.Supercluster) {
+            if (loadFailed) return this.hide();
             loadSupercluster().then(() => this.update(this.events), err => console.error('Events on the map: Supercluster did not load', err));
             return;
         }
@@ -139,6 +146,8 @@ export class EventClusters {
     // event picked last, when the stepper reopens the list; the list then starts just before it.
     showList(latlng, ids, expansion = null, current = null) {
         const box = element('div', 'map-event-list');
+        box.setAttribute('role', 'group');
+        box.setAttribute('aria-label', `${ids.length.toLocaleString()} events here`);
         const start = current === null ? 0 : Math.max(0, Math.min(current - 2, ids.length - LIST_LIMIT));
         if (start > 0) box.append(element('p', 'map-event-list-more', `${start.toLocaleString()} earlier`));
         const items = element('ol');
@@ -165,6 +174,8 @@ export class EventClusters {
         // the top padding keeps the list below the map's own buttons
         L.popup({ className: 'map-event-popup', maxWidth: 300, minWidth: 220, autoPanPaddingTopLeft: [60, 110], autoPanPaddingBottomRight: [20, 30] })
             .setLatLng(latlng).setContent(box).openOn(this.map);
+        // keyboard users land in the list: on the event picked last, or the first one
+        (box.querySelector('button[aria-current="true"]') ?? box.querySelector('button'))?.focus({ preventScroll: true });
     }
     // The event's place nearest the bubble it was listed in: an event can have places far apart.
     nearestPoint(id, near) {
@@ -187,6 +198,8 @@ export class EventClusters {
         } else {
             browser.selectedId = id;
             browser.drawSelection();
+            // nothing re-renders here, so the bubbles are rebuilt to drop the dot and bring back the last selection
+            this.update(this.events);
         }
         browser.ui.scrollToEventId(id);
     }
