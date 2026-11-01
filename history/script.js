@@ -83,8 +83,11 @@ async function initializeApp() {
         uiManager.timelineUI.worldReady();
     } catch (error) {
         endTimeTravel();
-        uiManager.showLoadFailure();
         console.error('Failed to initialize app:', error);
+        // The message is for the events themselves failing. A later step failing (a sidecar, the map) still
+        // shows the events as loaded.
+        if (!eventManager.events.length) uiManager.showLoadFailure();
+        else uiManager.resetWindow();
     }
 }
 

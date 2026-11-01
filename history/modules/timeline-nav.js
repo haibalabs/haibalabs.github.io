@@ -16,7 +16,9 @@ export const ERAS = [
     { name: 'Contemporary',            from: 1991,  to: Infinity, hue: '#2a8fa0' },
 ];
 const eraOf = y => Math.max(0, ERAS.findIndex(e => y >= e.from && y < e.to));
+// the full-window map, the add-event and suggest-edit dialogs (shown by style) and the photo viewer (shown by hidden)
 const timelineCovered = () => document.body.classList.contains('map-full') ||
+    document.getElementById('photo-viewer')?.hidden === false ||
     [...document.querySelectorAll('.modal-overlay')].some(m => getComputedStyle(m).display !== 'none');
 
 // Years use historical numbering, as date-handlers.js does: -44 is 44 BC and there is no year 0.

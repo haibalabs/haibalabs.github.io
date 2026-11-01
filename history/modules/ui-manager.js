@@ -40,6 +40,14 @@ export class UIManager {
         this.timelineContainer = document.getElementById('timeline-wrapper');
         this.timelineContainer.addEventListener('scroll', () => this.handleScroll());
         this.timelineContainer.addEventListener('scrollend', () => this.handleScrollEnd());
+        // the visitor's own scrolling cancels a jump's pending correction, which would otherwise pull them back
+        const dropTarget = () => { this.scrollTarget = null; };
+        this.timelineContainer.addEventListener('wheel', dropTarget, { passive: true });
+        this.timelineContainer.addEventListener('touchstart', dropTarget, { passive: true });
+        document.addEventListener('keydown', e => {
+            if (['PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', ' '].includes(e.key)
+                    && !e.target.closest('input, textarea, select, [contenteditable]')) dropTarget();
+        });
 
         // Add virtual scrolling properties
         this.buffer = 5;       // Number of items to render above/below viewport
@@ -916,6 +924,8 @@ export class UIManager {
         const events = this.eventManager.getFilteredEvents(this.currentFilter, this.currentSearch);
         const index = events.findIndex(event => this.eventManager.placeIndex.idFor(event) === id);
         if (index < 0) return false;
+        // an event picked elsewhere (the map) replaces any jump still being corrected
+        this.scrollTarget = null;
         this.timelineContainer.scrollTop = this.positions.get(index) || 0;
         this.lastScrollPosition = this.timelineContainer.scrollTop;
         this.updateVisibleRange();
