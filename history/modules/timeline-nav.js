@@ -16,7 +16,9 @@ export const ERAS = [
     { name: 'Contemporary',            from: 1991,  to: Infinity, hue: '#2a8fa0' },
 ];
 const eraOf = y => Math.max(0, ERAS.findIndex(e => y >= e.from && y < e.to));
+// the full-window map, the add-event and suggest-edit dialogs (shown by style) and the photo viewer (shown by hidden)
 const timelineCovered = () => document.body.classList.contains('map-full') ||
+    document.getElementById('photo-viewer')?.hidden === false ||
     [...document.querySelectorAll('.modal-overlay')].some(m => getComputedStyle(m).display !== 'none');
 
 // Years use historical numbering, as date-handlers.js does: -44 is 44 BC and there is no year 0.
@@ -279,7 +281,8 @@ export function initTimelineNav({ eventManager, uiManager }) {
         if (k) { e.preventDefault(); k(); }
     });
 
-    spine.addEventListener('pointerdown', e => { spine.setPointerCapture(e.pointerId); spine.classList.add('dragging'); spineTo(e.clientY); });
+    // dragging the spine cancels a jump's pending correction, as scrolling by hand does
+    spine.addEventListener('pointerdown', e => { app.uiManager.scrollTarget = null; spine.setPointerCapture(e.pointerId); spine.classList.add('dragging'); spineTo(e.clientY); });
     spine.addEventListener('pointermove', e => { if (spine.classList.contains('dragging')) spineTo(e.clientY); });
     for (const t of ['pointerup', 'pointercancel']) spine.addEventListener(t, () => spine.classList.remove('dragging'));
 
