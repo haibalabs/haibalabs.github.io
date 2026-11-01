@@ -281,7 +281,8 @@ export function initTimelineNav({ eventManager, uiManager }) {
         if (k) { e.preventDefault(); k(); }
     });
 
-    spine.addEventListener('pointerdown', e => { spine.setPointerCapture(e.pointerId); spine.classList.add('dragging'); spineTo(e.clientY); });
+    // dragging the spine cancels a jump's pending correction, as scrolling by hand does
+    spine.addEventListener('pointerdown', e => { app.uiManager.scrollTarget = null; spine.setPointerCapture(e.pointerId); spine.classList.add('dragging'); spineTo(e.clientY); });
     spine.addEventListener('pointermove', e => { if (spine.classList.contains('dragging')) spineTo(e.clientY); });
     for (const t of ['pointerup', 'pointercancel']) spine.addEventListener(t, () => spine.classList.remove('dragging'));
 

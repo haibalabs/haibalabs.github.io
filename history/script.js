@@ -72,7 +72,12 @@ async function initializeApp() {
         await uiManager.showPlaceLabels(await labels);
         // approved edits last: the release checks above compare the events as the file has them
         uiManager.showPublishedEdits(await publishedEdits);
-        uiManager.mapBrowser = new MapBrowser(eventManager, uiManager, panelManager);
+        // the timeline works without the map, so a map failure doesn't stop the rest of the start-up
+        try {
+            uiManager.mapBrowser = new MapBrowser(eventManager, uiManager, panelManager);
+        } catch (error) {
+            console.error('The map could not start:', error);
+        }
         uiManager.renderFilters();
         initControls();
 
@@ -84,10 +89,16 @@ async function initializeApp() {
     } catch (error) {
         endTimeTravel();
         console.error('Failed to initialize app:', error);
-        // The message is for the events themselves failing. A later step failing (a sidecar, the map) still
-        // shows the events as loaded.
+        // The message is for the events themselves failing. A later step failing (a sidecar) still shows the
+        // events as loaded, unless drawing them is what failed.
         if (!eventManager.events.length) uiManager.showLoadFailure();
-        else uiManager.resetWindow();
+        else {
+            try {
+                uiManager.resetWindow();
+            } catch (drawError) {
+                console.error('The events could not be drawn:', drawError);
+            }
+        }
     }
 }
 

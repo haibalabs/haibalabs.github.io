@@ -108,7 +108,7 @@ test('Home and End leave the timeline alone behind the photo viewer', async ({ p
   await onScreen(page, EARLIEST);
 });
 
-test('a failure after the events loaded still shows them, without the load failure message', async ({ page }) => {
+test('a map that fails to start leaves the timeline working, with no load failure message', async ({ page }) => {
   test.setTimeout(120000);
   await page.route('**/modules/map-browser.js', route => route.fulfill({
     contentType: 'text/javascript', body: "export class MapBrowser { constructor() { throw new Error('map failed'); } }" }));
@@ -116,4 +116,22 @@ test('a failure after the events loaded still shows them, without the load failu
   await page.goto('/history/index.html');
   await page.waitForSelector('#timeline-content .event', { timeout: 60000 });
   await expect(page.locator('.load-failure')).toHaveCount(0);
+  // the rest of the start-up ran: the era pill is drawn and Latest works
+  await page.click('#crumbs [data-edge="end"]');
+  await onScreen(page, LATEST);
+});
+
+test('dragging the spine right after a jump keeps the visitor where they dragged', async ({ page }) => {
+  test.setTimeout(120000);
+  await open(page);
+  await page.keyboard.press('End');
+  await onScreen(page, LATEST);
+  await expect(page.locator('.spine.ready')).toHaveCount(1);
+  const box = await page.locator('.spine').boundingBox();
+  await page.mouse.move(box.x + box.width - 20, box.y + box.height * 0.5);
+  await page.mouse.down();
+  await page.mouse.up();
+  await page.waitForTimeout(2500);
+  const left = await page.locator('.timeline-wrapper').evaluate(w => w.scrollHeight - w.clientHeight - w.scrollTop);
+  expect(left).toBeGreaterThan(2000);
 });
