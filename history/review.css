@@ -101,3 +101,21 @@
     .review-fields.no-select .review-field-label, .review-fields.no-select .review-value,
     .review-fields.no-select .review-people { grid-column: 1; }
 }
+
+/* places and images (event-fields.css draws the cards) */
+.review-media { display: grid; gap: 6px; }
+.review-place { display: flex; align-items: center; gap: 10px; padding: 6px; border: 1px solid var(--line); border-radius: 10px; }
+.review-place-meta { display: grid; gap: 2px; min-width: 0; }
+.review-place-label { font-size: .875rem; font-weight: 500; overflow-wrap: anywhere; }
+.review-place-note { font-size: .75rem; color: var(--ink-2); }
+.review-place.added, .image-card.added { border-color: #067647; }
+.review-place.removed, .image-card.removed { opacity: .6; }
+.review-place.before, .image-card.before { opacity: .75; }
+.review-license { display: grid; gap: 6px; padding: 10px; border: 1px solid #fedf89; border-radius: 10px; background: color-mix(in srgb, #fffaeb 70%, var(--surface)); }
+.review-license .checkbox-row { display: flex; align-items: flex-start; gap: 8px; font-size: .8125rem; }
+.review-license-field { display: grid; gap: 3px; font-size: .75rem; color: var(--ink-2); }
+.review-license-field input { padding: 6px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
+.review-actions button[hidden] { display: none; }
+.review-commons-check { margin: 4px 0 0; font-size: .75rem; color: #b54708; }
+.review-commons-check.ok { color: #067647; }
+.review-commons-record { margin: 2px 0 0; font-size: .75rem; color: var(--ink-2); }

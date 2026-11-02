@@ -56,8 +56,14 @@ service cloud.firestore {
     // their own; only the author and admins read them. Authors never write review results:
     // checks.automatic comes from the agents' checker (Admin SDK, outside these rules), and review
     // fields, field dispositions and publication come from admins. Nothing is deleted.
+    // Locations are edited per position, location[0] to location[4] (LOCATION_SLOTS in world-edits.js).
     function editFieldNames() {
-      return ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url'];
+      return ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url', 'image',
+          'location[0]', 'location[1]', 'location[2]', 'location[3]', 'location[4]'];
+    }
+
+    function addsOnly(changes, field) {
+      return !(field in changes) || changes[field].before == null;
     }
 
     // A new event: the required fields filled in, and nothing it replaces.
@@ -68,9 +74,17 @@ service cloud.firestore {
         && changes.enhanced_time.after.size() > 0
         && changes.enhanced_description.before == null && changes.enhanced_description.after is string
         && changes.enhanced_description.after.size() > 0
-        && (!('figures' in changes) || changes.figures.before == null)
-        && (!('categories' in changes) || changes.categories.before == null)
-        && (!('wikipedia_url' in changes) || changes.wikipedia_url.before == null);
+        && addsOnly(changes, 'figures') && addsOnly(changes, 'categories') && addsOnly(changes, 'wikipedia_url')
+        && addsOnly(changes, 'image') && addsOnly(changes, 'location[0]') && addsOnly(changes, 'location[1]')
+        && addsOnly(changes, 'location[2]') && addsOnly(changes, 'location[3]') && addsOnly(changes, 'location[4]');
+    }
+
+    // A proposed upload points at the author's own file for this edit (storage.rules, edit_uploads).
+    function validImageChange(data) {
+      let image = data.changes.get('image', {'after': null}).after;
+      return image == null || image.get('asset', null) == null
+        || image.asset.path.matches('edit_uploads/' + data.author.uid + '/' + data.edit_id
+            + '/r[0-9]+-[0-9a-f]{64}[.](webp|jpg)');
     }
 
     function validEditContent(data) {
@@ -84,6 +98,7 @@ service cloud.firestore {
         && data.dataset is map
         && data.changes is map && data.changes.size() > 0
         && data.changes.keys().hasOnly(editFieldNames())
+        && validImageChange(data)
         && data.reason is string && data.reason.size() <= 1000
         && data.sources is list && data.sources.size() <= 5
         && data.source_conflict is bool

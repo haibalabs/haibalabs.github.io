@@ -1,0 +1,110 @@
+/* The location picker, image link and image cards shared by both event forms and the review page
+   (location-picker.js, image-field.js). Colours come from base.css's tokens, so both themes follow. */
+
+/* a place's small map: an OpenStreetMap tile placed so the point sits at the centre */
+.loc-map {
+    position: relative; flex: none; width: 96px; height: 72px; overflow: hidden;
+    border-radius: 8px; background: var(--surface-2); border: 1px solid var(--line);
+}
+.loc-map img { position: absolute; width: 256px; height: 256px; max-width: none; pointer-events: none; }
+:root[data-theme="dark"] .loc-map img { filter: brightness(.75) contrast(1.1); }
+.loc-map.empty { display: grid; place-items: center; color: var(--ink-3); font-size: 1.1rem; }
+.loc-pin {
+    position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 0 2px var(--surface), 0 0 0 7px var(--accent-soft);
+}
+
+.location-picker { display: grid; gap: .5rem; }
+.loc-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
+.loc-list:empty { display: none; }
+.loc-row {
+    display: flex; align-items: center; gap: .7rem; padding: .45rem; border: 1px solid var(--line);
+    border-radius: 10px; background: var(--surface);
+}
+.loc-row.removed .loc-label { text-decoration: line-through; color: var(--ink-3); }
+.loc-meta { display: grid; gap: .15rem; flex: 1; min-width: 0; }
+.loc-label { font-size: .875rem; font-weight: 500; overflow-wrap: anywhere; }
+.loc-note { font-size: .75rem; color: var(--ink-2); }
+.loc-note.ok { color: #067647; }
+.loc-note.changed { color: var(--accent); }
+.loc-actions { display: flex; flex-direction: column; align-items: flex-end; gap: .1rem; flex: none; }
+.loc-add { display: grid; gap: .35rem; }
+.loc-add[hidden], .loc-hand[hidden], .loc-target[hidden] { display: none; }
+.loc-target { margin: 0; font-size: .75rem; color: var(--ink-2); }
+.loc-search { position: relative; }
+.loc-mag { position: absolute; left: .7rem; top: .7rem; color: var(--ink-3); font-size: .85rem; pointer-events: none; }
+.loc-input {
+    width: 100%; box-sizing: border-box; padding: .55rem .7rem .55rem 2rem; border: 1px solid var(--line);
+    border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit;
+}
+.loc-results {
+    position: absolute; z-index: 6; left: 0; right: 0; top: calc(100% + 4px); margin: 0; padding: .25rem;
+    list-style: none; background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    box-shadow: 0 12px 32px rgb(0 0 0 / .14); max-height: 300px; overflow-y: auto;
+}
+.loc-results[hidden] { display: none; }
+.loc-results button {
+    display: grid; gap: .1rem; width: 100%; text-align: left; padding: .45rem .6rem; border: 0; border-radius: 6px;
+    background: none; color: var(--ink); font: inherit; cursor: pointer;
+}
+.loc-results button:hover, .loc-results button:focus-visible { background: var(--surface-2); outline: none; }
+.loc-group { padding: .45rem .6rem .15rem; font-size: .66rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+.loc-group.muted { text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .75rem; }
+.loc-hand-toggle { justify-self: start; }
+.loc-hand { display: grid; gap: .45rem; }
+.loc-hand .location-fields input { padding: .5rem .65rem; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; min-width: 0; }
+.loc-hand-actions { display: flex; align-items: center; gap: .75rem; }
+.location-picker .muted, .image-link .muted { margin: 0; font-size: .75rem; color: var(--ink-3); }
+
+/* Upload | Link */
+.mode-switch { display: inline-flex; justify-self: start; gap: 2px; padding: 3px; border-radius: 999px; background: var(--surface-2); }
+.mode-switch button {
+    border: 0; border-radius: 999px; padding: .3rem .8rem; background: transparent; color: var(--ink-2);
+    font: inherit; font-size: .8125rem; font-weight: 500; cursor: pointer;
+}
+.mode-switch button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgb(0 0 0 / .08); }
+
+.image-link, .world-upload { display: grid; gap: .45rem; }
+.image-link[hidden], .world-upload[hidden], .image-current[hidden] { display: none; }
+.image-link-input, .world-upload input[type="text"], .form-subgroup input {
+    width: 100%; box-sizing: border-box; padding: .55rem .7rem; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--surface); color: var(--ink); font: inherit;
+}
+.image-link-status { margin: 0; font-size: .75rem; color: #93370d; }
+.image-link-status.ok { color: #067647; }
+.image-link-status.problem { color: #b42318; }
+.form-subgroup { display: grid; gap: .3rem; }
+.form-subgroup[hidden] { display: none; }
+.form-subgroup label { font-size: .75rem; font-weight: 600; color: var(--ink-2); }
+.image-current { display: grid; gap: .3rem; justify-items: start; }
+
+.image-card {
+    display: flex; gap: .7rem; align-items: flex-start; width: 100%; box-sizing: border-box; padding: .45rem;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+}
+.image-card.removed { opacity: .55; }
+.image-card-thumb { flex: none; width: 96px; height: 72px; border-radius: 8px; overflow: hidden; background: var(--surface-2); }
+.image-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.image-card-text { display: grid; gap: .15rem; min-width: 0; font-size: .75rem; color: var(--ink-2); }
+.image-card-caption { font-size: .8125rem; color: var(--ink); overflow-wrap: anywhere; }
+.image-card-note { color: var(--ink-3); overflow-wrap: anywhere; }
+
+/* the personal form's image group */
+.photo-group { display: grid; gap: .45rem; }
+.photo-group[hidden], .photo-upload-pane[hidden], .photo-link-pane[hidden] { display: none; }
+.photo-upload-pane { display: grid; gap: .45rem; }
+
+@media (max-width: 520px) {
+    .loc-map, .image-card-thumb { width: 72px; height: 56px; }
+}
+
+/* inside a form group, beat its generic input and label rules (base.css .form-group input / label) */
+.form-group .location-picker .loc-input { padding-left: 2rem; }
+.form-group > .field-label { font-size: .75rem; font-weight: 600; color: var(--ink-2); }
+.form-group .checkbox-row { font-size: .8125rem; font-weight: 400; color: var(--ink); line-height: 1.4; align-items: flex-start; }
+.form-group .checkbox-row input { flex: none; margin-top: .15rem; padding: 0; }
+.form-group .form-subgroup label { font-size: .75rem; font-weight: 600; color: var(--ink-2); }
+.loc-attribution {
+    position: absolute; right: 0; bottom: 0; padding: 0 3px; font-size: 7px; line-height: 10px;
+    color: var(--ink-2); background: color-mix(in srgb, var(--surface) 75%, transparent); border-top-left-radius: 4px;
+}
