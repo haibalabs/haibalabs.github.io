@@ -85,7 +85,7 @@ Checks and approval are tied to one exact revision of an edit and its file:
 | `wikipedia_url` | an `https://*.wikipedia.org/wiki/…` URL, or `null` to remove it | |
 | `categories` | one or more of the timeline's categories | |
 | `figures` | the event's people, in order: a list of `{ name, wikipedia_url? }` | The whole list is one field. Each person can be linked to their exact article; see People. |
-| `location[i]` | `{ name, city, region, country, historical_name, point?: [lat, lon] }`, or `null` to remove it | Keyed by the location's position in the event; `i` equal to the current count adds a location at the end. `before` carries the `place_id` and geography the author saw. See Location edits. |
+| `location[i]` | `{ name, city, region, country, historical_name, point: [lat, lon] \| null, precision, place_id?, wikidata? }`, or `null` to remove it | Keyed by the location's position in the event, `location[0]` to `location[4]`; `i` equal to the current count adds a location at the end. `before` carries the `place_id` and point the author saw. See Location edits. |
 | `image` | a normalized image record (below), or `null` to remove the event's image | One image per event. An approved image replaces the current one, released or not. |
 
 A `create` edit carries every required field (name, date, description) in `changes`, with `before: null`.
@@ -106,6 +106,8 @@ Events can have several locations: 3,125 of 52,532 have two or more, and 2,727 h
 - **Compared after the location release.** The site attaches `releases/released-locations-v1.json` before applying edits, so a location's `before`, its patch `base` and the loader's comparison all use the value **after** that release, which is what the author saw. The edit records the release file's SHA-256 in `dataset.locations_release_sha256`. When a later location release changes a base, the released value is accepted as a `prior_base`.
 - **Location releases respect approved edits.** history-dp treats an approved location receipt as an event-bound hold. `location_sidecar.prepare` already holds (event, place) pairs from plan holds and audit conflicts, so a later location batch never moves an event location an admin has approved. Hermes builds this in phase 4, so neither layer overrides the other.
 - **Provenance.** An approved pin lands as `geography.status: corrected`, with `precision: approximate`, or the precision of the resolved kind when the checker identifies the place. It is tagged `verification: community_edit:<edit_id>@r<revision>`, with the approval receipt as `correction_source`. T7's overlay already leaves `corrected` places alone.
+- **Picking a place (Rachid, 2026-10-31).** Both event forms share one picker (`modules/location-picker.js`). Its search lists the loaded world events' identified places first, with their "Place, Country" label, then Wikidata items with coordinates (`modules/place-search.js`). A picked place carries its point, the precision of what it stands for (site, settlement, region or country), and its `place_id` or Wikidata ID. "Enter it by hand" takes the five text fields instead; such a place has no point and stays off the map until it is identified. The personal Add event form saves the same values, with `verification: personal`.
+- **Positions an edit can reach.** The rules list `location[0]` to `location[4]` (`LOCATION_SLOTS`); an event's later places are kept as they are.
 - **T7's view on the review page.** When an event location already has a T7 hold (namesake tie, region conflict, audit event conflict) or an approximate placement, the review page shows it next to the proposal. Those are the cases where a human edit helps most.
 
 ### The image record
@@ -114,10 +116,9 @@ The `image` field stores the complete record the viewer will show, not just a li
 
 ```
 image
-  source            "commons" | "upload" | "release" (the last only in `before`, for a released image)
+  source            "commons" | "upload" | "link" | "release" (the last only in `before`, for a released image)
   image_url         full-size URL; for an upload, the public path it is copied to on approval
-  thumbnail_url     URL used in the timeline card
-  source_url        the Commons file page, or for an upload the site's own image page
+  source_url        the Commons file page, the link as given, or for an upload the site's own image page
   caption           what the image shows (v2 caption policy: no negations, no dates)
   display_date      the image's date as shown, or null
   image_role        one of the released-image roles (event_photo, event_aftermath, portrait, site,
@@ -138,6 +139,10 @@ For a Commons link, the form reads the file's metadata from the Commons API, fil
 - are never exported anywhere that implies an open license: Commons, dataset releases meant for reuse, or third parties;
 - are marked `permission_only` in the history-dp export;
 - can be removed on the uploader's request, through an image-removal edit.
+
+**Links from other sites, and the reviewer's license check (Rachid, 2026-10-31).** The form also takes an https link to an image on any other site (`source: "link"`), shown from that site, with the author's note on where it is from and why it may be used in `rights_statement`. Its license is unknown, so a reviewer must confirm it: the review page shows a check ("I checked the license: this image may be published with the credit below") with the credit, license and license link to publish, and Approve stays off until the box is ticked and a credit and license are given. The same check applies to every upload and to a Commons file without a free license (CC0, CC BY, CC BY-SA or public domain); a Commons file with one needs none (`imageNeedsConfirmation`). The author's browser writes the whole record, so the review page trusts none of it for Commons: an image counts as Commons only when served from `upload.wikimedia.org/wikipedia/commons/` with a Commons file page, the page reads the file's license from Commons again before Approve opens, and what is published is Commons' own record for that file (its URL, credit and license) with the author's caption. If Commons gives a different license, or can't be read, the reviewer's check appears, filled in from Commons. What the reviewer enters is what the overlay publishes. Without it, an update is approved with the image unticked, and a new event with "Approve without image", which publishes the event and records its image as not approved. Personal timelines take the same link and Commons credit without the check, since they are private.
+
+The image field is shared with the personal Add event form (`modules/image-field.js`, `modules/image-link.js`): Upload | Link, the Commons lookup and the credit line are one code path. Uploads differ: a personal photo is stored privately under its timeline (PERSONAL-IMAGES.md), a world edit's photo under `edit_uploads/` until it is approved.
 
 **`before` is the effective image when the author started:** the released image record, normalized to this shape with `source: "release"` and its `release_pair_id`; an image from an earlier approved edit; or `null` for none.
 
@@ -303,7 +308,7 @@ Approve anyway and Approve all checked wait for phase 3, since nothing is automa
 Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau, the "Phase 1" boards (Editing switch and card, Suggest an edit, My edits), revised with Rachid's comments of 2026-10-28. The canvas is private to Rachid's account; share it from its Share menu for anyone else to open it.
 
 - **Editing switch.** Signed-in editors, reviewers and admins get an Editing switch (a toggle labelled "Editing", Rachid, 2026-10-28) at the top of My edits in the profile drawer. It starts off, so they see the normal site, and the choice is remembered on that browser. Only while it's on does each world event show the pencil, a small icon in the date row beside the Wikipedia icon, with the author's pending mark next to it (Rachid, 2026-10-28).
-- **Suggest an edit** (pencil) opens the event form filled with the current values: name, date, description, people, category and Wikipedia article. Location and image are collapsed rows that open their own sections; they appear in phase 4, when those edits exist, rather than as buttons that do nothing.
+- **Suggest an edit** (pencil) opens the event form filled with the current values: name, date, description, people, location, image, category and Wikipedia article. Each place is a row with a small map and Change and Remove; a removed place stays listed, struck through, until the form is sent. The image section shows the current image with Remove, and Upload | Link to propose another (mockups for location and image: https://claude.ai/artifact/WWAvStVW5nzK5jzDasXGnM, option A, Rachid, 2026-10-31).
   - A changed field shows a small "Changed" tag and an "Undo change" link. The old value isn't repeated on screen, and there is no summary box (Rachid: keep the form uncluttered).
   - A note for the reviewer and a source are **optional** (Rachid, 2026-10-28): a reason helps when the author can put it into words, but nobody should have to type "because it's wrong" for every fix.
   - The "Wikipedia or another source is wrong here" checkbox sets `source_conflict`.
@@ -356,11 +361,11 @@ New events are never added twice, whatever the order of deployment and cleanup. 
 An approved image is shown through the same viewer as released images, from its image record (caption, date, credit and license). The image patch is applied after the released images are attached: it replaces the released image, or hides it when `after` is `null`.
 
 Uploaded images are stored under `edit_uploads/{uid}/{editId}/r{revision}-{sha256}.webp`, readable by the author and admins only. Approving an upload is staged so visitors never get a pointer to a missing or different file:
-1. The admin's browser copies the file to `world_images/{event_id}/{editId}-r{revision}-{sha256}.webp`, which everyone can read. Storage rules allow creating it but not overwriting it.
-2. It reads the public copy back and checks that its SHA-256 and size equal the edit's `asset`.
-3. Only then does it run the approval transaction, which writes the overlay with `image_url` and `thumbnail_url` pointing at the verified public copy.
+1. The admin's browser reads the private file and checks that its SHA-256 and size equal the edit's `asset`, so what the reviewer saw is what is published.
+2. It copies the file to `world_images/{event_id}/{editId}-r{revision}-{sha256}.webp`, which everyone can read. Storage rules allow creating it but not overwriting it; a retry after a failed approval reuses the copy already there.
+3. Only then does it run the approval transaction, which writes the overlay with `image_url` pointing at the public copy.
 
-If the copy or the check fails, nothing is approved and the admin sees why. A public copy left behind by a failed transaction is never referenced. It is listed in the review page's History for an admin to delete.
+If the check or the copy fails, nothing is approved and the admin sees why. The copy is made before the transaction on purpose, so the overlay never points at a missing file; the cost is that an approval that then fails, or that the admin abandons, leaves a readable file that nothing references. It stays until removed by hand from Storage (`modules/edit-uploads.js`).
 
 ## Folding into the dataset
 
@@ -425,7 +430,7 @@ Rules tests cover each line in `firebase/tests/rules.test.js` and `storage.test.
 | 1 | `edits` model and rules; Editing switch; Suggest an edit for name, date, description, people (with article links), Wikipedia link and category; browser checks; My edits | Maia, Atlas |
 | 2 | Review page; approve, reject, send back, overrule; merging and conflicts; overlay and visitor loading; revert | Maia, Atlas |
 | 3 | Agent checker and its schedule; service-account setup | Atlas, Maia |
-| 4 | Location proposals per position with map pin, checked by Hermes, with approved receipts held by `location_sidecar`; image proposals from Commons and uploads, checked by Iris | Maia with Hermes and Iris |
+| 4 | Location proposals per position, picked from identified places or Wikidata, with approved receipts held by `location_sidecar`; image proposals from Commons, uploads and links, with the reviewer's license check. The site's part is built (2026-10-31); the `location_sidecar` holds (Hermes) and the automatic checks (Hermes, Iris) remain | Maia with Hermes and Iris |
 | 5 | Suggest a new event, brought forward to follow phase 1 (the admin Add event and Push debug tools were already retired on 2026-10-28) | Maia, Atlas |
 | 6 | Folding into the dataset and overlay cleanup | Atlas, Maia |
 

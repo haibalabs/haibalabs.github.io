@@ -6,6 +6,7 @@ import { PersonalImages } from './personal-images.js';
 import { permissionsFor } from './roles.js';
 import { newEventId } from './event-id.js';
 import { eventProblem, PERSONAL_PHOTO_ROLE, timelineGeneration, timelineIdFromSearch, titleProblem } from './timeline-model.js';
+import { setEventImage } from './world-edits.js';
 
 // Every Firestore call here is awaited while the user can still sign out, open another timeline
 // or close this one. Each call notes the session (bumped on every account change) and the
@@ -372,7 +373,8 @@ export class TimelineUI {
         if (!target || !this.isCurrent(target.token)) {
             return 'The timeline was closed or the account changed, so this event was not saved.';
         }
-        // photo: { action: 'keep' } (the default), { action: 'remove' } or { action: 'add', resized }
+        // photo: { action: 'keep' } (the default), { action: 'remove' }, { action: 'add', resized }, or
+        // { action: 'link', image }: an image shown from its link, with its credit (image-link.js)
         const { photo = { action: 'keep' }, ...eventFields } = fields;
         const problem = eventProblem(eventFields);
         if (problem) return problem;
@@ -391,8 +393,14 @@ export class TimelineUI {
                 return 'Could not upload the photo. Try again.';
             }
             event.image = { ...uploaded, width, height, mime, bytes: full.size, image_role: PERSONAL_PHOTO_ROLE };
+        } else if (photo.action === 'link') {
+            // a link replaces the private photo, whose files are removed once the event is saved
+            setEventImage(event, photo.image);
         } else if (photo.action === 'keep' && previous) {
             event.image = previous;
+        } else if (photo.action === 'keep' && editing?.image_url) {
+            event.image_url = editing.image_url;
+            if (editing.image_preview) event.image_preview = editing.image_preview;
         }
         try {
             await this.store.saveEvent(timeline, event);

@@ -135,3 +135,16 @@ test('dragging the spine right after a jump keeps the visitor where they dragged
   const left = await page.locator('.timeline-wrapper').evaluate(w => w.scrollHeight - w.clientHeight - w.scrollTop);
   expect(left).toBeGreaterThan(2000);
 });
+
+test('scrolling by hand the moment a jump lands keeps the visitor where they scrolled', async ({ page }) => {
+  test.setTimeout(120000);
+  await open(page);
+  await page.click('#crumbs [data-edge="end"]');
+  // back over the timeline, so the wheel scrolls it rather than the header
+  await page.mouse.move(640, 400);
+  await page.waitForTimeout(80);
+  await page.mouse.wheel(0, -4000);
+  await page.waitForTimeout(2500);
+  const left = await page.locator('.timeline-wrapper').evaluate(w => w.scrollHeight - w.clientHeight - w.scrollTop);
+  expect(left).toBeGreaterThan(2000);
+});

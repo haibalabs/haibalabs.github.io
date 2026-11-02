@@ -30,6 +30,7 @@ export const CREDIT_LIMIT = 280;
  * @returns {{ text: string, shortened: boolean }}
  */
 export function shortCredit(credit) {
+    credit = String(credit ?? '');
     if (credit.length <= CREDIT_LIMIT) return { text: credit, shortened: false };
     const cut = credit.slice(0, CREDIT_LIMIT);
     const space = cut.lastIndexOf(' ');
@@ -123,7 +124,7 @@ export const displayCaption = (caption) => caption.replace(/\s*Image date:[^.]*\
  * @returns {{ text: string, italic: boolean }[]}
  */
 export function captionRuns(caption) {
-    return caption.split(/\*([^*\s](?:[^*]*[^*\s])?)\*/)
+    return String(caption ?? '').split(/\*([^*\s](?:[^*]*[^*\s])?)\*/)
         .map((text, i) => ({ text, italic: i % 2 === 1 }))
         .filter(run => run.text);
 }

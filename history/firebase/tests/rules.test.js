@@ -390,6 +390,23 @@ describe('proposed edits to world events', () => {
     await assertFails(setDoc(doc(db, 'edits', 'not-an-edit-id'), editDoc('editor', 'not-an-edit-id')));
     await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { event_id: 'evt_1' })));
   });
+  it('an edit can change a location at positions 0 to 4, and the image', async () => {
+    const db = asUser('editor');
+    const place = { name: 'Allianz Arena', city: 'Munich', region: '', country: 'Germany', historical_name: '', point: [48.2, 11.6], precision: 'site' };
+    await assertSucceeds(setDoc(editRef(db), editDoc('editor', EDIT, { changes: { 'location[1]': { before: null, after: place }, 'location[4]': { before: place, after: null } } })));
+    await assertFails(setDoc(editRef(db, OTHER_EDIT), editDoc('editor', OTHER_EDIT, { changes: { 'location[5]': { before: null, after: place } } })));
+    await assertFails(setDoc(editRef(db, OTHER_EDIT), editDoc('editor', OTHER_EDIT, { changes: { locations: { before: [], after: [place] } } })));
+    const commons = { source: 'commons', image_url: 'https://upload.wikimedia.org/a.jpg', credit: 'Jane Doe', license_name: 'CC BY-SA 4.0' };
+    await assertSucceeds(setDoc(editRef(db, OTHER_EDIT), editDoc('editor', OTHER_EDIT, { changes: { image: { before: null, after: commons } } })));
+  });
+  it('an uploaded image points at the author’s own file for that edit', async () => {
+    const db = asUser('editor');
+    const upload = (path) => ({ source: 'upload', image_url: null, credit: 'Me', asset: { path, sha256: 'c'.repeat(64), bytes: 10, width: 4, height: 3 } });
+    const own = `edit_uploads/editor/${EDIT}/r1-${'c'.repeat(64)}.webp`;
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { changes: { image: { before: null, after: upload(`edit_uploads/reviewer/${EDIT}/r1-${'c'.repeat(64)}.webp`) } } })));
+    await assertFails(setDoc(editRef(db), editDoc('editor', EDIT, { changes: { image: { before: null, after: upload(`world_images/${WORLD_EVT}/x.webp`) } } })));
+    await assertSucceeds(setDoc(editRef(db), editDoc('editor', EDIT, { changes: { image: { before: null, after: upload(own) } } })));
+  });
   it('only the author and admins can read an edit; nobody can delete one', async () => {
     await seedEdit('editor');
     await assertSucceeds(getDoc(editRef(asUser('editor'))));

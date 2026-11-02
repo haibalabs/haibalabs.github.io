@@ -13,6 +13,8 @@ import { FirebaseImageStore } from './modules/firebase-image-store.js';
 import { releasePositions } from './modules/world-locations.js';
 import { EditUI } from './modules/edit-ui.js';
 import { EditStore } from './modules/edit-store.js';
+import { EditUploads } from './modules/edit-uploads.js';
+import { PlaceSearch } from './modules/place-search.js';
 import { initThemeChoice } from './modules/theme.js';
 
 // Initialize map globally since it's used across different modules
@@ -43,13 +45,17 @@ async function initializeApp() {
     });
     const uiManager = new UIManager(eventManager, panelManager);
 
-    const modalManager = new ModalManager(eventManager, uiManager);
+    // one place search for both event forms, over the loaded world events' places
+    const placeSearch = new PlaceSearch(() => eventManager.events);
+    const modalManager = new ModalManager(eventManager, uiManager, { placeSearch });
     uiManager.modalManager = modalManager;
     // before any await, so it hears the first sign-in state
     uiManager.timelineUI = new TimelineUI(eventManager, uiManager,
         new TimelineStore(eventManager.db, eventManager.auth),
         new FirebaseImageStore(eventManager.firebaseApp, { emulator: eventManager.usesEmulators }));
-    new EditUI(eventManager, uiManager, new EditStore(eventManager.db, eventManager.auth));
+    new EditUI(eventManager, uiManager, new EditStore(eventManager.db, eventManager.auth), {
+        placeSearch, uploads: new EditUploads(eventManager.firebaseApp, { emulator: eventManager.usesEmulators }),
+    });
 
     // Get data file from URL params
     const params = new URLSearchParams(window.location.search);

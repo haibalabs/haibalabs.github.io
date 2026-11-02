@@ -251,6 +251,10 @@ describe('ModalManager — the event form keeps the destination it was opened fo
       photoChoice: { action: 'keep' },
     });
     manager.photoField = { shown: false, reset(visible) { this.shown = visible; }, settled: async () => manager.photoChoice };
+    // the shared location picker and image link (location-picker.js, image-field.js), empty here
+    manager.locations = { set() {}, values: () => [] };
+    manager.imageLink = { set() {}, input: { value: '' }, image: async () => ({ ok: true, image: null }) };
+    manager.photoMode = { set() {}, dataset: { mode: 'upload' } };
     view.uiManager.timelineUI = view;
     view.uiManager.modalManager = manager;
     return manager;

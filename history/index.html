@@ -42,6 +42,7 @@
     <link rel="stylesheet" href="map-browser.css">
     <link rel="stylesheet" href="timelines.css">
     <link rel="stylesheet" href="world-edits.css">
+    <link rel="stylesheet" href="event-fields.css">
 </head>
 <body>
     <div class="page-container">
@@ -165,23 +166,23 @@
                 <div class="form-group"><label>Time</label><input type="text" name="enhanced_time" required placeholder="e.g. 1/25/1976, 750, 15 BC, March 982, Late Spring 1204"></div>
                 <div class="form-group"><label>Description</label><textarea name="enhanced_description" required rows="3"></textarea></div>
                 <div class="form-group photo-group" id="photo-group" hidden>
-                    <label for="photo-input">Photo</label>
-                    <div class="photo-preview" hidden><img alt="Photo preview"></div>
-                    <div class="photo-actions">
-                        <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif">
-                        <button type="button" class="btn btn-secondary photo-remove" hidden>Remove photo</button>
+                    <span class="field-label">Image</span>
+                    <!-- Upload (private photo) or Link (image-field.js, shared with Suggest an edit) -->
+                    <div class="photo-mode"></div>
+                    <div class="photo-upload-pane">
+                        <div class="photo-preview" hidden><img alt="Photo preview"></div>
+                        <div class="photo-actions">
+                            <input type="file" id="photo-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" aria-label="Photo to upload">
+                            <button type="button" class="btn btn-secondary photo-remove" hidden>Remove photo</button>
+                        </div>
+                        <p class="photo-note">Stored privately at up to 1600 px; the original and its location data are not kept.</p>
                     </div>
-                    <p class="photo-note">Stored privately at up to 1600 px; the original and its location data are not kept.</p>
+                    <div class="photo-link-pane" hidden></div>
                 </div>
                 <div class="form-group">
-                    <label>Location</label>
-                    <div class="location-fields">
-                        <input type="text" name="location_name" placeholder="Name">
-                        <input type="text" name="location_city" placeholder="City">
-                        <input type="text" name="location_region" placeholder="Region">
-                        <input type="text" name="location_country" placeholder="Country">
-                        <input type="text" name="location_historical" placeholder="Historical name">
-                    </div>
+                    <span class="field-label" id="add-locations-label">Location</span>
+                    <!-- the same picker as Suggest an edit (location-picker.js) -->
+                    <div id="add-locations" role="group" aria-labelledby="add-locations-label"></div>
                 </div>
                 <div class="form-group"><label>Categories</label><select name="categories"></select></div>
                 <div class="form-group"><label>Source URL</label><input name="wikipedia_url" pattern="^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$" placeholder="e.g. www.wikipedia.org/wiki/page"></div>
@@ -217,6 +218,15 @@
                         <input id="se-person" type="text" autocomplete="off" placeholder="Add a person…" aria-controls="se-person-results" aria-expanded="false">
                         <ul class="people-results" id="se-person-results" role="listbox" aria-label="Wikipedia articles" hidden></ul>
                     </div>
+                </div>
+                <!-- location and image: the same picker and image link as the personal form (location-picker.js, image-field.js) -->
+                <div class="form-group" data-field="locations">
+                    <div class="field-head"><span class="field-label" id="se-locations-label">Location</span><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <div id="se-locations" role="group" aria-labelledby="se-locations-label"></div>
+                </div>
+                <div class="form-group" data-field="image">
+                    <div class="field-head"><span class="field-label" id="se-image-label">Image</span><span class="changed-tag" hidden>Changed</span><button type="button" class="undo-change" hidden>Undo change</button></div>
+                    <div id="se-image" role="group" aria-labelledby="se-image-label"></div>
                 </div>
                 <div class="field-row">
                     <div class="form-group" data-field="categories">

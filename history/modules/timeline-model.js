@@ -8,7 +8,9 @@ export const NAME_MAX = 300;
 
 // Event fields stored in a personal timeline; everything else on a local event is display state.
 const EVENT_FIELDS = ['event_id', 'name', 'enhanced_time', 'enhanced_description', 'categories',
-    'locations', 'figures', 'wikipedia_url', 'confidence', 'image'];
+    'locations', 'figures', 'wikipedia_url', 'confidence', 'image',
+    // an image shown from its link, with its credit (image-link.js), instead of a private photo
+    'image_url', 'image_preview'];
 
 // The image role of a photo in a personal timeline (see PERSONAL-IMAGES.md).
 export const PERSONAL_PHOTO_ROLE = 'personal_photo';

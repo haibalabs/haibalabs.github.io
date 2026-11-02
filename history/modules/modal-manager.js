@@ -1,5 +1,8 @@
 import { PROMINENT_LABELS } from './config.js';
+import { ImageLinkInput, modeSwitch } from './image-field.js';
 import { resizePhoto } from './image-resize.js';
+import { LocationPicker } from './location-picker.js';
+import { toEventLocation } from './world-edits.js';
 
 // The event form's photo field, shown only in forms for a personal timeline (one photo per event;
 // see PERSONAL-IMAGES.md). A chosen file is resized right away, so the preview shows what will be
@@ -96,17 +99,36 @@ export class PhotoField {
 }
 
 export class ModalManager {
-    constructor(eventManager, uiManager) {
+    /**
+     * @param {object} eventManager
+     * @param {object} uiManager
+     * @param {{ placeSearch: import('./place-search.js').PlaceSearch }} services
+     */
+    constructor(eventManager, uiManager, { placeSearch }) {
         this.eventManager = eventManager;
         this.uiManager = uiManager;
         this.modal = document.getElementById('add-event-modal');
         this.form = document.getElementById('add-event-form');
-        this.photoField = new PhotoField(document.getElementById('photo-group'), {
+        const photoGroup = document.getElementById('photo-group');
+        this.photoField = new PhotoField(photoGroup, {
             images: () => uiManager.timelineUI.images,
             onError: (message) => this.showError(message),
         });
+        // Upload keeps a private copy; Link shows the image from where it is, with its credit when it's on Commons
+        this.imageLink = new ImageLinkInput('add-img');
+        photoGroup.querySelector('.photo-link-pane').append(this.imageLink.root);
+        this.photoMode = modeSwitch(mode => this.showPhotoPane(mode));
+        photoGroup.querySelector('.photo-mode').append(this.photoMode);
+        this.locations = new LocationPicker(document.getElementById('add-locations'), { search: placeSearch, idPrefix: 'add-loc' });
         this.populateCategories();
         this.setupListeners();
+    }
+
+    showPhotoPane(mode) {
+        this.photoMode.set(mode, true);
+        const group = document.getElementById('photo-group');
+        group.querySelector('.photo-upload-pane').hidden = mode !== 'upload';
+        group.querySelector('.photo-link-pane').hidden = mode !== 'link';
     }
 
     populateCategories() {
@@ -142,20 +164,22 @@ export class ModalManager {
         this.modal.querySelector('.modal-header h3').textContent = event ? 'Edit event' : 'Add event';
         this.form.querySelector('button[type="submit"]').textContent = event ? 'Save' : 'Add';
         if (event) {
-            const location = event.locations?.[0] ?? {};
             const values = {
                 name: event.name, enhanced_time: event.enhanced_time,
                 enhanced_description: event.enhanced_description, wikipedia_url: event.wikipedia_url,
-                categories: event.categories?.[0], location_name: location.name, location_city: location.city,
-                location_region: location.region, location_country: location.country,
-                location_historical: location.historical_name,
+                categories: event.categories?.[0],
             };
             for (const [name, value] of Object.entries(values)) this.form.elements[name].value = value ?? '';
         } else if (this.target) {
             // a new event in a personal timeline starts as People; the user can change it
             this.form.elements.categories.value = 'people';
         }
+        this.locations.set(event?.locations ?? []);
         this.photoField.reset(Boolean(this.target), event);
+        // an event shown from a link reopens on its link
+        const preview = event?.image_url && !event.image ? event.image_preview ?? {} : null;
+        this.imageLink.set(preview ? (preview.source === 'commons' ? preview.source_url : event.image_url) : '');
+        this.showPhotoPane(preview ? 'link' : 'upload');
         this.modal.style.display = 'flex';
     }
 
@@ -179,23 +203,29 @@ export class ModalManager {
         error.hidden = !message;
     }
 
+    /**
+     * What saving does with the image: the upload pane's choice (keep, remove, add a photo), or a link
+     * ({ action: 'link', image }), or removing the link when its box was emptied.
+     */
+    async imageChoice() {
+        if (this.photoMode.dataset.mode === 'upload') return this.photoField.settled();
+        if (!this.imageLink.input.value.trim()) {
+            return this.editing?.image_url && !this.editing.image ? { action: 'remove' } : this.photoField.settled();
+        }
+        const result = await this.imageLink.image();
+        return result.ok ? { action: 'link', image: result.image } : { problem: result.problem };
+    }
+
     async handleSubmit(e) {
         e.preventDefault();
 
         const formData = new FormData(this.form);
-        const location = {
-            name: formData.get('location_name'),
-            city: formData.get('location_city'),
-            region: formData.get('location_region'),
-            country: formData.get('location_country'),
-            historical_name: formData.get('location_historical')
-        };
         const newEvent = {
             name: formData.get('name').trim(),
             enhanced_time: formData.get('enhanced_time').trim(),
             categories: formData.getAll('categories').filter(Boolean),
-            // an event without a location stays off the map
-            locations: Object.values(location).some(value => value.trim()) ? [location] : [],
+            // a picked place has a point and shows on the map; one entered by hand doesn't
+            locations: this.locations.values().filter(Boolean).map(location => toEventLocation(location, 'personal')),
             enhanced_description: formData.get('enhanced_description'),
             wikipedia_url: formData.get('wikipedia_url'),
             confidence: 'high'
@@ -208,8 +238,9 @@ export class ModalManager {
             buttons.forEach(button => button.disabled = true);
             let problem;
             try {
-                const photo = await this.photoField.settled();
-                problem = await this.uiManager.timelineUI.saveEvent({ ...newEvent, photo }, this.editing, target);
+                const photo = await this.imageChoice();
+                if (photo.problem) problem = photo.problem;
+                else problem = await this.uiManager.timelineUI.saveEvent({ ...newEvent, photo }, this.editing, target);
             } finally {
                 buttons.forEach(button => button.disabled = false);
             }

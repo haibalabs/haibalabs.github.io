@@ -1,5 +1,6 @@
 rules_version = '2';
 
+// Photos uploaded with world edits, and their approved public copies, have their own rules below.
 // Photos in personal timelines (see ../PERSONAL-IMAGES.md). A photo is readable and deletable
 // only by the timeline's owner and listed members with an invited role, and only under the
 // timeline's current generation: the seconds and nanoseconds of its createdAt. A timeline
@@ -45,6 +46,36 @@ service firebase.storage {
       return (full || thumb)
         && request.resource.contentType in ['image/webp', 'image/jpeg']
         && request.resource.size <= (thumb ? 200 * 1024 : 2 * 1024 * 1024);
+    }
+
+    function role() {
+      return request.auth != null && firestore.exists(userPath()) ? firestore.get(userPath()).data.role : '';
+    }
+
+    function validImageFile(maxBytes) {
+      return request.resource.contentType in ['image/webp', 'image/jpeg'] && request.resource.size <= maxBytes;
+    }
+
+    // Photos uploaded with world edits (../WORLD-EDITS.md): private to their author and admins,
+    // one immutable file per revision, named by its SHA-256.
+    match /edit_uploads/{uid}/{editId}/{file} {
+      allow get: if request.auth != null && (request.auth.uid == uid || role() == 'admin');
+      allow create: if request.auth != null && request.auth.uid == uid
+        && role() in ['editor', 'reviewer', 'admin']
+        && resource == null
+        && editId.matches('edt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        && file.matches('r[0-9]+-[0-9a-f]{64}[.](webp|jpg)')
+        && validImageFile(2 * 1024 * 1024);
+    }
+
+    // An approved upload's public copy, which visitors load: everyone reads; admins create, never overwrite.
+    match /world_images/{eventId}/{file} {
+      allow get: if true;
+      allow create: if role() == 'admin'
+        && resource == null
+        && eventId.matches('evt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        && file.matches('edt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}-r[0-9]+-[0-9a-f]{64}[.](webp|jpg)')
+        && validImageFile(2 * 1024 * 1024);
     }
 
     match /timelines/{timelineId}/{generation}/events/{eventId}/{file} {

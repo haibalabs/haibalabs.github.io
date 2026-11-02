@@ -7,12 +7,16 @@
 // approval publishes names no one.
 import { AuthManager } from './auth-manager.js';
 import { EditStore } from './edit-store.js';
+import { EditUploads } from './edit-uploads.js';
 import { EventManager } from './event-manager.js';
+import { imageCard } from './image-field.js';
+import { commonsImage, creditLine } from './image-link.js';
+import { miniMap, pointNote } from './location-picker.js';
 import { ReviewStore } from './review-store.js';
 import { permissionsFor } from './roles.js';
 import {
-    conflictingFields, contentSha256, FIELD_LABELS, newEditId, normalizeFigures, OVERLAY_MAX_BYTES, overlayBytes,
-    publishedValue, REVIEWABLE_STATUSES, revertChanges, sameValue, wordDiff,
+    conflictingFields, contentSha256, fieldLabel, imageNeedsConfirmation, locationIndex, locationText, newEditId,
+    normalizeFigures, OVERLAY_MAX_BYTES, overlayBytes, publishedValue, REVIEWABLE_STATUSES, revertChanges, sameValue, wordDiff,
 } from './world-edits.js';
 
 const millis = (timestamp) => timestamp?.toMillis?.() ?? 0;
@@ -42,6 +46,8 @@ const personKey = (person) => person.name;
 
 // A field's value as one line of text, for conflict notes.
 function valueText(field, value) {
+    if (locationIndex(field) !== null) return value ? locationText(value) : '(none)';
+    if (field === 'image') return value ? value.caption ?? value.image_url ?? 'an uploaded photo' : '(none)';
     if (field === 'figures') return normalizeFigures(value).map(p => p.name).join(', ') || '(none)';
     if (Array.isArray(value)) return value.join(', ') || '(none)';
     return value ?? '(none)';
@@ -56,6 +62,9 @@ class ReviewPage {
         const events = new EventManager(null);
         this.store = new ReviewStore(events.db, events.auth);
         this.editStore = new EditStore(events.db, events.auth);
+        this.uploads = new EditUploads(events.firebaseApp, { emulator: events.usesEmulators });
+        // reads a Commons file's license again for the review (image-link.js)
+        this.commonsLookup = (link) => commonsImage(link);
         this.tab = 'waiting';
         this.edits = [];
         this.overlay = null;
@@ -166,8 +175,10 @@ class ReviewPage {
         const conflicts = conflictingFields(edit, this.overlay);
         const grid = element('div', creating ? 'review-fields no-select' : 'review-fields');
         const boxes = [];
+        let confirmation = null;
+        let imageBox = null;
         for (const [field, change] of Object.entries(edit.changes)) {
-            const label = FIELD_LABELS[field] ?? field;
+            const label = fieldLabel(field);
             if (!creating) {
                 const box = element('input');
                 box.type = 'checkbox';
@@ -179,6 +190,11 @@ class ReviewPage {
             }
             grid.append(element('span', 'review-field-label', label));
             const value = this.change(field, creating ? null : change.before, change.after);
+            if (field === 'image') imageBox = value;
+            if (field === 'image' && imageNeedsConfirmation(change.after)) {
+                confirmation = this.licenseConfirmation(edit, change.after);
+                value.append(confirmation.root);
+            }
             if (conflicts.includes(field)) {
                 const published = publishedValue(this.overlay, edit.event_id, field, change.before);
                 value.append(element('p', 'review-conflict',
@@ -204,20 +220,69 @@ class ReviewPage {
         const actions = element('div', 'review-actions');
         const rejectButton = element('button', '', 'Reject…');
         rejectButton.type = 'button';
+        // a new event whose image's license isn't confirmed can still be published without it
+        const withoutImage = element('button', '', 'Approve without image');
+        withoutImage.type = 'button';
+        withoutImage.hidden = !(creating && confirmation);
         const approveButton = element('button', 'primary');
         approveButton.type = 'button';
+        const imageTicked = () => (creating ? 'image' in edit.changes : boxes.some(box => box.value === 'image' && box.checked));
         const label = () => {
             if (creating) return 'Approve new event';
             const n = boxes.filter(box => box.checked).length;
             if (n < boxes.length) return `Approve ${n} of ${boxes.length} changes`;
             return n === 1 ? 'Approve 1 change' : `Approve ${n} changes`;
         };
-        approveButton.textContent = label();
-        for (const box of boxes) box.addEventListener('change', () => { approveButton.textContent = label(); });
-        actions.append(rejectButton, approveButton);
+        // A Commons image's license is read from Commons again, since the author's browser wrote the record;
+        // Approve waits for that, and for the reviewer's check and a credit when the image needs them.
+        let commonsCheck = 'none';
+        const imageAfter = edit.changes.image?.after;
+        const refresh = () => {
+            approveButton.textContent = label();
+            approveButton.disabled = imageTicked() && (commonsCheck === 'pending' || Boolean(confirmation && !confirmation.ready()));
+            approveButton.title = approveButton.disabled
+                ? (commonsCheck === 'pending' ? 'Checking the image license on Wikimedia Commons…' : 'Confirm the image license and its credit first, or leave the image out.')
+                : '';
+        };
+        let commonsRecord = null;
+        if (imageAfter && !confirmation) {
+            commonsCheck = 'pending';
+            const status = element('p', 'review-commons-check', 'Checking the license on Wikimedia Commons…');
+            imageBox.append(status);
+            this.commonsLookup(imageAfter.source_url).then((result) => {
+                // what is published is Commons' own record for the file the page names: its URL, credit and
+                // license, never the author's, who could pair one file's page with another file's URL
+                if (result.ok) {
+                    commonsRecord = result.image;
+                    imageBox.append(element('p', 'review-commons-record', `Publishes Commons' file and credit: ${creditLine(result.image)}`));
+                }
+                const confirmed = result.ok && result.image.license_name === imageAfter.license_name && !imageNeedsConfirmation(result.image);
+                commonsCheck = confirmed ? 'ok' : 'differs';
+                status.classList.toggle('ok', confirmed);
+                status.textContent = confirmed ? `✓ Commons confirms ${result.image.license_name}`
+                    : result.ok ? `Commons says the license is ${result.image.license_name || 'not given'}, not ${imageAfter.license_name}.` : result.problem;
+                if (!confirmed) {
+                    // what Commons says now goes in the reviewer's check, not what the edit claimed
+                    confirmation = this.licenseConfirmation(edit, result.ok
+                        ? { ...imageAfter, credit: result.image.credit, license_name: result.image.license_name, license_url: result.image.license_url }
+                        : imageAfter);
+                    imageBox.append(confirmation.root);
+                    confirmation.onChange(refresh);
+                    withoutImage.hidden = !creating;
+                }
+                refresh();
+            });
+        }
+        refresh();
+        for (const box of boxes) box.addEventListener('change', refresh);
+        confirmation?.onChange(refresh);
+        actions.append(rejectButton, withoutImage, approveButton);
         block.append(reject, error, actions);
 
-        const busy = (on) => [rejectButton, approveButton].forEach(button => button.disabled = on);
+        const busy = (on) => {
+            [rejectButton, withoutImage, approveButton].forEach(button => button.disabled = on);
+            if (!on) refresh();
+        };
         const fail = (message) => {
             error.textContent = message;
             error.hidden = !message;
@@ -241,12 +306,16 @@ class ReviewPage {
             }
             await this.load();
         });
-        approveButton.addEventListener('click', async () => {
+        const approve = async ({ dropImage = false } = {}) => {
             const fields = creating ? Object.keys(edit.changes) : boxes.filter(box => box.checked).map(box => box.value);
             if (!fields.length) return fail('Tick at least one change, or reject the edit.');
             busy(true);
+            fail('');
             try {
-                await this.store.approve(edit, fields);
+                const values = {};
+                if (dropImage) values.image = null;
+                else if (fields.includes('image') && edit.changes.image?.after) values.image = await this.publishedImage(edit, confirmation, commonsRecord);
+                await this.store.approve(edit, fields, '', values);
             } catch (e) {
                 console.error('Could not approve the edit:', e);
                 busy(false);
@@ -254,8 +323,64 @@ class ReviewPage {
                     ? e.message : 'Could not approve the edit. Reload and try again.');
             }
             await this.load();
-        });
+        };
+        approveButton.addEventListener('click', () => approve());
+        withoutImage.addEventListener('click', () => approve({ dropImage: true }));
         return block;
+    }
+
+    /**
+     * The confirmation an image with no known free license needs before it is published: the reviewer
+     * ticks that it may be shown and gives the credit and license as published (Rachid, 2026-10-31).
+     */
+    licenseConfirmation(edit, image) {
+        const root = element('div', 'review-license');
+        const id = `license-${edit.edit_id}`;
+        const check = element('label', 'checkbox-row');
+        const box = element('input');
+        box.type = 'checkbox';
+        box.id = `${id}-ok`;
+        check.append(box, ' I checked the license: this image may be published with the credit below');
+        const field = (key, label, value, placeholder) => {
+            const wrap = element('label', 'review-license-field');
+            const input = element('input');
+            input.type = 'text';
+            input.id = `${id}-${key}`;
+            input.value = value ?? '';
+            input.placeholder = placeholder;
+            wrap.append(element('span', '', label), input);
+            root.append(wrap);
+            return input;
+        };
+        root.append(check);
+        const credit = field('credit', 'Credit', image.credit, 'e.g. Jane Doe');
+        const license = field('license', 'License', image.license_name, 'e.g. CC BY 2.0, or Used with permission');
+        const licenseUrl = field('license-url', 'License link (optional)', image.license_url, 'https://…');
+        const listeners = [];
+        for (const input of [box, credit, license, licenseUrl]) input.addEventListener('input', () => listeners.forEach(fn => fn()));
+        return {
+            root,
+            onChange: (fn) => listeners.push(fn),
+            ready: () => box.checked && Boolean(credit.value.trim()) && Boolean(license.value.trim()),
+            values: () => ({ credit: credit.value.trim(), license_name: license.value.trim(), license_url: licenseUrl.value.trim() || null }),
+        };
+    }
+
+    /**
+     * The image record to publish: for a Commons image, Commons' own record for its file (URL, page,
+     * credit, license) with the author's caption, date and role; then the reviewer's credit and license
+     * where they had to confirm it; and for an upload, the URL of its public copy, made before the
+     * approval is written.
+     */
+    async publishedImage(edit, confirmation, commons = null) {
+        const proposed = edit.changes.image.after;
+        const fromCommons = commons
+            ? { source: 'commons', image_url: commons.image_url, source_url: commons.source_url, file_page: commons.file_page,
+                credit: commons.credit, license_name: commons.license_name, license_url: commons.license_url, rights_statement: commons.rights_statement }
+            : {};
+        const image = { ...proposed, ...fromCommons, ...(confirmation ? confirmation.values() : {}) };
+        if (image.source === 'upload') image.image_url = await this.uploads.publish(edit, image.asset);
+        return image;
     }
 
     meta(edit) {
@@ -289,8 +414,41 @@ class ReviewPage {
         }
     }
 
-    // One field's before and after: a word diff for text, people and categories as chips.
+    // A place as the review page shows it: its small map, its text, and what its point stands for.
+    placeCard(location, kind) {
+        const card = element('div', `review-place ${kind}`);
+        const meta = element('div', 'review-place-meta');
+        meta.append(element(kind === 'removed' ? 'del' : 'span', 'review-place-label', locationText(location) || '(unnamed place)'),
+            element('span', 'review-place-note', [pointNote(location), location.place_id ? 'identified place' : location.wikidata ? `Wikidata ${location.wikidata}` : 'entered by hand'].join(' · ')));
+        card.append(miniMap(location, 'loc-map'), meta);
+        return card;
+    }
+
+    // An image as the review page shows it; a private upload is loaded through the admin's session.
+    imageReview(image, kind) {
+        const card = imageCard(image, { src: image.source === 'upload' ? null : image.image_url, note: image.rights_statement ?? '' });
+        card.classList.add(kind);
+        if (image.source === 'upload' && image.asset?.path) {
+            this.uploads.objectUrl(image.asset.path).then((url) => {
+                const img = element('img');
+                img.src = url;
+                img.alt = image.caption ?? '';
+                card.querySelector('.image-card-thumb').append(img);
+            }, (error) => console.error('Could not load the uploaded photo:', error));
+        }
+        return card;
+    }
+
+    // One field's before and after: a word diff for text, people and categories as chips, places and images as cards.
     change(field, before, after) {
+        if (locationIndex(field) !== null || field === 'image') {
+            const box = element('div', 'review-media');
+            const card = (value, kind) => (field === 'image' ? this.imageReview(value, kind) : this.placeCard(value, kind));
+            if (before) box.append(card(before, after ? 'before' : 'removed'));
+            if (after) box.append(card(after, 'added'));
+            if (!before && !after) box.append(element('p', 'review-value', '(none)'));
+            return box;
+        }
         if (field === 'figures' || field === 'categories') {
             const list = (value) => (field === 'figures' ? normalizeFigures(value) : (value ?? []).map(name => ({ name })));
             const old = list(before);
@@ -332,7 +490,7 @@ class ReviewPage {
                 for (const [field, change] of Object.entries(edit.changes)) {
                     if (seen.has(field)) continue;
                     seen.add(field);
-                    grid.append(element('span', 'review-field-label', FIELD_LABELS[field] ?? field),
+                    grid.append(element('span', 'review-field-label', fieldLabel(field)),
                         element('p', 'review-value', valueText(field, change.before)));
                 }
             }
@@ -360,7 +518,7 @@ class ReviewPage {
         const grid = element('div', 'review-fields no-select');
         for (const [field, change] of Object.entries(edit.changes)) {
             const disposition = edit.fields?.[field]?.status;
-            const label = FIELD_LABELS[field] ?? field;
+            const label = fieldLabel(field);
             grid.append(element('span', 'review-field-label', disposition === 'rejected' && edit.status === 'published' ? `${label} (not approved)` : label),
                 this.change(field, edit.kind === 'create' ? null : change.before, change.after));
         }

@@ -149,3 +149,40 @@ describe('personal photos: what can be uploaded', () => {
     await assertFails(uploadBytes(ref(storageAs('editor'), `timelines/t1/${GENERATION}/${PHOTO}.webp`), bytes(10), { contentType: 'image/webp' }));
   });
 });
+
+describe('photos uploaded with world edits, and their approved public copies', () => {
+  const EDIT = 'edt_0a1b2c3d-0000-4000-8000-000000000001';
+  const SHA = 'c'.repeat(64);
+  const upload = (uid, owner = uid, file = `r1-${SHA}.webp`, { size = 1000, contentType = 'image/webp' } = {}) =>
+    uploadBytes(ref(storageAs(uid), `edit_uploads/${owner}/${EDIT}/${file}`), bytes(size), { contentType });
+  const copy = (uid, file = `${EDIT}-r1-${SHA}.webp`) =>
+    uploadBytes(ref(storageAs(uid), `world_images/${EVT}/${file}`), bytes(1000), { contentType: 'image/webp' });
+
+  it('editors upload into their own folder only, one file per revision, never overwritten', async () => {
+    await assertSucceeds(upload('editor'));
+    await assertFails(upload('editor'));
+    await assertFails(upload('editor', 'reviewer'));
+    await assertFails(upload('viewer'));
+    await assertFails(upload(null, 'nobody'));
+    await assertFails(upload('editor', 'editor', 'photo.webp'));
+    await assertFails(upload('editor', 'editor', `r2-${SHA}.webp`, { size: 3 * 1024 * 1024 }));
+    await assertFails(upload('editor', 'editor', `r3-${SHA}.webp`, { contentType: 'image/gif' }));
+  });
+
+  it('only the author and admins can read an upload', async () => {
+    await assertSucceeds(upload('editor'));
+    const file = `edit_uploads/editor/${EDIT}/r1-${SHA}.webp`;
+    await assertSucceeds(getMetadata(ref(storageAs('editor'), file)));
+    await assertSucceeds(getMetadata(ref(storageAs('admin'), file)));
+    await assertFails(getMetadata(ref(storageAs('reviewer'), file)));
+    await assertFails(getMetadata(ref(storageAs(null), file)));
+  });
+
+  it('only admins make the public copy, once; everyone can read it', async () => {
+    await assertFails(copy('editor'));
+    await assertFails(copy('admin', 'photo.webp'));
+    await assertSucceeds(copy('admin'));
+    await assertFails(copy('admin'));
+    await assertSucceeds(getMetadata(ref(storageAs(null), `world_images/${EVT}/${EDIT}-r1-${SHA}.webp`)));
+  });
+});
