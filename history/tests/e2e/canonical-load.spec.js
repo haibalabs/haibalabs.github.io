@@ -63,7 +63,7 @@ test('full canonical snapshot loads in the actual timeline', async ({ page }) =>
   await page.route('**/*', route => {
     const url = route.request().url();
     if (url.includes('www.gstatic.com/firebasejs/')) return route.fulfill({ contentType: 'text/javascript', body: firebaseStub });
-    if (url.startsWith('http://localhost:8080/') || url.includes('unpkg.com/leaflet')) return route.continue();
+    if (new URL(url).origin === new URL(test.info().project.use.baseURL).origin || url.includes('unpkg.com/leaflet')) return route.continue();
     return route.abort();
   });
   const started = Date.now();

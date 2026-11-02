@@ -50,6 +50,8 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run E2E tests
+        env:
+          PORT: 8181
         working-directory: ./history
         run: npm run test:e2e
 
@@ -84,5 +86,7 @@ jobs:
         run: npm run test:rules
 
       - name: Sign-in tests against the emulators
+        env:
+          PORT: 8181
         working-directory: ./history/firebase
         run: npm run test:auth-flow

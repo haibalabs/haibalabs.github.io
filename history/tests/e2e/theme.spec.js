@@ -7,7 +7,7 @@ const background = page => page.evaluate(() => getComputedStyle(document.body).b
 async function open(page) {
   await page.route('**/*', route => {
     const url = route.request().url();
-    if (url.startsWith('http://localhost:8080/') || url.includes('unpkg.com/leaflet') || url.includes('www.gstatic.com/firebasejs/')) return route.continue();
+    if (new URL(url).origin === new URL(test.info().project.use.baseURL).origin || url.includes('unpkg.com/leaflet') || url.includes('www.gstatic.com/firebasejs/')) return route.continue();
     return route.abort();
   });
   await stubFirebase(page);

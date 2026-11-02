@@ -48,7 +48,7 @@ async function open(page, { maplibre = true, webgl = true, glFails = false } = {
     }
     if (maplibre && url.includes('unpkg.com/@maplibre/maplibre-gl-leaflet@')) return route.fulfill({ contentType: 'text/javascript', body: BINDING_STUB });
     if (url.includes('www.gstatic.com/firebasejs/')) return route.fallback();
-    if (url.startsWith('http://localhost:8080/') || url.includes('unpkg.com/leaflet')) return route.continue();
+    if (new URL(url).origin === new URL(test.info().project.use.baseURL).origin || url.includes('unpkg.com/leaflet')) return route.continue();
     return route.abort();
   });
   await page.goto('/history/index.html?file=events_sample_small.json');
