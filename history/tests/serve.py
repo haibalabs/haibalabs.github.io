@@ -19,4 +19,13 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    ThreadingHTTPServer(('127.0.0.1', 8080), Handler).serve_forever()
+    raw_port = os.environ.get('PORT', '')
+    try:
+        if not raw_port.isascii() or not raw_port.isdecimal():
+            raise ValueError
+        port = int(raw_port)
+        if not 1024 <= port <= 65535:
+            raise ValueError
+    except ValueError:
+        raise SystemExit('Set PORT to an unused integer from 1024 to 65535.')
+    ThreadingHTTPServer(('127.0.0.1', port), Handler).serve_forever()

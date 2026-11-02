@@ -54,7 +54,7 @@ There is no edit or delete action on world events for any role; only personal-ti
 | A pushed event reaches another admin only through Pull, and never a visitor or an editor | `tests/e2e/sync-flow.spec.js` ("a pushed event stays private…") |
 | Who may write `events_main` | `firebase/tests/rules.test.js` |
 
-Run them with the Firebase emulators (Java 21 or later), from `firebase/`: `npm run test:auth-flow`. CI runs them on every pull request to `main`.
+Run them with the Firebase emulators (Java 21 or later), from `firebase/`: `PORT=8181 npm run test:auth-flow`. CI runs them on every pull request to `main`.
 
 ## What U2 would add
 

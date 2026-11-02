@@ -120,7 +120,7 @@ Requirements: Node 20+ and Java 21 for the emulators (macOS: `brew install openj
 ```
 npm ci
 npm run test:rules        # Firestore and Storage rules against the emulators
-npm run test:auth-flow    # sign-in, timelines, photos, edits and review in the browser against the emulators
+PORT=8181 npm run test:auth-flow    # sign-in, timelines, photos, edits and review in the browser against the emulators
 ```
 
 `test:auth-flow` also needs the app's dependencies and browser: `npm ci` and `npx playwright install chromium` in `../`.

@@ -47,8 +47,8 @@ Note: if using `serve`, its "clean URLs" feature can break relative paths by str
 |---------|-------------|
 | `npm run test:syntax` | Verifies `date-handlers.js` and `map-utils.js` parse without errors |
 | `npm run test:unit` | Runs unit tests with Node.js built-in test runner (`node:test`) |
-| `npm run test:e2e` | Runs Playwright browser tests in headless Chromium |
-| `npm test` | Runs all three in sequence |
+| `PORT=8181 npm run test:e2e` | Runs Playwright browser tests in headless Chromium |
+| `PORT=8181 npm test` | Runs all three in sequence |
 
 ### Unit Tests (`tests/unit/`)
 
@@ -63,7 +63,7 @@ Playwright loads the app in headless Chromium and verifies it works end-to-end.
 
 - **`app-load.spec.js`** — Loads `events_sample_small.json` and `events_sample.json`, asserts no page errors and events render.
 
-Playwright config (`playwright.config.js`) starts `python3 -m http.server` on port 8080 serving from the repo root. Locally it reuses any existing server on that port; in CI it always starts a fresh one.
+Playwright config (`playwright.config.js`) requires an unused `PORT` from 1024 to 65535 and starts `tests/serve.py` from this checkout. Browser requests and the loopback server use that port. An existing listener makes the run fail, so another checkout cannot supply the test page.
 
 ### Network Blocking in Tests
 
@@ -105,12 +105,12 @@ Three parallel jobs, all using Node.js 20:
 **`e2e-tests`** (~30s)
 1. `npm ci`
 2. `npx playwright install --with-deps chromium`
-3. `npm run test:e2e` (the sign-in tests in `auth-flow.spec.js` skip here; they need the emulators)
+3. `PORT=8181 npm run test:e2e` (the sign-in tests in `auth-flow.spec.js` skip here; they need the emulators)
 
 **`firebase-tests`** (Java 21, Firebase emulators; see [firebase/README.md](firebase/README.md))
 1. `npm ci` in `history/` and `history/firebase/`
 2. `npx playwright install --with-deps chromium`
-3. `npm run test:rules` and `npm run test:auth-flow` in `history/firebase/`
+3. `npm run test:rules` and `PORT=8181 npm run test:auth-flow` in `history/firebase/`
 
 ### What CI Catches
 

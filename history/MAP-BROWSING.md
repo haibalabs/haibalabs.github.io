@@ -42,11 +42,11 @@ The default `events.json` remains the legacy dataset. The canonical snapshot is 
 
 ```sh
 cd history
-CANONICAL_SNAPSHOT=/absolute/path/to/history-data/canonical/t2-v1/events.json python3 tests/serve.py
+PORT=8181 CANONICAL_SNAPSHOT=/absolute/path/to/history-data/canonical/t2-v1/events.json python3 tests/serve.py
 ```
 
-Visit `http://localhost:8080/history/index.html?file=canonical-t2.json`.
+Visit `http://127.0.0.1:8181/history/index.html?file=canonical-t2.json`.
 
-Tests: `npm run test:unit`, `npm run test:e2e`. Set `CANONICAL_SNAPSHOT` to include full-data browser acceptance. A Playwright browser must be installed. For a standalone index benchmark: `node tests/benchmarks/place-index.mjs /absolute/path/to/events.json`.
+Tests: `npm run test:unit`, `PORT=8181 npm run test:e2e`. Set `CANONICAL_SNAPSHOT` to include full-data browser acceptance. A Playwright browser must be installed. For a standalone index benchmark: `node tests/benchmarks/place-index.mjs /absolute/path/to/events.json`.
 
 Known limits: saved coordinate quality and source dates are not independently verified by the browser; legacy date-parser TODOs remain. Default-data publication, sync identity repair, historical polygons and expanded source coverage are separate milestones.
