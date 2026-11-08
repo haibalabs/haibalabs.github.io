@@ -24,6 +24,8 @@ function loadSupercluster() {
 }
 
 const LIST_LIMIT = 25;
+// In "period" scope the map shows the years of the cards on screen, widened to at least this span.
+const MIN_PERIOD_YEARS = 20;
 
 const element = (tag, className, text) => {
     const node = document.createElement(tag);
@@ -32,11 +34,32 @@ const element = (tag, className, text) => {
     return node;
 };
 const countText = count => count >= 1000 ? '1000+' : String(count);
+// Years as the note shows them: deep time in millions or billions of years ago, then BC and AD.
+const yearText = year => {
+    const ago = 2026 - year;
+    if (ago >= 1e9) return `${+(ago / 1e9).toPrecision(3)} billion years ago`;
+    if (ago >= 1e6) return `${+(ago / 1e6).toPrecision(3)} million years ago`;
+    if (year <= -10000) return `${Math.round(ago).toLocaleString()} years ago`;
+    return year < 0 ? `${-year} BC` : String(year);
+};
+const periodText = ([from, to]) => {
+    const [a, b] = [yearText(from), yearText(to)];
+    return a === b ? a : `${a} – ${b}`;
+};
 
 export class EventClusters {
     constructor(browser) {
         this.browser = browser;
         this.map = browser.map;
+        // scope: 'results', every event the timeline's filters match, or 'period', those from the stretch of
+        // time on screen. click: 'list' shows a bubble's events, 'zoom' zooms until it splits. The site
+        // uses the defaults; the map lab sets the others through configure().
+        this.scope = 'results';
+        this.click = 'list';
+        // under the area filter's count: the years in "period" scope, or that the bubbles could not load
+        this.note = element('p', 'map-events-note');
+        this.note.setAttribute('role', 'status');
+        this.note.hidden = true;
         // above the selected event's rings (overlay pane, 400), below its label (tooltip pane, 650)
         this.map.createPane('eventClusters').style.zIndex = 450;
         this.layer = L.layerGroup().addTo(this.map);
@@ -49,30 +72,74 @@ export class EventClusters {
     }
     get index() { return this.browser.manager.placeIndex; }
 
-    // Called with the timeline's filtered events on every render.
+    configure({ scope = this.scope, click = this.click }) {
+        this.scope = scope;
+        this.click = click;
+        this.shown = null;
+        this.update(this.events);
+    }
+    showNote(text) {
+        this.note.textContent = text;
+        this.note.hidden = !text;
+    }
+
+    // Called with the timeline's filtered events on every render, scrolls included.
     update(events) {
         this.events = events;
         if (!events || !this.browser.manager.geographicFilter.bounds) return this.hide();
         if (!window.Supercluster) {
-            if (loadFailed) return this.hide();
-            loadSupercluster().then(() => this.update(this.events), err => console.error('Events on the map: Supercluster did not load', err));
+            if (loadFailed) {
+                this.hide();
+                return this.showNote('The events can’t be shown on the map right now; the timeline lists them.');
+            }
+            loadSupercluster().then(() => this.update(this.events), err => {
+                console.error('Events on the map: Supercluster did not load', err);
+                this.update(this.events);
+            });
             return;
         }
-        this.build(events);
+        if (this.scope !== 'period') return this.build(events, events, '');
+        // after the timeline has laid out the cards this render produced
+        requestAnimationFrame(() => {
+            if (this.events !== events) return;
+            const period = this.period();
+            this.build(period ? events.filter(event => {
+                const year = this.index.years.get(this.index.idFor(event));
+                return year >= period[0] && year <= period[1];
+            }) : [], events, period ? periodText(period) : '');
+        });
     }
     hide() {
         this.clearStepper();
+        this.showNote('');
         if (!this.clusters) return;
         this.clusters = null;
         this.shown = null;
         this.map.closePopup();
         this.layer.clearLayers();
     }
-    build(events) {
+    // The years of the cards on screen, widened to MIN_PERIOD_YEARS around their middle.
+    period() {
+        const wrapper = document.getElementById('timeline-wrapper').getBoundingClientRect();
+        const years = [...document.querySelectorAll('#timeline-content > .event[data-event-id]')]
+            .filter(card => { const box = card.getBoundingClientRect(); return box.width > 0 && box.bottom > wrapper.top && box.top < wrapper.bottom; })
+            .map(card => this.index.years.get(card.dataset.eventId))
+            .filter(Number.isFinite);
+        if (!years.length) return null;
+        let from = Math.min(...years), to = Math.max(...years);
+        if (to - from < MIN_PERIOD_YEARS) {
+            const middle = (from + to) / 2;
+            from = middle - MIN_PERIOD_YEARS / 2;
+            to = middle + MIN_PERIOD_YEARS / 2;
+        }
+        return [Math.floor(from), Math.ceil(to)];
+    }
+    // source and period say what the events were drawn from, so a render that changes neither costs nothing.
+    build(events, source, period) {
         // the selected event is left out, so its own ring and label show
         const selected = this.browser.selectedId;
-        if (this.shown && this.shown.events === events && this.shown.selected === selected) return;
-        this.shown = { events, selected };
+        if (this.shown && this.shown.source === source && this.shown.period === period && this.shown.selected === selected) return;
+        this.shown = { source, period, selected };
         // an event selected some other way (its card, a dot) ends the stepping
         if (this.stepper && this.stepper.ids[this.stepper.position] !== selected) this.clearStepper();
         // One feature per spot on the map, carrying the ids of its events. Grouped by coordinates, not by
@@ -101,6 +168,9 @@ export class EventClusters {
             reduce: (sum, props) => { sum.count += props.count; },
         });
         this.clusters.load(features);
+        // the area filter's own status counts the events; in "period" scope the note adds the years
+        const shown = new Set([...this.groups.values()].flatMap(group => group.ids)).size;
+        this.showNote(period && `${period} · ${shown.toLocaleString()} ${shown === 1 ? 'event' : 'events'} on the map`);
         this.render();
     }
     render() {
@@ -126,6 +196,7 @@ export class EventClusters {
         }).addTo(this.layer);
         marker.on('click', () => {
             const expansion = feature.properties.cluster ? this.clusters.getClusterExpansionZoom(feature.properties.cluster_id) : null;
+            if (this.click === 'zoom' && expansion !== null && expansion <= this.map.getMaxZoom()) return this.map.setView(latlng, expansion);
             const keys = feature.properties.cluster
                 ? this.clusters.getLeaves(feature.properties.cluster_id, Infinity).map(leaf => leaf.properties.key)
                 : [feature.properties.key];
@@ -193,6 +264,8 @@ export class EventClusters {
         if (moveMap) {
             const zoom = this.map.getZoom();
             browser.selectEvent(id);
+            // the zoom set below wins over refitting to an outline (map-browser.js)
+            browser.fitOutlineOf = null;
             const point = near && this.nearestPoint(id, near);
             if (point && this.map.getZoom() < zoom) this.map.setView(point.coordinates, zoom, { animate: false });
         } else {

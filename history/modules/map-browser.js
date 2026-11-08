@@ -1,5 +1,6 @@
 import { eventDateLabel } from './date-handlers.js';
 import { EventClusters } from './event-clusters.js';
+import { placeLabel } from './world-labels.js';
 
 const element = (tag, text, className) => {
     const node = document.createElement(tag);
@@ -39,11 +40,16 @@ const UNREVIEWED_MAX_ZOOM = 6;
 const EARTH_CIRCUMFERENCE = 40075016.686;
 const metresPerPixel = (lat, zoom) => EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
 
-// The selected event's name and date over its first point.
-function eventLabel(event) {
-    const label = element('span');
-    label.append(element('strong', event.name), element('span', eventDateLabel(event)));
-    return label;
+// The selected event's name, date and place over a point: the place's released label (world-labels.js),
+// or its written name when it has none, and no place when the label says it names none.
+function eventLabel(event, point) {
+    const location = event.locations?.find(l => l.place_id && l.place_id === point.placeId);
+    const label = placeLabel(location);
+    const place = label === undefined ? location?.name ?? point.name : label;
+    const node = element('span');
+    node.append(element('strong', event.name), element('span', eventDateLabel(event)));
+    if (place) node.append(element('span', place));
+    return node;
 }
 
 // The button under + / − that lets the map fill the window; Esc or the button returns.
@@ -88,6 +94,11 @@ export class MapBrowser {
         this.lastEvents = null;
         this.selection = panels.markersLayer;
         this.rings = [];
+        // outlineFor(point, event) resolves to { geojson, name } or null, and an outline replaces the point's
+        // ring. Only the map lab sets it (lab/map/variants.js) until outlines are released.
+        this.outlineFor = null;
+        this.drawn = 0;
+        this.fitOutlineOf = null;
         this.map.on('zoomend', () => this.resizeRings());
         this.fullWindow = fullWindowControl().addTo(this.map);
         this.clusters = new EventClusters(this);
@@ -105,7 +116,7 @@ export class MapBrowser {
         actions.append(this.clear);
         this.status = element('p', null, 'map-status');
         this.status.setAttribute('role', 'status');
-        controls.append(actions, this.status);
+        controls.append(actions, this.status, this.clusters.note);
         panels.mapPanel.append(controls);
     }
     applyGeography(filter) {
@@ -151,11 +162,14 @@ export class MapBrowser {
     drawSelection() {
         this.selection.clearLayers();
         this.rings = [];
+        // an outline arriving after a newer selection is dropped
+        const drawn = ++this.drawn;
         const index = this.manager.placeIndex;
         const event = index.events.get(this.selectedId);
         if (!event) return;
         const id = this.selectedId;
-        for (const [i, point] of (index.eventPoints.get(id) || []).entries()) {
+        const points = index.eventPoints.get(id) || [];
+        for (const [i, point] of points.entries()) {
             const look = dotFor(point);
             const marker = L.circleMarker(point.coordinates, { ...look.options, className: `map-selected-dot ${look.className ?? ''}` }).addTo(this.selection);
             if (look.metres) this.rings.push({ marker, dot: look });
@@ -163,7 +177,7 @@ export class MapBrowser {
                 L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: look.options.fillColor, fillOpacity: 1, interactive: false, className: look.className ?? '' }).addTo(this.selection);
             }
             // the label sits just above the dot or the ring's smallest size
-            marker.bindTooltip(eventLabel(event), { direction: 'top', permanent: i === 0, className: 'map-event-label', offset: [0, -(look.options.radius + 2)], opacity: 1 });
+            marker.bindTooltip(eventLabel(event, point), { direction: 'top', permanent: i === 0, className: 'map-event-label', offset: [0, -(look.options.radius + 2)], opacity: 1 });
             // a dot leaves full window first, so its card is there to see
             const select = () => {
                 if (this.fullWindow.full) this.fullWindow.set(false);
@@ -177,13 +191,33 @@ export class MapBrowser {
             dot?.addEventListener('keydown', e => {
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
             });
+            // a site or a dot with no precision stays a dot
+            if (this.outlineFor && (look.metres || !point.reviewed)) {
+                this.outlineFor(point, event).then(outline => {
+                    if (outline && drawn === this.drawn) this.showOutline(outline, marker, points.length === 1);
+                });
+            }
         }
         this.resizeRings();
+    }
+    // The outline in place of the point's ring: the ring is hidden but stays as the click target and label
+    // anchor. A one-place event selected from the timeline is refitted to its outline.
+    showOutline(outline, marker, alone) {
+        const color = marker.options.color;
+        const shape = L.geoJSON(outline.geojson, { style: { color, weight: 1.5, fillColor: color, fillOpacity: 0.12 }, interactive: false }).addTo(this.selection);
+        shape.bringToBack();
+        this.rings = this.rings.filter(ring => ring.marker !== marker);
+        marker.setStyle({ opacity: 0, fillOpacity: 0 });
+        if (alone && this.fitOutlineOf === this.selectedId) {
+            this.fitOutlineOf = null;
+            this.map.fitBounds(shape.getBounds(), { maxZoom: this.map.getMaxZoom(), padding: [35, 60], animate: false });
+        }
     }
     selectEvent(id) {
         const index = this.manager.placeIndex;
         if (!index.events.has(id)) return;
         this.selectedId = id;
+        this.fitOutlineOf = id;
         this.panels.openMapPanel();
         this.panels.bringMapToFront();
         this.drawSelection();

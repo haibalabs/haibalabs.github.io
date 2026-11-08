@@ -92,6 +92,12 @@ async function initializeApp() {
         endTimeTravel();
         initTimelineNav({ eventManager, uiManager });
         uiManager.timelineUI.worldReady();
+        // ?lab opens the map lab (lab/map/), which is loaded only then
+        if (params.has('lab') && uiManager.mapBrowser) {
+            import('./lab/map/lab.js')
+                .then(({ startLab }) => startLab({ map, eventManager, uiManager, panelManager, browser: uiManager.mapBrowser }))
+                .catch(error => console.error('The map lab could not start:', error));
+        }
     } catch (error) {
         endTimeTravel();
         console.error('Failed to initialize app:', error);
