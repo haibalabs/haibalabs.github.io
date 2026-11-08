@@ -55,6 +55,23 @@ test('a long jump arrives without a seconds-long scroll', async ({ page }) => {
   expect(took).toBeLessThan(2500);
 });
 
+test('picking an era while searching shows the matching cards there at once', async ({ page }) => {
+  test.setTimeout(120000);
+  await open(page);
+  await page.fill('#searchInput', 'treaty');
+  await expect(page.locator('#timeline-content .event').first()).toContainText(/treaty/i, { timeout: 15000 });
+  await page.click('#crumbs [data-level="era"]');
+  await page.locator('#popover button', { hasText: 'Age of revolutions' }).click();
+  // the cards render where the jump lands, before any scrolling by hand
+  await expect.poll(() => page.evaluate(() => {
+    const wrapper = document.getElementById('timeline-wrapper').getBoundingClientRect();
+    return [...document.querySelectorAll('#timeline-content > .event')].filter(card => {
+      const box = card.getBoundingClientRect();
+      return box.height > 0 && box.bottom > wrapper.top && box.top < wrapper.bottom;
+    }).length;
+  }), { timeout: 5000 }).toBeGreaterThan(0);
+});
+
 test('Home and End leave the timeline alone behind a dialog or the full-window map', async ({ page }) => {
   test.setTimeout(120000);
   await open(page);

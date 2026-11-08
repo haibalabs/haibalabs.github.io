@@ -1266,32 +1266,13 @@ export class UIManager {
             eventSortableValue(event) >= targetTime
         );
 
-        if (targetIndex !== -1) {
-            // Update window to include target event
-            this.startIndex = Math.max(0, targetIndex - 1);
-            this.endIndex = this.startIndex + 3; // Show a few events
-            this.lastScrollPosition = this.positions.get(targetIndex) || targetIndex * this.defaultEventHeight;
-
-            this.scrollTarget = { index: targetIndex };
-
-            // Scroll to the position
-            this.moveTo(this.lastScrollPosition);
-
-            document.getElementById('dateInput').value = `${targetYear}`;
-        } else {
-            // If no later events exist, jump to last event
-            const lastIndex = filteredEvents.length - 1;
-            if (lastIndex >= 0) {
-                this.startIndex = Math.max(0, lastIndex - 2);
-                this.endIndex = lastIndex + 1;
-                this.lastScrollPosition = this.positions.get(lastIndex) || filteredEvents.length * this.defaultEventHeight;
-                this.scrollTarget = { index: targetIndex };
-
-                this.moveTo(this.lastScrollPosition);
-                
-                document.getElementById('dateInput').value = `${targetYear}`;
-            }
-        }
+        // With no later event, the last one. The scroll handler renders the cards where the jump lands, as
+        // for Earliest and Latest; setting lastScrollPosition here would tell it nothing moved.
+        const index = targetIndex !== -1 ? targetIndex : filteredEvents.length - 1;
+        if (index < 0) return;
+        this.scrollTarget = { index };
+        this.moveTo(this.positions.get(index) ?? index * this.defaultEventHeight);
+        document.getElementById('dateInput').value = `${targetYear}`;
     }
 
     jumpToStart() {
