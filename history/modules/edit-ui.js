@@ -238,9 +238,16 @@ export class EditUI {
         badge.className = `status-badge ${status}`;
         badge.textContent = EDITOR_STATUS_LABELS[status];
         head.append(badge);
-        const title = document.createElement('span');
+        // the name opens the event's card once the event is in the timeline (a new one, once approved)
+        const event = this.worldEvent(edit.event_id);
+        const title = document.createElement(event ? 'button' : 'span');
         title.className = 'my-edit-title';
         title.textContent = edit.event_name;
+        if (event) {
+            title.type = 'button';
+            title.title = 'Show in the timeline';
+            title.addEventListener('click', () => this.showInTimeline(event));
+        }
         const fields = document.createElement('span');
         fields.className = 'my-edit-fields';
         fields.textContent = edit.kind === 'create'
@@ -269,6 +276,30 @@ export class EditUI {
             item.append(actions);
         }
         return item;
+    }
+
+    worldEvent(eventId) {
+        return eventId ? this.eventManager.events.find(e => !e.personal && e.event_id === eventId) : undefined;
+    }
+
+    // Closes the drawer and brings the event's card to the top of the timeline. A search that hides it
+    // is cleared first; a label or area filter is the visitor's own choice, so it is only named.
+    showInTimeline(event) {
+        const ui = this.uiManager;
+        const id = this.eventManager.placeIndex.idFor(event);
+        if (!ui.scrollToEventId(id) && ui.currentSearch) {
+            document.getElementById('clearSearch').click();
+            ui.scrollToEventId(id);
+        }
+        if (!this.eventManager.getFilteredEvents(ui.currentFilter, ui.currentSearch).includes(event)) {
+            this.showStatus(`“${event.name}” is hidden by the timeline's filters. Clear them to see it.`);
+            return;
+        }
+        document.getElementById('settings-panel')?.classList.remove('open');
+        requestAnimationFrame(() => {
+            const card = [...document.querySelectorAll('#timeline-content > .event')].find(el => el.dataset.eventId === id);
+            if (card) ui.highlightEvent(card);
+        });
     }
 
     firstFailure(edit) {

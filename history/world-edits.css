@@ -111,6 +111,11 @@
 }
 .my-edit-head { display: flex; align-items: center; gap: .5rem; }
 .my-edit-title { font-size: .875rem; font-weight: 600; }
+button.my-edit-title {
+    justify-self: start; padding: 0; border: 0; background: none; color: var(--accent); font-family: inherit; text-align: left; cursor: pointer;
+}
+button.my-edit-title:hover { text-decoration: underline; }
+button.my-edit-title:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 .my-edit-fields { font-size: .8125rem; color: var(--ink-2); }
 .my-edit-reason { margin: 0; font-size: .8125rem; line-height: 1.45; color: #912018; }
 .my-edit-actions { display: flex; justify-content: flex-end; gap: .4rem; margin-top: .2rem; }
