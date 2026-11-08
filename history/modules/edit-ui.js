@@ -278,22 +278,24 @@ export class EditUI {
         return item;
     }
 
+    // A world event the timeline can show: low-confidence events are never shown (event-manager.js).
     worldEvent(eventId) {
-        return eventId ? this.eventManager.events.find(e => !e.personal && e.event_id === eventId) : undefined;
+        return eventId ? this.eventManager.events.find(e => !e.personal && e.event_id === eventId && e.confidence !== 'low') : undefined;
     }
 
     // Closes the drawer and brings the event's card to the top of the timeline. A search that hides it
-    // is cleared first; a label or area filter is the visitor's own choice, so it is only named.
+    // is cleared; a label, period or area filter is the visitor's own choice, so it is only named, and
+    // the search is kept.
     showInTimeline(event) {
         const ui = this.uiManager;
         const id = this.eventManager.placeIndex.idFor(event);
-        if (!ui.scrollToEventId(id) && ui.currentSearch) {
-            document.getElementById('clearSearch').click();
-            ui.scrollToEventId(id);
-        }
-        if (!this.eventManager.getFilteredEvents(ui.currentFilter, ui.currentSearch).includes(event)) {
+        if (!this.eventManager.getFilteredEvents(ui.currentFilter, '').includes(event)) {
             this.showStatus(`“${event.name}” is hidden by the timeline's filters. Clear them to see it.`);
             return;
+        }
+        if (!ui.scrollToEventId(id)) {
+            document.getElementById('clearSearch').click();
+            ui.scrollToEventId(id);
         }
         document.getElementById('settings-panel')?.classList.remove('open');
         requestAnimationFrame(() => {
