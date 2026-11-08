@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-    changesFor, editProblem, eventFieldValue, imageNeedsConfirmation, isEditField, locationIndex, newEventChanges,
+    changesFor, editProblem, eventFieldValue, imageNeedsConfirmation, isEditField, locationIndex, locationText, newEventChanges,
     newEventRecord, normalizeImage, normalizeLocation, toEventLocation, UPLOAD_LICENSE, UPLOAD_RIGHTS, withApproval,
 } from '../../modules/world-edits.js';
 import { applyOverlay } from '../../modules/world-overlay.js';
@@ -180,5 +180,15 @@ describe('approving places and images', () => {
         const later = event();
         applyOverlay([later], removed);
         assert.equal(later.image_url, undefined);
+    });
+});
+
+describe('location text', () => {
+    it('names each part once, also when the name already carries its city and country', () => {
+        assert.equal(locationText(ARENA), 'Allianz Arena, Munich, Germany');
+        assert.equal(locationText({ name: 'Rabat, Rabat-Salé-Kénitra, Morocco', city: 'Rabat', region: 'Rabat-Salé-Kénitra', country: 'Morocco' }),
+            'Rabat, Rabat-Salé-Kénitra, Morocco');
+        assert.equal(locationText({ name: 'Paris', city: 'Paris', country: 'France' }), 'Paris, France');
+        assert.equal(locationText(null), '');
     });
 });
