@@ -44,7 +44,8 @@ const validPoint = (point) => Array.isArray(point) && point.length === 2
 /**
  * A location in the form edits compare: its five text fields trimmed, its point (from `point`, or an
  * event location's geography) and that point's precision, and the identified place or Wikidata item
- * it was picked from. Null when it names nothing.
+ * it was picked from. Null when it names nothing. history-dp's world_overlay.normalize_location must
+ * give the same result, since it decides which dataset locations an approved patch still applies to.
  *
  * @param {object|null|undefined} value - an edit's location, or an event location
  * @returns {{ name: string, city: string, region: string, country: string, historical_name: string,
