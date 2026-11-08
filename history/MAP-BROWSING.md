@@ -18,7 +18,7 @@ Without an area filter, marker work is limited to the selected event's locations
 
 ## Events on the map
 
-While **Filter by visible area** is on, the map shows the filtered events, grouped by Supercluster 8.0.1 (ISC, loaded from unpkg the first time the filter is used, with an integrity check) in [modules/event-clusters.js](modules/event-clusters.js). If it can't load, the filter still narrows the timeline without bubbles, and the page doesn't try again until it reloads.
+While **Filter by visible area** is on, the map shows the filtered events, grouped by Supercluster 8.0.1 (ISC, loaded from unpkg the first time the filter is used, with an integrity check) in [modules/event-clusters.js](modules/event-clusters.js). If it can't load, the filter still narrows the timeline without bubbles, a note under the count says the events can't be shown on the map, and the page doesn't try again until it reloads.
 - **Bubbles:** spots close together on screen merge into a numbered bubble, which splits as you zoom in. Counts of 1,000 or more read "1000+".
 - **Same-spot bubbles:** events that share one point have a white ring, because zooming can't split them. Several place records can share a point, such as "Asunción" and "Asunción, Paraguay", so grouping is by spot, not by place.
 - **Single events:** a spot with one event is a small dot; clicking it selects the event without moving the map.
@@ -29,6 +29,16 @@ While **Filter by visible area** is on, the map shows the filtered events, group
 Without an area filter the map shows only the selected event, as before. The app still loads the full snapshot and filters locally; this change is not a claim of one-million-event loading performance.
 
 The earlier map-specific year fields, precision checkbox, unmapped-only button and duplicate results list were removed to keep the map simple. The data layer's time-range query remains covered by tests; the existing year navigator jumps through the timeline and does not filter a year range.
+
+The selected event's label gives its name, date and place. The place is the released place label ([modules/world-labels.js](modules/world-labels.js)), else the location's written name.
+
+## Map lab
+
+`index.html?lab` is the site with a **Lab** button on the map: switches for map ideas not yet on the site ([lab/map/variants.js](lab/map/variants.js)). The lab module loads only with `?lab`, so the site never fetches it. Each switch sets an option of the site's own modules, so a pick reaches the site by changing a default, with no copy to port.
+- A bare `?lab` starts with the picks so far, `?lab=off` with everything off (the site as it is), and the switches keep the link up to date, such as `?lab=events:period,outlines`.
+- **Events on the map:** every event in the timeline (the site), or only those from the years of the cards on screen, with the years in a note.
+- **Clicking a bubble:** lists its events (the site), or zooms in until it splits.
+- **Outlines (live test):** looks the selected place up in OpenStreetMap's place search (Nominatim, one request a second, kept for the page's life) and draws today's outline in place of its ring. This is a test of the look; released outlines will replace it.
 
 ## Base map
 

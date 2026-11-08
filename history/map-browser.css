@@ -5,7 +5,7 @@
 .map-actions button { border: 0; background: transparent; color: var(--ink); padding: 10px 14px; cursor: pointer; font: inherit; }
 .map-actions button:hover { background: var(--surface-2); }
 .map-actions button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
-.map-status { margin: 0; padding: 4px 9px; border-radius: 12px; background: var(--surface); color: var(--ink-2); box-shadow: 0 1px 4px rgb(0 0 0 / .08); }
+.map-status, .map-events-note { margin: 0; padding: 4px 9px; border-radius: 12px; background: var(--surface); color: var(--ink-2); box-shadow: 0 1px 4px rgb(0 0 0 / .08); }
 #map-panel:not(.open) #toggle-map { right: 12px; }
 @media (max-width: 640px) { .map-browser { right: 58px; } }
 .event.map-selected .event-header { color: var(--accent); }

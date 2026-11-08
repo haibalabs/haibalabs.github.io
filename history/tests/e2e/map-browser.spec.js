@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { stubFirebase } from './firebase-stub.js';
 
 // the area filter's bubbles load Supercluster from unpkg; tests serve the same version from node_modules
@@ -11,7 +12,7 @@ const fixtures = Array.from({ length: 80 }, (_, i) => ({
   enhanced_description: 'Shared historical fixture.', categories: [i % 2 ? 'science' : 'culture'], figures: [], confidence: 'high',
   locations: i === 79 ? [] : [location('remote', [0, 120]), location(i === 19 ? 'secondary-19' : 'secondary', [20, i === 19 ? 15 : 0])]
 }));
-async function setup(page) {
+async function setup(page, query = '') {
   await page.route('**/*', route => {
     const url = route.request().url();
     if (new URL(url).origin === new URL(test.info().project.use.baseURL).origin || url.includes('unpkg.com/leaflet') || url.includes('www.gstatic.com/firebasejs/')) return route.continue();
@@ -21,9 +22,10 @@ async function setup(page) {
   await page.route('**/unpkg.com/supercluster@8.0.1/**', route => route.fulfill({ contentType: 'text/javascript', headers: { 'Access-Control-Allow-Origin': '*' }, body: SUPERCLUSTER }));
   await page.route('**/map-fixture.json', route => route.fulfill({ json: fixtures }));
   await page.route('**/unverified-locations.json', route => route.fulfill({ json: [] }));
-  await page.goto('/history/index.html?file=map-fixture.json');
+  await page.goto(`/history/index.html?file=map-fixture.json${query}`);
   await expect(page.locator('.event').first()).toBeVisible();
-  await page.locator('#toggle-map').click();
+  // the lab opens the map drawer itself on wide screens
+  if (!query.includes('lab')) await page.locator('#toggle-map').click();
   await expect.poll(() => page.locator('#map-panel').evaluate(el => getComputedStyle(el).right)).toBe('0px');
   await expect(page.getByRole('button', { name: 'Filter by visible area', exact: true })).toBeVisible();
 }
@@ -186,14 +188,20 @@ const precisionFixtures = [
   precisionEvent('unreviewed', 'approximate', 'reused', 4),
   precisionEvent('unrecorded', undefined, 'corrected', 5),
 ];
-async function openPrecision(page) {
+// labels: place labels to release for the fixture, bound to its bytes as the site requires
+async function openPrecision(page, { labels = null } = {}) {
   await page.route('**/*', route => {
     const url = route.request().url();
     if (new URL(url).origin === new URL(test.info().project.use.baseURL).origin || url.includes('unpkg.com/leaflet') || url.includes('www.gstatic.com/firebasejs/')) return route.continue();
     return route.abort();
   });
   await stubFirebase(page);
-  await page.route('**/precision-fixture.json', route => route.fulfill({ json: precisionFixtures }));
+  const body = JSON.stringify(precisionFixtures);
+  if (labels) {
+    const release = { version: 1, kind: 'world_place_label_sidecar', source: { events_sha256: createHash('sha256').update(body).digest('hex') }, labels };
+    await page.route('**/releases/released-place-labels-v1.json', route => route.fulfill({ json: release }));
+  }
+  await page.route('**/precision-fixture.json', route => route.fulfill({ contentType: 'application/json', body }));
   await page.route('**/unverified-locations.json', route => route.fulfill({ json: [] }));
   await page.goto('/history/index.html?file=precision-fixture.json');
   await expect(page.locator('.event').first()).toBeVisible();
@@ -224,6 +232,18 @@ test('a selected event is labelled with its name and date and framed by the grou
   await expect(zoomIn).toHaveClass(/leaflet-disabled/);
   expect(await zoomIn.locator('i').evaluate(el => getComputedStyle(el).opacity)).toBe('0.3');
   expect(await page.locator('.leaflet-control-zoom-out i').evaluate(el => getComputedStyle(el).opacity)).toBe('1');
+});
+
+test('a selected event\'s label names its place: the released label, else the written name', async ({ page }) => {
+  await openPrecision(page, { labels: { place_settlement: 'Settlement Town, Somewhere' } });
+  const place = page.locator('.map-event-label > span > span:nth-of-type(2)');
+  // the events share one point, so each check first waits for the previous label to go
+  for (const [precision, text] of [['settlement', 'Settlement Town, Somewhere'], ['approximate', 'approximate']]) {
+    await show(page, precision);
+    await expect(page.locator('.map-event-label')).toHaveCount(1);
+    await expect(page.locator('.map-event-label strong')).toHaveText(`Precision ${precision}`);
+    await expect(place).toHaveText(text);
+  }
 });
 
 test('an unreviewed point keeps one ring size on screen and its event opens no closer than zoom 6', async ({ page }) => {
@@ -349,5 +369,24 @@ test('when the bubble library fails to load, the area filter still works and fil
   await page.waitForTimeout(300);
   await expect(page.locator('script[src*="supercluster"]')).toHaveCount(1);
   await expect(page.locator('.map-cluster, .map-cluster-dot')).toHaveCount(0);
+  await expect(page.getByText('The events can’t be shown on the map right now; the timeline lists them.')).toBeVisible();
+  await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
+  await expect(page.locator('.map-events-note')).toBeHidden();
+  expect(errors).toEqual([]);
+});
+
+test('?lab opens the site with the lab\'s switches, which drive the site\'s own bubbles', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await setup(page, '&lab=events:period');
+  await expect(page.getByRole('button', { name: /Lab · 1 on/ })).toBeVisible();
+  await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
+  // "The time on screen": the years of the cards in view, and how many of their events are on the map
+  await expect(page.locator('.map-events-note')).toHaveText(/^\d{4} – \d{4} · \d+ events? on the map$/);
+  await page.getByRole('button', { name: /Lab · 1 on/ }).click();
+  await page.getByRole('combobox', { name: /^Events on the map/ }).selectOption('');
+  await expect(page.locator('.map-events-note')).toBeHidden();
+  await expect(page.locator('.map-cluster-spot')).toHaveText('78');
+  await expect(page).toHaveURL(/lab=off/);
   expect(errors).toEqual([]);
 });

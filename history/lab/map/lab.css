@@ -1,0 +1,31 @@
+/* Map lab only: the Lab button and sheet over the map, and a badge so the lab is never mistaken for the site. */
+.brand::after { content: 'map lab'; padding: 2px 7px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); font: 500 11px/1.4 var(--font-ui); }
+@media (max-width: 640px) { .brand::after { content: 'lab'; } }
+
+/* The dock holds the Lab panel. On desktop it stands beside the open drawer, over the timeline, so the
+   whole map stays visible; on phones and in full window it sits over the map. */
+.lab-dock { position: absolute; z-index: 800; left: 12px; bottom: 12px; top: 120px; width: min(340px, calc(100% - 24px)); display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; pointer-events: none; }
+.lab-dock > * { pointer-events: auto; min-height: 0; }
+@media (min-width: 641px) {
+    body:not(.map-full) .lab-dock { position: fixed; left: auto; right: calc(var(--panel-width) + 12px); top: calc(var(--header-height) + 100px); bottom: calc(var(--footer-height, 0px) + 12px); }
+    body:not(.map-full) .map-panel:not(.open) .lab-dock { display: none; }
+}
+.lab-panel { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 100%; font: 12px/1.4 var(--font-ui); color: var(--ink); }
+.lab-toggle { flex: none; min-height: 40px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); color: var(--ink); font: inherit; cursor: pointer; box-shadow: 0 2px 10px rgb(0 0 0 / .12); }
+.lab-toggle:hover { background: var(--surface-2); }
+.lab-toggle:focus-visible, .lab-switch input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lab-sheet { min-height: 0; overflow: auto; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: 0 6px 24px rgb(0 0 0 / .16); }
+.lab-title { margin: 0; font-weight: 600; font-size: 13px; }
+.lab-hint { margin: 2px 0 8px; color: var(--ink-2); }
+.lab-switch { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--line); cursor: pointer; }
+.lab-switch input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--accent); }
+.lab-switch strong { display: block; font-weight: 500; }
+.lab-switch small { display: block; color: var(--ink-2); font-size: 12px; }
+/* above the attribution, which wraps to two lines on phones */
+@media (max-width: 640px) { .lab-dock { bottom: 48px; } }
+
+.lab-picker { padding: 8px 0; border-top: 1px solid var(--line); }
+.lab-picker label { display: block; }
+.lab-picker strong { display: block; font-weight: 500; margin-bottom: 4px; }
+.lab-picker select { width: 100%; min-height: 34px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
+.lab-picker small { display: block; margin-top: 4px; color: var(--ink-2); font-size: 12px; }
