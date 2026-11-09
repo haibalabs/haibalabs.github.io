@@ -63,10 +63,18 @@ export function normalizeLocation(value) {
     return LOCATION_TEXT_FIELDS.some(key => location[key]) || location.point ? location : null;
 }
 
-/** A location's text as one line: "Allianz Arena, Munich, Germany". */
+/**
+ * A location's text as one line: "Allianz Arena, Munich, Germany". A part already in the line is left
+ * out, as the dataset's names often carry their city and country ("Rabat, Rabat-Salé-Kénitra, Morocco").
+ */
 export function locationText(location) {
-    const parts = [location?.name, location?.city, location?.region, location?.country].map(part => String(part ?? '').trim()).filter(Boolean);
-    return parts.filter((part, i) => parts.indexOf(part) === i).join(', ');
+    const segments = [];
+    for (const part of [location?.name, location?.city, location?.region, location?.country]) {
+        for (const segment of String(part ?? '').split(',').map(s => s.trim()).filter(Boolean)) {
+            if (!segments.includes(segment)) segments.push(segment);
+        }
+    }
+    return segments.join(', ');
 }
 
 /**

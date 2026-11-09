@@ -238,9 +238,16 @@ export class EditUI {
         badge.className = `status-badge ${status}`;
         badge.textContent = EDITOR_STATUS_LABELS[status];
         head.append(badge);
-        const title = document.createElement('span');
+        // the name opens the event's card once the event is in the timeline (a new one, once approved)
+        const event = this.worldEvent(edit.event_id);
+        const title = document.createElement(event ? 'button' : 'span');
         title.className = 'my-edit-title';
         title.textContent = edit.event_name;
+        if (event) {
+            title.type = 'button';
+            title.title = 'Show in the timeline';
+            title.addEventListener('click', () => this.showInTimeline(event));
+        }
         const fields = document.createElement('span');
         fields.className = 'my-edit-fields';
         fields.textContent = edit.kind === 'create'
@@ -269,6 +276,32 @@ export class EditUI {
             item.append(actions);
         }
         return item;
+    }
+
+    // A world event the timeline can show: low-confidence events are never shown (event-manager.js).
+    worldEvent(eventId) {
+        return eventId ? this.eventManager.events.find(e => !e.personal && e.event_id === eventId && e.confidence !== 'low') : undefined;
+    }
+
+    // Closes the drawer and brings the event's card to the top of the timeline. A search that hides it
+    // is cleared; a label, period or area filter is the visitor's own choice, so it is only named, and
+    // the search is kept.
+    showInTimeline(event) {
+        const ui = this.uiManager;
+        const id = this.eventManager.placeIndex.idFor(event);
+        if (!this.eventManager.getFilteredEvents(ui.currentFilter, '').includes(event)) {
+            this.showStatus(`“${event.name}” is hidden by the timeline's filters. Clear them to see it.`);
+            return;
+        }
+        if (!ui.scrollToEventId(id)) {
+            document.getElementById('clearSearch').click();
+            ui.scrollToEventId(id);
+        }
+        document.getElementById('settings-panel')?.classList.remove('open');
+        requestAnimationFrame(() => {
+            const card = [...document.querySelectorAll('#timeline-content > .event')].find(el => el.dataset.eventId === id);
+            if (card) ui.highlightEvent(card);
+        });
     }
 
     firstFailure(edit) {
