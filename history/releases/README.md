@@ -26,6 +26,18 @@ The release file is copied byte for byte from data revision `811b28a761ca1039982
 - Locations are applied after the released images, and image checks compare each event's places as loaded, so a merged place never turns an image off.
 - The map shows a point for a `resolved` place, as for `reused` and `corrected`; anything less precise than `site` counts as approximate in the map's area filter. The location's tooltip says "Reviewed location" with its precision. A manual correction from the site's own corrections file still takes precedence: a location whose manual point differs from its released place keeps its loaded values (reported in the console), so the map never labels the manual point with the release's precision; one whose manual point agrees is updated.
 
+**Release 2, Palestine and Israel (Rachid, 2026-11-08)**
+
+Location batch 02 adds places in Palestine and Israel, from history-dp resolver v21 (PR 113).
+- **Effect:** 450 events gain a map point, 34 locations move by at most 3 km, and none lose a point.
+- **Review:** a model audit of all 36 shared place decisions ($0.018), and Rachid's independent check of 10, with
+  0 wrong. 35 decisions were accepted; Banyas (river versus forest) was withheld.
+- **Merge:** the release merges into release 1 with `location_sidecar.py --merge-into`. Every location release 1
+  already placed keeps its release 1 place: 36 locations, including the Tel Aviv overlap.
+- **Correction:** one reviewed correction places the Battle of Ayun Kara (2 events, written "Jaffa") at Ayun Kara,
+  now Rishon LeZion, at Wikipedia's point.
+- **Data:** history-data `pilots/palestine-locations-v1/release/final/` (`manifest.json`).
+
 To withdraw a release, empty its records or revert the commit that added them; the events' own locations come back.
 
 ## released-place-labels-v1.json
@@ -35,5 +47,14 @@ One display label for every place, so a place reads the same way on every event:
 - `source.events_sha256` binds the file to `canonical-t2.json` (`34426820…`). `labels` maps each `place_id` to its label, or to `null` when the location names no place, such as "N/A".
 - The site applies all labels or none (`modules/world-labels.js`): the loaded bytes must have `events_sha256`. A location's label is looked up by its `place_id` when it is shown, so a place the location release merged shows its own label. The card and the info panel show the label in place of the written name; the edit form keeps the written fields. Search finds an event by either its label or its written location name.
 - The label file has to be rebuilt whenever `canonical-t2.json` changes; Hermes rebuilds it with each release (one offline command).
+
+Rachid's Palestine and Israel naming (2026-11-08, history-dp `place_labels.palestinian_label`) changes 45 labels:
+- **Palestinian names first:** each place shows its Palestinian name, with the Arabic script, from the sourced names
+  dataset: "Yafa (يافا), now Jaffa, Israel", "Nablus (نابلس), West Bank, Palestine".
+- **Palestine:** the country is "Palestine", never "State of Palestine".
+- **Jerusalem:** names no country ("Al Quds (القدس), Jerusalem").
+- **West Bank and Gaza Strip:** places in Palestine name their post-1948 area.
+
+Places outside Israel and Palestine, and unidentified places whose label names neither, keep their label.
 
 To withdraw it, remove the file; the written names come back.
