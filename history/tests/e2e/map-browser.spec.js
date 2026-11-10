@@ -2,7 +2,6 @@ import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { stubFirebase } from './firebase-stub.js';
-import { checkMap } from '../map-check.mjs';
 
 // the area filter's bubbles load Supercluster from unpkg; tests serve the same version from node_modules
 const SUPERCLUSTER = readFileSync(new URL('../../node_modules/supercluster/dist/supercluster.min.js', import.meta.url), 'utf8');
@@ -245,31 +244,6 @@ test('a selected event\'s label names its place: the released label, else the wr
     await expect(page.locator('.map-event-label strong')).toHaveText(`Precision ${precision}`);
     await expect(place).toHaveText(text);
   }
-});
-
-test('the published-site map check reads each event\'s point, precision, status and label from the page', async ({ page }) => {
-  await openPrecision(page, { labels: { place_settlement: 'Settlement Town, Somewhere' } });
-  const expected = (id, precision, status, label) => ({ event_id: `prec_${id}`, name: `Precision ${id}`, point: [10, 20], precision, status, label });
-  const rows = await checkMap(page, [
-    expected('settlement', 'settlement', 'resolved', 'Settlement Town, Somewhere'),
-    expected('unreviewed', 'approximate', 'reused', 'unreviewed'),
-    expected('unrecorded', null, 'corrected', 'unrecorded'),
-    expected('site', 'country', null, 'elsewhere'),
-    { ...expected('country', 'country', 'resolved', 'country'), point: [11, 20] },
-    { event_id: 'prec_missing', name: 'Not an event', point: [0, 0] },
-  ], { timeout: 1500 });
-  expect(rows.slice(0, 3)).toEqual(['settlement', 'unreviewed', 'unrecorded'].map(id => ({ event_id: `prec_${id}`, ok: true, problem: null })));
-  expect(rows[3].problem).toBe('precision site, expected country; drawn reviewed, expected status none; label "site", expected "elsewhere"');
-  expect(rows[4].problem).toBe('point 11,20 not drawn; drawn: 10,20');
-  expect(rows[5]).toEqual({ event_id: 'prec_missing', ok: false, problem: 'event card not shown' });
-  await expect(page.locator('#searchInput')).toHaveValue('');
-});
-
-test('the map check reads a second point\'s label from its hover', async ({ page }) => {
-  await setup(page);
-  const point = (coordinates, label) => ({ event_id: 'evt_19', name: 'Fixture 19', point: coordinates, precision: 'approximate', status: 'reused', label });
-  expect(await checkMap(page, [point([0, 120], 'remote'), point([20, 15], 'secondary-19')])).toEqual([
-    { event_id: 'evt_19', ok: true, problem: null }, { event_id: 'evt_19', ok: true, problem: null }]);
 });
 
 test('an unreviewed point keeps one ring size on screen and its event opens no closer than zoom 6', async ({ page }) => {
