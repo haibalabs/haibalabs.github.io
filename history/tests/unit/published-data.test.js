@@ -134,9 +134,9 @@ test('labels keep a null label apart from no label', () => {
 
 test('placements follow load position, so two events with one ID keep their own locations', () => {
     const repeated = release();
-    const [, , conflict] = repeated.shards[1].events;
+    const [, conflict] = repeated.shards[1].events;
     // a second evt_placed whose location is legacy: it must not take the first one's reviewed place
-    repeated.shards[1].events.splice(2, 1, { ...conflict, event_id: 'evt_placed',
+    repeated.shards[1].events.splice(1, 1, { ...conflict, event_id: 'evt_placed',
         locations: [{ ...conflict.locations[0], placement: 'legacy', placed: undefined }] });
     repeated.manifest.shards[1].count = repeated.shards[1].events.length;
     const world = publishedWorld(repeated);
