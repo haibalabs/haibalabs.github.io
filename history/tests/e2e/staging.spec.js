@@ -69,8 +69,15 @@ test('the staging site shows the published release, read-only, with its banner',
     await expect(placed).toContainText('Reviewed City, Land');
     await expect(placed).toHaveAttribute('title', /Reviewed location/);
     await expect(page.locator('.event[data-event-id="evt_first"] .event-location')).toContainText('Alpha Town, Somewhere');
-    // read-only: a banner, and no editing controls
-    expect(await page.evaluate(() => getComputedStyle(document.body, '::before').content)).toContain('Staging site');
+    // read-only: a banner on screen, above the fixed header and map, and no editing controls
+    const banner = page.locator('#staging-banner');
+    await expect(banner).toContainText('Staging, read-only');
+    await expect(banner).toBeInViewport();
+    const onTop = await banner.evaluate(node => {
+        const box = node.getBoundingClientRect();
+        return node.contains(document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2));
+    });
+    expect(onTop).toBe(true);
     await expect(page.locator('.editing-toggle')).toBeHidden();
     await expect(page.locator('#suggest-event')).toBeHidden();
     // the manifest is revalidated on every visit; the hash-named files are not

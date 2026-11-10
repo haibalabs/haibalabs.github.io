@@ -9,13 +9,20 @@
 // observer checks the served bytes against the manifest once per deployment. Loading checks only that
 // every file is the one the manifest lists, by its count and identity.
 
-import { imagePreview } from './world-images.js';
+import { imagePreview, sha256Hex } from './world-images.js';
 import { placeLocation } from './world-locations.js';
 
+// the release committed with the site, which loads when Firestore names no live release (world-release.js)
 export const MANIFEST_URL = 'data/manifest.json';
+// the next release, which the staging page previews until an admin makes it live
+export const NEXT_MANIFEST_URL = 'data/manifest-next.json';
+const DATA_URL = 'data/';
 const MANIFEST_FORMAT = 'historiline-manifest/v1';
 const EVENTS_FORMAT = 'historiline-events/v1';
 const PLACES_FORMAT = 'historiline-places/v1';
+
+// Every release's manifest is also kept under its own hash, which is how the live release is named.
+export const manifestUrlFor = (sha256) => `${DATA_URL}manifests/${sha256}.json`;
 
 async function fetchJson(url, options) {
     const response = await fetch(url, options);
@@ -24,16 +31,22 @@ async function fetchJson(url, options) {
 }
 
 /**
- * Fetches the current release: its manifest, revalidated on every visit, then every event shard and
- * place bucket it lists, which browsers may cache forever.
+ * Fetches a release: its manifest, revalidated on every visit, then every event shard and place bucket it
+ * lists, which browsers may cache forever.
  *
  * @param {string} [manifestUrl]
- * @returns {Promise<{ manifest: object, manifestUrl: string, shards: object[], buckets: object[], correctionsUrl: string }>}
+ * @returns {Promise<{ manifest: object, manifestUrl: string, manifestSha256: string, shards: object[],
+ *     buckets: object[], correctionsUrl: string }>}
  */
 export async function fetchPublished(manifestUrl = MANIFEST_URL) {
-    const manifest = await fetchJson(manifestUrl, { cache: 'no-cache' });
+    const response = await fetch(manifestUrl, { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`Could not load ${manifestUrl} (${response.status})`);
+    const bytes = await response.arrayBuffer();
+    const manifest = JSON.parse(new TextDecoder().decode(bytes));
     if (manifest?.format !== MANIFEST_FORMAT) throw new Error('The manifest is not a version 1 published release.');
-    const base = new URL('.', new URL(manifestUrl, location.href));
+    const manifestSha256 = await sha256Hex(bytes);
+    // files are found from the data folder, wherever the manifest itself was read from
+    const base = new URL(DATA_URL, location.href);
     const fileUrl = (folder, sha256) => new URL(`${folder}/${sha256}.json`, base).href;
     const [shards, buckets] = await Promise.all([
         Promise.all(manifest.shards.map(entry => fetchJson(fileUrl('events', entry.sha256)))),
@@ -51,7 +64,8 @@ export async function fetchPublished(manifestUrl = MANIFEST_URL) {
             throw new Error(`Place bucket ${entry.bucket} is not the one the manifest lists.`);
         }
     });
-    return { manifest, manifestUrl, shards, buckets, correctionsUrl: fileUrl('corrections', manifest.corrections.sha256) };
+    return { manifest, manifestUrl, manifestSha256, shards, buckets,
+        correctionsUrl: fileUrl('corrections', manifest.corrections.sha256) };
 }
 
 // A place row's reviewed place, in the shape a location release gives (world-locations.js).

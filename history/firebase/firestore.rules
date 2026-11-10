@@ -190,6 +190,22 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // The published release every visitor sees (../modules/world-release.js): the hash of its manifest in
+    // data/manifests/. Anyone reads it; admins move it from the staging page, each time one version higher
+    // and naming the release it replaces. It names releases, never people.
+    match /world_release/{docId} {
+      allow read: if docId == 'current';
+      allow create, update: if isAdmin() && docId == 'current'
+        && request.resource.data.keys().hasOnly(['version', 'manifest_sha256', 'release_id', 'previous_manifest_sha256', 'updated_at'])
+        && request.resource.data.version == (resource == null ? 0 : resource.data.version) + 1
+        && request.resource.data.manifest_sha256 is string
+        && request.resource.data.manifest_sha256.matches('^[0-9a-f]{64}$')
+        && request.resource.data.release_id is string && request.resource.data.release_id.size() <= 200
+        && request.resource.data.previous_manifest_sha256 == (resource == null ? null : resource.data.manifest_sha256)
+        && request.resource.data.updated_at == request.time;
+      allow delete: if false;
+    }
+
     // Personal timelines: private to their owner and any listed members. Editors, reviewers and
     // admins may create timelines. Only the owner renames, shares or deletes one; members read it
     // and edit its events. Firestore does not cascade deletes, so clients delete a timeline's

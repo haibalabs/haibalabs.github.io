@@ -129,11 +129,27 @@ button.my-edit-title:focus-visible { outline: 2px solid var(--accent); outline-o
 .status-badge.accepted { color: #067647; background: #ecfdf3; border-color: #abefc6; }
 .status-badge.published { color: var(--ink-2); background: var(--surface-2); border-color: var(--line); }
 
-/* the staging site (?data=next): read-only, so no editing controls, and a banner saying so; the page
-   also refuses every write (firebase-writes.js) */
+/* the staging site (?data=next): read-only, so no editing controls, and a banner naming the previewed and
+   live releases, with "Make this live" for an admin (release-ui.js); the page also refuses every other
+   write (firebase-writes.js) */
 html.staging .editing-toggle, html.staging #suggest-event, html.staging .edit-pencil, html.staging #review-link { display: none !important; }
-html.staging body::before {
-    content: 'Staging site: read-only preview of the next data release';
-    display: block; padding: .3rem 1rem; text-align: center; font-size: .75rem; font-weight: 600;
-    color: #93370d; background: #fffaeb; border-bottom: 1px solid #fedf89;
+/* it floats above the page's fixed header, map and footer, so nothing covers it */
+#staging-banner {
+    position: fixed; z-index: 1000; left: 50%; transform: translateX(-50%);
+    bottom: calc(var(--footer-height, 0px) + 12px + env(safe-area-inset-bottom, 0px));
+    width: max-content; max-width: calc(100vw - 32px); box-sizing: border-box;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .3rem .8rem;
+    padding: .45rem .9rem; font-size: .75rem; color: #93370d; background: #fffaeb;
+    border: 1px solid #fedf89; border-radius: 10px; box-shadow: 0 6px 24px rgb(0 0 0 / .16);
 }
+#staging-banner p { margin: 0; font-weight: 600; }
+.staging-actions, .staging-confirm { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
+.staging-actions [hidden] { display: none; }
+#staging-banner button {
+    height: 26px; padding: 0 10px; border-radius: 6px; font: inherit; font-weight: 600; cursor: pointer;
+    border: 1px solid #fedf89; background: #fff; color: #93370d;
+}
+#staging-banner .staging-promote, #staging-banner .staging-yes { border-color: #93370d; background: #93370d; color: #fff; }
+#staging-banner button:focus-visible { outline: 2px solid #93370d; outline-offset: 2px; }
+#staging-banner button:disabled { opacity: .6; cursor: default; }
+.staging-status a { color: inherit; font-weight: 600; }
