@@ -7,6 +7,7 @@ export async function acceptedEventIds(data) {
     const index = data.metadata?.event_visibility;
     if (!index) return new Set();
     if (index.schema_version !== 'factory-event-visibility/v1'
+        || typeof index.snapshot_id !== 'string' || !index.snapshot_id.trim()
         || index.snapshot_id !== data.metadata.snapshot_id || !Array.isArray(index.records)
         || !Array.isArray(data.events)) return new Set();
     const ids = new Set(), positions = new Set();

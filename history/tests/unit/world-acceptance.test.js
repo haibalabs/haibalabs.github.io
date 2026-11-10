@@ -23,13 +23,14 @@ test('acceptance is separate from unchanged intake confidence', async () => {
 });
 
 test('changed record, scope, receipt, identity, snapshot or repeated entries fail closed', async () => {
-  for (const change of ['text', 'scope', 'receipt', 'identity', 'snapshot', 'duplicate', 'duplicate_event']) {
+  for (const change of ['text', 'scope', 'receipt', 'identity', 'snapshot', 'missing_snapshot', 'duplicate', 'duplicate_event']) {
     const data = await fixture(), row = data.metadata.event_visibility.records[0];
     if (change === 'text') data.events[0].name += ' changed';
     if (change === 'scope') row.scope = ['source'];
     if (change === 'receipt') row.acceptance_sha256 = '';
     if (change === 'identity') row.event_id = 'other';
     if (change === 'snapshot') data.metadata.snapshot_id = 'changed';
+    if (change === 'missing_snapshot') { delete data.metadata.snapshot_id; delete data.metadata.event_visibility.snapshot_id; }
     if (change === 'duplicate') data.metadata.event_visibility.records.push({ ...row });
     if (change === 'duplicate_event') data.events.push({ ...data.events[0] });
     assert.deepEqual([...await acceptedEventIds(data)], [], change);
