@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_location_sidecar",
   "source": {
-    "events_sha256": "aea3872527b739611d60b4107dfd46e183749ca9929358dde09b353765caa37d",
+    "events_sha256": "014d036669950196fa574658b4dead6b467556141bfe041744ce4e02c4fd320f",
     "batches": [
       {
         "batch_id": "synthetic-test-fixture",

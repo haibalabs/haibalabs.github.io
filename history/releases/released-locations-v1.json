@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_location_sidecar",
   "source": {
-    "events_sha256": "aea3872527b739611d60b4107dfd46e183749ca9929358dde09b353765caa37d",
+    "events_sha256": "014d036669950196fa574658b4dead6b467556141bfe041744ce4e02c4fd320f",
     "snapshot": {
       "events_sha256": "6b7234e304f96654cc132bd82a3a413f918acd9df512f3f064c6e6255fc59669",
       "places_sha256": "3ae455e2da05dc41a63cc21977b0c5a97a36fd14407ceadb345f3cc0877c5c09",
@@ -7192,6 +7192,51 @@
         -98.5795
       ],
       "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_eeba9137-e91a-5ee5-9616-65b974a32f8d": {
+      "status": "resolved",
+      "precision": "site",
+      "coordinates": [
+        32.585277777777776,
+        35.184444444444445
+      ],
+      "verification": "batch_audit:review-cd6f7306740a-batch-01"
+    },
+    "plc_6ca46726-1ce9-51d0-885f-14b680ad3c55": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        32.766667,
+        35.333333
+      ],
+      "verification": "batch_audit:review-cd6f7306740a-batch-01"
+    },
+    "plc_217b49ba-d9a1-57e4-b557-02caa1860c9a": {
+      "status": "resolved",
+      "precision": "site",
+      "coordinates": [
+        37.730833333333,
+        22.756111111111
+      ],
+      "verification": "batch_audit:review-ce93871a62ee-batch-01"
+    },
+    "plc_5d635e98-0a2e-58f0-be82-3c6565062c32": {
+      "status": "resolved",
+      "precision": "site",
+      "coordinates": [
+        34.5576,
+        36.52
+      ],
+      "verification": "batch_audit:review-2ca2030dec07-batch-01"
+    },
+    "plc_9082b2ac-2d93-578a-b8c2-a9496d6f66dd": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        36.045277777778,
+        35.963611111111
+      ],
+      "verification": "batch_audit:review-2ca2030dec07-batch-01"
     }
   },
   "records": [
@@ -46707,6 +46752,72 @@
           "location_index": 0,
           "before_sha256": "0fb4058257ad16bf8bed03daad4a1210c7ffccfd7ba45f1a15565020864ffcf6",
           "place_id": "plc_38043e71-c041-51ac-8315-c5411f30e66d"
+        }
+      ]
+    },
+    {
+      "record_index": 52709,
+      "event_id": "evt_a307f885-08f1-5099-a8ac-35418a64caf6",
+      "event_name": "Battle of Megiddo",
+      "enhanced_time": "April 16, 1457 BC",
+      "baseline_record_sha256": "2effa504cc970cca7d33fca83210a6cd3a094e5894416310abd06f0e49957dda",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "0430f792d463ca4f835ac452851519a9bf9e8917a3a7413411c959d2726e0b60",
+          "place_id": "plc_eeba9137-e91a-5ee5-9616-65b974a32f8d"
+        },
+        {
+          "location_index": 1,
+          "before_sha256": "81c869c2769a6a52f3720bec779d3ff3d71c59d89ba67b56ef66fc1a8e473595",
+          "place_id": "plc_6ca46726-1ce9-51d0-885f-14b680ad3c55"
+        }
+      ]
+    },
+    {
+      "record_index": 52718,
+      "event_id": "evt_baa5d5d5-c5af-595b-b978-29477637f116",
+      "event_name": "Construction of the Treasury of Atreus",
+      "enhanced_time": "c. 1400–1250 BCE",
+      "baseline_record_sha256": "6d88418ad78c7efe1f71d5115de8b8c78f9e672062cc7fb2ae46517704639c8b",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "73753d6eba300c0700358689d9921437889789d9ae6ad52b9335f24f09319071",
+          "place_id": "plc_217b49ba-d9a1-57e4-b557-02caa1860c9a"
+        }
+      ]
+    },
+    {
+      "record_index": 52720,
+      "event_id": "evt_9d3658aa-c4fd-5eb0-af84-dd3815878e95",
+      "event_name": "Battle of Kadesh",
+      "enhanced_time": "May 1274 BCE",
+      "baseline_record_sha256": "428f6624fc94359dbedef815e806ddd7c9f9c6a5d73d659e44c8233664de66b5",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "669eeabe20a2bdf1e0e10bc18ace5da9dbddf6aa3a9ebe5954d69367829bd36a",
+          "place_id": "plc_5d635e98-0a2e-58f0-be82-3c6565062c32"
+        },
+        {
+          "location_index": 1,
+          "before_sha256": "612653eafe507f6f01173864f45268cb98964b1913834dbef2ea850686f3ab88",
+          "place_id": "plc_9082b2ac-2d93-578a-b8c2-a9496d6f66dd"
+        }
+      ]
+    },
+    {
+      "record_index": 52723,
+      "event_id": "evt_aba627d3-d840-54ba-b3e5-46df7067fdb0",
+      "event_name": "Construction of the Lion Gate at Mycenae",
+      "enhanced_time": "c.1250 BC",
+      "baseline_record_sha256": "916880a09d27443f8bb469a55f44d39865d988d7283d78868784f90ac177cba3",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "73753d6eba300c0700358689d9921437889789d9ae6ad52b9335f24f09319071",
+          "place_id": "plc_217b49ba-d9a1-57e4-b557-02caa1860c9a"
         }
       ]
     }
