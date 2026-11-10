@@ -938,7 +938,7 @@ export class UIManager {
         eventDiv.className = 'event';
         eventDiv.dataset.eventId = this.eventManager.placeIndex.idFor(event);
         eventDiv.classList.toggle('map-selected', eventDiv.dataset.eventId === this.mapBrowser?.selectedId);
-        eventDiv.setAttribute('data-confidence', event.confidence || 'medium');
+        eventDiv.setAttribute('data-confidence', this.eventManager.isAcceptedWorldEvent(event) ? 'accepted' : event.confidence || 'medium');
         eventDiv.setAttribute('data-sortable-time', sortableTime);
 
         const primaryLabel = this.getPrimaryLabel(event);

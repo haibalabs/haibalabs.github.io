@@ -1,4 +1,5 @@
 // event-manager.js
+import { acceptedEventIds } from './world-acceptance.js';
 import { PlaceEventIndex } from './place-event-index.js';
 import { eventSortableValue, eventTiebreak } from './date-handlers.js';
 import { sha256Hex } from './world-images.js';
@@ -18,6 +19,7 @@ export class EventManager {
     constructor(locationVerifier) {
         this.locationVerifier = locationVerifier;
         this.events = [];
+        this.acceptedWorldEvents = new WeakSet();
         this.sortedIndices = [];
         this.currentFilter = 'all';
         this.searchTerm = '';
@@ -105,8 +107,13 @@ export class EventManager {
                 if (Number.isInteger(index) && index >= 0 && index < eventsArray.length) this.keptRecords[index] = structuredClone(eventsArray[index]);
             }
 
+            const acceptedIds = await acceptedEventIds(data);
+            this.acceptedWorldEvents = new WeakSet();
             this.events = eventsArray.map(event => this.normalizeEvent({ ...event }, baseTimestamp));
 
+            for (const event of this.events) {
+                if (acceptedIds.has(event.event_id)) this.acceptedWorldEvents.add(event);
+            }
             this.sortEvents();
             this.invalidateCache();
 
@@ -225,7 +232,7 @@ export class EventManager {
             this.cachedFilteredEvents = this.sortedIndices
                 .map(({ index }) => this.events[index])
                 .filter(event => {
-                    const hasAcceptableConfidence = event.confidence !== 'low';
+                    const hasAcceptableConfidence = this.isVisibleEvent(event);
                     const matchesFilter = !filter || filter === 'all' || 
                         (event.categories && event.categories.includes(filter));
                     const matchesSearch = !searchTerm || (
@@ -247,8 +254,16 @@ export class EventManager {
         return this.cachedFilteredEvents;
     }    
 
+    isAcceptedWorldEvent(event) {
+        return this.acceptedWorldEvents.has(event);
+    }
+
+    isVisibleEvent(event) {
+        return event.confidence !== 'low' || this.isAcceptedWorldEvent(event);
+    }
+
     getHighMediumCount() {
-        return this.events.filter(e => e.confidence !== 'low').length;
+        return this.events.filter(e => this.isVisibleEvent(e)).length;
     }
 
     findNearestEventIndex(targetTime) {

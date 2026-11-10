@@ -58,3 +58,7 @@ Rachid's Palestine and Israel naming (2026-11-08, history-dp `place_labels.pales
 Places outside Israel and Palestine, and unidentified places whose label names neither, keep their label.
 
 To withdraw it, remove the file; the written names come back.
+
+### Accepted factory events
+
+`canonical-t2.json` may include `metadata.event_visibility` (`factory-event-visibility/v1`). The factory generates it from exact accepted source/date/event receipts; original intake confidence remains historical data. Each entry binds the snapshot, record position, event identity, original review version, acceptance receipt hash and an RFC 8785 event hash. The site reuses `recordSha256` to validate the raw event before normalization, then permits that exact loaded event in search, counts and edit lookup. Missing, mismatched or repeated bindings confer no visibility. Image and location releases retain their original rows and bind the enclosing canonical file hash as before.
