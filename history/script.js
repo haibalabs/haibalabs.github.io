@@ -107,9 +107,11 @@ async function initializeApp() {
     try {
         document.body.classList.add('hide-low-confidence');
         const publishedEdits = uiManager.fetchPublishedEdits();
+        // read alongside the approved edits; only the live page has to wait for it before loading
+        const liveRelease = PUBLISHED ? fetchLiveRelease(eventManager.db) : null;
         if (PUBLISHED) {
-            const live = await fetchLiveRelease(eventManager.db);
-            const published = STAGING ? await fetchStagedData() : await fetchLiveData(live);
+            const [live, published] = await Promise.all([liveRelease,
+                STAGING ? fetchStagedData() : liveRelease.then(fetchLiveData)]);
             // images and places come with the release; the corrections apply as each event loads
             await locationVerifier.loadUnverifiedLocations(published.correctionsUrl);
             const world = publishedWorld(published);
