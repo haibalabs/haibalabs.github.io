@@ -3,7 +3,8 @@
 // module that talks to Storage. Photos are read through the signed-in SDK (getBlob), never through
 // download URLs, which work for anyone who has them; reading this way needs the bucket's CORS to
 // allow the site (see firebase/README.md).
-import { connectStorageEmulator, deleteObject, getBlob, getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
+import { connectStorageEmulator, getBlob, getStorage, ref as storageRef } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
+import { deleteObject, uploadBytes } from './firebase-writes.js';
 import { extensionFor } from './image-store.js';
 
 export class FirebaseImageStore {

@@ -2,7 +2,8 @@
 // Firestore reads and writes for the admin review page (WORLD-EDITS.md, Admin review page): every
 // edit, approvals that publish to world_overlay/current in one transaction, rejections, and the
 // public overlay itself. The rules in firebase/firestore.rules allow these writes to admins only.
-import { collection, doc, getDoc, getDocs, runTransaction, serverTimestamp, updateDoc } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { collection, doc, getDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { runTransaction, updateDoc } from './firebase-writes.js';
 import { OVERLAY_MAX_BYTES, emptyOverlay, overlayBytes, REVIEWABLE_STATUSES, withApproval } from './world-edits.js';
 
 export const OVERLAY_PATH = ['world_overlay', 'current'];

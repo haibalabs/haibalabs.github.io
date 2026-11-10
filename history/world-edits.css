@@ -128,3 +128,12 @@ button.my-edit-title:focus-visible { outline: 2px solid var(--accent); outline-o
 .status-badge.rejected { color: #912018; background: #fef3f2; border-color: #fecdca; }
 .status-badge.accepted { color: #067647; background: #ecfdf3; border-color: #abefc6; }
 .status-badge.published { color: var(--ink-2); background: var(--surface-2); border-color: var(--line); }
+
+/* the staging site (?data=next): read-only, so no editing controls, and a banner saying so; the page
+   also refuses every write (firebase-writes.js) */
+html.staging .editing-toggle, html.staging #suggest-event, html.staging .edit-pencil, html.staging #review-link { display: none !important; }
+html.staging body::before {
+    content: 'Staging site: read-only preview of the next data release';
+    display: block; padding: .3rem 1rem; text-align: center; font-size: .75rem; font-weight: 600;
+    color: #93370d; background: #fffaeb; border-bottom: 1px solid #fedf89;
+}
