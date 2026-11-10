@@ -9,7 +9,7 @@ const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR
 const SYNTHETIC = readFileSync(new URL('../fixtures/released-locations-synthetic.json', import.meta.url), 'utf8');
 const EMPTY = JSON.stringify({ ...JSON.parse(SYNTHETIC), records: [], places: {} });
 
-async function openSite(page, { query = '', locations = SYNTHETIC } = {}) {
+async function openSite(page, { query = '?file=canonical-t2.json', locations = SYNTHETIC } = {}) {
   await stubFirebase(page);
   await page.route('https://upload.wikimedia.org/**', route => route.fulfill({ contentType: 'image/png', body: PNG }));
   if (locations !== null) await page.route('**/releases/released-locations-v1.json', route => route.fulfill({ contentType: 'application/json', body: locations }));
