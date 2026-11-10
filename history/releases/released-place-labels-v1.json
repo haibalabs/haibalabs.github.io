@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_place_label_sidecar",
   "source": {
-    "events_sha256": "014d036669950196fa574658b4dead6b467556141bfe041744ce4e02c4fd320f",
+    "events_sha256": "12341518cea9543466243fd7fd8deea163e3f243c0dba4266095ec7616fa60b1",
     "place_records_sha256": "a8040c8dd40845f5ab19d8f59aa5e80a240ce44d2d056f0d71b816f1e187a527",
     "responses_sha256": "ec53ff0a2a9cbe27728623fa67266d83bf7cee55fc064f43839380bb9bd458ca",
     "admin1_sha256": "2e4867f5397acb056ea26377601b57af37cb4c81399770225018e9e439e91ad3",

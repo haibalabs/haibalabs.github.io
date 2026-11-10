@@ -278,9 +278,9 @@ export class EditUI {
         return item;
     }
 
-    // A world event the timeline can show: low-confidence events are never shown (event-manager.js).
+    // Use the same accepted-world visibility rule as timeline search.
     worldEvent(eventId) {
-        return eventId ? this.eventManager.events.find(e => !e.personal && e.event_id === eventId && e.confidence !== 'low') : undefined;
+        return eventId ? this.eventManager.events.find(e => !e.personal && e.event_id === eventId && this.eventManager.isVisibleEvent(e)) : undefined;
     }
 
     // Closes the drawer and brings the event's card to the top of the timeline. A search that hides it
