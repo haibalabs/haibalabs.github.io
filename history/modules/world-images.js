@@ -204,19 +204,30 @@ export function attachPreviewImages(events, records, originals, locationsOf = (e
     const attached = records.map((record) => {
         const event = events[record.record_index];
         event.image_url = record.image_url;
-        event.image_preview = {
-            caption: displayCaption(record.caption),
-            role: record.image_role,
-            credit: record.credit,
-            license_name: record.license_name,
-            license_url: record.license_url,
-            source_url: record.source_url,
-            date: recordDisplayDate(record),
-            under_review: (record.event_issue_ids ?? []).length > 0,
-        };
+        event.image_preview = imagePreview(record);
         return event;
     });
     return { attached, problems };
+}
+
+/**
+ * What the card and viewer show for a released image record, from the release file or a published
+ * event shard (published-data.js).
+ *
+ * @param {object} record - a released image record
+ * @returns {object}
+ */
+export function imagePreview(record) {
+    return {
+        caption: displayCaption(record.caption),
+        role: record.image_role,
+        credit: record.credit,
+        license_name: record.license_name,
+        license_url: record.license_url,
+        source_url: record.source_url,
+        date: recordDisplayDate(record),
+        under_review: (record.event_issue_ids ?? []).length > 0,
+    };
 }
 
 // Removes the images attachPreviewImages added.

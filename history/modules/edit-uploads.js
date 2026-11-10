@@ -3,7 +3,8 @@
 // file is private and immutable at edit_uploads/{uid}/{editId}/r{revision}-{sha256}.webp; approving
 // it copies the file to world_images/{eventId}/{editId}-r{revision}-{sha256}.webp, which everyone can
 // read, and only then is the overlay written with its URL. storage.rules enforce both paths.
-import { connectStorageEmulator, getBlob, getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
+import { connectStorageEmulator, getBlob, getDownloadURL, getStorage, ref as storageRef } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-storage.js";
+import { uploadBytes } from './firebase-writes.js';
 import { extensionFor } from './image-store.js';
 import { sha256Hex } from './world-images.js';
 

@@ -89,16 +89,28 @@ export function applyLocations(events, release, originals) {
         event.locations = before.map((location, index) => {
             const change = record.locations.find(c => c.location_index === index);
             if (!change) return location;
-            const place = release.places[change.place_id];
-            if (conflictsWithManualPoint(location, place)) {
-                kept.push({ record_index: record.record_index, location_index: index });
-                return location;
-            }
-            return { ...location, place_id: change.place_id, geography: structuredClone(place) };
+            const placed = placeLocation(location, change.place_id, release.places[change.place_id]);
+            if (placed === location) kept.push({ record_index: record.record_index, location_index: index });
+            return placed;
         });
         return { event, before };
     });
     return { applied, kept, problems };
+}
+
+/**
+ * A location moved to its released place: that place's ID and a copy of its geography, unless the
+ * location's manual correction disagrees with the place, when the location itself is returned.
+ * Shared by the release file and published place buckets (published-data.js).
+ *
+ * @param {object} location - an event location as loaded and verified
+ * @param {string} placeId - the released place's ID
+ * @param {{ status: string, coordinates: number[], precision: string, verification?: string }} place
+ * @returns {object}
+ */
+export function placeLocation(location, placeId, place) {
+    if (conflictsWithManualPoint(location, place)) return location;
+    return { ...location, place_id: placeId, geography: structuredClone(place) };
 }
 
 /**

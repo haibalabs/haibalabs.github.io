@@ -107,21 +107,43 @@ export class EventManager {
                 if (Number.isInteger(index) && index >= 0 && index < eventsArray.length) this.keptRecords[index] = structuredClone(eventsArray[index]);
             }
 
-            const acceptedIds = await acceptedEventIds(data);
-            this.acceptedWorldEvents = new WeakSet();
-            this.events = eventsArray.map(event => this.normalizeEvent({ ...event }, baseTimestamp));
-
-            for (const event of this.events) {
-                if (acceptedIds.has(event.event_id)) this.acceptedWorldEvents.add(event);
-            }
-            this.sortEvents();
-            this.invalidateCache();
-
+            this.adoptEvents(eventsArray, baseTimestamp, await acceptedEventIds(data));
             return this.events;
         } catch (error) {
             console.error('Error loading events:', error);
             throw error;
         }
+    }
+
+    /**
+     * Loads the world events of a published release (published-data.js), already in the shape a data
+     * file gives. Each placed location takes its reviewed place after the manual corrections, as a
+     * location release does for a data file.
+     *
+     * @param {{ manifestUrl: string, timestamp: number, events: object[], acceptedIds: Set<string>,
+     *     placeLocations: (events: object[]) => void }} published
+     */
+    loadPublished(published) {
+        this.currentFile = published.manifestUrl;
+        // previews are bound to the bytes of one data file, which a published release doesn't have
+        this.loadedSha256 = null;
+        this.loadGeneration = (this.loadGeneration ?? 0) + 1;
+        this.keptRecords = [];
+        this.fileTimestamp = published.timestamp;
+        this.adoptEvents(published.events, published.timestamp, published.acceptedIds, published.placeLocations);
+        return this.events;
+    }
+
+    // Normalizes the loaded events (verifying their locations), marks the accepted ones and sorts them.
+    adoptEvents(eventsArray, baseTimestamp, acceptedIds, placeLocations = null) {
+        this.acceptedWorldEvents = new WeakSet();
+        this.events = eventsArray.map(event => this.normalizeEvent({ ...event }, baseTimestamp));
+        placeLocations?.(this.events);
+        for (const event of this.events) {
+            if (acceptedIds.has(event.event_id)) this.acceptedWorldEvents.add(event);
+        }
+        this.sortEvents();
+        this.invalidateCache();
     }    
 
     // Helper to invalidate cache

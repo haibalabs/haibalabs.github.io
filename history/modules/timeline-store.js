@@ -1,7 +1,8 @@
 // timeline-store.js
 // Firestore reads and writes for personal timelines. Every change is saved immediately; there is no
 // push step. Access is enforced by the timelines rules in firebase/firestore.rules.
-import { collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where, writeBatch } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { collection, doc, getCountFromServer, getDoc, getDocs, query, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { deleteDoc, setDoc, updateDoc, writeBatch } from './firebase-writes.js';
 import { newTimelineId, toTimelineEventDoc } from './timeline-model.js';
 
 // Firestore allows 500 writes per batch.
