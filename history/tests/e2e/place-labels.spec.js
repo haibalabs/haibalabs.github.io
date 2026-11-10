@@ -10,7 +10,7 @@ const RELEASE = readFileSync(new URL('../../releases/released-place-labels-v1.js
 async function openSite(page, { labels = null } = {}) {
   await stubFirebase(page);
   if (labels !== null) await page.route('**/releases/released-place-labels-v1.json', route => route.fulfill({ contentType: 'application/json', body: labels }));
-  await page.goto('/history/index.html');
+  await page.goto('/history/index.html?file=canonical-t2.json');
   await page.waitForSelector('#timeline-content .event', { timeout: 60000 });
 }
 

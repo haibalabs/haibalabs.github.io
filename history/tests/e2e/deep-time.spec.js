@@ -19,7 +19,7 @@ const WORLD = [
 test('deep-time cards are in order and show their labels as written', async ({ page }) => {
   await stubFirebase(page);
   await page.route('**/canonical-t2.json', route => route.fulfill({ json: WORLD }));
-  await page.goto('/history/index.html');
+  await page.goto('/history/index.html?file=canonical-t2.json');
   await page.waitForSelector('#timeline-content .event');
   const names = await page.locator('#timeline-content .event .event-header').allInnerTexts();
   const order = ['Big Bang', 'The first atomic nuclei form', 'The universe becomes transparent', 'Animal life diversifies in the Cambrian',

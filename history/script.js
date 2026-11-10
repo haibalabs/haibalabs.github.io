@@ -20,10 +20,13 @@ import { fetchPublished, publishedWorld } from './modules/published-data.js';
 import { refuseWrites } from './modules/firebase-writes.js';
 import { clearPlaceLabels, setPlaceLabels } from './modules/world-labels.js';
 
-// ?data=next opens the published release format on the staging site, before the switch
-// (team-status/factory-v1/preproduction/t106/scaling-design.md). It shares the live Firebase project,
-// so the page refuses every write, whatever its controls show.
-const STAGING = new URLSearchParams(window.location.search).get('data') === 'next';
+// The published release (data/manifest.json) is what the site loads. ?file= opens a data file and its
+// release files instead, as before the switch (tests and the publication smoke use it). ?data=next is the
+// read-only staging preview: it shares the live Firebase project, so that page refuses every write,
+// whatever its controls show.
+const PAGE_PARAMS = new URLSearchParams(window.location.search);
+const STAGING = PAGE_PARAMS.get('data') === 'next';
+const PUBLISHED = STAGING || !PAGE_PARAMS.has('file');
 if (STAGING) {
     refuseWrites('This is the staging site, which is read-only.');
     document.documentElement.classList.add('staging');
@@ -50,7 +53,7 @@ async function initializeApp() {
 
     const locationVerifier = new LocationVerifier();
     // the published release serves its own copy of the corrections, loaded with the release below
-    if (!STAGING) await locationVerifier.loadUnverifiedLocations('unverified-locations.json');
+    if (!PUBLISHED) await locationVerifier.loadUnverifiedLocations('unverified-locations.json');
     const eventManager = new EventManager(locationVerifier);
 
     const panelManager = new PanelManager(map, markersLayer, geocodeCache, () => {
@@ -70,16 +73,15 @@ async function initializeApp() {
         placeSearch, uploads: new EditUploads(eventManager.firebaseApp, { emulator: eventManager.usesEmulators }),
     });
 
-    // Get data file from URL params
-    const params = new URLSearchParams(window.location.search);
-    // the canonical world dataset, with stable event IDs; ?file=events.json still opens the legacy file
+    // ?file= names the data file to open instead of the published release, such as canonical-t2.json
+    const params = PAGE_PARAMS;
     const dataFile = params.get('file') || 'canonical-t2.json';
 
     const endTimeTravel = startTimeTravel();
     try {
         document.body.classList.add('hide-low-confidence');
         const publishedEdits = uiManager.fetchPublishedEdits();
-        if (STAGING) {
+        if (PUBLISHED) {
             // images and places come with the release; the corrections apply as each event loads
             const published = await fetchPublished();
             await locationVerifier.loadUnverifiedLocations(published.correctionsUrl);

@@ -93,7 +93,7 @@ test('Home and End leave the timeline alone behind a dialog or the full-window m
 
 test('when the events fail to load, the timeline says so', async ({ page }) => {
   await stubFirebase(page);
-  await page.route('**/canonical-t2.json', route => route.fulfill({ status: 500, body: '' }));
+  await page.route('**/data/manifest.json', route => route.fulfill({ status: 500, body: '' }));
   await page.goto('/history/index.html');
   const failure = page.locator('#timeline-content .load-failure');
   await expect(failure).toContainText("The events couldn't be loaded.");

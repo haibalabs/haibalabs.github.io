@@ -1,13 +1,15 @@
-// The staging comparison (scaling-design.md, moving over, steps 4 and 5): loads the site from today's data
-// files and from the published release (?data=next), then compares every world event as the app holds it in
-// memory. That covers display order, fields, visibility, accepted marks, images, each location's geography,
-// place ID and label, and the map points. Zero differences are required, apart from the store-only
-// provenance fields the published format doesn't serve.
+// The release comparison (scaling-design.md, moving over, steps 4 and 5): loads the site from the data files
+// (?file=canonical-t2.json with its release files) and from the published release (the default page), then
+// compares every world event as the app holds it in memory. That covers display order, fields, visibility,
+// accepted marks, images, each location's geography, place ID and label, and the map points. Zero differences
+// are required, apart from the store-only provenance fields the published format doesn't serve.
 //
 // A deployed site, with live Firebase reads (both pages are read-only to the harness):
 //   node tests/staging-parity.mjs --base-url https://haibalabs.github.io/ --out <dir>
 // A local build, with Firebase stubbed and an optional frozen world_overlay document:
-//   node tests/staging-parity.mjs --root <repo root> --data <published history/data dir> --port <n> --out <dir> [--overlay <json>]
+//   node tests/staging-parity.mjs --root <repo root> --port <n> --out <dir> [--data <published history/data dir>] [--overlay <json>]
+// (without --data, the release is the repository's own history/data)
+// --old-query and --new-query choose the two pages; before the switch, staging was --old-query '' --new-query '?data=next'.
 //
 // The harness reads the app's state by patching script.js in its own browser only; the site has no test hook.
 
@@ -125,8 +127,8 @@ function compare(old, next) {
 
 async function main() {
     const args = options(process.argv.slice(2));
-    if (!args.out || !(args['base-url'] || (args.root && args.data && args.port))) {
-        console.error('Usage: --base-url <site> --out <dir>, or --root <repo> --data <dir> --port <n> --out <dir> [--overlay <json>]');
+    if (!args.out || !(args['base-url'] || (args.root && args.port))) {
+        console.error('Usage: --base-url <site> --out <dir>, or --root <repo> --port <n> --out <dir> [--data <dir>] [--overlay <json>]');
         process.exit(2);
     }
     fs.mkdirSync(args.out, { recursive: true });
@@ -146,9 +148,11 @@ async function main() {
     const browser = await chromium.launch({ headless: true });
     try {
         const shared = { base, stub, scriptSource };
-        const old = await snapshot(browser, { ...shared, query: '' });
-        const next = await snapshot(browser, { ...shared, query: '?data=next', dataDir: args.data ? path.resolve(args.data) : null });
-        const report = { base_url: base, overlay: args.overlay ?? (args['base-url'] ? 'live' : null),
+        const oldQuery = typeof args['old-query'] === 'string' ? args['old-query'] : '?file=canonical-t2.json';
+        const newQuery = typeof args['new-query'] === 'string' ? args['new-query'] : '';
+        const old = await snapshot(browser, { ...shared, query: oldQuery });
+        const next = await snapshot(browser, { ...shared, query: newQuery, dataDir: args.data ? path.resolve(args.data) : null });
+        const report = { base_url: base, old_query: oldQuery, new_query: newQuery, overlay: args.overlay ?? (args['base-url'] ? 'live' : null),
             load_ms: { old: old.loadMs, next: next.loadMs }, errors: { old: old.errors.slice(0, 10), next: next.errors.slice(0, 10) },
             ...compare(old, next) };
         fs.writeFileSync(path.join(args.out, 'report.json'), JSON.stringify(report, null, 1) + '\n');
