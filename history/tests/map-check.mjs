@@ -2,10 +2,11 @@
 // It reads only what an already-open timeline page shows, so it works on any data layout the site loads.
 //
 // checkMap(page, events) takes events as { event_id, name, point: [lat, lng], precision, status, label }:
-// - name is searched for when the event's card isn't on screen;
+// - name is searched for when the event's card isn't on screen. The timeline renders only part of a long
+//   result list, so a name many events share may never show this card: sample events with distinct names;
 // - precision is the place's recorded precision, or null when it has none;
 // - status is the place's release status: 'resolved' or 'corrected' (a manual point) draw as reviewed,
-//   'reused' or null as unreviewed;
+//   any other status, or none, as unreviewed;
 // - label is the place text the map shows after the event's name and date: its released label, else the
 //   written name.
 // It returns one row per event: { event_id, ok, problem }.
