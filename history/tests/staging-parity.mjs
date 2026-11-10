@@ -103,6 +103,11 @@ async function snapshot(browser, { base, query, scriptSource, stub, dataDir }) {
 function compare(old, next) {
     const report = { count: [old.events.length, next.events.length], order_differences: 0, field_differences: {}, examples: [] };
     old.order.forEach((id, i) => { if (next.order[i] !== id) report.order_differences += 1; });
+    // events are matched by ID, so a repeated ID on either side is a difference in itself, not merged away
+    for (const [side, events] of [['old', old.events], ['next', next.events]]) {
+        const repeated = events.length - new Set(events.map(event => event.event_id)).size;
+        if (repeated) report.field_differences[`repeated_ids_${side}`] = repeated;
+    }
     const byId = new Map(next.events.map(event => [event.event_id, event]));
     for (const event of old.events) {
         const other = byId.get(event.event_id);

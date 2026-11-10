@@ -87,7 +87,8 @@ export function publishedWorld({ manifest, manifestUrl, shards, buckets }) {
 
     const events = [];
     const acceptedIds = new Set();
-    const placements = new Map();
+    // by load position, as a location release goes by record position, so a repeated event ID can't merge
+    const placements = [];
     for (const shard of shards) {
         for (const served of shard.events) {
             // visible is the build's own account of what the site decides from confidence and accepted
@@ -107,22 +108,22 @@ export function publishedWorld({ manifest, manifestUrl, shards, buckets }) {
                 event.image_url = image.image_url;
                 event.image_preview = imagePreview(image);
             }
+            if (placed.length) placements[events.length] = placed;
             events.push(event);
-            if (placed.length) placements.set(event.event_id, placed);
         }
     }
 
-    // After the location verifier: a manual correction that disagrees with the reviewed place keeps the
-    // location as loaded, written place_id and all.
+    // After the location verifier, on the loaded events in the same order: a manual correction that
+    // disagrees with the reviewed place keeps the location as loaded, written place_id and all.
     const placeLocations = (loaded) => {
-        for (const event of loaded) {
-            const placed = placements.get(event.event_id);
-            if (!placed) continue;
+        loaded.forEach((event, position) => {
+            const placed = placements[position];
+            if (!placed) return;
             event.locations = event.locations.map((location, index) => {
                 const change = placed.find(p => p.index === index);
                 return change ? placeLocation(location, change.placeId, change.place) : location;
             });
-        }
+        });
     };
 
     return { manifestUrl, timestamp: Date.parse(manifest.created_at), events, acceptedIds, placeLocations, labels: { labels } };
