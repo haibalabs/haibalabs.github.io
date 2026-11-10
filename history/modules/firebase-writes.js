@@ -1,7 +1,8 @@
 // firebase-writes.js
 // Every Firestore and Storage write the site makes goes through these functions, so a read-only page
 // can refuse them all in one place. The staging site does: it shares the live Firebase project and
-// security rules, which can't tell it apart from the live site.
+// security rules, which can't tell it apart from the live site. The one exception is the admin's "Make
+// this live", the write the staging page exists for (world-release.js).
 
 import { deleteDoc as firestoreDeleteDoc, runTransaction as firestoreRunTransaction, setDoc as firestoreSetDoc,
     updateDoc as firestoreUpdateDoc, writeBatch as firestoreWriteBatch } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";

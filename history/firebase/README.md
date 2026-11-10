@@ -48,6 +48,14 @@ Users select **Forgot password?** on the sign-in form after entering their email
 
 The console bypasses the rules, so the owner can always repair roles there, including their own.
 
+## Make a release live
+
+`world_release/current` names the published release every visitor sees, by its manifest's hash in `history/data/manifests/`. Without it, the site loads the committed `history/data/manifest.json`. Once a release has been made live, committing a new `manifest.json` no longer changes what visitors see; only "Make this live" does.
+
+- Open the staging page, `/history/?data=next`, signed in as an admin. It previews the next release. The banner says which release is live, and "Make this live" makes the previewed one live: visitors get it on their next page load, with no commit or deploy.
+- To roll back, open `/history/?data=next&release=<earlier manifest hash>` and press "Make this live" there.
+- The rules let only admins write it, one version at a time, naming the release it replaces.
+
 ## Change the rules
 
 Never edit rules in the console: the next deploy from this directory overwrites console changes.

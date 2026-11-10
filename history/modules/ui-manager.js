@@ -189,6 +189,7 @@ export class UIManager {
             this.updateAuthUI(Boolean(user), user?.email ?? '');
             this.onAccountChange?.(user, role);
             this.onEditAccountChange?.(user, role);
+            this.onReleaseAccountChange?.(user, role);
         });
 
         // Login handler

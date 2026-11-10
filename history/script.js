@@ -16,20 +16,46 @@ import { EditStore } from './modules/edit-store.js';
 import { EditUploads } from './modules/edit-uploads.js';
 import { PlaceSearch } from './modules/place-search.js';
 import { initThemeChoice } from './modules/theme.js';
-import { fetchPublished, publishedWorld } from './modules/published-data.js';
+import { fetchPublished, manifestUrlFor, MANIFEST_URL, NEXT_MANIFEST_URL, publishedWorld } from './modules/published-data.js';
 import { refuseWrites } from './modules/firebase-writes.js';
 import { clearPlaceLabels, setPlaceLabels } from './modules/world-labels.js';
+import { fetchLiveRelease } from './modules/world-release.js';
+import { showStagingBanner } from './modules/release-ui.js';
 
-// The published release (data/manifest.json) is what the site loads. ?file= opens a data file and its
-// release files instead, as before the switch (tests and the publication smoke use it). ?data=next is the
-// read-only staging preview: it shares the live Firebase project, so that page refuses every write,
-// whatever its controls show.
+// The site loads the published release that Firestore names as live (world-release.js), or the one
+// committed with it. ?file= opens a data file and its release files instead, as before the switch (tests
+// and the publication smoke use it). ?data=next is the read-only staging preview of the next release, or of
+// ?release=<manifest hash>: it shares the live Firebase project, so that page refuses every write, whatever
+// its controls show, except the admin's "Make this live" (release-ui.js).
 const PAGE_PARAMS = new URLSearchParams(window.location.search);
 const STAGING = PAGE_PARAMS.get('data') === 'next';
 const PUBLISHED = STAGING || !PAGE_PARAMS.has('file');
 if (STAGING) {
     refuseWrites('This is the staging site, which is read-only.');
     document.documentElement.classList.add('staging');
+}
+
+// The live release, or the committed one when none is named or the named one can't be loaded.
+async function fetchLiveData(live) {
+    if (live) {
+        try {
+            return await fetchPublished(manifestUrlFor(live.manifest_sha256));
+        } catch (error) {
+            console.warn('The live release could not be loaded; showing the committed one:', error);
+        }
+    }
+    return fetchPublished(MANIFEST_URL);
+}
+
+// The release staging previews: the one ?release= names, else the next release, else the committed one.
+async function fetchStagedData() {
+    const named = PAGE_PARAMS.get('release');
+    if (/^[0-9a-f]{64}$/.test(named ?? '')) return fetchPublished(manifestUrlFor(named));
+    try {
+        return await fetchPublished(NEXT_MANIFEST_URL);
+    } catch {
+        return fetchPublished(MANIFEST_URL);
+    }
 }
 
 // Initialize map globally since it's used across different modules
@@ -81,14 +107,21 @@ async function initializeApp() {
     try {
         document.body.classList.add('hide-low-confidence');
         const publishedEdits = uiManager.fetchPublishedEdits();
+        // read alongside the approved edits; only the live page has to wait for it before loading
+        const liveRelease = PUBLISHED ? fetchLiveRelease(eventManager.db) : null;
         if (PUBLISHED) {
+            const [live, published] = await Promise.all([liveRelease,
+                STAGING ? fetchStagedData() : liveRelease.then(fetchLiveData)]);
             // images and places come with the release; the corrections apply as each event loads
-            const published = await fetchPublished();
             await locationVerifier.loadUnverifiedLocations(published.correctionsUrl);
             const world = publishedWorld(published);
             eventManager.loadPublished(world);
             clearPlaceLabels();
             setPlaceLabels(world.labels);
+            if (STAGING) {
+                showStagingBanner({ live, db: eventManager.db, uiManager, staged: { manifestSha256: published.manifestSha256,
+                    releaseId: published.manifest.release_id ?? published.manifest.snapshot_id ?? 'unnamed' } });
+            }
         } else {
             // the released records are kept as loaded, so their checks need no second download
             const images = uiManager.fetchReleasedImages();

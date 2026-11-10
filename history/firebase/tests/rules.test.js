@@ -592,3 +592,45 @@ describe('proposed edits to world events', () => {
     await assertFails(setDoc(doc(asUser('admin'), 'world_overlay', 'other'), overlay(1)));
   });
 });
+
+describe('the live release (world_release/current)', () => {
+  const releaseRef = (db) => doc(db, 'world_release', 'current');
+  const sha = (c) => c.repeat(64);
+  const release = (version, manifest, previous, extra = {}) => ({
+    version, manifest_sha256: manifest, release_id: 'release-' + version, previous_manifest_sha256: previous,
+    updated_at: serverTimestamp(), ...extra,
+  });
+
+  it('everyone reads it, and only an admin names a release', async () => {
+    await assertSucceeds(getDoc(releaseRef(anonymous())));
+    for (const uid of ['viewer', 'editor', 'reviewer']) await assertFails(setDoc(releaseRef(as(uid)), release(1, sha('a'), null)));
+    await assertFails(setDoc(releaseRef(anonymous()), release(1, sha('a'), null)));
+    await assertSucceeds(setDoc(releaseRef(as('admin')), release(1, sha('a'), null)));
+  });
+  it('each move is one version higher and names the release it replaces', async () => {
+    const db = as('admin');
+    await assertSucceeds(setDoc(releaseRef(db), release(1, sha('a'), null)));
+    await assertFails(setDoc(releaseRef(db), release(1, sha('b'), sha('a'))));
+    await assertFails(setDoc(releaseRef(db), release(3, sha('b'), sha('a'))));
+    await assertFails(setDoc(releaseRef(db), release(2, sha('b'), null)));
+    await assertFails(setDoc(releaseRef(db), release(2, sha('b'), sha('c'))));
+    await assertSucceeds(setDoc(releaseRef(db), release(2, sha('b'), sha('a'))));
+    // rolling back is a move to an earlier manifest, still one version higher
+    await assertSucceeds(setDoc(releaseRef(db), release(3, sha('a'), sha('b'))));
+  });
+  it('it holds a manifest hash, a release name and the server time, and nothing else', async () => {
+    const db = as('admin');
+    await assertFails(setDoc(releaseRef(db), release(1, 'not-a-hash', null)));
+    await assertFails(setDoc(releaseRef(db), release(1, sha('A'), null)));
+    await assertFails(setDoc(releaseRef(db), release(1, sha('a'), null, { release_id: 7 })));
+    await assertFails(setDoc(releaseRef(db), release(1, sha('a'), null, { updated_at: Timestamp.fromMillis(0) })));
+    await assertFails(setDoc(releaseRef(db), release(1, sha('a'), null, { promoted_by: 'admin' })));
+  });
+  it('it is never deleted, and there is no other release document', async () => {
+    const db = as('admin');
+    await assertSucceeds(setDoc(releaseRef(db), release(1, sha('a'), null)));
+    await assertFails(deleteDoc(releaseRef(db)));
+    await assertFails(setDoc(doc(db, 'world_release', 'next'), release(1, sha('a'), null)));
+    await assertFails(getDoc(doc(anonymous(), 'world_release', 'next')));
+  });
+});
