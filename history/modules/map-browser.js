@@ -188,6 +188,8 @@ export class MapBrowser {
             dot?.setAttribute('aria-label', `Select ${event.name} in timeline`);
             dot?.setAttribute('role', 'button');
             dot?.setAttribute('tabindex', '0');
+            // what the dot shows, for the published-site map check (tests/map-check.mjs)
+            if (dot) Object.assign(dot.dataset, { point: point.coordinates.join(','), precision: point.precision, reviewed: point.reviewed });
             dot?.addEventListener('keydown', e => {
                 if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(); }
             });
