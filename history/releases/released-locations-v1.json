@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_location_sidecar",
   "source": {
-    "events_sha256": "34426820cc48148df80fe21417e18b428ea36588cfec0c35b60cf87b036d3358",
+    "events_sha256": "aea3872527b739611d60b4107dfd46e183749ca9929358dde09b353765caa37d",
     "snapshot": {
       "events_sha256": "6b7234e304f96654cc132bd82a3a413f918acd9df512f3f064c6e6255fc59669",
       "places_sha256": "3ae455e2da05dc41a63cc21977b0c5a97a36fd14407ceadb345f3cc0877c5c09",
@@ -7073,6 +7073,123 @@
       "coordinates": [
         42.635,
         -3.1105555555556
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_cc67f354-b65d-5cb4-8531-f20deed24153": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        50.669,
+        -1.505
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_19b1d7fb-79bd-5a35-970c-27fc37890a1d": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        50.7,
+        -1.3
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_b7bca7ea-a546-58f3-8c6c-b5538eb5ce9d": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        42.336944444444,
+        -76.927222222222
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_be99d9cc-3efb-55e9-bc29-5d6d1dcc0718": {
+      "status": "resolved",
+      "precision": "region",
+      "coordinates": [
+        -4.321944444444444,
+        15.311944444444444
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_fc7c4b55-a1f2-5878-8c84-e9da644435c0": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        -4.33806,
+        15.3222
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_5a3e6014-bd28-5389-ae64-57fd4cfb7c0f": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        14.620556,
+        121.053333
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_506826f8-9b0b-5480-a186-6b68f2b38403": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        14.65,
+        121.0475
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_c2a858ed-799d-56fa-a0d2-bc1a6c629947": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        37.785036111111,
+        -122.43488888889
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_43d332aa-b318-5e3c-a0c7-80457e537639": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        34.056388888889,
+        -118.24861111111
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_eeea9197-b264-5aec-b168-aecbac337c40": {
+      "status": "resolved",
+      "precision": "settlement",
+      "coordinates": [
+        34.05223,
+        -118.24368
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_ab3167ad-1e2b-5ef1-8a4b-f3333d27c4e5": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        40.665,
+        -73.958055555556
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_8fb2a72d-e63f-5b55-9407-d8675b703e5b": {
+      "status": "resolved",
+      "precision": "approximate",
+      "coordinates": [
+        40.826944444444,
+        -73.928055555556
+      ],
+      "verification": "batch_audit:t7-location-batch-01"
+    },
+    "plc_38043e71-c041-51ac-8315-c5411f30e66d": {
+      "status": "resolved",
+      "precision": "country",
+      "coordinates": [
+        39.828175,
+        -98.5795
       ],
       "verification": "batch_audit:t7-location-batch-01"
     }
@@ -46453,6 +46570,143 @@
           "location_index": 0,
           "place_id": "plc_83f21cb0-0fdc-5030-aa89-3beec7d8f3cb",
           "before_sha256": "7e82a74ee5ecf7995d5a2d2cc3ab2b9b353e8e3eac315f4a55cb84a108a8ab95"
+        }
+      ]
+    },
+    {
+      "record_index": 52687,
+      "event_id": "evt_98c726a1-ac6a-5df6-b50e-0a9aaf74e846",
+      "event_name": "1970 Isle of Wight Festival",
+      "enhanced_time": "1970-08-26/1970-08-30",
+      "baseline_record_sha256": "7f3f0e1d4d20a2284b959e3e748289e92fe3b7381206925d98021c4dea5ea5c8",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "ea56e468540dde3719a93a184d703a77e28261b596a9170d668a8452c0829e5b",
+          "place_id": "plc_cc67f354-b65d-5cb4-8531-f20deed24153"
+        },
+        {
+          "location_index": 1,
+          "before_sha256": "4c43389ff1400429ced65754b67ba2b3b4ed8932b447b6fbbe7ff64bd4c40dfa",
+          "place_id": "plc_19b1d7fb-79bd-5a35-970c-27fc37890a1d"
+        }
+      ]
+    },
+    {
+      "record_index": 52688,
+      "event_id": "evt_60d97fde-ea62-589d-9c84-e35e878fb50a",
+      "event_name": "Summer Jam at Watkins Glen",
+      "enhanced_time": "1973-07-28",
+      "baseline_record_sha256": "6db54ea99d24d6a4bbb995d2d0591c52d629fe198cf083d2932e26f8c43d4c1e",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "73811e77e423f5db3b070ca7e061e0372e74ab697445c657ce9a6bc86c7dc0b5",
+          "place_id": "plc_b7bca7ea-a546-58f3-8c6c-b5538eb5ce9d"
+        }
+      ]
+    },
+    {
+      "record_index": 52689,
+      "event_id": "evt_81ef8ce2-aa3b-53f9-8a02-7f46d97aa14c",
+      "event_name": "Ali defeats Foreman in the Rumble in the Jungle",
+      "enhanced_time": "1974-10-30",
+      "baseline_record_sha256": "1a522380a7be0f95a7cf69d94decea84c412661bc270608bbeae0f8a1a51650d",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "ace2aa840156da46dd452f3b402776bbd19fee137612dfd855b4a086dddb516a",
+          "place_id": "plc_be99d9cc-3efb-55e9-bc29-5d6d1dcc0718"
+        },
+        {
+          "location_index": 1,
+          "before_sha256": "c5fc4241e5544f0cdd9bb057acef51ea830aaa4333e5d0f957ed062f16cef410",
+          "place_id": "plc_fc7c4b55-a1f2-5878-8c84-e9da644435c0"
+        }
+      ]
+    },
+    {
+      "record_index": 52690,
+      "event_id": "evt_1a6775b8-71d1-585e-b81d-88ffe083694f",
+      "event_name": "Ali defeats Frazier in the Thrilla in Manila",
+      "enhanced_time": "1975-10-01",
+      "baseline_record_sha256": "3f8caee9ee7b8bfcb8de1c5c9fbd63a307cff133b7d2eee7371f636309a11cad",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "0f809fc1644fae6fa1d95634e6e34460d301f2b8c1f0642abce5fd623917f185",
+          "place_id": "plc_5a3e6014-bd28-5389-ae64-57fd4cfb7c0f"
+        },
+        {
+          "location_index": 2,
+          "before_sha256": "ffad9c75f071738b954fa40bd0b3c9ecfcef033c40b9d9ddef3122bc31fd63c8",
+          "place_id": "plc_506826f8-9b0b-5480-a186-6b68f2b38403"
+        }
+      ]
+    },
+    {
+      "record_index": 52691,
+      "event_id": "evt_226948bd-cd41-5115-b1a0-b3c836db1bd1",
+      "event_name": "The Band’s Last Waltz farewell concert",
+      "enhanced_time": "1976-11-25",
+      "baseline_record_sha256": "bc7f3e19645dc2949b4c246e843cb43e2fbdb5b249d2eb0c6a69fedf4a98c750",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "fc373e4734ed2b50e13d693e9c3028732eda18566c6fa2f3c41a86c993c0e4fd",
+          "place_id": "plc_c2a858ed-799d-56fa-a0d2-bc1a6c629947"
+        }
+      ]
+    },
+    {
+      "record_index": 52692,
+      "event_id": "evt_fd48cf4b-13b8-5ad1-b7d2-91dbb8985155",
+      "event_name": "49th Academy Awards ceremony",
+      "enhanced_time": "1977-03-28",
+      "baseline_record_sha256": "21447e5b62b656b8834a63822fe93ba3b99ec1ea865353b45e82873c9c1f44d3",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "82648ffd04bec3fbf72e1885ee55a78bd9da611faa231d91ef46b48758b3b03e",
+          "place_id": "plc_43d332aa-b318-5e3c-a0c7-80457e537639"
+        },
+        {
+          "location_index": 1,
+          "before_sha256": "f301d38e9938da9d2e1693a1f200df50f6c7faa72db620c365830ad035757089",
+          "place_id": "plc_eeea9197-b264-5aec-b168-aecbac337c40"
+        }
+      ]
+    },
+    {
+      "record_index": 52693,
+      "event_id": "evt_48b162bb-7f6f-5f5e-83c8-bd7cd9b918c0",
+      "event_name": "1956 World Series",
+      "enhanced_time": "1956-10-03/1956-10-10",
+      "baseline_record_sha256": "ca91c22ff5fecc3ab30300d11be5de1b10b396731cb855d56edd19bfcdc947b3",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "003ab00da6f12eb87820dff7fb2b1c4dc5782eb8c7d7331b1e1b6b3f80ef4f49",
+          "place_id": "plc_ab3167ad-1e2b-5ef1-8a4b-f3333d27c4e5"
+        },
+        {
+          "location_index": 1,
+          "before_sha256": "fc8e625eb29f2102c8ffc69490cd1a768fd388c2657f7bbe588492c6f152a16a",
+          "place_id": "plc_8fb2a72d-e63f-5b55-9407-d8675b703e5b"
+        }
+      ]
+    },
+    {
+      "record_index": 52698,
+      "event_id": "evt_1f1af9d8-c8e4-5312-80f8-147a51fb7392",
+      "event_name": "2026 United States midterm elections",
+      "enhanced_time": "2026-11-03",
+      "baseline_record_sha256": "023527579c697b66121bbb76b3b49e82f5c5ed83d77f88c6e02bd807f5a74634",
+      "locations": [
+        {
+          "location_index": 0,
+          "before_sha256": "0fb4058257ad16bf8bed03daad4a1210c7ffccfd7ba45f1a15565020864ffcf6",
+          "place_id": "plc_38043e71-c041-51ac-8315-c5411f30e66d"
         }
       ]
     }

@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_place_label_sidecar",
   "source": {
-    "events_sha256": "34426820cc48148df80fe21417e18b428ea36588cfec0c35b60cf87b036d3358",
+    "events_sha256": "aea3872527b739611d60b4107dfd46e183749ca9929358dde09b353765caa37d",
     "place_records_sha256": "a8040c8dd40845f5ab19d8f59aa5e80a240ce44d2d056f0d71b816f1e187a527",
     "responses_sha256": "ec53ff0a2a9cbe27728623fa67266d83bf7cee55fc064f43839380bb9bd458ca",
     "admin1_sha256": "2e4867f5397acb056ea26377601b57af37cb4c81399770225018e9e439e91ad3",
@@ -22027,6 +22027,24 @@
     "plc_fff698c6-11ad-5b36-ae0a-de5a84040c50": "Zurich, Switzerland",
     "plc_fff7c38f-4853-5ea9-85b2-9a3065f0df83": "Kandahar, Afghanistan",
     "plc_fffd9b72-c63d-5167-9e0e-840bb1560fa0": "Écône, Switzerland",
-    "plc_fffe9196-9cda-5fd3-b0a5-e8f898c168f8": "Lewiston, Maine, United States"
+    "plc_fffe9196-9cda-5fd3-b0a5-e8f898c168f8": "Lewiston, Maine, United States",
+    "plc_cc67f354-b65d-5cb4-8531-f20deed24153": "Afton Down, United Kingdom",
+    "plc_b7bca7ea-a546-58f3-8c6c-b5538eb5ce9d": "Watkins Glen Grand Prix Raceway, United States",
+    "plc_be99d9cc-3efb-55e9-bc29-5d6d1dcc0718": "Kinshasa, Democratic Republic of the Congo",
+    "plc_fc7c4b55-a1f2-5878-8c84-e9da644435c0": "Stade du 20 Mai, Democratic Republic of the Congo",
+    "plc_506826f8-9b0b-5480-a186-6b68f2b38403": "Quezon City, Philippines",
+    "plc_5a3e6014-bd28-5389-ae64-57fd4cfb7c0f": "Smart Araneta Coliseum, Philippines",
+    "plc_c36b4b7f-185e-5320-8426-5298de85a5fd": "Cubao",
+    "plc_c2a858ed-799d-56fa-a0d2-bc1a6c629947": "Winterland Ballroom, United States",
+    "plc_43d332aa-b318-5e3c-a0c7-80457e537639": "Dorothy Chandler Pavilion, United States",
+    "plc_8fb2a72d-e63f-5b55-9407-d8675b703e5b": "Yankee Stadium, United States",
+    "plc_ab3167ad-1e2b-5ef1-8a4b-f3333d27c4e5": "Ebbets Field, United States",
+    "plc_9688ce5f-7d62-545a-b549-b6f7928a185d": "Clear Lake, Iowa",
+    "plc_30342908-9538-5823-b3fd-f667c8692393": "Beverly Hilton Hotel",
+    "plc_28467388-4f20-529d-9b3d-1fd2a8d5e0a7": "Beverly Hills, California",
+    "plc_d92df6ed-feb7-58ff-a63b-828a9b6a1733": "Park Sheraton Hotel",
+    "plc_e58319d2-fe1d-53db-91d6-2c3af8f3e261": "Qatar",
+    "plc_0e6f4698-97b6-5eaf-a0ba-6978af1c7ab5": "Aomori Prefecture",
+    "plc_65f789a8-5dc7-5136-a348-6ab5ff043d18": "Sanriku"
   }
 }
