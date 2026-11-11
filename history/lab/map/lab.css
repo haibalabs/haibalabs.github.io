@@ -29,3 +29,13 @@
 .lab-picker strong { display: block; font-weight: 500; margin-bottom: 4px; }
 .lab-picker select { width: 100%; min-height: 34px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
 .lab-picker small { display: block; margin-top: 4px; color: var(--ink-2); font-size: 12px; }
+
+/* Landmarks (landmarks.js): the cutout itself, a soft shadow so it reads on light and dark maps, and its i badge. */
+.map-landmark { background: none; border: 0; }
+.map-landmark img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgb(0 0 0 / .35)); cursor: pointer; transition: transform .12s; }
+.map-landmark:hover img, .map-landmark:focus-visible img { transform: scale(1.12); }
+.map-landmark:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.landmark-info { position: absolute; top: -4px; right: -6px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; border: 1px solid #fff; font: italic 600 10px/1 Georgia, serif; text-decoration: none; box-shadow: 0 1px 3px rgb(0 0 0 / .25); }
+.landmark-info:hover, .landmark-info:focus-visible { transform: scale(1.2); }
+.landmark-info:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.map-landmark-empty { margin: 0; font: 13px/1.4 var(--font-ui); }
