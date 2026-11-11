@@ -30,6 +30,24 @@ export const SAMPLE = [
 // the zoom each tier first shows at, and the icon's size on screen
 const MIN_ZOOM = { 1: 0, 2: 5, 3: 9 };
 const SIZE = 44;
+// An icon never covers more than MAX_GROUND_METRES of ground: zoomed out it shrinks, down to MIN_SIZE, and
+// reaches SIZE only from about zoom 5. Below BADGE_SIZE its badge is too small to tap, so it is hidden.
+const MAX_GROUND_METRES = 250000;
+const MIN_SIZE = 16;
+const BADGE_SIZE = 28;
+const EARTH_CIRCUMFERENCE = 40075016.686;
+const sizeAt = ([lat], zoom) => {
+    const metresPerPixel = EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
+    return Math.round(Math.max(MIN_SIZE, Math.min(SIZE, MAX_GROUND_METRES / metresPerPixel)));
+};
+// sets a shown icon's size, keeping its base on the landmark's point
+function resize(marker, size) {
+    const node = marker.getElement();
+    if (!node || node.dataset.size === String(size)) return;
+    node.dataset.size = size;
+    Object.assign(node.style, { width: `${size}px`, height: `${size}px`, marginLeft: `${-size / 2}px`, marginTop: `${-size * (SIZE - 4) / SIZE}px` });
+    node.classList.toggle('map-landmark-small', size < BADGE_SIZE);
+}
 const SOURCE_NAMES = { wikipedia: 'Wikipedia' };
 
 export class LandmarkLayer {
@@ -93,9 +111,10 @@ export class LandmarkLayer {
         for (const entry of order) {
             const { landmark, marker } = entry;
             let show = zoom >= (MIN_ZOOM[landmark.tier] ?? MIN_ZOOM[3]);
+            const size = sizeAt(landmark.point, zoom);
             if (show) {
                 const p = this.map.latLngToLayerPoint(landmark.point);
-                const box = { x0: p.x - SIZE / 2, x1: p.x + SIZE / 2, y0: p.y - SIZE, y1: p.y };
+                const box = { x0: p.x - size / 2, x1: p.x + size / 2, y0: p.y - size, y1: p.y };
                 show = !taken.some(t => box.x0 < t.x1 && box.x1 > t.x0 && box.y0 < t.y1 && box.y1 > t.y0);
                 if (show) taken.push(box);
             }
@@ -103,6 +122,7 @@ export class LandmarkLayer {
                 if (show) this.layer.addLayer(marker); else this.layer.removeLayer(marker);
                 entry.shown = show;
             }
+            if (show) resize(marker, size);
         }
     }
 }

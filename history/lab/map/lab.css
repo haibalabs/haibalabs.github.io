@@ -39,3 +39,4 @@
 .landmark-info:hover, .landmark-info:focus-visible { transform: scale(1.2); }
 .landmark-info:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .map-landmark-empty { margin: 0; font: 13px/1.4 var(--font-ui); }
+.map-landmark-small .landmark-info { display: none; }
