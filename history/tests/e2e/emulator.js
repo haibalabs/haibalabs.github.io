@@ -1,5 +1,6 @@
-// Helpers for browser tests against the local Firebase emulators. These specs run only under
-// `firebase emulators:exec` (see firebase/README.md), which sets the *_EMULATOR_HOST variables.
+// Helpers for browser tests against the local Firebase emulators. These specs run only when the
+// *_EMULATOR_HOST variables are set: by `firebase emulators:exec` locally (npm run test:auth-flow, see
+// firebase/README.md), or on CI, which starts the emulators during setup and sets them for npm run test:flows.
 export const AUTH = process.env.FIREBASE_AUTH_EMULATOR_HOST;
 export const FIRESTORE = process.env.FIRESTORE_EMULATOR_HOST;
 export const PROJECT = 'demo-historiline';

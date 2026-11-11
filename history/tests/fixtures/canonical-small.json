@@ -1,0 +1,1665 @@
+{
+ "metadata": {
+  "dataset_id": "world-history",
+  "snapshot_id": "factory-accepted-visibility-v1",
+  "timestamp": "2026-11-10T15:48:18.920822+00:00",
+  "parent_snapshot_id": "factory-t100-release-30-v1",
+  "parent_sha256": "014d036669950196fa574658b4dead6b467556141bfe041744ce4e02c4fd320f",
+  "early_times_draft_manifest_sha256": "1545ac4ba518c02dfc8cea8f4a903b9dcc8cbb3f4beba0bbf6c7862522e4923b",
+  "release_status": "candidate_pending_independent_integration_review",
+  "recent2026_source_artifact_sha256": "587cd23c058bad913582514ff08f7fd513447398b6c999cf56a8455d6bc82377"
+ },
+ "events": [
+  {
+   "name": "Big Bang",
+   "locations": [],
+   "figures": [],
+   "categories": [
+    "science"
+   ],
+   "enhanced_description": "The universe began its hot, dense early expansion about 13.8 billion years ago. As it expanded and cooled, the foundations of matter and cosmic structure took shape.",
+   "enhanced_time": "c. 13.8 billion years ago",
+   "confidence": "high",
+   "event_id": "evt_14693f67-4ec3-5e1d-96b3-318224571c4c",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 0
+    },
+    {
+     "artifact_path": "pilots/early-times-v1/opening-v2/events.json",
+     "artifact_sha256": "dd1f1723cae805ac47709861d908eddcebc82dc74b5cf4e0f391381ee0ea3392",
+     "record_index": 0
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing",
+   "sort_years_ago": 13800000000.0,
+   "sort_tiebreak": 1,
+   "temporal": {
+    "display_label": "c. 13.8 billion years ago",
+    "axis": "years_before_present",
+    "elapsed_label": null,
+    "navigation_years_ago": 13800000000.0,
+    "navigation_only": true,
+    "exact_calendar_date": false,
+    "equal_coordinate_tiebreak": 1
+   },
+   "uncertainty": "The earliest state remains an active research subject; this does not assert an observed singularity or an established origin of time.",
+   "location_applicability": "not_applicable_cosmic",
+   "source_urls": [
+    "https://science.nasa.gov/universe/overview/"
+   ]
+  },
+  {
+   "name": "Paleocene–Eocene Thermal Maximum",
+   "locations": [],
+   "figures": [],
+   "categories": [
+    "science"
+   ],
+   "enhanced_description": "Around 56 million years ago, a large release of carbon accompanied rapid global warming. This warm interval lasted roughly 200,000 years and brought major changes to marine and terrestrial ecosystems.",
+   "enhanced_time": "c. 56 million years ago",
+   "confidence": "high",
+   "event_id": "evt_4350d40d-8d28-55c2-945f-989326e83194",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 1
+    },
+    {
+     "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+     "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+     "record_index": 41
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing",
+   "sort_years_ago": 56000000.0,
+   "sort_tiebreak": 41,
+   "sort_anchor_year": 1950,
+   "navigation_only": true,
+   "uncertainty": "Propose correcting legacy approximate55Ma to approximate56Ma, with explicit evidence; do not invent an exact calendar date.",
+   "source_urls": [
+    "https://en.wikipedia.org/w/index.php?oldid=1381901715"
+   ]
+  },
+  {
+   "name": "Mid-Pleistocene Transition",
+   "locations": [],
+   "figures": [],
+   "categories": [
+    "science"
+   ],
+   "enhanced_description": "Between roughly 1.25 and 0.7 million years ago, Earth’s glacial cycles changed from a predominantly 41,000-year rhythm toward longer, more asymmetric cycles averaging about 100,000 years.",
+   "enhanced_time": "c. 1.25–0.7 million years ago",
+   "confidence": "high",
+   "event_id": "evt_ecfb0490-96ee-5d19-8086-cf620e8e96e4",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 2
+    },
+    {
+     "artifact_path": "pilots/early-times-v1/expansion-v1/drafts.json",
+     "artifact_sha256": "77f01c7dcdece5af5577b42515c8fd1fc9422cbc363f7f37df55b8599d43a4ce",
+     "record_index": 42
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing",
+   "sort_years_ago": 1250000.0,
+   "sort_tiebreak": 42,
+   "sort_anchor_year": 1950,
+   "navigation_only": true,
+   "uncertainty": "Preserve interval instead of falsely precise single-year timing; timeline placement is only a navigation proxy.",
+   "source_urls": [
+    "https://en.wikipedia.org/w/index.php?oldid=1378646800"
+   ]
+  },
+  {
+   "name": "birth of the Virgin Mary",
+   "locations": [],
+   "figures": [
+    "Saint Anne"
+   ],
+   "categories": [
+    "religion"
+   ],
+   "enhanced_description": "In Christian tradition, the birth of the Virgin Mary is celebrated as a significant event, marking the beginning of the life of Mary, the mother of Jesus. This event is often attributed to Saint Anne, who is recognized as Mary's mother.",
+   "enhanced_time": "c. 20 BC",
+   "confidence": "medium",
+   "event_id": "evt_17e8bb24-daf2-5b7e-adce-2de66740d7c0",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 3
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "coming of the Virgin Mary to St. James the Great in Zaragoza",
+   "locations": [
+    {
+     "name": "Zaragoza",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_42c0c49c-81d6-5846-9fbb-b289c6f34d3d",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Zaragoza": [
+        41.6521342,
+        -0.8809428
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    },
+    {
+     "name": "Caesaraugusta",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_1bb933a3-3e14-5ddd-87a8-7204057202e3",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "Virgin Mary",
+    "St. James the Great"
+   ],
+   "categories": [
+    "religion"
+   ],
+   "enhanced_description": "The apparition of the Virgin Mary to St. James the Great in Caesaraugusta (modern-day Zaragoza) is a foundational event in Christian tradition, believed to have occurred in 40 AD. This event is commemorated as a significant moment in the spread of Christianity in Hispania.",
+   "enhanced_time": "c. 40 AD",
+   "confidence": "medium",
+   "event_id": "evt_82bbe36f-45af-55a6-a4ab-fc5e0de4b37c",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 4
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Saint Sebastian tended by Saint Irene",
+   "locations": [],
+   "figures": [
+    "Saint Sebastian",
+    "Saint Irene"
+   ],
+   "categories": [
+    "art",
+    "religion"
+   ],
+   "enhanced_description": "The depiction of Saint Sebastian being tended by Saint Irene is a popular subject in Christian art, symbolizing compassion and martyrdom. This scene often illustrates the themes of suffering and healing in the context of faith.",
+   "enhanced_time": "c. 286 AD",
+   "confidence": "medium",
+   "event_id": "evt_671b4e7e-d57d-58d9-bae4-2e3c4427b346",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 5
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Deposition of Romulus Augustulus",
+   "locations": [
+    {
+     "name": "Ravenna",
+     "city": "Ravenna",
+     "region": "Emilia-Romagna",
+     "country": "Italy",
+     "historical_name": "Ravenna",
+     "place_id": "plc_1256f69a-871f-5678-8901-21eb64735b39",
+     "geography": {
+      "status": "reused",
+      "precision": "approximate",
+      "coordinates": [
+       44.364060699999996,
+       12.059009490863945
+      ],
+      "verification": "not_independently_verified",
+      "coordinate_source": {
+       "artifact_path": "history-data/location_cache.json",
+       "artifact_sha256": "a0f72d58e1b3ef604358ed1ec524f20e85418d7980d8d7b2f1b54d727a4cea8b",
+       "cache_key": "Ravenna"
+      }
+     }
+    }
+   ],
+   "figures": [
+    "Romulus Augustulus"
+   ],
+   "categories": [
+    "war",
+    "politics"
+   ],
+   "enhanced_description": "The deposition of Romulus Augustulus in 476 AD marks the end of the Western Roman Empire, as he was overthrown by the Germanic king Odoacer. This event is often cited as a significant turning point in European history, leading to the transition into the Middle Ages.",
+   "enhanced_time": "476 AD",
+   "confidence": "high",
+   "wikipedia_url": "https://en.wikipedia.org/wiki/AD_476",
+   "event_id": "evt_28362780-b54c-5af1-ac44-9a73484db56b",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 6
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "article_reference_status": "year_page_candidate"
+  },
+  {
+   "name": "migration to Abyssinia",
+   "locations": [
+    {
+     "name": "Mecca",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_6986d25a-2f3e-53aa-9217-7d051fb458e8",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Mecca": [
+        21.420847,
+        39.826869
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    },
+    {
+     "name": "Kingdom of Aksum",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_f64bdc39-1a4d-5097-93a1-d372fbb464fe",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "religion"
+   ],
+   "enhanced_description": "The migration to Abyssinia in 613 AD represents a crucial episode in early Islamic history, where a group of Muslims fled persecution in Mecca to seek refuge in the Christian Kingdom of Aksum. This migration is significant for its implications on the early Muslim community and its interactions with Christian powers.",
+   "enhanced_time": "613 AD",
+   "confidence": "high",
+   "event_id": "evt_0efd95ec-6a4b-5342-b452-f3d9b16803e1",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 7
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "The Occultation",
+   "locations": [],
+   "figures": [
+    "12th Imam (Mahdi)"
+   ],
+   "categories": [
+    "religion"
+   ],
+   "enhanced_description": "In Shia Islam, the Occultation refers to the belief that the 12th Imam, known as the Mahdi, was born and has gone into hiding, with the promise of returning to restore justice. This doctrine, which began around 874 AD, remains a central tenet of Twelver Shia belief.",
+   "enhanced_time": "c. 874 AD",
+   "confidence": "medium",
+   "event_id": "evt_aa6c655b-56a8-5800-8606-8d89458d9f92",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 8
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Niu-Li Factional Struggles",
+   "locations": [],
+   "figures": [],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "The Niu-Li factional struggles during the Tang Dynasty represent a period of intense political conflict among powerful clans and factions. These struggles significantly influenced the political landscape of the dynasty and its governance.",
+   "enhanced_time": "c. 900 AD",
+   "confidence": "medium",
+   "event_id": "evt_f96744c9-2e19-5c3a-a6f3-a8f0ca402866",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 9
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Crow Terrace Poetry Trial",
+   "locations": [],
+   "figures": [
+    "Su Shi"
+   ],
+   "categories": [
+    "politics",
+    "culture"
+   ],
+   "enhanced_description": "The Crow Terrace Poetry Trial of 1079 was a significant political event in Song Dynasty China, where the poet Su Shi and others were accused of treason due to their literary works. This trial reflects the intersection of politics and culture in imperial China.",
+   "enhanced_time": "1079 AD",
+   "confidence": "medium",
+   "event_id": "evt_d09aeba0-2378-550d-835e-7b0cf9aad3c2",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 10
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Gümmenenkrieg",
+   "locations": [
+    {
+     "name": "Bern",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_02bcee3b-5aec-5e83-b5c3-2150c46e2bec",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Bern": [
+        46.9484742,
+        7.4521749
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "war"
+   ],
+   "enhanced_description": "The Gümmenenkrieg, fought between the city-states of Bern and Fribourg from 1331 to 1333, was a conflict that highlighted the territorial and political rivalries in medieval Switzerland. This war is notable for its role in shaping local alliances and governance.",
+   "enhanced_time": "1331-1333",
+   "confidence": "high",
+   "event_id": "evt_affb9a52-136b-57af-aff6-46860baeaa27",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 11
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Division of Chemnitz",
+   "locations": [
+    {
+     "name": "Benedictine Abbey",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_689e7e75-efcd-5569-9278-d715b42c33ac",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "The Division of Chemnitz in 1382 marked the fragmentation of the territory governed by the House of Wettin into five parts, leading to significant political changes in the region. This division had lasting implications for the governance and territorial organization in Saxony.",
+   "enhanced_time": "November 21, 1382",
+   "confidence": "medium",
+   "event_id": "evt_128157f6-543a-5ac6-a2d9-80a0cf519674",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 12
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Battle of Grunwald",
+   "locations": [
+    {
+     "name": "Grunwald, Poland",
+     "city": "Grunwald",
+     "region": "Warmian-Masurian Voivodeship",
+     "country": "Poland",
+     "historical_name": "Grunwald",
+     "place_id": "plc_0b92924d-f4d0-5d4d-b7b3-399ca3846e99",
+     "geography": {
+      "status": "reused",
+      "precision": "approximate",
+      "coordinates": [
+       53.4852657,
+       20.0915287
+      ],
+      "verification": "not_independently_verified",
+      "coordinate_source": {
+       "artifact_path": "history-data/location_cache.json",
+       "artifact_sha256": "a0f72d58e1b3ef604358ed1ec524f20e85418d7980d8d7b2f1b54d727a4cea8b",
+       "cache_key": "Grunwald, Poland"
+      }
+     }
+    }
+   ],
+   "figures": [
+    "Teutonic Knights",
+    "Poland",
+    "Lithuania"
+   ],
+   "categories": [
+    "war"
+   ],
+   "enhanced_description": "The Battle of Grunwald, fought on July 24, 1410, was a decisive conflict between the Teutonic Knights and the allied forces of Poland and Lithuania. This battle is considered one of the largest in medieval Europe and marked a turning point in the power dynamics of the region.",
+   "enhanced_time": "July 24, 1410",
+   "confidence": "high",
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Battle_of_Grunwald",
+   "event_id": "evt_251528b5-5086-53de-bfa3-e8e9dc49ae7e",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 13
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "article_reference_status": "unverified_article"
+  },
+  {
+   "name": "Columbus return to La Navidad 1493",
+   "locations": [
+    {
+     "name": "La Navidad",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_c15cd6da-d2eb-5256-bb44-4baa55ec456d",
+     "geography": {
+      "status": "reused",
+      "precision": "approximate",
+      "coordinates": [
+       25.7873045,
+       -99.8532883
+      ],
+      "verification": "not_independently_verified",
+      "coordinate_source": {
+       "artifact_path": "history-data/location_cache.json",
+       "artifact_sha256": "a0f72d58e1b3ef604358ed1ec524f20e85418d7980d8d7b2f1b54d727a4cea8b",
+       "cache_key": "La Navidad"
+      }
+     }
+    }
+   ],
+   "figures": [
+    "Christopher Columbus"
+   ],
+   "categories": [
+    "exploration"
+   ],
+   "enhanced_description": "In December 1493, Christopher Columbus returned to La Navidad, only to find the settlement destroyed and its inhabitants killed. This event underscored the challenges of European colonization in the Americas and the violent encounters that ensued.",
+   "enhanced_time": "December 1, 1493",
+   "confidence": "high",
+   "event_id": "evt_6b0e8bc3-cc1a-5702-a6d1-49c515d4a129",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 14
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "The Portuguese discovery of the sea route to India",
+   "locations": [],
+   "figures": [
+    "Vasco da Gama"
+   ],
+   "categories": [
+    "exploration"
+   ],
+   "enhanced_description": "The discovery of the sea route to India by the Portuguese in 1498, led by Vasco da Gama, marked a significant milestone in the Age of Exploration. This route opened direct trade between Europe and Asia, transforming global commerce and geopolitics.",
+   "enhanced_time": "1498",
+   "confidence": "high",
+   "event_id": "evt_718a2f7a-b669-5ceb-8aa2-0673ec06505f",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 15
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Cortes of Burgos 1515",
+   "locations": [
+    {
+     "name": "Burgos",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_ff42f476-b984-5618-84c7-deadd8bc41ee",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Burgos": [
+        42.343926,
+        -3.696977
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "The Cortes of Burgos in 1515 was an assembly convened to address issues of reform in the Spanish Caribbean territories. This gathering reflected the complexities of governance and colonial administration during the Spanish Empire.",
+   "enhanced_time": "1515",
+   "confidence": "medium",
+   "event_id": "evt_72e24fc9-0508-5402-8aed-f89f4d5f1469",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 16
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Affair of the Placards",
+   "locations": [
+    {
+     "name": "Paris, France",
+     "city": "Paris",
+     "region": "Île-de-France",
+     "country": "France",
+     "historical_name": "France",
+     "place_id": "plc_76c84060-6fd0-5f72-b608-3477ea88b715",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Paris, France": [
+        48.8588897,
+        2.3200410217200766
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "politics",
+    "religion"
+   ],
+   "enhanced_description": "The Affair of the Placards on October 17, 1534, was an anti-Catholic protest in France that involved the posting of placards denouncing the Catholic Mass. This event escalated tensions between Catholics and Protestants, contributing to the French Wars of Religion.",
+   "enhanced_time": "October 17, 1534",
+   "confidence": "high",
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Affair_of_the_Placards",
+   "event_id": "evt_a7e71b11-3ea4-5934-9d26-a6d67691eb4b",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 17
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "article_reference_status": "unverified_article"
+  },
+  {
+   "name": "The Yangjae Station Wall Writing Incident",
+   "locations": [
+    {
+     "name": "Gwacheon",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_35d9f1e8-1755-5d94-b792-d2a9f5e8018f",
+     "geography": {
+      "status": "reused",
+      "precision": "approximate",
+      "coordinates": [
+       37.4289037,
+       126.9881655
+      ],
+      "verification": "not_independently_verified",
+      "coordinate_source": {
+       "artifact_path": "history-data/location_cache.json",
+       "artifact_sha256": "a0f72d58e1b3ef604358ed1ec524f20e85418d7980d8d7b2f1b54d727a4cea8b",
+       "cache_key": "Gwacheon"
+      }
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "The Yangjae Station Wall Writing Incident in 1547 was a political purge in Joseon Korea, where dissenting officials were targeted for their writings. This incident reflects the intense political climate and the suppression of opposition during this period.",
+   "enhanced_time": "1547",
+   "confidence": "medium",
+   "event_id": "evt_d3f21c94-830f-5cf6-b1e4-b144c5019be5",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 18
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "The Medici Wedding of 1589",
+   "locations": [],
+   "figures": [
+    "Ferdinando I de' Medici",
+    "Christine of Lorraine"
+   ],
+   "categories": [
+    "culture"
+   ],
+   "enhanced_description": "The Medici Wedding of 1589 was a grand ceremony celebrating the union of Ferdinando I de' Medici and Christine of Lorraine, showcasing the power and influence of the Medici family in Renaissance Italy. This event was marked by elaborate festivities and political significance.",
+   "enhanced_time": "1589",
+   "confidence": "high",
+   "event_id": "evt_b1e7da5b-a75e-56aa-b14f-c736be0753ba",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 19
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Geonjeo Issue",
+   "locations": [],
+   "figures": [],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "The Geonjeo Issue in 1591 was a political incident in Joseon Korea that involved disputes over governance and authority. This event reflects the complexities of political maneuvering during a time of internal strife.",
+   "enhanced_time": "1591",
+   "confidence": "medium",
+   "event_id": "evt_e202cc21-5f23-5c77-837b-766ca6f97036",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 20
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Åbo Bloodbath",
+   "locations": [
+    {
+     "name": "Turku",
+     "city": "Turku",
+     "region": "Southwest Finland",
+     "country": "Finland",
+     "historical_name": "Åbo",
+     "place_id": "plc_c193777c-4eaf-5f80-ade9-d3c087d0a0ea",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "war",
+    "politics"
+   ],
+   "enhanced_description": "The Åbo Bloodbath on November 20, 1599, was a public execution event in Turku, Finland, where several individuals were executed for their alleged involvement in political conspiracies. This incident highlights the tensions and conflicts of the period.",
+   "enhanced_time": "November 20, 1599",
+   "confidence": "medium",
+   "wikipedia_url": "https://en.wikipedia.org/wiki/%C3%85bo_Bloodbath",
+   "event_id": "evt_45428fac-e96b-508b-afe9-7815951fc858",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 21
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "article_reference_status": "unverified_article"
+  },
+  {
+   "name": "Aix-en-Provence possessions",
+   "locations": [
+    {
+     "name": "Aix-en-Provence",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_6b824476-1834-5b6d-9230-50fcf4e13d26",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Aix-en-Provence": [
+        43.5298424,
+        5.4474738
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "religion"
+   ],
+   "enhanced_description": "The Aix-en-Provence possessions in 1611 were a series of alleged cases of demonic possession that sparked significant public interest and fear in the region. These events reflect the intersection of religion, superstition, and societal response in early modern France.",
+   "enhanced_time": "1611",
+   "confidence": "medium",
+   "event_id": "evt_70de5a6e-0996-5336-a390-172b54eb178d",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 22
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Siege of Salvador",
+   "locations": [
+    {
+     "name": "Salvador",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_3a3877f6-e7f8-5e6f-b9df-c25c15bc8fd3",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [],
+   "categories": [
+    "war"
+   ],
+   "enhanced_description": "The Siege of Salvador in 1638 was a military conflict where Dutch forces attempted to capture the Brazilian city from Portuguese control. This siege was part of the larger struggle for dominance in the Americas during the 17th century.",
+   "enhanced_time": "1638",
+   "confidence": "medium",
+   "event_id": "evt_c9384302-9a94-53e1-8c1f-ad74f58b5e38",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 23
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Great Ejection",
+   "locations": [],
+   "figures": [],
+   "categories": [
+    "religion",
+    "politics"
+   ],
+   "enhanced_description": "The Great Ejection in 1662 followed the Act of Uniformity in England, leading to the expulsion of nonconformist ministers from the Church of England. This event had lasting implications for religious freedom and dissent in England.",
+   "enhanced_time": "1662",
+   "confidence": "high",
+   "event_id": "evt_39f916d0-4ab5-5029-9ee1-b8a01898d288",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 24
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Gisa Hwanguk",
+   "locations": [
+    {
+     "name": "Korea",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_a3f7d4ac-e441-5acb-b64a-86df040963be",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "King Sukjong",
+    "Kim Jwa-geun"
+   ],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "The Gisa Hwanguk was a political purge in Korea that took place in 1689, targeting officials associated with the opposition faction. This event was part of a broader power struggle within the Joseon Dynasty, leading to significant shifts in political alliances.",
+   "enhanced_time": "1689",
+   "confidence": "medium",
+   "event_id": "evt_13c29db8-041d-586e-aa98-70e29b0e3cbf",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 25
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Kangxi Emperor's second Southern inspection tour",
+   "locations": [
+    {
+     "name": "China",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_3c166474-e097-5bde-97c4-9e42f00112d8",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "Kangxi Emperor"
+   ],
+   "categories": [
+    "politics",
+    "exploration"
+   ],
+   "enhanced_description": "In 1689, the Kangxi Emperor undertook his second Southern inspection tour, a significant journey aimed at consolidating imperial authority and assessing the conditions of his southern territories. This tour not only reinforced the emperor's presence but also facilitated administrative reforms and cultural exchanges.",
+   "enhanced_time": "1689",
+   "confidence": "high",
+   "event_id": "evt_52cb8475-f999-502e-8e0d-8d8b8a88aea9",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 26
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Tumult of Thorn",
+   "locations": [
+    {
+     "name": "Toruń",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_796e2739-5bb1-5436-9f53-f17bad58536a",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Toruń": [
+        53.0145361,
+        18.596583144651557
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [
+    "Catholic clergy",
+    "Protestant citizens"
+   ],
+   "categories": [
+    "religion",
+    "politics"
+   ],
+   "enhanced_description": "The Tumult of Thorn, occurring on July 16, 1724, was a violent religious conflict in Royal Prussia that erupted between Catholic and Protestant communities. This event highlighted the tensions of the time and had lasting implications for religious coexistence in the region.",
+   "enhanced_time": "1724-07-16",
+   "confidence": "high",
+   "event_id": "evt_b33c517d-7dec-5b1f-a859-26135d6351d1",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 27
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Ashburnham House fire",
+   "locations": [
+    {
+     "name": "City of Westminster",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_cfc4bae9-7e14-536a-953e-851361ee5402",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "John Ashburnham"
+   ],
+   "categories": [
+    "culture"
+   ],
+   "enhanced_description": "On October 23, 1731, a devastating fire broke out at Ashburnham House in Westminster, resulting in the destruction of a significant collection of books and manuscripts. The incident underscored the vulnerability of cultural heritage to disaster and prompted discussions on fire safety in libraries.",
+   "enhanced_time": "1731-10-23",
+   "confidence": "high",
+   "event_id": "evt_f60b06d9-eff2-5a43-85a1-93bc64f5a35f",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 28
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Paul Revere's Midnight Ride",
+   "locations": [
+    {
+     "name": "Massachusetts",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_584d2208-1839-598b-b97d-97e30458a0d0",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "Paul Revere",
+    "William Dawes"
+   ],
+   "categories": [
+    "politics",
+    "war"
+   ],
+   "enhanced_description": "On the night of April 18, 1775, Paul Revere embarked on his famous midnight ride to alert the American colonial militia of the approaching British forces. This event became a symbol of American patriotism and played a crucial role in the lead-up to the Revolutionary War.",
+   "enhanced_time": "1775-04-18",
+   "confidence": "high",
+   "event_id": "evt_7c5abe2d-dc74-526c-a4a9-a497427f8f3c",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 29
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Cock Lane ghost",
+   "locations": [
+    {
+     "name": "London",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_812c224d-4db8-5d9e-b2db-55c8e28f5586",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "London": [
+        51.5074456,
+        -0.1277653
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [
+    "William Kent",
+    "Elizabeth Parsons"
+   ],
+   "categories": [
+    "culture",
+    "religion"
+   ],
+   "enhanced_description": "In 1762, the Cock Lane ghost became a sensational topic in London, attracting public attention and debate over the existence of spirits. The case involved claims of haunting and led to a trial that questioned the intersection of belief, superstition, and rational inquiry in 18th-century England.",
+   "enhanced_time": "1762",
+   "confidence": "medium",
+   "event_id": "evt_98c4d14d-dae3-5a20-a116-b39869bf5e6a",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 30
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "founding of the first Jewish community in Wales",
+   "locations": [
+    {
+     "name": "Swansea",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_3051b6d3-f68a-5154-af9e-2dd480af0dd0",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "Moses Cohen"
+   ],
+   "categories": [
+    "culture",
+    "religion"
+   ],
+   "enhanced_description": "The establishment of the first Jewish community in Wales in 1768 marked a significant moment in the history of Jewish life in the UK. This community in Swansea laid the groundwork for future Jewish settlement and cultural development in Wales.",
+   "enhanced_time": "1768",
+   "confidence": "medium",
+   "event_id": "evt_529d08ac-f84e-53f7-a0ed-cbd53d501b8d",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 31
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "McColloch's Leap",
+   "locations": [
+    {
+     "name": "Pennsylvania",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_51292599-74f2-5ac2-b280-4a0179ecb07d",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Pennsylvania": [
+        40.9699889,
+        -77.7278831
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [
+    "Captain McColloch"
+   ],
+   "categories": [
+    "war"
+   ],
+   "enhanced_description": "In September 1777, during the American Revolutionary War, Captain McColloch famously leaped from a cliff to escape pursuing British forces, surviving the fall. This extraordinary act became a legendary tale of bravery and resilience among American troops.",
+   "enhanced_time": "1777-09",
+   "confidence": "medium",
+   "event_id": "evt_b7b937e8-4166-57a8-baa7-8fa552edb5b4",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 32
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "death of James Cook",
+   "locations": [
+    {
+     "name": "Hawaii",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_45c7ffde-f01a-5580-93da-bcce597240d4",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Hawaii": [
+        19.593801499999998,
+        -155.42837009716908
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [
+    "James Cook"
+   ],
+   "categories": [
+    "exploration",
+    "war"
+   ],
+   "enhanced_description": "Captain James Cook was killed on February 14, 1779, in Hawaii during a confrontation with Native Hawaiians. His death marked a tragic end to his explorations in the Pacific and had profound implications for European interactions with indigenous peoples.",
+   "enhanced_time": "1779-02-14",
+   "confidence": "high",
+   "event_id": "evt_53917c45-5e24-533f-bddd-edbe8051caaa",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 33
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Westervelt Massacre",
+   "locations": [
+    {
+     "name": "Kentucky",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_a193f352-3410-5a88-ada0-5bfc6e914a58",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "Native Americans",
+    "settlers"
+   ],
+   "categories": [
+    "war"
+   ],
+   "enhanced_description": "The Westervelt Massacre, which occurred on June 27, 1780, involved a violent confrontation between Native Americans and settlers in frontier Kentucky. This event exemplified the ongoing conflicts and tensions between indigenous populations and European settlers during westward expansion.",
+   "enhanced_time": "1780-06-27",
+   "confidence": "medium",
+   "event_id": "evt_30b760c1-e9cb-510a-be24-0cf0873a4353",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 34
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Evacuation Day",
+   "locations": [
+    {
+     "name": "New York City",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_1b4a7d53-b2b5-5787-bff9-60faf80e1a8f",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "New York City": [
+        40.7127281,
+        -74.0060152
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    },
+    {
+     "name": "The Battery",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_36fd706d-b215-5a3e-bb0e-8c054d72b409",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "George Washington"
+   ],
+   "categories": [
+    "politics",
+    "war"
+   ],
+   "enhanced_description": "Evacuation Day, celebrated on November 25, 1783, commemorates the departure of British forces from New York City and George Washington's triumphant return. This event marked a significant turning point in the American Revolutionary War, symbolizing the end of British rule in the colonies.",
+   "enhanced_time": "1783-11-25",
+   "confidence": "high",
+   "event_id": "evt_9813c669-ffa8-5376-9032-d2eeb9d81ce7",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 35
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "George Washington's resignation as commander-in-chief",
+   "locations": [
+    {
+     "name": "Maryland State House",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_e03215c1-4cc6-5f92-b9de-2983e44730d4",
+     "geography": {
+      "status": "reused",
+      "precision": "approximate",
+      "coordinates": [
+       38.9788925,
+       -76.49106867674006
+      ],
+      "verification": "not_independently_verified",
+      "coordinate_source": {
+       "artifact_path": "history-data/location_cache.json",
+       "artifact_sha256": "a0f72d58e1b3ef604358ed1ec524f20e85418d7980d8d7b2f1b54d727a4cea8b",
+       "cache_key": "Maryland State House"
+      }
+     }
+    }
+   ],
+   "figures": [
+    "George Washington"
+   ],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "On December 23, 1783, George Washington formally resigned as commander-in-chief of the Continental Army at the Maryland State House. This act of relinquishing power was unprecedented and established a vital precedent for civilian control of the military in the United States.",
+   "enhanced_time": "1783-12-23",
+   "confidence": "high",
+   "event_id": "evt_2c1e7e6f-7647-5a14-bd99-cdee504139b7",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 36
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "George Washington's reception at Trenton",
+   "locations": [
+    {
+     "name": "Trenton",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_ccd1411c-fd92-50fc-8cf2-e813715a32eb",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "George Washington"
+   ],
+   "categories": [
+    "politics"
+   ],
+   "enhanced_description": "On April 21, 1789, George Washington received a warm welcome in Trenton, New Jersey, as the president-elect. This event was a significant moment in the early history of the United States, reflecting the public's support for Washington as a leader.",
+   "enhanced_time": "1789-04-21",
+   "confidence": "high",
+   "event_id": "evt_66235b51-7686-5ca7-a3b7-e9ec5038b038",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 37
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Women's March on Versailles",
+   "locations": [
+    {
+     "name": "Versailles, Île-de-France, France",
+     "city": "Versailles",
+     "region": "Île-de-France",
+     "country": "France",
+     "historical_name": "Versailles",
+     "place_id": "plc_96c519d5-4c73-51c6-a767-1ccf9eaa9185",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "Market women",
+    "Marie Antoinette"
+   ],
+   "categories": [
+    "culture",
+    "politics"
+   ],
+   "enhanced_description": "On October 6, 1789, the Women's March on Versailles saw thousands of market women march to the palace to demand bread and confront King Louis XVI and Marie Antoinette. This pivotal event in the French Revolution highlighted the growing unrest among the populace and the demand for political reform.",
+   "enhanced_time": "1789-10-06",
+   "confidence": "high",
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Women%27s_March_on_Versailles",
+   "event_id": "evt_f57e7322-4720-5dae-bf93-586f35872b43",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 38
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "article_reference_status": "unverified_article"
+  },
+  {
+   "name": "death of Wolfgang Amadeus Mozart",
+   "locations": [
+    {
+     "name": "Vienna",
+     "city": "",
+     "region": "",
+     "country": "",
+     "historical_name": "",
+     "place_id": "plc_96a67002-9a7a-5f29-bf41-760aa836e994",
+     "geography": {
+      "status": "ambiguous",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified",
+      "candidates": {
+       "Vienna": [
+        48.2083537,
+        16.3725042
+       ]
+      },
+      "reason": "cache_context_conflict"
+     }
+    }
+   ],
+   "figures": [
+    "Wolfgang Amadeus Mozart"
+   ],
+   "categories": [
+    "culture"
+   ],
+   "enhanced_description": "Wolfgang Amadeus Mozart, the prolific Austrian composer, died on December 5, 1791, in Vienna. His death marked the end of an era in classical music, leaving behind a legacy of compositions that continue to influence musicians and composers worldwide.",
+   "enhanced_time": "1791-12-05",
+   "confidence": "high",
+   "event_id": "evt_a122c66c-3a2e-5002-a11b-6a48b706626e",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 39
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "wikipedia_url": "",
+   "article_reference_status": "missing"
+  },
+  {
+   "name": "Military agreement between Granada and Aragon",
+   "locations": [
+    {
+     "name": "Granada",
+     "city": "Granada",
+     "region": "Andalusia",
+     "country": "Spain",
+     "historical_name": "Emirate of Granada",
+     "place_id": "plc_b2193297-c208-5405-a839-167e0bacb2aa",
+     "geography": {
+      "status": "reused",
+      "precision": "approximate",
+      "coordinates": [
+       37.1734995,
+       -3.5995337
+      ],
+      "verification": "not_independently_verified",
+      "coordinate_source": {
+       "artifact_path": "history-data/location_cache.json",
+       "artifact_sha256": "a0f72d58e1b3ef604358ed1ec524f20e85418d7980d8d7b2f1b54d727a4cea8b",
+       "cache_key": "Granada, Andalusia, Spain"
+      }
+     }
+    },
+    {
+     "name": "Aragon",
+     "city": "Zaragoza",
+     "region": "Aragon",
+     "country": "Spain",
+     "historical_name": "Kingdom of Aragon",
+     "place_id": "plc_782ce753-9d2f-5c56-80dd-89918c5d326b",
+     "geography": {
+      "status": "missing",
+      "precision": "unknown",
+      "coordinates": null,
+      "verification": "not_independently_verified"
+     }
+    }
+   ],
+   "figures": [
+    "Muhammad al-Faqih",
+    "Jaime II of Aragon"
+   ],
+   "categories": [
+    "politics",
+    "war"
+   ],
+   "enhanced_description": "In a strategic alliance, the Emirate of Granada, under Muhammad al-Faqih, and the Kingdom of Aragon, ruled by Jaime II the Just, sign a military agreement to combat the Kingdom of Castile. This pact reflects the ongoing conflicts in the Iberian Peninsula during the Reconquista.",
+   "enhanced_time": "1301-09-16",
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Emirate_of_Granada",
+   "confidence": "high",
+   "event_id": "evt_09b386dc-5643-5c7c-b666-773bad0b58ad",
+   "source_refs": [
+    {
+     "artifact_path": "haibalabs.github.io/history/events.json",
+     "artifact_sha256": "96de748d4bf4d07b9204fdfa7404cb88a8e8a991ee963d9fd5a03af20f1c1933",
+     "record_index": 8285
+    }
+   ],
+   "source_lineage": "original_acquisition_unknown",
+   "article_reference_status": "unverified_article"
+  }
+ ]
+}

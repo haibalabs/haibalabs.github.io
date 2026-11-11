@@ -10,6 +10,10 @@ const SAMPLE = JSON.parse(readFileSync(new URL('../fixtures/released-images-samp
 const EVENTS_BYTES = readFileSync(new URL('../../events.json', import.meta.url));
 // the default world dataset the release is bound to: an envelope { metadata, events }
 const CANONICAL_BYTES = readFileSync(new URL('../../canonical-t2.json', import.meta.url));
+// the small files the browser tests load instead (tests/e2e/released-images.spec.js, released-locations.spec.js)
+const SMALL_EVENTS_BYTES = readFileSync(new URL('../fixtures/events-small.json', import.meta.url));
+const SMALL_CANONICAL_BYTES = readFileSync(new URL('../fixtures/canonical-small.json', import.meta.url));
+const SMALL_CANONICAL_IMAGES = JSON.parse(readFileSync(new URL('../fixtures/released-images-canonical-small.json', import.meta.url), 'utf8'));
 
 import { parseKeepingNumbers, recordSha256 } from './fingerprint.js';
 
@@ -82,14 +86,22 @@ describe('reviewed-images-v1.json, the preview fixture', () => {
 describe('released-images-v1.json, the images every visitor sees', () => {
   it('is bound to the default canonical-t2.json, and every record matches its event exactly', () => checkRelease(RELEASE, CANONICAL_BYTES));
   it('the release check accepts the sample cohort and refuses a record whose fingerprint differs', async () => {
-    await checkRelease(SAMPLE, EVENTS_BYTES);
+    await checkRelease(SAMPLE, SMALL_EVENTS_BYTES);
     const altered = structuredClone(SAMPLE);
     altered.records[0].baseline_record_sha256 = '0'.repeat(64);
-    await assert.rejects(checkRelease(altered, EVENTS_BYTES));
+    await assert.rejects(checkRelease(altered, SMALL_EVENTS_BYTES));
+  });
+  it('the small canonical file\'s image record is the repository\'s, moved with its event', async () => {
+    await checkRelease(SMALL_CANONICAL_IMAGES, SMALL_CANONICAL_BYTES);
+    const [moved] = SMALL_CANONICAL_IMAGES.records;
+    const { record_index: _index, ...original } = RELEASE.records.find(r => r.event_name === moved.event_name);
+    const { record_index: _movedIndex, ...kept } = moved;
+    assert.deepEqual(kept, original);
   });
   it('the sample cohort keeps the reviewed display fields of the preview records', () => {
     for (const r of SAMPLE.records) {
-      const reviewed = PREVIEW.records.find(p => p.record_index === r.record_index);
+      // the preview is bound to the full events.json and the sample to a slice of it, so their positions differ
+      const reviewed = PREVIEW.records.find(p => p.event_name === r.event_name);
       for (const field of ['image_url', 'source_url', 'image_role', 'caption', 'credit', 'license_name', 'license_url']) {
         assert.equal(r[field], reviewed[field], `record ${r.record_index} ${field}`);
       }

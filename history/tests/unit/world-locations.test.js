@@ -8,12 +8,14 @@ import { parseKeepingNumbers, recordSha256 } from './fingerprint.js';
 const CANONICAL_BYTES = readFileSync(new URL('../../canonical-t2.json', import.meta.url));
 const RELEASE = JSON.parse(readFileSync(new URL('../../releases/released-locations-v1.json', import.meta.url), 'utf8'));
 const SYNTHETIC = JSON.parse(readFileSync(new URL('../fixtures/released-locations-synthetic.json', import.meta.url), 'utf8'));
+// the synthetic fixture is bound to the small canonical file the browser tests load (released-locations.spec.js)
+const SMALL_CANONICAL_BYTES = readFileSync(new URL('../fixtures/canonical-small.json', import.meta.url));
 
 // The checks every location release must pass against the data file it is bound to, including the
 // record and location fingerprints the browser cannot recompute (it relies on the byte hash instead).
-async function checkLocationRelease(release) {
-  const sha = await sha256Hex(CANONICAL_BYTES);
-  const events = parseKeepingNumbers(CANONICAL_BYTES).events;
+async function checkLocationRelease(release, bytes = CANONICAL_BYTES) {
+  const sha = await sha256Hex(bytes);
+  const events = parseKeepingNumbers(bytes).events;
   assert.equal(locationProblem(release, sha, events.length), null);
   for (const r of release.records) {
     const event = events[r.record_index];
@@ -45,7 +47,7 @@ const change = (index, extra = {}) => ({ record_index: index, event_id: `evt_${i
 
 describe('released-locations-v1.json and the synthetic fixture', () => {
   it('the repository release is bound to the default canonical-t2.json', () => checkLocationRelease(RELEASE));
-  it('the synthetic fixture passes the same checks, fingerprints included', () => checkLocationRelease(SYNTHETIC));
+  it('the synthetic fixture passes the same checks, fingerprints included', () => checkLocationRelease(SYNTHETIC, SMALL_CANONICAL_BYTES));
   it('the synthetic fixture says it is synthetic', () => {
     assert.equal(SYNTHETIC.source.batches[0].batch_id, 'synthetic-test-fixture');
     assert.ok(Object.values(SYNTHETIC.places).every(p => p.verification === 'synthetic_test_fixture'));

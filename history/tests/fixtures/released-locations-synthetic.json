@@ -2,7 +2,7 @@
   "version": 1,
   "kind": "world_location_sidecar",
   "source": {
-    "events_sha256": "12341518cea9543466243fd7fd8deea163e3f243c0dba4266095ec7616fa60b1",
+    "events_sha256": "21a37b06a53f42267c99972f9d7e68c0815a62010fd4920fc8af546135e75062",
     "batches": [
       {
         "batch_id": "synthetic-test-fixture",
@@ -70,7 +70,7 @@
       ]
     },
     {
-      "record_index": 8285,
+      "record_index": 40,
       "event_id": "evt_09b386dc-5643-5c7c-b666-773bad0b58ad",
       "event_name": "Military agreement between Granada and Aragon",
       "enhanced_time": "1301-09-16",

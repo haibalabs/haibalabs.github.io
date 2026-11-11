@@ -1,5 +1,5 @@
 name: Prepare
-description: Node, the site's npm packages and, when asked, Chromium and the Firebase emulators, each restored from the cache when its lock file is unchanged.
+description: Node, the site's npm packages and, when asked, the Firebase emulators and Chromium, each restored from the cache when its lock file is unchanged.
 
 inputs:
   browsers:
@@ -7,6 +7,9 @@ inputs:
     default: 'false'
   firebase:
     description: Install firebase-tools and the emulators, with Java 21
+    default: 'false'
+  emulators:
+    description: Start the Auth, Firestore and Storage emulators in the background, logging to $RUNNER_TEMP/emulators.log
     default: 'false'
 
 runs:
@@ -26,19 +29,6 @@ runs:
       working-directory: ./history
       run: npm ci --no-audit --no-fund
 
-    # The tests run headless, which needs only Chromium's headless shell. The runner image already has its
-    # system libraries, so there is no apt install (--with-deps), which failed whenever Ubuntu's mirror did.
-    - id: browsers
-      if: inputs.browsers == 'true'
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/ms-playwright
-        key: playwright-shell-${{ runner.os }}-${{ hashFiles('history/package-lock.json') }}
-    - if: inputs.browsers == 'true' && steps.browsers.outputs.cache-hit != 'true'
-      shell: bash
-      working-directory: ./history
-      run: npx playwright install chromium --only-shell
-
     - if: inputs.firebase == 'true'
       uses: actions/setup-java@v4
       with:
@@ -57,3 +47,23 @@ runs:
       working-directory: ./history/firebase
       # firebase-tools downloads the Firestore and Storage emulators on first use; fetch them now so they are cached
       run: npm ci --no-audit --no-fund && npx firebase setup:emulators:firestore && npx firebase setup:emulators:storage
+
+    # Started before Chromium is restored, so they boot while the rest of the job gets ready. The test step
+    # waits for "All emulators ready" in the log.
+    - if: inputs.emulators == 'true'
+      shell: bash
+      working-directory: ./history/firebase
+      run: nohup npx firebase emulators:start --only auth,firestore,storage --project demo-historiline > "$RUNNER_TEMP/emulators.log" 2>&1 &
+
+    # The tests run headless, which needs only Chromium's headless shell. The runner image already has its
+    # system libraries, so there is no apt install (--with-deps), which failed whenever Ubuntu's mirror did.
+    - id: browsers
+      if: inputs.browsers == 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-shell-${{ runner.os }}-${{ hashFiles('history/package-lock.json') }}
+    - if: inputs.browsers == 'true' && steps.browsers.outputs.cache-hit != 'true'
+      shell: bash
+      working-directory: ./history
+      run: npx playwright install chromium --only-shell
