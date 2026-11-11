@@ -30,16 +30,17 @@ export const SAMPLE = [
 // the zoom each tier first shows at, and the icon's size on screen
 const MIN_ZOOM = { 1: 0, 2: 5, 3: 9 };
 const SIZE = 44;
-// An icon aims to cover at most MAX_GROUND_METRES of ground: zoomed out it shrinks, and it reaches SIZE only
-// from about zoom 5. MIN_SIZE is a readability floor that wins over the cap at zoom 2 and below, where a
-// 16 px icon covers about 500 km. Below BADGE_SIZE its badge is too small to tap, so it is hidden.
+// An icon never covers more than MAX_GROUND_METRES of ground: zoomed out it shrinks, and it reaches SIZE only
+// from about zoom 5. Where the cap would make it smaller than MIN_SIZE, too small to read, it is hidden: at
+// zoom 2 and below everywhere, and at zoom 3 near the equator. Below BADGE_SIZE its badge is too small to
+// tap, so the badge is hidden.
 const MAX_GROUND_METRES = 250000;
-const MIN_SIZE = 16;
+const MIN_SIZE = 14;
 const BADGE_SIZE = 28;
 const EARTH_CIRCUMFERENCE = 40075016.686;
 const sizeAt = ([lat], zoom) => {
     const metresPerPixel = EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
-    return Math.round(Math.max(MIN_SIZE, Math.min(SIZE, MAX_GROUND_METRES / metresPerPixel)));
+    return Math.floor(Math.min(SIZE, MAX_GROUND_METRES / metresPerPixel));
 };
 // sets a shown icon's size, keeping its base on the landmark's point
 function resize(marker, size) {
@@ -111,8 +112,8 @@ export class LandmarkLayer {
         const order = [...this.entries].sort((a, b) => a.landmark.tier - b.landmark.tier);
         for (const entry of order) {
             const { landmark, marker } = entry;
-            let show = zoom >= (MIN_ZOOM[landmark.tier] ?? MIN_ZOOM[3]);
             const size = sizeAt(landmark.point, zoom);
+            let show = zoom >= (MIN_ZOOM[landmark.tier] ?? MIN_ZOOM[3]) && size >= MIN_SIZE;
             if (show) {
                 const p = this.map.latLngToLayerPoint(landmark.point);
                 const box = { x0: p.x - size / 2, x1: p.x + size / 2, y0: p.y - size, y1: p.y };
