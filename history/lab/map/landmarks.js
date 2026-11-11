@@ -1,22 +1,27 @@
-// Lab test only (T123): landmark icons on the map, before the release serves its landmark table. The lab
-// reads Hermes's approved T121 sample (landmarks/sample.json, 49 landmarks, sha256 3bc59b18), in the
-// served historiline-landmarks/v1 shape. A higher tier shows from a closer zoom, and of two icons that
-// overlap on screen, the higher tier is kept, then the one with more events. Clicking an icon lists its
-// places' events, as a bubble does; its badge opens the first of its links.
+// Lab test only: landmark icons on the map, before the release serves its landmark table. The lab reads
+// the approved rounds in the served historiline-landmarks/v1 shape: round 1 (T121, 49 landmarks, with
+// Iris's T122 icons, sha256 8745375f) and round 2 (T124, 175 landmarks, sha256 7f396431). A higher tier
+// shows from a closer zoom, and of two icons that overlap on screen, the higher tier is kept, then the one
+// with more events. Clicking an icon lists its places' events, as a bubble does; a landmark with no events
+// (no place_ids, or none with events) opens its first link instead. Its badge opens the first link.
 //
-// The sample's icons are null until Iris makes them (T122). The lab draws Iris's five style samples for
-// their landmarks, and a plain lettered marker for the rest, so the whole set's spread can be judged now.
-const SAMPLE_URL = new URL('landmarks/sample.json', import.meta.url).href;
-const STYLE_SAMPLES = { Q12508: 'giza', Q10285: 'colosseum', Q9141: 'taj-mahal', Q39231: 'mount-fuji', Q43473: 'angkor-wat' };
-const iconUrl = landmark => STYLE_SAMPLES[landmark.wikidata_qid]
-    ? new URL(`landmarks/${STYLE_SAMPLES[landmark.wikidata_qid]}.webp`, import.meta.url).href : null;
+// An icon is landmarks/icons/<sha256>.webp. A landmark whose icon isn't made yet (null) gets a plain
+// lettered marker, lab only, so the whole set's spread can be judged now.
+const ROUND_URLS = ['landmarks/round-1.json', 'landmarks/round-2.json'].map(path => new URL(path, import.meta.url).href);
+const iconUrl = landmark => landmark.icon ? new URL(`landmarks/icons/${landmark.icon}.webp`, import.meta.url).href : null;
 
 export async function loadSample() {
-    const response = await fetch(SAMPLE_URL);
-    if (!response.ok) throw new Error(`Could not load the landmark sample (${response.status})`);
-    const { format, landmarks } = await response.json();
-    if (format !== 'historiline-landmarks/v1') throw new Error('The landmark sample is not historiline-landmarks/v1.');
-    return landmarks;
+    const rounds = await Promise.all(ROUND_URLS.map(async url => {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Could not load ${url} (${response.status})`);
+        const { format, landmarks } = await response.json();
+        if (format !== 'historiline-landmarks/v1') throw new Error(`${url} is not historiline-landmarks/v1.`);
+        return landmarks;
+    }));
+    // a landmark is its QID: a later round never repeats an earlier one, but if it did the first is kept
+    const byQid = new Map();
+    for (const landmark of rounds.flat()) if (!byQid.has(landmark.wikidata_qid)) byQid.set(landmark.wikidata_qid, landmark);
+    return [...byQid.values()];
 }
 
 // the zoom each tier first shows at, and the icon's size on screen
@@ -71,12 +76,10 @@ export class LandmarkLayer {
             info.title = info.getAttribute('aria-label');
             L.DomEvent.on(info, 'click', event => {
                 L.DomEvent.stopPropagation(event);
-                // a Wikipedia article opens in the site's own article panel, as a person's name in a card does;
                 // a modified click still opens the link itself
                 if (link.source !== 'wikipedia' || event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
                 event.preventDefault();
-                if (this.browser.fullWindow.full) this.browser.fullWindow.set(false);
-                this.browser.panels.handleInfoClick(link.url, info);
+                this.openLink(link, info);
             });
             content.append(info);
         }
@@ -94,11 +97,24 @@ export class LandmarkLayer {
         for (const placeId of landmark.place_ids) for (const id of index.places.get(placeId) ?? []) ids.add(id);
         return [...ids].sort((a, b) => (index.years.get(a) ?? 0) - (index.years.get(b) ?? 0));
     }
-    // its events in the bubbles' list
+    // A Wikipedia article opens in the site's own article panel, as a person's name in a card does; another
+    // source opens in a new tab.
+    openLink(link, anchor) {
+        if (link.source !== 'wikipedia') {
+            window.open(link.url, '_blank', 'noopener');
+            return;
+        }
+        if (this.browser.fullWindow.full) this.browser.fullWindow.set(false);
+        this.browser.panels.handleInfoClick(link.url, anchor);
+    }
+    // its events in the bubbles' list; with none, its first link
     open(landmark) {
         const ids = this.eventIds(landmark);
         if (ids.length) {
             this.browser.clusters.showList(landmark.point, ids);
+        } else if (landmark.links?.length) {
+            // a failed article disables the element it was opened from, so the marker passes a stand-in
+            this.openLink(landmark.links[0], document.createElement('span'));
         } else {
             const text = Object.assign(document.createElement('p'), { className: 'map-landmark-empty', textContent: `No events at ${landmark.label} yet.` });
             L.popup({ className: 'map-event-popup' }).setLatLng(landmark.point).setContent(text).openOn(this.map);
