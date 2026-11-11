@@ -5,9 +5,9 @@
 // corrections, each placed location then takes its reviewed place by the release rule
 // (world-locations.js), and labels go by place_id (world-labels.js).
 //
-// The browser doesn't hash these files: they are named by their hash and never change, and the factory's
-// observer checks the served bytes against the manifest once per deployment. Loading checks only that
-// every file is the one the manifest lists, by its count and identity.
+// The browser doesn't hash these files: they are named by their hash and never change. The release builder
+// checks them once when it builds the release, and "Make this live" checks the hash-named manifest (world-
+// release.js). Loading checks only that every file is the one the manifest lists, by its count and identity.
 
 import { imagePreview, sha256Hex } from './world-images.js';
 import { placeLocation } from './world-locations.js';
