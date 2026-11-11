@@ -47,7 +47,7 @@ export const VARIANTS = [
     {
         id: 'landmarks',
         label: 'Landmarks (sample)',
-        note: 'Hermes\'s approved 49 landmarks in three zoom tiers. The five with Iris\'s style samples show their icon; the rest a lettered marker until their icons are made. Click one for its events, or its i for Wikipedia.',
+        note: 'Hermes\'s approved 49 landmarks in three zoom tiers. The five with Iris\'s style samples show their icon; the rest a lettered marker until their icons are made. Click one for its events, or its i for its Wikipedia article in the article panel.',
         apply(lab, on) {
             lab.landmarksLoad ??= loadSample().then(landmarks => (lab.landmarks = new LandmarkLayer(lab.browser, landmarks)));
             // the latest switch wins once the sample has loaded
