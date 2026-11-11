@@ -26,17 +26,18 @@ runs:
       working-directory: ./history
       run: npm ci --no-audit --no-fund
 
-    # the runner image already has Chromium's system libraries, so no apt install (--with-deps) is needed
+    # The tests run headless, which needs only Chromium's headless shell. The runner image already has its
+    # system libraries, so there is no apt install (--with-deps), which failed whenever Ubuntu's mirror did.
     - id: browsers
       if: inputs.browsers == 'true'
       uses: actions/cache@v4
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ hashFiles('history/package-lock.json') }}
+        key: playwright-shell-${{ runner.os }}-${{ hashFiles('history/package-lock.json') }}
     - if: inputs.browsers == 'true' && steps.browsers.outputs.cache-hit != 'true'
       shell: bash
       working-directory: ./history
-      run: npx playwright install chromium
+      run: npx playwright install chromium --only-shell
 
     - if: inputs.firebase == 'true'
       uses: actions/setup-java@v4
