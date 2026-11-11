@@ -30,6 +30,3 @@
 .lab-picker select { width: 100%; min-height: 34px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
 .lab-picker small { display: block; margin-top: 4px; color: var(--ink-2); font-size: 12px; }
 
-/* lab only: a landmark whose icon isn't made yet (modules/landmark-layer.js, placeholders) */
-.map-landmark-placeholder { display: grid; place-items: center; width: 70%; height: 70%; margin: 15% auto 0; border-radius: 50%; background: var(--surface); color: var(--ink-2); border: 1.5px dashed var(--ink-2); font: 600 11px/1 var(--font-ui); box-sizing: border-box; cursor: pointer; }
-.map-landmark-small .map-landmark-placeholder { font-size: 0; }
