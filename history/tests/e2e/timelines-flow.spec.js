@@ -233,7 +233,7 @@ async function setEditing(page, on) {
 test('one add button: it asks where only when world history is shown and editing is on', async ({ page }) => {
   await openWorld(page);
   await signIn(page, 'editor@example.test');
-  await createTimeline(page, 'Family history');
+  const id = await createTimeline(page, 'Family history');
   const choice = page.locator('#add-choice');
   // editing off: the button opens the timeline's form at once
   await expect(page.locator('#suggest-event')).toBeHidden();
@@ -256,16 +256,16 @@ test('one add button: it asks where only when world history is shown and editing
   await expect(page.locator('#add-event-modal')).toBeVisible();
   await page.click('#cancel-add');
 
-  // on a phone the menu stays on screen, hanging from the right edge
-  const desktop = page.viewportSize();
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.click('#add-event');
-  const box = await choice.boundingBox();
+  // opened on a phone, signed in with editing on, the button and its menu stay on screen
+  const phone = await page.context().newPage();
+  await phone.setViewportSize({ width: 390, height: 844 });
+  await openWorld(phone, `&timeline=${id}`);
+  await expect(phone.locator('#timeline-pill .timeline-pill-title')).toHaveText('Family history');
+  await phone.click('#add-event');
+  const box = await phone.locator('#add-choice').boundingBox();
   expect(box.x).toBeGreaterThanOrEqual(0);
   expect(box.x + box.width).toBeLessThanOrEqual(390);
-  await page.keyboard.press('Escape');
-  await expect(choice).toBeHidden();
-  await page.setViewportSize(desktop);
+  await phone.close();
 
   // this timeline only: straight to the timeline's form
   await page.click('#timeline-pill-btn');
