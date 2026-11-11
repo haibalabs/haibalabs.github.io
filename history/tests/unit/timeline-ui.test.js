@@ -40,7 +40,8 @@ function ui(store) {
     pill: { hidden: true, querySelector: () => element() },
     menu: { hidden: true, querySelectorAll: () => [] },
     pillButton: { setAttribute() {} },
-    addEventBtn: { style: {} },
+    addEventBtn: { style: {}, setAttribute() {} },
+    addChoice: { hidden: true },
     renderListItem: (timeline) => timeline.id,
   });
   instance.uiManager = {

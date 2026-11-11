@@ -40,7 +40,7 @@
 }
 
 .search-box { flex: 0 1 460px; min-width: 140px; }
-.action-buttons { flex: 1 1 0; display: flex; justify-content: flex-end; gap: 2px; }
+.action-buttons { position: relative; flex: 1 1 0; display: flex; justify-content: flex-end; gap: 2px; }
 
 .filters {
     justify-content: center;

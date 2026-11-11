@@ -146,12 +146,17 @@ export class EditUI {
         await this.refresh(session);
     }
 
+    // With a personal timeline open, its Add event button offers a world suggestion too, so this one hides
+    updateNewEventButton() {
+        this.newEventButton.hidden = !this.editing || Boolean(this.uiManager.timelineUI?.current);
+    }
+
     setEditing(on, { remember = true } = {}) {
         const editing = Boolean(on) && this.canEdit;
         const changed = editing !== this.editing;
         this.editing = editing;
         this.toggle.checked = this.editing;
-        this.newEventButton.hidden = !this.editing;
+        this.updateNewEventButton();
         if (remember) writeEditingPreference(this.editing);
         // re-render only to add or remove the pencils: every sign-in state change lands here,
         // including the first one on page load

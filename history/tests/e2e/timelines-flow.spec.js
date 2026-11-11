@@ -224,6 +224,52 @@ test('personal event text is shown as text, never run as HTML', async ({ page })
   await expect(card(page, 'Picnic').locator('img, b')).toHaveCount(0);
 });
 
+async function setEditing(page, on) {
+  await page.click('#settings-btn');
+  await page.locator('#editing-toggle').setChecked(on);
+  await page.click('.settings-close-btn');
+}
+
+test('one add button: it asks where only when world history is shown and editing is on', async ({ page }) => {
+  await openWorld(page);
+  await signIn(page, 'editor@example.test');
+  await createTimeline(page, 'Family history');
+  const choice = page.locator('#add-choice');
+  // editing off: the button opens the timeline's form at once
+  await expect(page.locator('#suggest-event')).toBeHidden();
+  await page.click('#add-event');
+  await expect(page.locator('#add-event-modal')).toBeVisible();
+  await page.click('#cancel-add');
+
+  // editing on with a timeline open: the world suggestion moves into the same button, which asks
+  await setEditing(page, true);
+  await expect(page.locator('#suggest-event')).toBeHidden();
+  await page.click('#add-event');
+  await expect(choice).toBeVisible();
+  await expect(choice.locator('[data-target="timeline"]')).toHaveText('Add to Family history');
+  await choice.locator('[data-target="world"]').click();
+  await expect(page.locator('#suggest-edit-modal')).toBeVisible();
+  await page.click('#se-cancel');
+  await page.click('#add-event');
+  await choice.locator('[data-target="timeline"]').click();
+  await expect(page.locator('#add-event-modal')).toBeVisible();
+  await page.click('#cancel-add');
+
+  // this timeline only: straight to the timeline's form
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-view="only"]');
+  await page.click('#add-event');
+  await expect(choice).toBeHidden();
+  await expect(page.locator('#add-event-modal')).toBeVisible();
+  await page.click('#cancel-add');
+
+  // closing the timeline brings back the world suggestion button on its own
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-action="close"]');
+  await expect(page.locator('#add-event')).toBeHidden();
+  await expect(page.locator('#suggest-event')).toBeVisible();
+});
+
 // The live site loads the published release (data/manifest.json and its shards), not a single world file.
 const RELEASE = {
   'events/e0.json': { format: 'historiline-events/v1', shard: 'd000', family: 'dated',
