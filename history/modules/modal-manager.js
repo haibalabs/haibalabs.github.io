@@ -146,7 +146,6 @@ export class ModalManager {
     }
 
     setupListeners() {
-        document.getElementById('add-event').addEventListener('click', () => this.open());
 
         document.getElementById('cancel-add').addEventListener('click', () => this.close());
 
