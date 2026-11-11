@@ -1,12 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { AUTH, EMULATORS_RUNNING, PROJECT, createAccount, resetEmulators, signIn } from './emulator.js';
+import { keepMapOffline } from './firebase-stub.js';
 
 // Sign-in against the local Firebase emulators.
 const APP = '/history/index.html?emulator&file=events_sample_small.json';
 
 test.skip(!EMULATORS_RUNNING, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ page, request }) => {
+  await keepMapOffline(page);
   await resetEmulators(request);
 });
 

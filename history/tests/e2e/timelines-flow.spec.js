@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
+import { keepMapOffline } from './firebase-stub.js';
 
 // Personal timelines (PERSONAL-TIMELINES.md), against the local Firebase emulators.
 test.skip(!EMULATORS_RUNNING, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
@@ -40,7 +41,8 @@ async function addEvent(page, name, time) {
   await expect(card(page, name)).toHaveCount(1);
 }
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ page, request }) => {
+  await keepMapOffline(page);
   await resetEmulators(request);
   await createAccount(request, 'editor@example.test', 'editor');
   await createAccount(request, 'viewer@example.test', 'viewer');
