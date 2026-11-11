@@ -30,8 +30,9 @@ export const SAMPLE = [
 // the zoom each tier first shows at, and the icon's size on screen
 const MIN_ZOOM = { 1: 0, 2: 5, 3: 9 };
 const SIZE = 44;
-// An icon never covers more than MAX_GROUND_METRES of ground: zoomed out it shrinks, down to MIN_SIZE, and
-// reaches SIZE only from about zoom 5. Below BADGE_SIZE its badge is too small to tap, so it is hidden.
+// An icon aims to cover at most MAX_GROUND_METRES of ground: zoomed out it shrinks, and it reaches SIZE only
+// from about zoom 5. MIN_SIZE is a readability floor that wins over the cap at zoom 2 and below, where a
+// 16 px icon covers about 500 km. Below BADGE_SIZE its badge is too small to tap, so it is hidden.
 const MAX_GROUND_METRES = 250000;
 const MIN_SIZE = 16;
 const BADGE_SIZE = 28;
