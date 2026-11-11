@@ -390,3 +390,23 @@ test('?lab opens the site with the lab\'s switches, which drive the site\'s own 
   await expect(page).toHaveURL(/lab=off/);
   expect(errors).toEqual([]);
 });
+
+test('lab landmarks: the i badge is white, hidden on small icons, and opens Wikipedia in the article panel', async ({ page, context }) => {
+  await setup(page, '&lab=landmarks');
+  await page.waitForFunction(() => window.lab?.landmarks);
+  const colosseum = page.locator('.map-landmark[title="Colosseum"]');
+  const badge = colosseum.locator('.landmark-info');
+  // zoomed out, the icon is small and its badge is not shown
+  await page.evaluate(() => window.lab.map.setView([41.89, 12.49], 3, { animate: false }));
+  await expect(colosseum).toHaveClass(/map-landmark-small/);
+  expect(await badge.evaluate(node => getComputedStyle(node).display)).toBe('none');
+  // closer, the badge shows, white on blue
+  await page.evaluate(() => window.lab.map.setView([41.89, 12.49], 7, { animate: false }));
+  await expect(colosseum).not.toHaveClass(/map-landmark-small/);
+  expect(await badge.evaluate(node => [getComputedStyle(node).display, getComputedStyle(node).color])).toEqual(['grid', 'rgb(255, 255, 255)']);
+  // it opens the article panel, not a new tab
+  const pages = context.pages().length;
+  await badge.click();
+  await expect(page.locator('#info-panel')).toHaveClass(/open/);
+  expect(context.pages().length).toBe(pages);
+});
