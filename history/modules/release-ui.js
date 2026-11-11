@@ -29,7 +29,7 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
             <span class="staging-status" role="status"></span>
         </div>
         <div class="staging-new" hidden>
-            <span class="staging-new-text" role="status"></span>
+            <span class="staging-new-text" aria-live="polite"></span>
             <button type="button" class="staging-new-toggle" aria-pressed="false" hidden></button>
         </div>`;
     document.body.prepend(banner);
