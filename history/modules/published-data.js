@@ -110,8 +110,8 @@ const LANDMARKS_FORMAT = 'historiline-landmarks/v1';
 /**
  * The release's landmarks (landmark-layer.js), fetched on their own after the timeline has loaded: the table
  * the manifest lists at landmarks/<sha256>.json, and where each icon is, landmark-icons/<sha256>.webp. Only
- * an icon the manifest lists is used; a landmark whose icon isn't listed is given none, so the layer leaves
- * it out. A release with no landmarks gives null.
+ * an icon the manifest lists is used; a landmark whose icon isn't listed is given none, so the layer draws
+ * its placeholder. A release with no landmarks gives null.
  *
  * @param {object} manifest
  * @returns {Promise<{ landmarks: object[], iconUrl: (sha256: string) => string }|null>}

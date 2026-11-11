@@ -49,10 +49,14 @@ test('the release\'s landmarks show with a switch that hides them and is remembe
     await open(page);
     const toggle = page.getByRole('button', { name: 'Landmarks' });
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
-    // at the starting view Rome is in sight and big enough to draw; the landmark whose icon the manifest
-    // doesn't list is left out
-    await expect.poll(() => page.locator('.map-landmark').evaluateAll(nodes => nodes.map(node => node.title))).toContain('Listed Landmark');
-    expect(await page.locator('.map-landmark[title="Unlisted Icon"]').count()).toBe(0);
+    // at the starting world view both world-tier landmarks show; the one whose icon the manifest doesn't list
+    // is drawn as its placeholder, and requests no icon
+    await expect.poll(() => page.locator('.map-landmark').evaluateAll(nodes => nodes.map(node => node.title).sort()))
+        .toEqual(['Listed Landmark', 'Unlisted Icon']);
+    await expect(page.locator('.map-landmark[title="Unlisted Icon"] .map-landmark-placeholder')).toHaveText('U');
+    await expect(page.locator('.map-landmark[title="Unlisted Icon"] img')).toHaveCount(0);
+    // a world-tier landmark keeps a readable size at world zoom
+    expect(Number(await page.locator('.map-landmark[title="Listed Landmark"]').getAttribute('data-size'))).toBeGreaterThanOrEqual(24);
 
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
