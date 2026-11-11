@@ -437,13 +437,16 @@ test('lab label actions: on a phone, Show in timeline closes the map onto the ca
   await expect(page.locator('.map-cluster-spot')).toHaveText('78');
   await expect(page.locator('.event.map-selected')).toHaveCount(0);
 
-  // on a phone the open map covers the timeline: Show in timeline closes it and lands on the card
+  // on a phone the open map covers the timeline: Show in timeline closes it, and an article drawer open
+  // behind it, and lands on the card
   await page.setViewportSize({ width: 390, height: 844 });
+  await page.evaluate(() => { window.lab.panelManager.openInfoPanel(); window.lab.panelManager.bringMapToFront(); });
   await page.locator('.map-cluster-spot').click();
   await page.locator('.map-event-list li button').nth(15).click();
   await expect(label.locator('strong')).toHaveText('Fixture 15');
   await label.getByRole('button', { name: 'Show in timeline' }).click();
   await expect(page.locator('#map-panel')).not.toHaveClass(/open/);
+  await expect(page.locator('#info-panel')).not.toHaveClass(/open/);
   const card = page.locator('.event.map-selected');
   await expect(card).toHaveAttribute('data-event-id', 'evt_15');
   await expect(card).toBeInViewport();

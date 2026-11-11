@@ -229,6 +229,8 @@ export class MapBrowser {
         if (this.fullWindow.full) this.fullWindow.set(false);
         if (this.panels.timelineWrapper.clientWidth === 0) {
             this.ui.relayoutTarget = id;
+            // an open article drawer would otherwise come to the front instead of the timeline
+            if (this.panels.infoPanel.classList.contains('open')) this.panels.closeInfoPanel();
             this.panels.closeMapPanel();
         } else {
             this.ui.scrollToEventId(id);
