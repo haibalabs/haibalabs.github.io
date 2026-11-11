@@ -415,7 +415,7 @@ test('lab landmarks: both rounds load, and a landmark with no events opens its a
   await setup(page, '&lab=landmarks');
   await page.waitForFunction(() => window.lab?.landmarks);
   expect(await page.evaluate(() => window.lab.landmarks.entries.length)).toBe(224);
-  // the fixture's events are elsewhere, so the Dome of the Rock (no place rows) and the Colosseum have none
+  // the fixture's events are elsewhere, so the Colosseum has none here and opens its article like a landmark with no place rows
   await page.evaluate(() => window.lab.map.setView([41.89, 12.49], 7, { animate: false }));
   await page.locator('.map-landmark[title="Colosseum"] img').click();
   await expect(page.locator('#info-panel')).toHaveClass(/open/);
