@@ -126,7 +126,7 @@ async function initializeApp() {
             if (STAGING) {
                 const banner = showStagingBanner({ live, db: eventManager.db, uiManager, staged: { manifestSha256: published.manifestSha256,
                     releaseId: published.manifest.release_id ?? published.manifest.snapshot_id ?? 'unnamed' } });
-                staged = { published, banner };
+                staged = { published, banner, live };
             }
         } else {
             // the released records are kept as loaded, so their checks need no second download
@@ -162,8 +162,13 @@ async function initializeApp() {
                 .then(landmarks => landmarks && uiManager.mapBrowser.showLandmarks(landmarks))
                 .catch(error => console.error('The landmarks could not load:', error));
         }
-        // finding the staged release's new events also waits for the timeline, as it may fetch earlier shards
-        if (staged) staged.banner.showNewEvents(fetchAddedEventIds(staged.published));
+        // The staged release's new events are those the release visitors see now doesn't serve, so a review
+        // covers all that Make this live would add, even when several releases were staged since. Finding them
+        // waits for the timeline, as it may fetch that release's shards.
+        if (staged) {
+            const liveUrl = staged.live ? manifestUrlFor(staged.live.manifest_sha256) : MANIFEST_URL;
+            staged.banner.showNewEvents(fetchAddedEventIds(staged.published, liveUrl));
+        }
         // ?lab opens the map lab (lab/map/), which is loaded only then
         if (params.has('lab') && uiManager.mapBrowser) {
             import('./lab/map/lab.js')

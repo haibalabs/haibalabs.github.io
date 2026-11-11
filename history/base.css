@@ -25,7 +25,11 @@
     --gap: 0px;
     --radius: 12px;
     --ease: cubic-bezier(.2, .8, .2, 1);
-    --panel-width: min(620px, calc(100vw - 420px));
+    /* The map or article panel takes all the width the timeline doesn't need: its column, the period names'
+       gutter on its left (timeline.css) and room for the panel tabs on its right. It is never narrower than
+       620px while the window leaves the timeline 420px. */
+    --panel-room: 64px;
+    --panel-width: max(min(620px, calc(100vw - 420px)), calc(100vw - var(--gutter, 200px) - var(--column) - var(--panel-room)));
 }
 
 @media (max-width: 640px) {
@@ -76,6 +80,11 @@ button { cursor: pointer; }
     max-width: var(--column);
     margin: 0 auto;
     padding: 1.5rem 1rem 4rem;
+}
+/* With a panel open the column keeps the period names' gutter on its left but only the tabs' room on its
+   right, so the panel gets the rest; where the timeline has less width than that, the column is centred. */
+.timeline-wrapper.panel-open .timeline {
+    margin-left: max(0px, (100% - var(--column)) / 2, min(var(--gutter, 200px), 100% - var(--column) - var(--panel-room)));
 }
 #timeline-placeholder { position: relative; width: 100%; min-height: 100%; }
 #timeline-content { position: absolute; top: 1.5rem; left: 1rem; right: 1rem; }
