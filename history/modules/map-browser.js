@@ -97,6 +97,9 @@ export class MapBrowser {
         // outlineFor(point, event) resolves to { geojson, name } or null, and an outline replaces the point's
         // ring. Only the map lab sets it (lab/map/variants.js) until outlines are released.
         this.outlineFor = null;
+        // labelActions: the selected event's label carries "Show in timeline" and ✕ (issue #82). Only the map
+        // lab sets it (lab/map/variants.js) until Rachid picks it.
+        this.labelActions = false;
         this.drawn = 0;
         this.fitOutlineOf = null;
         this.map.on('zoomend', () => this.resizeRings());
@@ -176,10 +179,16 @@ export class MapBrowser {
             if (look.metres || !point.reviewed) {
                 L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: look.options.fillColor, fillOpacity: 1, interactive: false, className: look.className ?? '' }).addTo(this.selection);
             }
-            // the label sits just above the dot or the ring's smallest size
-            marker.bindTooltip(eventLabel(event, point), { direction: 'top', permanent: i === 0, className: 'map-event-label', offset: [0, -(look.options.radius + 2)], opacity: 1 });
-            // a dot leaves full window first, so its card is there to see
+            // the label sits just above the dot or the ring's smallest size; with labelActions, the always-shown
+            // label carries its buttons, and only that one, since a hover label can't be reached to press them
+            const label = eventLabel(event, point);
+            const actions = this.labelActions && i === 0;
+            if (actions) label.append(this.labelButtons(id));
+            marker.bindTooltip(label, { direction: 'top', permanent: i === 0, interactive: actions, className: `map-event-label${actions ? ' map-event-label-actions' : ''}`, offset: [0, -(look.options.radius + 2)], opacity: 1 });
+            // a dot leaves full window first, so its card is there to see; with labelActions it goes to the card
+            // as "Show in timeline" does, closing the map where it covers the timeline
             const select = () => {
+                if (this.labelActions) return this.showInTimeline(id);
                 if (this.fullWindow.full) this.fullWindow.set(false);
                 this.ui.scrollToEventId(id);
             };
@@ -199,6 +208,42 @@ export class MapBrowser {
             }
         }
         this.resizeRings();
+    }
+    labelButtons(id) {
+        const row = element('span', null, 'map-label-buttons');
+        const go = button('Show in timeline', () => this.showInTimeline(id));
+        go.className = 'map-label-go';
+        const close = button('', () => this.clearSelection());
+        close.className = 'map-label-close';
+        close.setAttribute('aria-label', 'Clear the selected event');
+        close.title = 'Clear the selected event';
+        close.innerHTML = '<i class="fa-light fa-xmark" aria-hidden="true"></i>';
+        row.append(go, close);
+        L.DomEvent.disableClickPropagation(row);
+        return row;
+    }
+    // Brings the event's card into view, highlighted, keeping the selection so its "Show on map" comes back
+    // here. Where the map covers the timeline (a phone, or full window) the map closes first, and the
+    // timeline lands on the card once it has its width back.
+    showInTimeline(id) {
+        if (this.fullWindow.full) this.fullWindow.set(false);
+        if (this.panels.timelineWrapper.clientWidth === 0) {
+            this.ui.relayoutTarget = id;
+            this.panels.closeMapPanel();
+        } else {
+            this.ui.scrollToEventId(id);
+        }
+    }
+    // Back to the bubbles at the same place and zoom: the ring, label and stepper go, and the event's own
+    // dot or bubble returns.
+    clearSelection() {
+        this.selectedId = null;
+        this.fitOutlineOf = null;
+        this.selection.clearLayers();
+        this.rings = [];
+        this.clusters.clearStepper();
+        this.clusters.update(this.clusters.events);
+        this.ui.renderEvents();
     }
     // The outline in place of the point's ring: the ring is hidden but stays as the click target and label
     // anchor. A one-place event selected from the timeline is refitted to its outline.
