@@ -69,6 +69,8 @@
     .timeline-pill { grid-column: 1 / -1; justify-self: start; }
     #timeline-pill-btn { max-width: calc(100vw - 24px); }
     .timeline-menu { left: 0; right: auto; }
+    /* the add menu hangs from the action buttons at the right edge, not from the pill */
+    .timeline-menu.add-choice { left: auto; right: 0; }
 }
 
 /* category filters that apply only while a personal timeline is open (People) */

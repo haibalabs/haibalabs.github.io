@@ -251,9 +251,21 @@ test('one add button: it asks where only when world history is shown and editing
   await expect(page.locator('#suggest-edit-modal')).toBeVisible();
   await page.click('#se-cancel');
   await page.click('#add-event');
+  await expect(choice.locator('[data-target="timeline"]')).toBeFocused();
   await choice.locator('[data-target="timeline"]').click();
   await expect(page.locator('#add-event-modal')).toBeVisible();
   await page.click('#cancel-add');
+
+  // on a phone the menu stays on screen, hanging from the right edge
+  const desktop = page.viewportSize();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.click('#add-event');
+  const box = await choice.boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(390);
+  await page.keyboard.press('Escape');
+  await expect(choice).toBeHidden();
+  await page.setViewportSize(desktop);
 
   // this timeline only: straight to the timeline's form
   await page.click('#timeline-pill-btn');

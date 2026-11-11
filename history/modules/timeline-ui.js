@@ -371,6 +371,7 @@ export class TimelineUI {
         }
         this.addChoice.querySelector('.add-choice-title').textContent = this.current?.title ?? 'this timeline';
         this.toggleAddChoice(this.addChoice.hidden);
+        if (!this.addChoice.hidden) this.addChoice.querySelector('button').focus();
     }
 
     toggleAddChoice(open) {
