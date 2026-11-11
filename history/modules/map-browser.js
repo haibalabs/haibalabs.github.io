@@ -129,9 +129,6 @@ export class MapBrowser {
         // outlineFor(point, event) resolves to { geojson, name } or null, and an outline replaces the point's
         // ring. Only the map lab sets it (lab/map/variants.js) until outlines are released.
         this.outlineFor = null;
-        // labelActions: the selected event's label carries "Show in timeline" and ✕ (issue #82). Only the map
-        // lab sets it (lab/map/variants.js) until Rachid picks it.
-        this.labelActions = false;
         this.drawn = 0;
         this.fitOutlineOf = null;
         this.map.on('zoomend', () => this.resizeRings());
@@ -211,19 +208,14 @@ export class MapBrowser {
             if (look.metres || !point.reviewed) {
                 L.circleMarker(point.coordinates, { radius: 3, stroke: false, fillColor: look.options.fillColor, fillOpacity: 1, interactive: false, className: look.className ?? '' }).addTo(this.selection);
             }
-            // the label sits just above the dot or the ring's smallest size; with labelActions, the always-shown
-            // label carries its buttons, and only that one, since a hover label can't be reached to press them
+            // the label sits just above the dot or the ring's smallest size; the always-shown label carries
+            // "Show in timeline" and ✕ (issue #82), and only that one, since a hover label can't be reached to press them
             const label = eventLabel(event, point);
-            const actions = this.labelActions && i === 0;
+            const actions = i === 0;
             if (actions) label.append(this.labelButtons(id));
             marker.bindTooltip(label, { direction: 'top', permanent: i === 0, interactive: actions, className: `map-event-label${actions ? ' map-event-label-actions' : ''}`, offset: [0, -(look.options.radius + 2)], opacity: 1 });
-            // a dot leaves full window first, so its card is there to see; with labelActions it goes to the card
-            // as "Show in timeline" does, closing the map where it covers the timeline
-            const select = () => {
-                if (this.labelActions) return this.showInTimeline(id);
-                if (this.fullWindow.full) this.fullWindow.set(false);
-                this.ui.scrollToEventId(id);
-            };
+            // a dot goes to the card as "Show in timeline" does, closing the map where it covers the timeline
+            const select = () => this.showInTimeline(id);
             marker.on('click', select);
             const dot = marker.getElement();
             dot?.setAttribute('aria-label', `Select ${event.name} in timeline`);
