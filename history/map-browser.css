@@ -81,6 +81,8 @@ button.map-event-list-title:hover strong { text-decoration: underline; }
 .map-landmark img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgb(0 0 0 / .35)); cursor: pointer; transition: transform .12s; }
 .map-landmark:hover img, .map-landmark:focus-visible img { transform: scale(1.12); }
 .map-landmark:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
-.map-landmark-content { width: 100%; height: 100%; }
+/* see-through, so the place names an icon covers can still be read; the one pointed at is solid */
+.map-landmark-content { width: 100%; height: 100%; opacity: .7; transition: opacity .12s; }
+.map-landmark:hover .map-landmark-content, .map-landmark:focus-visible .map-landmark-content { opacity: 1; }
 /* a landmark whose icon isn't made yet: a circle with its initial */
 .map-landmark-placeholder { display: grid; place-items: center; width: 70%; height: 70%; margin: 15% auto 0; overflow: hidden; border-radius: 50%; background: var(--surface); color: var(--ink-2); border: 1.5px dashed var(--ink-2); font: 600 11px/1 var(--font-ui); box-sizing: border-box; cursor: pointer; }

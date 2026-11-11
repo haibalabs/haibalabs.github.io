@@ -93,3 +93,15 @@ test('a landmark opens its bubble above its icon, titled with its name, whose sc
     await expect(page.locator('#info-panel')).toHaveClass(/open/);
     expect(context.pages().length).toBe(pages);
 });
+
+test('landmark icons are see-through, except the one pointed at', async ({ page }) => {
+    await open(page);
+    const content = page.locator('.map-landmark[title="Listed Landmark"] .map-landmark-content');
+    await expect(content).toHaveCSS('opacity', '0.7');
+    // the map can still be settling after the page loads and move the icon from under the pointer, so each
+    // try points at it again
+    await expect.poll(async () => {
+        await content.hover();
+        return content.evaluate(node => getComputedStyle(node).opacity);
+    }).toBe('1');
+});
