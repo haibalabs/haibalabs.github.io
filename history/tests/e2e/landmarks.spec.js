@@ -6,7 +6,7 @@ import { stubFirebase } from './firebase-stub.js';
 // timeline, only icons the manifest lists are drawn, and the map's landmarks switch hides them and is
 // remembered.
 
-const ICONS = new URL('../../lab/map/landmarks/icons/', import.meta.url);
+const ICONS = new URL('../../data/landmark-icons/', import.meta.url);
 const ICON = readdirSync(ICONS).find(name => name.endsWith('.webp')).replace('.webp', '');
 const UNLISTED = 'f'.repeat(64);
 const landmark = (qid, label, point, icon) => ({ wikidata_qid: qid, label, place_ids: [], tier: 1, icon, point,
@@ -64,4 +64,27 @@ test('the release\'s landmarks show with a switch that hides them and is remembe
     await expect(page.getByRole('button', { name: 'Landmarks' })).toHaveAttribute('aria-pressed', 'false');
     await expect(page.locator('.map-landmark')).toHaveCount(0);
     expect(errors).toEqual([]);
+});
+
+test('a landmark opens its bubble above its icon, titled with its name, whose scroll opens Wikipedia in the article panel', async ({ page, context }) => {
+    await open(page);
+    const landmark = page.locator('.map-landmark[title="Listed Landmark"]');
+    // no badge on the icon
+    await expect(landmark.locator('a, button')).toHaveCount(0);
+    await landmark.locator('img').click();
+    // it covers no place rows, so the bubble has its title and a note that there are no events yet
+    const list = page.locator('.map-event-list');
+    const title = list.locator('.map-event-list-title');
+    await expect(title.locator('strong')).toHaveText('Listed Landmark');
+    await expect(title.locator('i.fa-scroll')).toHaveCount(1);
+    await expect(list).toContainText('No events here yet.');
+    // the bubble opens above the icon, leaving it in view
+    const icon = await landmark.boundingBox();
+    const bubble = await page.locator('.map-event-popup').boundingBox();
+    expect(bubble.y + bubble.height).toBeLessThanOrEqual(icon.y + 2);
+    // the title opens the article panel, not a new tab
+    const pages = context.pages().length;
+    await title.click();
+    await expect(page.locator('#info-panel')).toHaveClass(/open/);
+    expect(context.pages().length).toBe(pages);
 });

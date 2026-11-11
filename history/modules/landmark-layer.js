@@ -2,22 +2,19 @@
 // Landmark icons on the map, from a historiline-landmarks/v1 table (the published release's, read by
 // published-data.js; the map lab passes its own rounds). A higher tier shows from a closer zoom, and of two
 // icons that overlap on screen, the higher tier is kept, then the one with more events. Clicking an icon
-// lists its places' events, as a bubble does; a landmark with no events (no place_ids, or none with events)
-// opens its first link instead. Its badge opens the first link.
+// opens its bubble above it: the landmark's name as the list's title, with the scroll icon the cards use for
+// Wikipedia, which opens its first link, then its places' events, or a note that it has none yet.
 //
-// iconUrl(sha256) gives an icon's address. A landmark with no icon is left out, unless placeholders is on
-// (the lab only), which draws a plain lettered marker so a set can be judged before its icons are made.
+// iconUrl(sha256) gives an icon's address. A landmark with no icon yet is left out.
 
 // the zoom each tier first shows at, and the icon's size on screen
 const MIN_ZOOM = { 1: 0, 2: 5, 3: 9 };
 const SIZE = 44;
 // An icon never covers more than MAX_GROUND_METRES of ground: zoomed out it shrinks, and it reaches SIZE only
 // from about zoom 5. Where the cap would make it smaller than MIN_SIZE, too small to read, it is hidden: at
-// zoom 2 and below everywhere, and at zoom 3 near the equator. Below BADGE_SIZE its badge is too small to
-// tap, so the badge is hidden.
+// zoom 2 and below everywhere, and at zoom 3 near the equator.
 const MAX_GROUND_METRES = 250000;
 const MIN_SIZE = 14;
-const BADGE_SIZE = 28;
 const EARTH_CIRCUMFERENCE = 40075016.686;
 const sizeAt = ([lat], zoom) => {
     const metresPerPixel = EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
@@ -29,50 +26,51 @@ function resize(marker, size) {
     if (!node || node.dataset.size === String(size)) return;
     node.dataset.size = size;
     Object.assign(node.style, { width: `${size}px`, height: `${size}px`, marginLeft: `${-size / 2}px`, marginTop: `${-size * (SIZE - 4) / SIZE}px` });
-    node.classList.toggle('map-landmark-small', size < BADGE_SIZE);
 }
 const SOURCE_NAMES = { wikipedia: 'Wikipedia' };
 
 export class LandmarkLayer {
-    constructor(browser, landmarks, { iconUrl, placeholders = false }) {
+    constructor(browser, landmarks, { iconUrl }) {
         this.browser = browser;
         this.map = browser.map;
         this.iconUrl = iconUrl;
         // above the base map, below the selection (overlay pane, 400) and the event bubbles (450)
         if (!this.map.getPane('landmarks')) this.map.createPane('landmarks').style.zIndex = 350;
         this.layer = L.layerGroup();
-        this.entries = landmarks.filter(landmark => landmark.icon || placeholders)
+        this.entries = landmarks.filter(landmark => landmark.icon)
             .map(landmark => ({ landmark, marker: this.marker(landmark), shown: false }));
         this.place = () => this.placeIcons();
     }
     marker(landmark) {
-        const link = landmark.links?.[0];
         const content = document.createElement('div');
         content.className = 'map-landmark-content';
-        if (landmark.icon) {
-            content.append(Object.assign(document.createElement('img'), { src: this.iconUrl(landmark.icon), alt: '', width: SIZE, height: SIZE, draggable: false }));
-        } else {
-            content.append(Object.assign(document.createElement('span'), { className: 'map-landmark-placeholder', textContent: landmark.label[0] }));
-        }
-        if (link) {
-            const info = Object.assign(document.createElement('a'), { className: 'landmark-info', href: link.url, textContent: 'i' });
-            info.setAttribute('aria-label', `About ${landmark.label} on ${SOURCE_NAMES[link.source] ?? link.source}`);
-            info.title = info.getAttribute('aria-label');
-            L.DomEvent.on(info, 'click', event => {
-                L.DomEvent.stopPropagation(event);
-                // a modified click still opens the link itself
-                if (link.source !== 'wikipedia' || event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
-                event.preventDefault();
-                this.openLink(link, info);
-            });
-            content.append(info);
-        }
+        content.append(Object.assign(document.createElement('img'), { src: this.iconUrl(landmark.icon), alt: '', width: SIZE, height: SIZE, draggable: false }));
         const marker = L.marker(landmark.point, {
             pane: 'landmarks', title: landmark.label, alt: landmark.label, keyboard: true,
             icon: L.divIcon({ className: 'map-landmark', html: content, iconSize: [SIZE, SIZE], iconAnchor: [SIZE / 2, SIZE - 4] }),
         });
-        marker.on('click', () => this.open(landmark));
+        marker.on('click', () => this.open(landmark, marker));
         return marker;
+    }
+    // The bubble's title: the landmark's name with the scroll icon the cards use for Wikipedia, opening its
+    // first link; without a link, just the name.
+    title(landmark) {
+        const link = landmark.links?.[0];
+        const name = Object.assign(document.createElement('strong'), { textContent: landmark.label });
+        if (!link) {
+            const heading = Object.assign(document.createElement('p'), { className: 'map-event-list-title' });
+            heading.append(name);
+            return heading;
+        }
+        const heading = Object.assign(document.createElement('button'), { type: 'button', className: 'map-event-list-title' });
+        heading.setAttribute('aria-label', `${landmark.label}: read about it on ${SOURCE_NAMES[link.source] ?? link.source}`);
+        heading.title = heading.getAttribute('aria-label');
+        const icon = Object.assign(document.createElement('i'), { className: 'fa-light fa-scroll' });
+        icon.setAttribute('aria-hidden', 'true');
+        heading.append(name, icon);
+        // a failed article disables the element it was opened from, so the title passes a stand-in
+        heading.addEventListener('click', () => this.openLink(link, document.createElement('span')));
+        return heading;
     }
     // the events at the landmark's places, earliest first
     eventIds(landmark) {
@@ -91,18 +89,11 @@ export class LandmarkLayer {
         if (this.browser.fullWindow.full) this.browser.fullWindow.set(false);
         this.browser.panels.handleInfoClick(link.url, anchor);
     }
-    // its events in the bubbles' list; with none, its first link
-    open(landmark) {
-        const ids = this.eventIds(landmark);
-        if (ids.length) {
-            this.browser.clusters.showList(landmark.point, ids);
-        } else if (landmark.links?.length) {
-            // a failed article disables the element it was opened from, so the marker passes a stand-in
-            this.openLink(landmark.links[0], document.createElement('span'));
-        } else {
-            const text = Object.assign(document.createElement('p'), { className: 'map-landmark-empty', textContent: `No events at ${landmark.label} yet.` });
-            L.popup({ className: 'map-event-popup' }).setLatLng(landmark.point).setContent(text).openOn(this.map);
-        }
+    // Its bubble, in the bubbles' list: titled with its name, opened above the icon so the icon stays in view.
+    open(landmark, marker) {
+        const height = Number(marker.getElement()?.dataset.size) || SIZE;
+        this.browser.clusters.showList(landmark.point, this.eventIds(landmark), null, null,
+            { title: () => this.title(landmark), offset: [0, 4 - height] });
     }
     show(on) {
         if (on) {
