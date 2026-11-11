@@ -261,6 +261,14 @@ test('one add button: it asks where only when world history is shown and editing
   await phone.setViewportSize({ width: 390, height: 844 });
   await openWorld(phone, `&timeline=${id}`);
   await expect(phone.locator('#timeline-pill .timeline-pill-title')).toHaveText('Family history');
+  // DIAGNOSTIC, removed before review: where the header's parts sit at phone width for a signed-in editor
+  console.log('PHONE-HEADER', JSON.stringify(await phone.evaluate(() => {
+    const header = document.querySelector('.header');
+    const parts = [...header.querySelectorAll('.bar > *, .bar > .action-buttons > *, .filters, .header > *:not(.bar)')]
+      .filter(node => node.offsetParent !== null)
+      .map(node => { const r = node.getBoundingClientRect(); return `${node.id || node.className}:${Math.round(r.left)}-${Math.round(r.right)}@${Math.round(r.top)}`; });
+    return { columns: getComputedStyle(header).gridTemplateColumns, header: header.getBoundingClientRect().width, parts };
+  })));
   await phone.click('#add-event');
   const box = await phone.locator('#add-choice').boundingBox();
   expect(box.x).toBeGreaterThanOrEqual(0);
