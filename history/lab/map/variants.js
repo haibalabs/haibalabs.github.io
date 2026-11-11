@@ -31,6 +31,21 @@ export const VARIANTS = [
         },
     },
     {
+        id: 'landmark-opacity',
+        label: 'Landmark icons',
+        note: 'See-through, so the map\'s place names show through an icon on top of them. The icon you point at, or move to with the keyboard, is solid.',
+        choices: [
+            { id: '85', label: '85% opaque', note: 'Almost solid.' },
+            { id: '70', label: '70% opaque', note: 'Names under an icon can be read.' },
+        ],
+        defaultLabel: 'Solid, as on the site',
+        apply(lab, value) {
+            const map = lab.browser.map.getContainer();
+            if (value) map.style.setProperty('--landmark-opacity', String(Number(value) / 100));
+            else map.style.removeProperty('--landmark-opacity');
+        },
+    },
+    {
         id: 'outlines',
         label: 'Outlines (live test)',
         note: 'Looks the selected place up in OpenStreetMap’s place search and draws today’s outline in place of its ring. A test of the look only: Hermes is building the outlines the site will use.',
