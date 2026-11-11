@@ -29,6 +29,20 @@ async function setup(page, query = '') {
   await expect.poll(() => page.locator('#map-panel').evaluate(el => getComputedStyle(el).right)).toBe('0px');
   await expect(page.getByRole('button', { name: 'Filter by visible area', exact: true })).toBeVisible();
 }
+test('an open map takes the width the timeline column and its period names do not need', async ({ page }) => {
+  await page.setViewportSize({ width: 1700, height: 900 });
+  await setup(page);
+  const layout = () => page.evaluate(() => {
+    const column = document.getElementById('timeline').getBoundingClientRect();
+    const panel = document.getElementById('map-panel').getBoundingClientRect();
+    return { columnLeft: Math.round(column.left), gap: Math.round(panel.left - column.right), panel: Math.round(panel.width) };
+  });
+  // 1700 less the 200px period names, the 680px column and 64px for the panel tabs
+  await expect.poll(layout).toEqual({ columnLeft: 200, gap: 64, panel: 756 });
+  // a narrower window keeps the 620px panel and centres the column
+  await page.setViewportSize({ width: 1400, height: 900 });
+  await expect.poll(layout).toEqual({ columnLeft: 50, gap: 50, panel: 620 });
+});
 test('map stays empty until selection and keeps only that event through pan, zoom and area filtering', async ({ page }) => {
   const errors = []; let geocodes = 0;
   page.on('pageerror', error => errors.push(error.message));

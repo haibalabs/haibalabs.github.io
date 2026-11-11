@@ -12,7 +12,7 @@ const events = (count) => `${count} event${count === 1 ? '' : 's'}`;
  * Shows the banner at the top of the staging page.
  *
  * @param {{ staged: { manifestSha256: string, releaseId: string }, live: object|null, db: object, uiManager: object }} options
- * @returns {{ showNewEvents: (found: Promise<{ added: Set<string>, previousReleaseId: string }|null>) => Promise<void> }}
+ * @returns {{ showNewEvents: (found: Promise<{ added: Set<string>, baselineReleaseId: string }>) => Promise<void> }}
  */
 export function showStagingBanner({ staged, live, db, uiManager }) {
     const banner = document.createElement('div');
@@ -85,7 +85,7 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
     if (uiManager.account) onAccount(uiManager.account.user, uiManager.account.role);
     render();
 
-    // The events the previewed release adds to the one it was built on (published-data.js
+    // The events the previewed release adds to the release visitors see now (published-data.js
     // fetchAddedEventIds), found once per page load. The count is of those the visibility rules show;
     // low-confidence ones stay hidden. Until they are found, or when they can't be, the line says so and
     // offers no filter, so the page never presents every event as new.
@@ -94,7 +94,7 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
     const toggle = banner.querySelector('.staging-new-toggle');
     const showNewEvents = async (found) => {
         newRow.hidden = false;
-        newText.textContent = 'Finding the events new in this release…';
+        newText.textContent = 'Finding the events new since the live release…';
         let changes;
         try {
             changes = await found;
@@ -103,24 +103,20 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
             newText.textContent = `New events can't be shown: ${error.message}`;
             return;
         }
-        if (!changes) {
-            newText.textContent = 'New events can\'t be shown: this release names no release it was built on.';
-            return;
-        }
         const { eventManager } = uiManager;
         const added = eventManager.events.filter(event => !event.personal && changes.added.has(event.event_id));
         const shown = added.filter(event => eventManager.isVisibleEvent(event)).length;
         const hidden = added.length - shown;
         const hiddenText = hidden ? ` (${hidden} more hidden as low confidence)` : '';
-        newRow.title = `Events in release ${staged.releaseId} that are not in release ${changes.previousReleaseId}, the release it was built on.`;
+        newRow.title = `Events in release ${staged.releaseId} that are not in release ${changes.baselineReleaseId}, which visitors see now.`;
         let only = false;
         const renderNew = () => {
             if (!shown) {
-                newText.textContent = `No events are new in this release${hiddenText}.`;
+                newText.textContent = `No events are new since the live release${hiddenText}.`;
                 return;
             }
-            newText.textContent = only ? `Showing only the ${events(shown)} new in this release${hiddenText}.`
-                : `New in this release: ${events(shown)}${hiddenText}.`;
+            newText.textContent = only ? `Showing only the ${events(shown)} new since the live release${hiddenText}.`
+                : `New since the live release: ${events(shown)}${hiddenText}.`;
             toggle.textContent = only ? 'Show all events' : 'Show only these';
             toggle.setAttribute('aria-pressed', String(only));
             toggle.hidden = false;

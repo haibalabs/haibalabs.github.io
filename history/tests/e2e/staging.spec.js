@@ -6,14 +6,19 @@ import { firebaseStub } from './firebase-stub.js';
 
 const WRITES = ['setDoc', 'updateDoc', 'deleteDoc', 'runTransaction', 'writeBatch', 'uploadBytes', 'deleteObject'];
 
-// The stub, with every write function counting its calls instead of doing nothing.
+// The stub, with every write function counting its calls instead of doing nothing, and the live release
+// document (world-release.js) read from globalThis.__liveRelease.
 const countingStub = WRITES.reduce((source, name) => source.replace(
     new RegExp(`export const ${name} = [^\\n]*`),
     name === 'writeBatch'
         ? 'export const writeBatch = () => { globalThis.__firebaseWrites = (globalThis.__firebaseWrites ?? 0) + 1; return { delete: () => {}, commit: async () => {} }; };'
         : `export const ${name} = async () => { globalThis.__firebaseWrites = (globalThis.__firebaseWrites ?? 0) + 1; return {}; };`,
 ), firebaseStub).replace('export const getAuth = () => ({ currentUser: null });',
-    'export const getAuth = () => ({ currentUser: { uid: \'u1\', email: \'editor@example.test\' } });');
+    'export const getAuth = () => ({ currentUser: { uid: \'u1\', email: \'editor@example.test\' } });')
+    .replace('export const doc = () => ({});', 'export const doc = (db, ...path) => ({ path: path.join(\'/\') });')
+    .replace('export const getDoc = async () => ({ exists: () => false, data: () => undefined });',
+        'export const getDoc = async (ref) => { const data = ref.path === \'world_release/current\' ? globalThis.__liveRelease : undefined; '
+        + 'return { exists: () => data !== undefined, data: () => data }; };');
 
 const legacy = (status, coordinates) => ({ status, coordinates, precision: 'approximate', verification: 'not_independently_verified' });
 const event = (id, name, time, extra = {}) => ({ event_id: id, event_version: `v_${id}`, name, enhanced_time: time,
@@ -42,8 +47,10 @@ const MANIFEST = { format: 'historiline-manifest/v1', created_at: '2026-11-10T12
     shards: [{ id: 'd000', count: 1, sha256: 'e0' }, { id: 'd001', count: 1, sha256: 'e1' }],
     places: { buckets: 64, files: [{ bucket: 0, count: 3, sha256: 'p0' }] }, corrections: { sha256: 'c0' } };
 
-// files: more release files by path, such as a manifest-next.json and the release it was built on
-async function openStaging(page, files = {}) {
+// files: more release files by path, such as a manifest-next.json and the live release's manifest
+// live: the live release document, if one is named
+async function openStaging(page, files = {}, { live = null } = {}) {
+    await page.addInitScript(live => { globalThis.__liveRelease = live ?? undefined; }, live);
     await page.route('https://www.gstatic.com/firebasejs/**', route => route.fulfill({ contentType: 'text/javascript', body: countingStub }));
     await page.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/, r => r.abort());
     const requests = [];
@@ -84,25 +91,26 @@ test('the staging site shows the published release, read-only, with its banner',
     await expect(page.locator('#suggest-event')).toBeHidden();
     // the manifest is revalidated on every visit; the hash-named files are not
     expect(requests.find(r => r.path.endsWith('/manifest.json'))).toBeTruthy();
-    // a release that names no release it was built on says so and offers no new-events filter
-    await expect(banner.locator('.staging-new')).toHaveText('New events can\'t be shown: this release names no release it was built on.');
+    // with no release named live, visitors see the committed one, which this page also shows: nothing is new
+    await expect(banner.locator('.staging-new')).toHaveText('No events are new since the live release.');
     await expect(banner.locator('.staging-new-toggle')).toBeHidden();
 });
 
 test('the staging banner says when the new events cannot be found, and offers no filter', async ({ page }) => {
-    // the release it was built on isn't served
-    await openStaging(page, { 'manifest-next.json': { ...MANIFEST, previous_manifest: 'b'.repeat(64) } });
+    // the live release's manifest isn't served
+    await openStaging(page, { 'manifest-next.json': MANIFEST },
+        { live: { version: 1, manifest_sha256: 'b'.repeat(64), release_id: 'release-gone' } });
     const line = page.locator('#staging-banner .staging-new');
     await expect(line).toContainText('New events can\'t be shown: Could not load');
     await expect(line.getByRole('button')).toBeHidden();
     await expect(page.locator('#timeline-content .event')).toHaveCount(2);
 });
 
-test('the staging banner shows only the events new against the release it was built on, and all again', async ({ page }) => {
-    const PARENT = 'a'.repeat(64);
+test('the staging banner shows only the events new against the live release, and all again', async ({ page }) => {
+    const LIVE = 'a'.repeat(64);
     const files = {
-        // the earlier release shares shard e0 by hash and serves evt_second in a shard the staged one replaced
-        [`manifests/${PARENT}.json`]: { ...MANIFEST, release_id: 'release-earlier',
+        // the live release shares shard e0 by hash and serves evt_second in a shard the staged one replaced
+        [`manifests/${LIVE}.json`]: { ...MANIFEST, release_id: 'release-earlier',
             shards: [{ id: 'd000', count: 1, sha256: 'e0' }, { id: 'd001', count: 1, sha256: 'old1' }] },
         'events/old1.json': { format: 'historiline-events/v1', shard: 'd001', family: 'dated',
             events: [event('evt_second', 'Second staged event, as it was', '1600')] },
@@ -111,19 +119,20 @@ test('the staging banner shows only the events new against the release it was bu
             event('evt_new', 'New staged event', '1650'),
             event('evt_new_low', 'New low-confidence event', '1660', { confidence: 'low', visible: false }),
         ] },
-        'manifest-next.json': { ...MANIFEST, release_id: 'release-next', previous_manifest: PARENT,
+        // built on another staged release, which isn't served: the comparison is with the live one
+        'manifest-next.json': { ...MANIFEST, release_id: 'release-next', previous_manifest: 'c'.repeat(64),
             shards: [{ id: 'd000', count: 1, sha256: 'e0' }, { id: 'd001', count: 3, sha256: 'new1' }] },
     };
-    const requests = await openStaging(page, files);
+    const requests = await openStaging(page, files, { live: { version: 3, manifest_sha256: LIVE, release_id: 'release-earlier' } });
     const line = page.locator('#staging-banner .staging-new');
     const toggle = line.getByRole('button');
-    await expect(line).toContainText('New in this release: 1 event (1 more hidden as low confidence).');
-    await expect(line).toHaveAttribute('title', 'Events in release release-next that are not in release release-earlier, the release it was built on.');
+    await expect(line).toContainText('New since the live release: 1 event (1 more hidden as low confidence).');
+    await expect(line).toHaveAttribute('title', 'Events in release release-next that are not in release release-earlier, which visitors see now.');
     const shown = () => page.locator('#timeline-content .event').evaluateAll(cards => cards.map(card => card.dataset.eventId));
     await expect.poll(shown).toEqual(['evt_first', 'evt_second', 'evt_new']);
 
     await toggle.click();
-    await expect(line).toContainText('Showing only the 1 event new in this release (1 more hidden as low confidence).');
+    await expect(line).toContainText('Showing only the 1 event new since the live release (1 more hidden as low confidence).');
     await expect(toggle).toHaveText('Show all events');
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect.poll(shown).toEqual(['evt_new']);
@@ -132,7 +141,7 @@ test('the staging banner shows only the events new against the release it was bu
     await toggle.click();
     await expect(toggle).toHaveText('Show only these');
     await expect.poll(shown).toEqual(['evt_first', 'evt_second', 'evt_new']);
-    // of the earlier release only its manifest and the shard the staged one doesn't share were fetched
+    // of the live release only its manifest and the shard the staged one doesn't share were fetched
     const fetched = requests.map(r => r.path.replace('/history/data/', ''));
     expect(fetched.filter(path => path === 'events/e0.json')).toHaveLength(1);
     expect(fetched).toContain('events/old1.json');

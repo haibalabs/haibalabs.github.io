@@ -76,33 +76,31 @@ export async function fetchPublished(manifestUrl = MANIFEST_URL) {
 }
 
 /**
- * The events a release adds to the release it was built on, which its manifest names as previous_manifest:
- * the IDs it serves that the earlier release doesn't. A release that names none gives null. Of the earlier
- * release only the manifest and the shards this one doesn't also list are fetched, since a shard both list
- * by the same hash holds the same events.
+ * The events a release adds to another release, such as the live one: the IDs it serves that the other
+ * doesn't. Of the other release only the manifest and the shards this one doesn't also list are fetched,
+ * since a shard both list by the same hash holds the same events.
  *
  * @param {{ manifest: object, shards: object[] }} published - a fetched release (fetchPublished)
- * @returns {Promise<{ added: Set<string>, previousReleaseId: string }|null>}
+ * @param {string} baselineUrl - the other release's manifest
+ * @returns {Promise<{ added: Set<string>, baselineReleaseId: string }>}
  */
-export async function fetchAddedEventIds({ manifest, shards }) {
-    const previous = manifest.previous_manifest;
-    if (!/^[0-9a-f]{64}$/.test(previous ?? '')) return null;
-    const earlier = await fetchJson(manifestUrlFor(previous));
-    if (earlier?.format !== MANIFEST_FORMAT) throw new Error('The release this one was built on is not a version 1 published release.');
+export async function fetchAddedEventIds({ manifest, shards }, baselineUrl) {
+    const baseline = await fetchJson(baselineUrl, { cache: 'no-cache' });
+    if (baseline?.format !== MANIFEST_FORMAT) throw new Error('The release to compare with is not a version 1 published release.');
     const listed = new Set(manifest.shards.map(entry => entry.sha256));
-    const shared = new Set(earlier.shards.map(entry => entry.sha256).filter(sha256 => listed.has(sha256)));
-    const earlierIds = new Set();
-    for (const shard of await fetchShards(earlier.shards.filter(entry => !listed.has(entry.sha256)))) {
-        for (const event of shard.events) earlierIds.add(event.event_id);
+    const shared = new Set(baseline.shards.map(entry => entry.sha256).filter(sha256 => listed.has(sha256)));
+    const baselineIds = new Set();
+    for (const shard of await fetchShards(baseline.shards.filter(entry => !listed.has(entry.sha256)))) {
+        for (const event of shard.events) baselineIds.add(event.event_id);
     }
     manifest.shards.forEach((entry, i) => {
-        if (shared.has(entry.sha256)) shards[i].events.forEach(event => earlierIds.add(event.event_id));
+        if (shared.has(entry.sha256)) shards[i].events.forEach(event => baselineIds.add(event.event_id));
     });
     const added = new Set();
     manifest.shards.forEach((entry, i) => {
-        if (!shared.has(entry.sha256)) shards[i].events.forEach(event => earlierIds.has(event.event_id) || added.add(event.event_id));
+        if (!shared.has(entry.sha256)) shards[i].events.forEach(event => baselineIds.has(event.event_id) || added.add(event.event_id));
     });
-    return { added, previousReleaseId: earlier.release_id ?? earlier.snapshot_id ?? previous.slice(0, 12) };
+    return { added, baselineReleaseId: baseline.release_id ?? baseline.snapshot_id ?? 'unnamed' };
 }
 
 const LANDMARKS_FORMAT = 'historiline-landmarks/v1';
