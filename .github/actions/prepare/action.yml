@@ -1,0 +1,58 @@
+name: Prepare
+description: Node, the site's npm packages and, when asked, Chromium and the Firebase emulators, each restored from the cache when its lock file is unchanged.
+
+inputs:
+  browsers:
+    description: Install Chromium for the browser tests
+    default: 'false'
+  firebase:
+    description: Install firebase-tools and the emulators, with Java 21
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - id: modules
+      uses: actions/cache@v4
+      with:
+        path: history/node_modules
+        key: modules-${{ runner.os }}-node20-${{ hashFiles('history/package-lock.json') }}
+    - if: steps.modules.outputs.cache-hit != 'true'
+      shell: bash
+      working-directory: ./history
+      run: npm ci --no-audit --no-fund
+
+    # the runner image already has Chromium's system libraries, so no apt install (--with-deps) is needed
+    - id: browsers
+      if: inputs.browsers == 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ hashFiles('history/package-lock.json') }}
+    - if: inputs.browsers == 'true' && steps.browsers.outputs.cache-hit != 'true'
+      shell: bash
+      working-directory: ./history
+      run: npx playwright install chromium
+
+    - if: inputs.firebase == 'true'
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+    - id: firebase
+      if: inputs.firebase == 'true'
+      uses: actions/cache@v4
+      with:
+        path: |
+          history/firebase/node_modules
+          ~/.cache/firebase/emulators
+        key: firebase-${{ runner.os }}-node20-${{ hashFiles('history/firebase/package-lock.json') }}
+    - if: inputs.firebase == 'true' && steps.firebase.outputs.cache-hit != 'true'
+      shell: bash
+      working-directory: ./history/firebase
+      # firebase-tools downloads the Firestore and Storage emulators on first use; fetch them now so they are cached
+      run: npm ci --no-audit --no-fund && npx firebase setup:emulators:firestore && npx firebase setup:emulators:storage
