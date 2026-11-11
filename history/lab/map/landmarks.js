@@ -1,31 +1,23 @@
-// Lab test only (T123): landmark icons on the map, before the release serves its landmark table (T121).
-// The five landmarks below are Iris's style samples (T122), with the place rows each one covers in the
-// current release. A higher tier shows from a closer zoom, and of two icons that overlap on screen, the
-// higher tier (then the earlier in the list) is kept. Clicking an icon lists its places' events, as a
-// bubble does; its badge opens the first of its links.
+// Lab test only (T123): landmark icons on the map, before the release serves its landmark table. The lab
+// reads Hermes's approved T121 sample (landmarks/sample.json, 49 landmarks, sha256 3bc59b18), in the
+// served historiline-landmarks/v1 shape. A higher tier shows from a closer zoom, and of two icons that
+// overlap on screen, the higher tier is kept, then the one with more events. Clicking an icon lists its
+// places' events, as a bubble does; its badge opens the first of its links.
+//
+// The sample's icons are null until Iris makes them (T122). The lab draws Iris's five style samples for
+// their landmarks, and a plain lettered marker for the rest, so the whole set's spread can be judged now.
+const SAMPLE_URL = new URL('landmarks/sample.json', import.meta.url).href;
+const STYLE_SAMPLES = { Q12508: 'giza', Q10285: 'colosseum', Q9141: 'taj-mahal', Q39231: 'mount-fuji', Q43473: 'angkor-wat' };
+const iconUrl = landmark => STYLE_SAMPLES[landmark.wikidata_qid]
+    ? new URL(`landmarks/${STYLE_SAMPLES[landmark.wikidata_qid]}.webp`, import.meta.url).href : null;
 
-const icon = name => new URL(`landmarks/${name}.webp`, import.meta.url).href;
-
-export const SAMPLE = [
-    { wikidata: 'Q37200', name: 'Great Pyramid of Giza', point: [29.9792, 31.1342], tier: 1, icon: icon('giza'),
-        links: [{ source: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Great_Pyramid_of_Giza' }],
-        // the release has no pyramid place: its events are placed at the town of Giza
-        placeIds: ['plc_8cbb93dd-a223-568e-b091-245b844e1df1', 'plc_c2599057-4dc6-54c9-a9e6-dc762974579c', 'plc_40d21b8e-eccd-53cd-8761-2e932cc2ed00'] },
-    { wikidata: 'Q10285', name: 'Colosseum', point: [41.8902, 12.4922], tier: 1, icon: icon('colosseum'),
-        links: [{ source: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Colosseum' }],
-        placeIds: ['plc_da21db22-e193-5ad2-ba69-fde1282ff71b', 'plc_af9fd386-2332-592d-9fb6-5290c004eb43'] },
-    { wikidata: 'Q9141', name: 'Taj Mahal', point: [27.1751, 78.0421], tier: 1, icon: icon('taj-mahal'),
-        links: [{ source: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Taj_Mahal' }],
-        placeIds: ['plc_42b640d2-470b-5b62-b56d-a7c1fb5917a0'] },
-    { wikidata: 'Q39231', name: 'Mount Fuji', point: [35.3606, 138.7274], tier: 1, icon: icon('mount-fuji'),
-        links: [{ source: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Mount_Fuji' }],
-        placeIds: ['plc_4b544707-1ba4-59c2-9e27-5a94e3c947a2', 'plc_2d3ea64e-437a-59f2-8026-20a61bcacf9b', 'plc_22bc9bd1-f870-5d99-ab0c-43ecf7b0022f',
-            'plc_0e07a1a3-2402-52cd-a6de-109c0033e4ae', 'plc_ab2dccf8-384a-5130-9db0-4ae32d72ebeb'] },
-    // tier 2 in the lab only, to show a landmark appearing as you zoom in
-    { wikidata: 'Q43473', name: 'Angkor Wat', point: [13.4125, 103.867], tier: 2, icon: icon('angkor-wat'),
-        links: [{ source: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Angkor_Wat' }],
-        placeIds: ['plc_65aeb3c7-9214-5a09-abb5-41d138ec541d', 'plc_11f139cc-5e0e-5c48-a30b-4ff1038cc936', 'plc_a7196aba-3cfb-5f5f-9ec6-595405c31923'] },
-];
+export async function loadSample() {
+    const response = await fetch(SAMPLE_URL);
+    if (!response.ok) throw new Error(`Could not load the landmark sample (${response.status})`);
+    const { format, landmarks } = await response.json();
+    if (format !== 'historiline-landmarks/v1') throw new Error('The landmark sample is not historiline-landmarks/v1.');
+    return landmarks;
+}
 
 // the zoom each tier first shows at, and the icon's size on screen
 const MIN_ZOOM = { 1: 0, 2: 5, 3: 9 };
@@ -53,7 +45,7 @@ function resize(marker, size) {
 const SOURCE_NAMES = { wikipedia: 'Wikipedia' };
 
 export class LandmarkLayer {
-    constructor(browser, landmarks = SAMPLE) {
+    constructor(browser, landmarks) {
         this.browser = browser;
         this.map = browser.map;
         // above the base map, below the selection (overlay pane, 400) and the event bubbles (450)
@@ -64,33 +56,44 @@ export class LandmarkLayer {
     }
     marker(landmark) {
         const link = landmark.links?.[0];
-        const html = `<img src="${landmark.icon}" alt="" width="${SIZE}" height="${SIZE}" draggable="false">`
-            + (link ? `<a class="landmark-info" target="_blank" rel="noopener" href="${link.url}">i</a>` : '');
-        const marker = L.marker(landmark.point, {
-            pane: 'landmarks', title: landmark.name, alt: landmark.name, keyboard: true,
-            icon: L.divIcon({ className: 'map-landmark', html, iconSize: [SIZE, SIZE], iconAnchor: [SIZE / 2, SIZE - 4] }),
-        });
-        marker.on('add', () => {
-            const info = marker.getElement()?.querySelector('.landmark-info');
-            if (!info) return;
-            info.setAttribute('aria-label', `About ${landmark.name} on ${SOURCE_NAMES[link.source] ?? link.source} (opens a new tab)`);
+        const content = document.createElement('div');
+        content.className = 'map-landmark-content';
+        const url = iconUrl(landmark);
+        if (url) {
+            content.append(Object.assign(document.createElement('img'), { src: url, alt: '', width: SIZE, height: SIZE, draggable: false }));
+        } else {
+            // lab only: no icon yet
+            content.append(Object.assign(document.createElement('span'), { className: 'map-landmark-placeholder', textContent: landmark.label[0] }));
+        }
+        if (link) {
+            const info = Object.assign(document.createElement('a'), { className: 'landmark-info', target: '_blank', rel: 'noopener', href: link.url, textContent: 'i' });
+            info.setAttribute('aria-label', `About ${landmark.label} on ${SOURCE_NAMES[link.source] ?? link.source} (opens a new tab)`);
             info.title = info.getAttribute('aria-label');
             L.DomEvent.on(info, 'click', L.DomEvent.stopPropagation);
+            content.append(info);
+        }
+        const marker = L.marker(landmark.point, {
+            pane: 'landmarks', title: landmark.label, alt: landmark.label, keyboard: true,
+            icon: L.divIcon({ className: 'map-landmark', html: content, iconSize: [SIZE, SIZE], iconAnchor: [SIZE / 2, SIZE - 4] }),
         });
         marker.on('click', () => this.open(landmark));
         return marker;
     }
-    // the events at the landmark's places, earliest first, in the bubbles' list
-    open(landmark) {
+    // the events at the landmark's places, earliest first
+    eventIds(landmark) {
         const index = this.browser.manager.placeIndex;
         const ids = new Set();
-        for (const placeId of landmark.placeIds) for (const id of index.places.get(placeId) ?? []) ids.add(id);
-        const sorted = [...ids].sort((a, b) => (index.years.get(a) ?? 0) - (index.years.get(b) ?? 0));
-        if (sorted.length) {
-            this.browser.clusters.showList(landmark.point, sorted);
+        for (const placeId of landmark.place_ids) for (const id of index.places.get(placeId) ?? []) ids.add(id);
+        return [...ids].sort((a, b) => (index.years.get(a) ?? 0) - (index.years.get(b) ?? 0));
+    }
+    // its events in the bubbles' list
+    open(landmark) {
+        const ids = this.eventIds(landmark);
+        if (ids.length) {
+            this.browser.clusters.showList(landmark.point, ids);
         } else {
-            L.popup({ className: 'map-event-popup' }).setLatLng(landmark.point)
-                .setContent(`<p class="map-landmark-empty">No events at ${landmark.name} yet.</p>`).openOn(this.map);
+            const text = Object.assign(document.createElement('p'), { className: 'map-landmark-empty', textContent: `No events at ${landmark.label} yet.` });
+            L.popup({ className: 'map-event-popup' }).setLatLng(landmark.point).setContent(text).openOn(this.map);
         }
     }
     show(on) {
@@ -105,11 +108,16 @@ export class LandmarkLayer {
             this.layer.clearLayers();
         }
     }
-    // Shows the landmarks whose tier this zoom allows, keeping the higher tier where two overlap on screen.
+    // Shows the landmarks whose tier this zoom allows. Where two overlap on screen, the higher tier is kept,
+    // then the one with more events.
     placeIcons() {
         const zoom = this.map.getZoom();
         const taken = [];
-        const order = [...this.entries].sort((a, b) => a.landmark.tier - b.landmark.tier);
+        if (this.eventsIndex !== this.browser.manager.placeIndex) {
+            this.eventsIndex = this.browser.manager.placeIndex;
+            for (const entry of this.entries) entry.events = this.eventIds(entry.landmark).length;
+        }
+        const order = [...this.entries].sort((a, b) => a.landmark.tier - b.landmark.tier || b.events - a.events);
         for (const entry of order) {
             const { landmark, marker } = entry;
             const size = sizeAt(landmark.point, zoom);

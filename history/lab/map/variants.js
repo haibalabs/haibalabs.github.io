@@ -4,7 +4,7 @@
 // initial is its value under a bare ?lab: the picks so far. Every variant drives the site's own modules
 // through their options, so a pick reaches the site by changing a default, with nothing to port.
 import { lookupOutline, outlineQuery } from './outlines.js';
-import { LandmarkLayer } from './landmarks.js';
+import { LandmarkLayer, loadSample } from './landmarks.js';
 
 export const VARIANTS = [
     {
@@ -47,10 +47,13 @@ export const VARIANTS = [
     {
         id: 'landmarks',
         label: 'Landmarks (sample)',
-        note: 'Iris\'s five style samples at their landmarks: click one for its events, or its i for Wikipedia. Angkor Wat is a closer-zoom landmark here and appears from zoom 5.',
+        note: 'Hermes\'s approved 49 landmarks in three zoom tiers. The five with Iris\'s style samples show their icon; the rest a lettered marker until their icons are made. Click one for its events, or its i for Wikipedia.',
         apply(lab, on) {
-            lab.landmarks ??= new LandmarkLayer(lab.browser);
-            lab.landmarks.show(Boolean(on));
+            lab.landmarksLoad ??= loadSample().then(landmarks => (lab.landmarks = new LandmarkLayer(lab.browser, landmarks)));
+            // the latest switch wins once the sample has loaded
+            lab.landmarksOn = Boolean(on);
+            lab.landmarksLoad.then(layer => layer.show(lab.landmarksOn))
+                .catch(error => console.error('Map lab: the landmark sample could not load', error));
         },
     },
 ];
