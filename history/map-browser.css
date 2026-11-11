@@ -64,3 +64,15 @@ body.map-full #toggle-map { display: none; }
 .map-stepper button:hover:not(:disabled) { background: var(--surface-2); }
 .map-stepper button:disabled { opacity: .3; cursor: default; }
 .map-stepper button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* Landmarks (modules/landmark-layer.js): the cutout itself, a soft shadow so it reads on light and dark maps, and its i badge. */
+.map-landmark { background: none; border: 0; }
+.map-landmark img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgb(0 0 0 / .35)); cursor: pointer; transition: transform .12s; }
+.map-landmark:hover img, .map-landmark:focus-visible img { transform: scale(1.12); }
+.map-landmark:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+.leaflet-container a.landmark-info { position: absolute; top: 0; right: -2px; width: 18px; height: 18px; box-sizing: border-box; border-radius: 50%; display: grid; place-items: center; background: #1d4ed8; color: #fff; border: 2px solid #fff; font: 700 12px/1 var(--font-ui); text-decoration: none; box-shadow: 0 1px 4px rgb(0 0 0 / .45); }
+.landmark-info:hover, .landmark-info:focus-visible { transform: scale(1.2); }
+.landmark-info:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.map-landmark-empty { margin: 0; font: 13px/1.4 var(--font-ui); }
+.leaflet-container .map-landmark-small a.landmark-info { display: none; }
+.map-landmark-content { width: 100%; height: 100%; }
