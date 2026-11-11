@@ -392,10 +392,11 @@ test('?lab opens the site with the lab\'s switches, which drive the site\'s own 
 });
 
 
-test('lab label actions: on a phone, Show in timeline closes the map onto the card, and ✕ clears the selection', async ({ page }) => {
+test('the selected event\'s label: on a phone, Show in timeline closes the map onto the card, and ✕ clears the selection', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await setup(page, '&lab=label-actions');
+  // the lab with every switch off: the site as it is, with window.lab to reach the panels
+  await setup(page, '&lab=off');
   await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
   await page.locator('.map-cluster-spot').click();
   await page.locator('.map-event-list li button').nth(15).click();

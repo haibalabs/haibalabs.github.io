@@ -15,7 +15,7 @@
 .map-event-label strong { font-weight: 600; font-size: 12px; }
 .map-event-label > span > span { color: var(--ink-2); }
 .leaflet-tooltip-top.map-event-label::before { border-top-color: var(--label-bg); }
-/* with its buttons (map-browser.js, labelActions): the same see-through label, with two round icon buttons
+/* with its buttons (map-browser.js, drawSelection): the same see-through label, with two round icon buttons
    centred under the text, Show in timeline and clear */
 .leaflet-tooltip.map-event-label-actions { pointer-events: auto; }
 .map-event-label > span > .map-label-buttons { display: flex; flex-direction: row; justify-content: center; gap: 8px; margin-top: 5px; color: var(--ink); }
