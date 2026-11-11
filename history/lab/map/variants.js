@@ -4,6 +4,7 @@
 // initial is its value under a bare ?lab: the picks so far. Every variant drives the site's own modules
 // through their options, so a pick reaches the site by changing a default, with nothing to port.
 import { lookupOutline, outlineQuery } from './outlines.js';
+import { LandmarkLayer } from './landmarks.js';
 
 export const VARIANTS = [
     {
@@ -41,6 +42,15 @@ export const VARIANTS = [
                 return lookupOutline(location ? outlineQuery(location) : point.name, point.coordinates);
             } : null;
             lab.browser.drawSelection();
+        },
+    },
+    {
+        id: 'landmarks',
+        label: 'Landmarks (sample)',
+        note: 'Iris\'s five style samples at their landmarks: click one for its events, or its i for Wikipedia. Angkor Wat is a closer-zoom landmark here and appears from zoom 5.',
+        apply(lab, on) {
+            lab.landmarks ??= new LandmarkLayer(lab.browser);
+            lab.landmarks.show(Boolean(on));
         },
     },
 ];
