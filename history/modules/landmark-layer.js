@@ -5,20 +5,22 @@
 // opens its bubble above it: the landmark's name as the list's title, with the scroll icon the cards use for
 // Wikipedia, which opens its first link, then its places' events, or a note that it has none yet.
 //
-// iconUrl(sha256) gives an icon's address. A landmark with no icon yet is left out.
+// iconUrl(sha256) gives an icon's address. A landmark with no icon yet is drawn as a circle with its initial.
 
 // the zoom each tier first shows at, and the icon's size on screen
 const MIN_ZOOM = { 1: 0, 2: 5, 3: 9 };
 const SIZE = 44;
 // An icon never covers more than MAX_GROUND_METRES of ground: zoomed out it shrinks, and it reaches SIZE only
-// from about zoom 5. Where the cap would make it smaller than MIN_SIZE, too small to read, it is hidden: at
-// zoom 2 and below everywhere, and at zoom 3 near the equator.
+// from about zoom 5. Only the world tier shows that far out, so it is what the world view shows: it never
+// shrinks below WORLD_SIZE. Any other icon the cap would make smaller than MIN_SIZE, too small to read, is hidden.
 const MAX_GROUND_METRES = 250000;
 const MIN_SIZE = 14;
+const WORLD_SIZE = 24;
 const EARTH_CIRCUMFERENCE = 40075016.686;
-const sizeAt = ([lat], zoom) => {
+const sizeAt = ({ point: [lat], tier }, zoom) => {
     const metresPerPixel = EARTH_CIRCUMFERENCE * Math.cos(lat * Math.PI / 180) / 2 ** (zoom + 8);
-    return Math.floor(Math.min(SIZE, MAX_GROUND_METRES / metresPerPixel));
+    const size = Math.floor(Math.min(SIZE, MAX_GROUND_METRES / metresPerPixel));
+    return tier === 1 ? Math.max(size, WORLD_SIZE) : size;
 };
 // sets a shown icon's size, keeping its base on the landmark's point
 function resize(marker, size) {
@@ -37,14 +39,17 @@ export class LandmarkLayer {
         // above the base map, below the selection (overlay pane, 400) and the event bubbles (450)
         if (!this.map.getPane('landmarks')) this.map.createPane('landmarks').style.zIndex = 350;
         this.layer = L.layerGroup();
-        this.entries = landmarks.filter(landmark => landmark.icon)
-            .map(landmark => ({ landmark, marker: this.marker(landmark), shown: false }));
+        this.entries = landmarks.map(landmark => ({ landmark, marker: this.marker(landmark), shown: false }));
         this.place = () => this.placeIcons();
     }
     marker(landmark) {
         const content = document.createElement('div');
         content.className = 'map-landmark-content';
-        content.append(Object.assign(document.createElement('img'), { src: this.iconUrl(landmark.icon), alt: '', width: SIZE, height: SIZE, draggable: false }));
+        if (landmark.icon) {
+            content.append(Object.assign(document.createElement('img'), { src: this.iconUrl(landmark.icon), alt: '', width: SIZE, height: SIZE, draggable: false }));
+        } else {
+            content.append(Object.assign(document.createElement('span'), { className: 'map-landmark-placeholder', textContent: landmark.label[0] }));
+        }
         const marker = L.marker(landmark.point, {
             pane: 'landmarks', title: landmark.label, alt: landmark.label, keyboard: true,
             icon: L.divIcon({ className: 'map-landmark', html: content, iconSize: [SIZE, SIZE], iconAnchor: [SIZE / 2, SIZE - 4] }),
@@ -119,7 +124,7 @@ export class LandmarkLayer {
         const order = [...this.entries].sort((a, b) => a.landmark.tier - b.landmark.tier || b.events - a.events);
         for (const entry of order) {
             const { landmark, marker } = entry;
-            const size = sizeAt(landmark.point, zoom);
+            const size = sizeAt(landmark, zoom);
             let show = zoom >= (MIN_ZOOM[landmark.tier] ?? MIN_ZOOM[3]) && size >= MIN_SIZE;
             if (show) {
                 const p = this.map.latLngToLayerPoint(landmark.point);
