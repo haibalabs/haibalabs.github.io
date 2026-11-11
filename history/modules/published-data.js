@@ -30,6 +30,19 @@ async function fetchJson(url, options) {
     return response.json();
 }
 
+// The event shards a manifest lists, each checked to be the one its entry names.
+async function fetchShards(entries) {
+    const base = new URL(DATA_URL, location.href);
+    const shards = await Promise.all(entries.map(entry => fetchJson(new URL(`events/${entry.sha256}.json`, base).href)));
+    entries.forEach((entry, i) => {
+        const shard = shards[i];
+        if (shard?.format !== EVENTS_FORMAT || shard.shard !== entry.id || shard.events?.length !== entry.count) {
+            throw new Error(`Event shard ${entry.id} is not the one the manifest lists.`);
+        }
+    });
+    return shards;
+}
+
 /**
  * Fetches a release: its manifest, revalidated on every visit, then every event shard and place bucket it
  * lists, which browsers may cache forever.
@@ -49,15 +62,9 @@ export async function fetchPublished(manifestUrl = MANIFEST_URL) {
     const base = new URL(DATA_URL, location.href);
     const fileUrl = (folder, sha256) => new URL(`${folder}/${sha256}.json`, base).href;
     const [shards, buckets] = await Promise.all([
-        Promise.all(manifest.shards.map(entry => fetchJson(fileUrl('events', entry.sha256)))),
+        fetchShards(manifest.shards),
         Promise.all(manifest.places.files.map(entry => fetchJson(fileUrl('places', entry.sha256)))),
     ]);
-    manifest.shards.forEach((entry, i) => {
-        const shard = shards[i];
-        if (shard?.format !== EVENTS_FORMAT || shard.shard !== entry.id || shard.events?.length !== entry.count) {
-            throw new Error(`Event shard ${entry.id} is not the one the manifest lists.`);
-        }
-    });
     manifest.places.files.forEach((entry, i) => {
         const bucket = buckets[i];
         if (bucket?.format !== PLACES_FORMAT || bucket.bucket !== entry.bucket || bucket.places?.length !== entry.count) {
@@ -66,6 +73,36 @@ export async function fetchPublished(manifestUrl = MANIFEST_URL) {
     });
     return { manifest, manifestUrl, manifestSha256, shards, buckets,
         correctionsUrl: fileUrl('corrections', manifest.corrections.sha256) };
+}
+
+/**
+ * The events a release adds to the release it was built on, which its manifest names as previous_manifest:
+ * the IDs it serves that the earlier release doesn't. A release that names none gives null. Of the earlier
+ * release only the manifest and the shards this one doesn't also list are fetched, since a shard both list
+ * by the same hash holds the same events.
+ *
+ * @param {{ manifest: object, shards: object[] }} published - a fetched release (fetchPublished)
+ * @returns {Promise<{ added: Set<string>, previousReleaseId: string }|null>}
+ */
+export async function fetchAddedEventIds({ manifest, shards }) {
+    const previous = manifest.previous_manifest;
+    if (!/^[0-9a-f]{64}$/.test(previous ?? '')) return null;
+    const earlier = await fetchJson(manifestUrlFor(previous));
+    if (earlier?.format !== MANIFEST_FORMAT) throw new Error('The release this one was built on is not a version 1 published release.');
+    const listed = new Set(manifest.shards.map(entry => entry.sha256));
+    const shared = new Set(earlier.shards.map(entry => entry.sha256).filter(sha256 => listed.has(sha256)));
+    const earlierIds = new Set();
+    for (const shard of await fetchShards(earlier.shards.filter(entry => !listed.has(entry.sha256)))) {
+        for (const event of shard.events) earlierIds.add(event.event_id);
+    }
+    manifest.shards.forEach((entry, i) => {
+        if (shared.has(entry.sha256)) shards[i].events.forEach(event => earlierIds.add(event.event_id));
+    });
+    const added = new Set();
+    manifest.shards.forEach((entry, i) => {
+        if (!shared.has(entry.sha256)) shards[i].events.forEach(event => earlierIds.has(event.event_id) || added.add(event.event_id));
+    });
+    return { added, previousReleaseId: earlier.release_id ?? earlier.snapshot_id ?? previous.slice(0, 12) };
 }
 
 const LANDMARKS_FORMAT = 'historiline-landmarks/v1';

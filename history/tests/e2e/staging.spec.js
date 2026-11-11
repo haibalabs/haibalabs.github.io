@@ -42,16 +42,18 @@ const MANIFEST = { format: 'historiline-manifest/v1', created_at: '2026-11-10T12
     shards: [{ id: 'd000', count: 1, sha256: 'e0' }, { id: 'd001', count: 1, sha256: 'e1' }],
     places: { buckets: 64, files: [{ bucket: 0, count: 3, sha256: 'p0' }] }, corrections: { sha256: 'c0' } };
 
-async function openStaging(page) {
+// files: more release files by path, such as a manifest-next.json and the release it was built on
+async function openStaging(page, files = {}) {
     await page.route('https://www.gstatic.com/firebasejs/**', route => route.fulfill({ contentType: 'text/javascript', body: countingStub }));
     await page.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/, r => r.abort());
     const requests = [];
+    const served = { ...RELEASE, ...files };
     await page.route('**/history/data/**', route => {
         const url = new URL(route.request().url());
         requests.push({ path: url.pathname, cache: route.request().headers()['cache-control'] ?? null });
         const rel = url.pathname.replace(/^\/history\/data\//, '');
         if (rel === 'manifest.json') return route.fulfill({ json: MANIFEST });
-        return RELEASE[rel] ? route.fulfill({ json: RELEASE[rel] }) : route.fulfill({ status: 404 });
+        return served[rel] ? route.fulfill({ json: served[rel] }) : route.fulfill({ status: 404 });
     });
     await page.goto('/history/index.html?data=next');
     await expect(page.locator('#timeline-content .event').first()).toBeVisible();
@@ -82,6 +84,48 @@ test('the staging site shows the published release, read-only, with its banner',
     await expect(page.locator('#suggest-event')).toBeHidden();
     // the manifest is revalidated on every visit; the hash-named files are not
     expect(requests.find(r => r.path.endsWith('/manifest.json'))).toBeTruthy();
+    // a release that names no release it was built on offers no new-events filter
+    await expect(banner.locator('.staging-new')).toBeHidden();
+});
+
+test('the staging banner shows only the events new against the release it was built on, and all again', async ({ page }) => {
+    const PARENT = 'a'.repeat(64);
+    const files = {
+        // the earlier release shares shard e0 by hash and serves evt_second in a shard the staged one replaced
+        [`manifests/${PARENT}.json`]: { ...MANIFEST, release_id: 'release-earlier',
+            shards: [{ id: 'd000', count: 1, sha256: 'e0' }, { id: 'd001', count: 1, sha256: 'old1' }] },
+        'events/old1.json': { format: 'historiline-events/v1', shard: 'd001', family: 'dated',
+            events: [event('evt_second', 'Second staged event, as it was', '1600')] },
+        'events/new1.json': { format: 'historiline-events/v1', shard: 'd001', family: 'dated', events: [
+            event('evt_second', 'Second staged event', '1600'),
+            event('evt_new', 'New staged event', '1650'),
+            event('evt_new_low', 'New low-confidence event', '1660', { confidence: 'low', visible: false }),
+        ] },
+        'manifest-next.json': { ...MANIFEST, release_id: 'release-next', previous_manifest: PARENT,
+            shards: [{ id: 'd000', count: 1, sha256: 'e0' }, { id: 'd001', count: 3, sha256: 'new1' }] },
+    };
+    const requests = await openStaging(page, files);
+    const line = page.locator('#staging-banner .staging-new');
+    const toggle = line.getByRole('button');
+    await expect(line).toContainText('New in this release: 1 event (1 more hidden as low confidence).');
+    await expect(line).toHaveAttribute('title', 'Events in release release-next that are not in release release-earlier, the release it was built on.');
+    const shown = () => page.locator('#timeline-content .event').evaluateAll(cards => cards.map(card => card.dataset.eventId));
+    await expect.poll(shown).toEqual(['evt_first', 'evt_second', 'evt_new']);
+
+    await toggle.click();
+    await expect(line).toContainText('Showing only the 1 event new in this release (1 more hidden as low confidence).');
+    await expect(toggle).toHaveText('Show all events');
+    await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+    await expect.poll(shown).toEqual(['evt_new']);
+    await expect(page.locator('#visibleCount')).toHaveText('1');
+
+    await toggle.click();
+    await expect(toggle).toHaveText('Show only these');
+    await expect.poll(shown).toEqual(['evt_first', 'evt_second', 'evt_new']);
+    // of the earlier release only its manifest and the shard the staged one doesn't share were fetched
+    const fetched = requests.map(r => r.path.replace('/history/data/', ''));
+    expect(fetched.filter(path => path === 'events/e0.json')).toHaveLength(1);
+    expect(fetched).toContain('events/old1.json');
 });
 
 // Calls every write entry point of the five stores that write to Firebase, and counts the writes that

@@ -187,6 +187,12 @@ export class EventManager {
         this.invalidateCache();
     }
 
+    // Only the world events with these IDs, or every event for null. The visibility rules still apply.
+    setEventIdFilter(ids = null) {
+        this.eventIdFilter = ids;
+        this.invalidateCache();
+    }
+
     // Personal timeline events live in this.events next to world events, marked personal: true.
     // TimelineStore saves them as they change.
     setPersonalEvents(timelineId, events) {
@@ -270,7 +276,9 @@ export class EventManager {
                     const { from, through } = this.timeRange;
                     const matchesTime = (from == null || year >= from) && (through == null || year <= through);
                     const matchesView = this.timelineView !== 'only' || event.personal === true;
-                    return hasAcceptableConfidence && matchesFilter && matchesSearch && matchesTime && matchesView && geographicIds.has(id);
+                    const matchesIds = !this.eventIdFilter || (!event.personal && this.eventIdFilter.has(event.event_id));
+                    return hasAcceptableConfidence && matchesFilter && matchesSearch && matchesTime && matchesView && matchesIds
+                        && geographicIds.has(id);
                 });
         }
         return this.cachedFilteredEvents;
