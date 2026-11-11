@@ -62,6 +62,8 @@ body.map-full #toggle-map { display: none; }
 /* a list's title row (a landmark's bubble, landmark-layer.js): its name, bold, with the cards' Wikipedia scroll */
 .map-event-list-title { display: flex; align-items: center; gap: 6px; width: calc(100% - 18px); margin: 0 0 4px; padding: 2px 2px 6px; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--ink); font: inherit; font-size: 13px; text-align: left; }
 button.map-event-list-title { cursor: pointer; }
+/* with no events under it, the title stands alone, with no separator */
+.map-event-list-empty .map-event-list-title { margin-bottom: 0; padding-bottom: 2px; border-bottom: 0; }
 button.map-event-list-title:hover strong { text-decoration: underline; }
 .map-event-list-title i { color: var(--accent); }
 .map-event-list-title:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
