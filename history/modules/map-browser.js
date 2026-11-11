@@ -248,14 +248,17 @@ export class MapBrowser {
     }
     labelButtons(id) {
         const row = element('span', null, 'map-label-buttons');
-        const go = button('Show in timeline', () => this.showInTimeline(id));
-        go.className = 'map-label-go';
-        const close = button('', () => this.clearSelection());
-        close.className = 'map-label-close';
-        close.setAttribute('aria-label', 'Clear the selected event');
-        close.title = 'Clear the selected event';
-        close.innerHTML = '<i class="fa-light fa-xmark" aria-hidden="true"></i>';
-        row.append(go, close);
+        // round icon buttons, named for screen readers and on hover
+        const iconButton = (className, label, icon, action) => {
+            const node = button('', action);
+            node.className = className;
+            node.setAttribute('aria-label', label);
+            node.title = label;
+            node.innerHTML = `<i class="fa-light ${icon}" aria-hidden="true"></i>`;
+            return node;
+        };
+        row.append(iconButton('map-label-go', 'Show in timeline', 'fa-list-timeline', () => this.showInTimeline(id)),
+            iconButton('map-label-close', 'Clear the selected event', 'fa-xmark', () => this.clearSelection()));
         L.DomEvent.disableClickPropagation(row);
         return row;
     }

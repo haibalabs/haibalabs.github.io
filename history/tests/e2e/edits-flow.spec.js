@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
+import { keepMapOffline } from './firebase-stub.js';
 
 // Suggesting edits to world events (WORLD-EDITS.md, phase 1), against the local Firebase
 // emulators, with Wikipedia's API stubbed.
@@ -53,7 +54,8 @@ async function suggestDescriptionEdit(page, description) {
   await page.fill('#se-description', description);
 }
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ page, request }) => {
+  await keepMapOffline(page);
   await resetEmulators(request);
   await createAccount(request, 'editor@example.test', 'editor');
   await createAccount(request, 'viewer@example.test', 'viewer');

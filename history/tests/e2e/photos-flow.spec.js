@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { EMULATORS_RUNNING, STORAGE, createAccount, downloadAsOwner, listAsOwner, listFilesAsOwner, resetEmulators, signIn } from './emulator.js';
+import { keepMapOffline } from './firebase-stub.js';
 
 // Photos in personal timelines (PERSONAL-IMAGES.md), against the Auth, Firestore and Storage emulators.
 test.skip(!EMULATORS_RUNNING || !STORAGE, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
@@ -67,7 +68,8 @@ async function eventDoc(request, id) {
   return doc;
 }
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ page, request }) => {
+  await keepMapOffline(page);
   await resetEmulators(request);
   await createAccount(request, 'editor@example.test', 'editor');
 });
