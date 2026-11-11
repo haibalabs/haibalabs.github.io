@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
+import { keepMapOffline } from './firebase-stub.js';
 
 // Reviewing edits to world events (WORLD-EDITS.md, phase 2), against the local Firebase emulators:
 // an admin approves or rejects on review.html, and every visitor's page shows the approved values.
@@ -51,7 +52,8 @@ async function openReview(page) {
   await expect(page.locator('#tab-waiting')).toHaveText(/Waiting · \d+/);
 }
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ page, request }) => {
+  await keepMapOffline(page);
   await resetEmulators(request);
   await createAccount(request, 'editor@example.test', 'editor');
   await createAccount(request, 'admin@example.test', 'admin');

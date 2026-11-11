@@ -4,7 +4,6 @@
 // initial is its value under a bare ?lab: the picks so far. Every variant drives the site's own modules
 // through their options, so a pick reaches the site by changing a default, with nothing to port.
 import { lookupOutline, outlineQuery } from './outlines.js';
-import { labLandmarks } from './landmarks.js';
 
 export const VARIANTS = [
     {
@@ -42,18 +41,6 @@ export const VARIANTS = [
                 return lookupOutline(location ? outlineQuery(location) : point.name, point.coordinates);
             } : null;
             lab.browser.drawSelection();
-        },
-    },
-    {
-        id: 'landmarks',
-        label: 'Landmarks (sample)',
-        note: 'The approved landmarks, 224 in three zoom tiers: the first 49 with Iris\'s icons, the newer 175 as lettered markers until their icons are made. Click one for its events (or its Wikipedia article when it has none), or its i for its Wikipedia article in the article panel.',
-        apply(lab, on) {
-            lab.landmarksLoad ??= labLandmarks(lab.browser).then(layer => (lab.landmarks = layer));
-            // the latest switch wins once the sample has loaded
-            lab.landmarksOn = Boolean(on);
-            lab.landmarksLoad.then(layer => layer.show(lab.landmarksOn))
-                .catch(error => console.error('Map lab: the landmark sample could not load', error));
         },
     },
     {

@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
+import { keepMapOffline } from './firebase-stub.js';
 
 // Personal timelines (PERSONAL-TIMELINES.md), against the local Firebase emulators.
 test.skip(!EMULATORS_RUNNING, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
@@ -40,7 +41,8 @@ async function addEvent(page, name, time) {
   await expect(card(page, name)).toHaveCount(1);
 }
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ page, request }) => {
+  await keepMapOffline(page);
   await resetEmulators(request);
   await createAccount(request, 'editor@example.test', 'editor');
   await createAccount(request, 'viewer@example.test', 'viewer');
@@ -222,4 +224,117 @@ test('personal event text is shown as text, never run as HTML', async ({ page })
   await expect(card(page, 'Picnic').locator('.event-description')).toHaveText('<b>bold?</b> & more');
   expect(await page.evaluate(() => window.__injected)).toBeUndefined();
   await expect(card(page, 'Picnic').locator('img, b')).toHaveCount(0);
+});
+
+async function setEditing(page, on) {
+  await page.click('#settings-btn');
+  await page.locator('#editing-toggle').setChecked(on);
+  await page.click('.settings-close-btn');
+}
+
+test('one add button: it asks where only when world history is shown and editing is on', async ({ page }) => {
+  await openWorld(page);
+  await signIn(page, 'editor@example.test');
+  const id = await createTimeline(page, 'Family history');
+  const choice = page.locator('#add-choice');
+  // editing off: the button opens the timeline's form at once
+  await expect(page.locator('#suggest-event')).toBeHidden();
+  await page.click('#add-event');
+  await expect(page.locator('#add-event-modal')).toBeVisible();
+  await page.click('#cancel-add');
+
+  // editing on with a timeline open: the world suggestion moves into the same button, which asks
+  await setEditing(page, true);
+  await expect(page.locator('#suggest-event')).toBeHidden();
+  await page.click('#add-event');
+  await expect(choice).toBeVisible();
+  await expect(choice.locator('[data-target="timeline"]')).toHaveText('Add to Family history');
+  await choice.locator('[data-target="world"]').click();
+  await expect(page.locator('#suggest-edit-modal')).toBeVisible();
+  await page.click('#se-cancel');
+  await page.click('#add-event');
+  await expect(choice.locator('[data-target="timeline"]')).toBeFocused();
+  await choice.locator('[data-target="timeline"]').click();
+  await expect(page.locator('#add-event-modal')).toBeVisible();
+  await page.click('#cancel-add');
+
+  // opened on a phone, signed in with editing on, the button and its menu stay on screen
+  const phone = await page.context().newPage();
+  await phone.setViewportSize({ width: 390, height: 844 });
+  await openWorld(phone, `&timeline=${id}`);
+  await expect(phone.locator('#timeline-pill .timeline-pill-title')).toHaveText('Family history');
+  // the date crumbs are showing here, and long crumbs once pushed the action buttons off a phone's screen
+  await expect(phone.locator('#crumbs')).not.toBeEmpty();
+  await phone.click('#add-event');
+  const box = await phone.locator('#add-choice').boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(390);
+  await phone.close();
+
+  // this timeline only: straight to the timeline's form
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-view="only"]');
+  await page.click('#add-event');
+  await expect(choice).toBeHidden();
+  await expect(page.locator('#add-event-modal')).toBeVisible();
+  await page.click('#cancel-add');
+
+  // closing the timeline brings back the world suggestion button on its own
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-action="close"]');
+  await expect(page.locator('#add-event')).toBeHidden();
+  await expect(page.locator('#suggest-event')).toBeVisible();
+});
+
+// The live site loads the published release (data/manifest.json and its shards), not a single world file.
+const RELEASE = {
+  'events/e0.json': { format: 'historiline-events/v1', shard: 'd000', family: 'dated',
+    events: WORLD.map(event => ({ ...event, event_version: `v_${event.event_id}`, visible: true, wikipedia_url: '' })) },
+  'places/p0.json': { format: 'historiline-places/v1', bucket: 0, places: [] },
+  'corrections/c0.json': [],
+};
+const MANIFEST = { format: 'historiline-manifest/v1', created_at: '2026-11-11T00:00:00Z',
+  shards: [{ id: 'd000', count: WORLD.length, sha256: 'e0' }],
+  places: { buckets: 64, files: [{ bucket: 0, count: 0, sha256: 'p0' }] }, corrections: { sha256: 'c0' } };
+
+async function openPublished(page) {
+  await page.route('**/history/data/**', route => {
+    const file = new URL(route.request().url()).pathname.replace(/^\/history\/data\//, '');
+    if (file === 'manifest.json') return route.fulfill({ json: MANIFEST });
+    return RELEASE[file] ? route.fulfill({ json: RELEASE[file] }) : route.fulfill({ status: 404 });
+  });
+  await page.goto('/history/index.html?emulator');
+  await page.waitForSelector('#timeline-content .event');
+}
+
+test('on the published release, a timeline event is saved, kept across a reload, edited and deleted', async ({ page, request }) => {
+  await openPublished(page);
+  await signIn(page, 'editor@example.test');
+  const id = await createTimeline(page, 'Family history');
+  await addEvent(page, 'Grandmother born', 'March 1901');
+  const names = await page.locator('#timeline-content .event .event-header').allTextContents();
+  expect(names.map(n => n.trim().split('\n')[0])).toEqual(['Founding of the archive', 'Grandmother born', 'Opening of the museum', 'First public lecture']);
+  expect(await listAsOwner(request, `timelines/${id}/events`)).toHaveLength(1);
+
+  await page.reload();
+  await expect(card(page, 'Grandmother born')).toHaveCount(1);
+  await expect(page.locator('#timeline-pill .timeline-pill-title')).toHaveText('Family history');
+
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-view="only"]');
+  await expect(page.locator('#timeline-content .event')).toHaveCount(1);
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-view="with-world"]');
+  await expect(page.locator('#timeline-content .event')).toHaveCount(4);
+
+  await card(page, 'Grandmother born').locator('.personal-edit').click();
+  await page.fill('#add-event-form [name="name"]', 'Grandmother born in Fez');
+  await page.click('#add-event-form button[type="submit"]');
+  await expect(card(page, 'Grandmother born in Fez')).toHaveCount(1);
+  expect((await listAsOwner(request, `timelines/${id}/events`))[0].fields.name.stringValue).toBe('Grandmother born in Fez');
+
+  page.once('dialog', dialog => dialog.accept());
+  await card(page, 'Grandmother born in Fez').locator('.personal-remove').click();
+  await expect(card(page, 'Grandmother born in Fez')).toHaveCount(0);
+  expect(await listAsOwner(request, `timelines/${id}/events`)).toHaveLength(0);
 });

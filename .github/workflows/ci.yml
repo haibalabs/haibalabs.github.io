@@ -6,21 +6,19 @@ on:
   pull_request:
     branches: [main, master]
 
+# A newer push to a pull request cancels its older run. Runs on main are keyed by commit, so none is cancelled.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+# The browser tests are split across parallel jobs (SHARD in playwright.config.js). unit-tests, e2e-tests and
+# firebase-tests, the checks main requires, pass only when every part of theirs passed.
 jobs:
   unit-tests:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: './history/package-lock.json'
-
-      - name: Install dependencies
-        working-directory: ./history
-        run: npm ci
+      - uses: ./.github/actions/prepare
 
       - name: Syntax check
         working-directory: ./history
@@ -30,63 +28,84 @@ jobs:
         working-directory: ./history
         run: npm run test:unit
 
-  e2e-tests:
+  e2e:
+    name: e2e (${{ matrix.shard }}/6)
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: ./.github/actions/prepare
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: './history/package-lock.json'
-
-      - name: Install dependencies
-        working-directory: ./history
-        run: npm ci
-
-      - name: Install Playwright browsers
-        working-directory: ./history
-        run: npx playwright install --with-deps chromium
+          browsers: 'true'
 
       - name: Run E2E tests
         env:
           PORT: 8181
+          SHARD: ${{ matrix.shard }}/6
         working-directory: ./history
-        run: npm run test:e2e
+        run: npm run test:e2e -- --workers=2
 
-  firebase-tests:
+  firebase-rules:
     runs-on: ubuntu-24.04
     steps:
+      # the Firebase tests use small fixtures, so they skip the large data files
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: |
-            ./history/package-lock.json
-            ./history/firebase/package-lock.json
-
-      # the Firestore emulator needs Java 21
-      - uses: actions/setup-java@v4
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/history/canonical-t2.json
+            !/history/events.json
+            !/history/data/
+      - uses: ./.github/actions/prepare
         with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Install dependencies
-        run: npm ci --prefix history && npm ci --prefix history/firebase
-
-      - name: Install Playwright browsers
-        working-directory: ./history
-        run: npx playwright install --with-deps chromium
+          firebase: 'true'
 
       - name: Firestore rules tests
         working-directory: ./history/firebase
         run: npm run test:rules
 
+  firebase-flows:
+    name: firebase-flows (${{ matrix.shard }}/12)
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/history/canonical-t2.json
+            !/history/events.json
+            !/history/data/
+      - uses: ./.github/actions/prepare
+        with:
+          browsers: 'true'
+          firebase: 'true'
+
       - name: Sign-in tests against the emulators
         env:
           PORT: 8181
+          SHARD: ${{ matrix.shard }}/12
         working-directory: ./history/firebase
         run: npm run test:auth-flow
+
+  e2e-tests:
+    if: always()
+    needs: [e2e]
+    runs-on: ubuntu-24.04
+    steps:
+      - run: test "${{ needs.e2e.result }}" = success
+
+  firebase-tests:
+    if: always()
+    needs: [firebase-rules, firebase-flows]
+    runs-on: ubuntu-24.04
+    steps:
+      - run: test "${{ needs.firebase-rules.result }}" = success && test "${{ needs.firebase-flows.result }}" = success

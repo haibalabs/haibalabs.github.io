@@ -95,7 +95,7 @@ async function initializeApp() {
     uiManager.timelineUI = new TimelineUI(eventManager, uiManager,
         new TimelineStore(eventManager.db, eventManager.auth),
         new FirebaseImageStore(eventManager.firebaseApp, { emulator: eventManager.usesEmulators }));
-    new EditUI(eventManager, uiManager, new EditStore(eventManager.db, eventManager.auth), {
+    uiManager.editUI = new EditUI(eventManager, uiManager, new EditStore(eventManager.db, eventManager.auth), {
         placeSearch, uploads: new EditUploads(eventManager.firebaseApp, { emulator: eventManager.usesEmulators }),
     });
 
