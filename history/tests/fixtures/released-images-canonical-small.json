@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "kind": "world_image_sidecar",
+  "purpose": "One record of releases/released-images-v1.json, moved to tests/fixtures/canonical-small.json.",
+  "source": {
+    "events_sha256": "21a37b06a53f42267c99972f9d7e68c0815a62010fd4920fc8af546135e75062"
+  },
+  "records": [
+    {
+      "acceptance_method": "ai_source_review",
+      "baseline_record_sha256": "bea8c977ad0eddee35b509d889fb9b8a45d59a5ff724ee1fdea8e9993d4a2c9f",
+      "caption": "Map of the Kingdom of Granada.",
+      "credit": "Amitchell125 (based on the map produced by Tyk and Redtony ) — Own work based on File:Reino de Granada.svg Sources for dates of the Christian captures of Muslim towns: Alcalá la Real, 1341: O'Callaghan 2011, p. 190 Algeciras, 1344: Harvey 1992, pp. 203-204 Almeria, 1489: Harvey 1992, p. 304 Antequera, 1410: O'Callaghan 2014, p. 52 Archidona, 1462: O'Callaghan 2013, p. 110 Baza, 1489: Harvey 1992, p. 302 Ceuta, 1415: O'Callaghan 2014, p. 52 Gibraltar, 1462: O'Callaghan 2014, pp. 108-110 Granada, 1492: Harvey 1993, p. 322 Guadix, 1489: Harvey 1992, p. 304 Huelma, 1438: O'Callaghan 2014, p. 52 Huescar, 1434: O'Callaghan 2014, p. 80 Malaga, 1487: Harvey 1992, p. 300 Marbella, 1485: Harvey 1992, pp. 287-288 Olvera, 1327: O'Callaghan 2011, p. 152 Priego, 1341: O'Callaghan 2011, p. 190 Ronda, 1485: Harvey 1992, pp. 285-286 Tarifa, 1292: O'Callaghan 2011, p. 101 Vera, 1488: Harvey 1992, p. 301 Xiquena, 1433: O'Callaghan 2014, p. 171 Zahara, 1407: Harvey 1992, pp. 231-232 Compare similar maps: O'Callaghan 2014, p. 52 (Granada's west) O'Callaghan 2014, p. 171 (Granada's east) Harvey 1992, p. xvi Bibliography: Harvey, L. P. (1992) Islamic Spain, 1250 to 1500 , Chicago : University of Chicago Press ISBN : 978-0-226-31962-9 . O'Callaghan, Joseph F. (2011) The Gibraltar Crusade: Castile and the Battle for the Strait , Philadelphia : University of Pennsylvania Press ISBN : 0812204638 . O'Callaghan, Joseph F. (2014) The Last Crusade in the West: Castile and the Conquest of Granada , Philadelphia : University of Pennsylvania Press ISBN : 978-0-8122-0935-8 .",
+      "date_qualification": "Map created 2020-09-04; this is a modern contextual map, not an image from the 1301 agreement.",
+      "display_date": "2020-09-04",
+      "enhanced_time": "1301-09-16",
+      "event_issue_ids": [],
+      "event_name": "Military agreement between Granada and Aragon",
+      "evidence_event_id": "evt_09b386dc-5643-5c7c-b666-773bad0b58ad",
+      "image_date": "2020-09-04",
+      "image_role": "map",
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/34/Emirate_of_Granada.svg?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license_name": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "pair_id": "4ceaf2646ea5742be875c2a79623cf0b89aa8244c13e4d69afd27d31d6214d43",
+      "process_review_ref": "Atlas independent cohort review: images-final-budget5-58776f5",
+      "record_index": 40,
+      "rights_basis": "saved_source_metadata",
+      "rights_statement": "LicenseShortName: CC BY-SA 4.0; UsageTerms: Creative Commons Attribution-Share Alike 4.0; Copyrighted: True",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Emirate_of_Granada.svg",
+      "thumbnail_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Emirate_of_Granada.svg/960px-Emirate_of_Granada.svg.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    }
+  ]
+}

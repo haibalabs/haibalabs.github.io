@@ -3,12 +3,12 @@ import { readFileSync } from 'node:fs';
 import { stubFirebase } from './firebase-stub.js';
 
 // The released images every visitor sees (releases/README.md). Most cases serve a four-record sample
-// cohort bound to the legacy events.json; one uses the repository's release on the default canonical
-// file. Commons images are served locally.
+// cohort bound to tests/fixtures/events-small.json, 200 records of the legacy events.json; one uses the
+// repository's release on the default canonical file. Commons images are served locally.
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 const SAMPLE = readFileSync(new URL('../fixtures/released-images-sample.json', import.meta.url), 'utf8');
 
-async function openSite(page, { query = '?file=events.json', release = SAMPLE } = {}) {
+async function openSite(page, { query = '?file=tests/fixtures/events-small.json', release = SAMPLE } = {}) {
   await stubFirebase(page);
   await page.route('https://upload.wikimedia.org/**', route => route.fulfill({ contentType: 'image/png', body: PNG }));
   if (release !== null) await page.route('**/releases/released-images-v1.json', route => route.fulfill({ contentType: 'application/json', body: release }));
@@ -56,7 +56,7 @@ test('released images show to every visitor without any setting, with credits in
 test('a contextual image shows its caption and its date, without a role label or a date note', async ({ page }) => {
   test.setTimeout(120000);
   const release = JSON.parse(SAMPLE);
-  const roerich = release.records.find(r => r.record_index === 26337);
+  const roerich = release.records.find(r => r.event_name === 'The Roerich Pact signed');
   Object.assign(roerich, { image_role: 'site', image_date: 'Taken on 4 June 2008, 10:21',
     caption: 'The White House in 2008. Image date: 2008-06-04.', date_qualification: 'Photographed in 2008, long after the signing.' });
   await openSite(page, { release: JSON.stringify(release) });
