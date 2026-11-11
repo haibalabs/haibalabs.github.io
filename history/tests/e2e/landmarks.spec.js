@@ -76,12 +76,13 @@ test('a landmark opens its bubble above its icon, titled with its name, whose sc
     // no badge on the icon
     await expect(landmark.locator('a, button')).toHaveCount(0);
     await landmark.locator('img').click();
-    // it covers no place rows, so the bubble has its title and a note that there are no events yet
+    // it covers no place rows, so the bubble has only its title, with no separator under it
     const list = page.locator('.map-event-list');
     const title = list.locator('.map-event-list-title');
     await expect(title.locator('strong')).toHaveText('Listed Landmark');
     await expect(title.locator('i.fa-scroll')).toHaveCount(1);
-    await expect(list).toContainText('No events here yet.');
+    await expect(list).toHaveText('Listed Landmark');
+    await expect(title).toHaveCSS('border-bottom-style', 'none');
     // the bubble opens above the icon, leaving it in view
     const icon = await landmark.boundingBox();
     const bubble = await page.locator('.map-event-popup').boundingBox();

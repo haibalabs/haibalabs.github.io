@@ -223,7 +223,8 @@ export class EventClusters {
         box.setAttribute('role', 'group');
         box.setAttribute('aria-label', `${ids.length.toLocaleString()} events here`);
         if (title) box.append(title());
-        if (!ids.length) box.append(element('p', 'map-event-list-more', 'No events here yet.'));
+        // a landmark with no events yet shows only its title
+        if (!ids.length) box.classList.add('map-event-list-empty');
         const start = current === null ? 0 : Math.max(0, Math.min(current - 2, ids.length - LIST_LIMIT));
         if (start > 0) box.append(element('p', 'map-event-list-more', `${start.toLocaleString()} earlier`));
         const items = element('ol');
