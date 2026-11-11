@@ -68,6 +68,29 @@ export async function fetchPublished(manifestUrl = MANIFEST_URL) {
         correctionsUrl: fileUrl('corrections', manifest.corrections.sha256) };
 }
 
+const LANDMARKS_FORMAT = 'historiline-landmarks/v1';
+
+/**
+ * The release's landmarks (landmark-layer.js), fetched on their own after the timeline has loaded: the table
+ * the manifest lists at landmarks/<sha256>.json, and where each icon is, landmark-icons/<sha256>.webp. Only
+ * an icon the manifest lists is used; a landmark whose icon isn't listed is given none, so the layer leaves
+ * it out. A release with no landmarks gives null.
+ *
+ * @param {object} manifest
+ * @returns {Promise<{ landmarks: object[], iconUrl: (sha256: string) => string }|null>}
+ */
+export async function fetchLandmarks(manifest) {
+    if (!manifest.landmarks) return null;
+    const base = new URL(DATA_URL, location.href);
+    const table = await fetchJson(new URL(`landmarks/${manifest.landmarks.sha256}.json`, base).href);
+    if (table?.format !== LANDMARKS_FORMAT || table.landmarks?.length !== manifest.landmarks.count) {
+        throw new Error('The landmark table is not the one the manifest lists.');
+    }
+    const icons = new Set((manifest.landmark_icons ?? []).map(entry => entry.sha256));
+    const landmarks = table.landmarks.map(landmark => (landmark.icon && !icons.has(landmark.icon) ? { ...landmark, icon: null } : landmark));
+    return { landmarks, iconUrl: sha256 => new URL(`landmark-icons/${sha256}.webp`, base).href };
+}
+
 // A place row's reviewed place, in the shape a location release gives (world-locations.js).
 function releasedPlace(row) {
     const place = { status: row.status, coordinates: row.point, precision: row.precision };

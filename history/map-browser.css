@@ -32,10 +32,12 @@ path.map-unreviewed:not([stroke="none"]) { stroke: var(--ink-2); }
 /* Full window: the map drawer covers the page until Esc or the button. */
 body.map-full #map-panel { inset: 0; width: auto; height: auto; z-index: 1000; border-left: 0; }
 body.map-full #toggle-map { display: none; }
-.map-full-control { border: 0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: 0 2px 8px rgb(0 0 0 / .12) !important; }
-.map-full-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink-2) !important; background: var(--surface) !important; cursor: pointer; }
-.map-full-control a:hover { background: var(--surface-2) !important; }
-.map-full-control a:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+.map-full-control, .map-landmarks-control { border: 0 !important; border-radius: 10px !important; overflow: hidden; box-shadow: 0 2px 8px rgb(0 0 0 / .12) !important; }
+.map-full-control a, .map-landmarks-control a { display: grid; place-items: center; width: 30px; height: 30px; font-size: 16px; color: var(--ink-2) !important; background: var(--surface) !important; cursor: pointer; }
+.map-full-control a:hover, .map-landmarks-control a:hover { background: var(--surface-2) !important; }
+.map-full-control a:focus-visible, .map-landmarks-control a:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
+/* the landmarks switch shows its state: accent when they are on */
+.map-landmarks-control a[aria-pressed="true"] { color: var(--accent) !important; }
 /* Events on the map while the area filter is on (modules/event-clusters.js): numbered bubbles for groups,
    a white ring for events that share one spot and can't split, small dots for single events. */
 .map-cluster { display: grid; place-items: center; border-radius: 50%; background: color-mix(in srgb, var(--accent) 82%, transparent); color: #fff; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent), 0 1px 4px rgb(0 0 0 / .25); font: 600 11px/1 var(--font-ui); cursor: pointer; }

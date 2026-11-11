@@ -1,5 +1,6 @@
 import { eventDateLabel } from './date-handlers.js';
 import { EventClusters } from './event-clusters.js';
+import { LandmarkLayer } from './landmark-layer.js';
 import { placeLabel } from './world-labels.js';
 
 const element = (tag, text, className) => {
@@ -79,6 +80,37 @@ const fullWindowControl = () => new (L.Control.extend({
         this.link.title = label;
         this.link.setAttribute('aria-label', label);
         this.link.innerHTML = `<i class="fa-light ${this.full ? 'fa-compress' : 'fa-expand'}" aria-hidden="true"></i>`;
+    },
+}))();
+
+// The landmarks switch, under the full-window button: shown once the release's landmarks have loaded. They
+// are on unless this browser turned them off.
+const LANDMARKS_KEY = 'historiline.landmarks';
+const landmarksWanted = () => {
+    try { return localStorage.getItem(LANDMARKS_KEY) !== 'off'; } catch { return true; }
+};
+const landmarksControl = layer => new (L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd() {
+        const bar = L.DomUtil.create('div', 'leaflet-bar map-landmarks-control');
+        this.link = L.DomUtil.create('a', '', bar);
+        this.link.href = '#';
+        this.link.setAttribute('role', 'button');
+        this.link.innerHTML = '<i class="fa-light fa-landmark" aria-hidden="true"></i>';
+        this.link.title = 'Landmarks';
+        this.link.setAttribute('aria-label', 'Landmarks');
+        L.DomEvent.disableClickPropagation(bar);
+        L.DomEvent.on(this.link, 'click', e => { L.DomEvent.preventDefault(e); this.set(!this.on); });
+        this.set(landmarksWanted(), { remember: false });
+        return bar;
+    },
+    set(on, { remember = true } = {}) {
+        this.on = on;
+        this.link.setAttribute('aria-pressed', String(on));
+        layer.show(on);
+        if (remember) {
+            try { localStorage.setItem(LANDMARKS_KEY, on ? 'on' : 'off'); } catch { /* the choice lasts this visit */ }
+        }
     },
 }))();
 
@@ -208,6 +240,11 @@ export class MapBrowser {
             }
         }
         this.resizeRings();
+    }
+    // The release's landmarks (published-data.js, fetchLandmarks) as a layer with its switch.
+    showLandmarks({ landmarks, iconUrl }) {
+        this.landmarks = new LandmarkLayer(this, landmarks, { iconUrl });
+        this.landmarksSwitch = landmarksControl(this.landmarks).addTo(this.map);
     }
     labelButtons(id) {
         const row = element('span', null, 'map-label-buttons');

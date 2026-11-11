@@ -16,7 +16,7 @@ import { EditStore } from './modules/edit-store.js';
 import { EditUploads } from './modules/edit-uploads.js';
 import { PlaceSearch } from './modules/place-search.js';
 import { initThemeChoice } from './modules/theme.js';
-import { fetchPublished, manifestUrlFor, MANIFEST_URL, NEXT_MANIFEST_URL, publishedWorld } from './modules/published-data.js';
+import { fetchLandmarks, fetchPublished, manifestUrlFor, MANIFEST_URL, NEXT_MANIFEST_URL, publishedWorld } from './modules/published-data.js';
 import { refuseWrites } from './modules/firebase-writes.js';
 import { clearPlaceLabels, setPlaceLabels } from './modules/world-labels.js';
 import { fetchLiveRelease } from './modules/world-release.js';
@@ -109,9 +109,12 @@ async function initializeApp() {
         const publishedEdits = uiManager.fetchPublishedEdits();
         // read alongside the approved edits; only the live page has to wait for it before loading
         const liveRelease = PUBLISHED ? fetchLiveRelease(eventManager.db) : null;
+        // the loaded release's manifest, for what loads after the timeline (its landmarks)
+        let releaseManifest = null;
         if (PUBLISHED) {
             const [live, published] = await Promise.all([liveRelease,
                 STAGING ? fetchStagedData() : liveRelease.then(fetchLiveData)]);
+            releaseManifest = published.manifest;
             // images and places come with the release; the corrections apply as each event loads
             await locationVerifier.loadUnverifiedLocations(published.correctionsUrl);
             const world = publishedWorld(published);
@@ -150,6 +153,12 @@ async function initializeApp() {
         endTimeTravel();
         initTimelineNav({ eventManager, uiManager });
         uiManager.timelineUI.worldReady();
+        // the release's landmarks load after the timeline, so they never hold it up; the site works without them
+        if (releaseManifest && uiManager.mapBrowser) {
+            fetchLandmarks(releaseManifest)
+                .then(landmarks => landmarks && uiManager.mapBrowser.showLandmarks(landmarks))
+                .catch(error => console.error('The landmarks could not load:', error));
+        }
         // ?lab opens the map lab (lab/map/), which is loaded only then
         if (params.has('lab') && uiManager.mapBrowser) {
             import('./lab/map/lab.js')
