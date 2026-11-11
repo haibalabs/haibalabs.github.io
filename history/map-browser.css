@@ -15,12 +15,13 @@
 .map-event-label strong { font-weight: 600; font-size: 12px; }
 .map-event-label > span > span { color: var(--ink-2); }
 .leaflet-tooltip-top.map-event-label::before { border-top-color: var(--label-bg); }
-/* with its buttons (map-browser.js, labelActions): solid, so the buttons read, and wide enough for them */
-.leaflet-tooltip.map-event-label-actions { --label-bg: var(--surface); max-width: 240px; padding: 6px 8px; pointer-events: auto; }
-.map-event-label > span > .map-label-buttons { display: flex; flex-direction: row; align-items: center; gap: 6px; margin-top: 6px; color: var(--ink); }
-.map-label-buttons button { min-height: 32px; border-radius: 16px; font: 500 12px/1 var(--font-ui); cursor: pointer; }
-.map-label-go { flex: 1; padding: 0 12px; border: 0; background: var(--accent); color: #fff; }
-.map-label-close { flex: none; width: 32px; padding: 0; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+/* with its buttons (map-browser.js, labelActions): the same see-through label, with two round icon buttons
+   centred under the text, Show in timeline and clear */
+.leaflet-tooltip.map-event-label-actions { pointer-events: auto; }
+.map-event-label > span > .map-label-buttons { display: flex; flex-direction: row; justify-content: center; gap: 8px; margin-top: 5px; color: var(--ink); }
+.map-label-buttons button { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 14px; cursor: pointer; box-shadow: 0 1px 3px rgb(0 0 0 / .12); }
+.map-label-buttons .map-label-go { color: var(--accent); }
+.map-label-buttons button:hover { background: var(--surface-2); }
 .map-label-buttons button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* An unreviewed point's grey ring and centre dot, in the theme's secondary ink so they show on light and dark maps. */
 path.map-unreviewed { fill: var(--ink-2); }
