@@ -100,6 +100,10 @@ test('the lab can make landmark icons see-through, except the one pointed at', a
     await open(page, '?lab=landmark-opacity:70');
     const content = page.locator('.map-landmark[title="Listed Landmark"] .map-landmark-content');
     await expect(content).toHaveCSS('opacity', '0.7');
-    await content.hover();
-    await expect(content).toHaveCSS('opacity', '1');
+    // the map can still be settling after the page loads and move the icon from under the pointer, so each
+    // try points at it again
+    await expect.poll(async () => {
+        await content.hover();
+        return content.evaluate(node => getComputedStyle(node).opacity);
+    }).toBe('1');
 });
