@@ -38,9 +38,15 @@ export const getDownloadURL = async () => "";
 // image fallback instead (map-utils.js). base-map.spec.js routes MapLibre to its own stub after this.
 const VECTOR_MAP = /unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/;
 
+// Keeps the vector map offline. The emulator flows use it too: on CI, which has no GPU, drawing the map's
+// tiles in software made each of their tests several times slower.
+export async function keepMapOffline(page) {
+  await page.route(VECTOR_MAP, route => route.abort());
+}
+
 // Serves firebaseStub for every Firebase SDK module request, and keeps the vector map offline.
 export async function stubFirebase(page) {
   await page.route('https://www.gstatic.com/firebasejs/**', route =>
     route.fulfill({ contentType: 'text/javascript', body: firebaseStub }));
-  await page.route(VECTOR_MAP, route => route.abort());
+  await keepMapOffline(page);
 }
