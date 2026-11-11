@@ -223,3 +223,56 @@ test('personal event text is shown as text, never run as HTML', async ({ page })
   expect(await page.evaluate(() => window.__injected)).toBeUndefined();
   await expect(card(page, 'Picnic').locator('img, b')).toHaveCount(0);
 });
+
+// The live site loads the published release (data/manifest.json and its shards), not a single world file.
+const RELEASE = {
+  'events/e0.json': { format: 'historiline-events/v1', shard: 'd000', family: 'dated',
+    events: WORLD.map(event => ({ ...event, event_version: `v_${event.event_id}`, visible: true, wikipedia_url: '' })) },
+  'places/p0.json': { format: 'historiline-places/v1', bucket: 0, places: [] },
+  'corrections/c0.json': [],
+};
+const MANIFEST = { format: 'historiline-manifest/v1', created_at: '2026-11-11T00:00:00Z',
+  shards: [{ id: 'd000', count: WORLD.length, sha256: 'e0' }],
+  places: { buckets: 64, files: [{ bucket: 0, count: 0, sha256: 'p0' }] }, corrections: { sha256: 'c0' } };
+
+async function openPublished(page) {
+  await page.route('**/history/data/**', route => {
+    const file = new URL(route.request().url()).pathname.replace(/^\/history\/data\//, '');
+    if (file === 'manifest.json') return route.fulfill({ json: MANIFEST });
+    return RELEASE[file] ? route.fulfill({ json: RELEASE[file] }) : route.fulfill({ status: 404 });
+  });
+  await page.goto('/history/index.html?emulator');
+  await page.waitForSelector('#timeline-content .event');
+}
+
+test('on the published release, a timeline event is saved, kept across a reload, edited and deleted', async ({ page, request }) => {
+  await openPublished(page);
+  await signIn(page, 'editor@example.test');
+  const id = await createTimeline(page, 'Family history');
+  await addEvent(page, 'Grandmother born', 'March 1901');
+  const names = await page.locator('#timeline-content .event .event-header').allTextContents();
+  expect(names.map(n => n.trim().split('\n')[0])).toEqual(['Founding of the archive', 'Grandmother born', 'Opening of the museum', 'First public lecture']);
+  expect(await listAsOwner(request, `timelines/${id}/events`)).toHaveLength(1);
+
+  await page.reload();
+  await expect(card(page, 'Grandmother born')).toHaveCount(1);
+  await expect(page.locator('#timeline-pill .timeline-pill-title')).toHaveText('Family history');
+
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-view="only"]');
+  await expect(page.locator('#timeline-content .event')).toHaveCount(1);
+  await page.click('#timeline-pill-btn');
+  await page.click('#timeline-menu [data-view="with-world"]');
+  await expect(page.locator('#timeline-content .event')).toHaveCount(4);
+
+  await card(page, 'Grandmother born').locator('.personal-edit').click();
+  await page.fill('#add-event-form [name="name"]', 'Grandmother born in Fez');
+  await page.click('#add-event-form button[type="submit"]');
+  await expect(card(page, 'Grandmother born in Fez')).toHaveCount(1);
+  expect((await listAsOwner(request, `timelines/${id}/events`))[0].fields.name.stringValue).toBe('Grandmother born in Fez');
+
+  page.once('dialog', dialog => dialog.accept());
+  await card(page, 'Grandmother born in Fez').locator('.personal-remove').click();
+  await expect(card(page, 'Grandmother born in Fez')).toHaveCount(0);
+  expect(await listAsOwner(request, `timelines/${id}/events`)).toHaveLength(0);
+});
