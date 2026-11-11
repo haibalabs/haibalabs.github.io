@@ -30,17 +30,6 @@
 .lab-picker select { width: 100%; min-height: 34px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); font: inherit; }
 .lab-picker small { display: block; margin-top: 4px; color: var(--ink-2); font-size: 12px; }
 
-/* Landmarks (landmarks.js): the cutout itself, a soft shadow so it reads on light and dark maps, and its i badge. */
-.map-landmark { background: none; border: 0; }
-.map-landmark img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgb(0 0 0 / .35)); cursor: pointer; transition: transform .12s; }
-.map-landmark:hover img, .map-landmark:focus-visible img { transform: scale(1.12); }
-.map-landmark:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
-.leaflet-container a.landmark-info { position: absolute; top: 0; right: -2px; width: 18px; height: 18px; box-sizing: border-box; border-radius: 50%; display: grid; place-items: center; background: #1d4ed8; color: #fff; border: 2px solid #fff; font: 700 12px/1 var(--font-ui); text-decoration: none; box-shadow: 0 1px 4px rgb(0 0 0 / .45); }
-.landmark-info:hover, .landmark-info:focus-visible { transform: scale(1.2); }
-.landmark-info:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.map-landmark-empty { margin: 0; font: 13px/1.4 var(--font-ui); }
-.leaflet-container .map-landmark-small a.landmark-info { display: none; }
-/* lab only: a landmark whose icon isn't made yet */
-.map-landmark-content { width: 100%; height: 100%; }
+/* lab only: a landmark whose icon isn't made yet (modules/landmark-layer.js, placeholders) */
 .map-landmark-placeholder { display: grid; place-items: center; width: 70%; height: 70%; margin: 15% auto 0; border-radius: 50%; background: var(--surface); color: var(--ink-2); border: 1.5px dashed var(--ink-2); font: 600 11px/1 var(--font-ui); box-sizing: border-box; cursor: pointer; }
 .map-landmark-small .map-landmark-placeholder { font-size: 0; }
