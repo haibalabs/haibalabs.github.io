@@ -51,6 +51,7 @@ export class TimelineUI {
         this.pillButton = document.getElementById('timeline-pill-btn');
         this.menu = document.getElementById('timeline-menu');
         this.addEventBtn = document.getElementById('add-event');
+        this.addChoice = document.getElementById('add-choice');
         this.viewer = document.getElementById('photo-viewer');
 
         this.setupListeners();
@@ -75,12 +76,22 @@ export class TimelineUI {
             if (button.dataset.view) this.setView(button.dataset.view);
             else if (button.dataset.action === 'close') this.close();
         });
+        this.addEventBtn.addEventListener('click', () => this.addEvent());
+        this.addChoice.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            if (!button) return;
+            this.toggleAddChoice(false);
+            if (button.dataset.target === 'world') this.uiManager.editUI.openNew();
+            else this.uiManager.modalManager.open();
+        });
         document.addEventListener('click', (e) => {
             if (!this.pill.contains(e.target)) this.toggleMenu(false);
+            if (!this.addChoice.contains(e.target) && !this.addEventBtn.contains(e.target)) this.toggleAddChoice(false);
         });
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Escape') return;
             this.toggleMenu(false);
+            this.toggleAddChoice(false);
             this.closePhoto();
         });
         // a click anywhere closes the viewer, except on a link or button in its details
@@ -294,6 +305,7 @@ export class TimelineUI {
             this.setAddress(id);
             this.renderPill();
             this.addEventBtn.style.display = 'block';
+            this.uiManager.editUI?.updateNewEventButton();
             this.uiManager.setPersonalFiltersVisible(true);
             this.markCurrentInList();
             document.getElementById('settings-panel').classList.remove('open');
@@ -316,6 +328,8 @@ export class TimelineUI {
         this.toggleMenu(false);
         // Add event is for personal timelines; world events are proposed through Suggest an edit
         this.addEventBtn.style.display = 'none';
+        this.toggleAddChoice(false);
+        this.uiManager.editUI?.updateNewEventButton();
         this.uiManager.setPersonalFiltersVisible(false);
         this.markCurrentInList();
         this.uiManager.resetLayout();
@@ -346,6 +360,23 @@ export class TimelineUI {
     toggleMenu(open = this.menu.hidden) {
         this.menu.hidden = !open;
         this.pillButton.setAttribute('aria-expanded', String(open));
+    }
+
+    // Add event adds to the open timeline. With world history shown and editing on, where it goes is a
+    // choice, so it asks first: this timeline, or a suggested world event.
+    addEvent() {
+        if (this.eventManager.timelineView === 'only' || !this.uiManager.editUI?.editing) {
+            this.uiManager.modalManager.open();
+            return;
+        }
+        this.addChoice.querySelector('.add-choice-title').textContent = this.current?.title ?? 'this timeline';
+        this.toggleAddChoice(this.addChoice.hidden);
+        if (!this.addChoice.hidden) this.addChoice.querySelector('button').focus();
+    }
+
+    toggleAddChoice(open) {
+        this.addChoice.hidden = !open;
+        this.addEventBtn.setAttribute('aria-expanded', String(open));
     }
 
     setView(view) {

@@ -153,3 +153,7 @@ html.staging .editing-toggle, html.staging #suggest-event, html.staging .edit-pe
 #staging-banner button:focus-visible { outline: 2px solid #93370d; outline-offset: 2px; }
 #staging-banner button:disabled { opacity: .6; cursor: default; }
 .staging-status a { color: inherit; font-weight: 600; }
+/* the new-events line sits under the summary; its button is pressed while only the new events show */
+.staging-new { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .4rem; }
+.staging-new[hidden], .staging-new [hidden] { display: none; }
+#staging-banner .staging-new-toggle[aria-pressed="true"] { border-color: #93370d; }
