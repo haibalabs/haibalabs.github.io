@@ -1,0 +1,3351 @@
+{
+ "format": "historiline-landmarks/v1",
+ "landmarks": [
+  {
+   "wikidata_qid": "Q351",
+   "label": "Yellowstone National Park",
+   "place_ids": [
+    "plc_75b42aa5-3be8-5dc7-9fee-5f3ee63ddc6a",
+    "plc_c0248e52-50f6-5add-a75e-04d7e9f47071"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    44.6,
+    -110.5
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Yellowstone_National_Park"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q4176",
+   "label": "Cologne Cathedral",
+   "place_ids": [
+    "plc_c942600c-bbe9-55a0-9ee1-4f3a74cfbbdd"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    50.94138888888889,
+    6.958333333333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Cologne_Cathedral"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q4513",
+   "label": "Mahabodhi Temple",
+   "place_ids": [
+    "plc_6359cb1f-8c10-598d-a081-ef59f2dc2ca0"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    24.696004,
+    84.991358
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mahabodhi_Temple"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q4519",
+   "label": "Naqsh-e Jahan Square",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    32.6575,
+    51.67777778
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Naqsh-e_Jahan_Square"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q4523",
+   "label": "Chogha Zanbil",
+   "place_ids": [
+    "plc_52d29eea-9ccb-5487-9e8f-b61c06cf5840"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    32.00833333,
+    48.52083333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Chogha_Zanbil"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5505",
+   "label": "Lake Victoria",
+   "place_ids": [
+    "plc_04d1b241-07d2-57a6-b3ae-5c40273044c4",
+    "plc_a41d919b-0d31-5fe7-b878-bab8c30396ec"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    -1,
+    33
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Lake_Victoria"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5513",
+   "label": "Lake Baikal",
+   "place_ids": [
+    "plc_54c18c38-a7c2-5d47-a2a0-4b40274728d5"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    53.30277778,
+    108.00472222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Lake_Baikal"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5684",
+   "label": "Babylon",
+   "place_ids": [
+    "plc_04b65255-ec37-5f77-ad28-a916c782185d",
+    "plc_343bb041-bc43-5fa5-a77f-d57aaeff25bc",
+    "plc_3a84618c-8914-50e5-92ad-8477347fb8d1",
+    "plc_938b5ea2-fade-5d91-97d0-10ffe35eba99",
+    "plc_ce9fb63e-d312-5964-86f3-0a71968a435b",
+    "plc_fa86676a-f3a4-5137-849d-c2ae27cc9aef"
+   ],
+   "tier": 1,
+   "icon": null,
+   "point": [
+    32.5425,
+    44.42111111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Babylon"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5747",
+   "label": "Palmyra",
+   "place_ids": [
+    "plc_2a7ecc48-0bcd-5cf3-b460-8e855b223d64",
+    "plc_6db37efd-858a-53a8-8458-d0eaf5c97be2",
+    "plc_a2593736-8e9d-5eb5-a548-4a3d42ab45c5",
+    "plc_dd7ccadb-18e3-5a87-9c74-06582c33a492"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    34.550381,
+    38.269791
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Palmyra"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5786",
+   "label": "Arch of Constantine",
+   "place_ids": [
+    "plc_ca68c3e6-1963-51b9-922e-fb26119b8753"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    41.889828,
+    12.490605
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Arch_of_Constantine"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5788",
+   "label": "Petra",
+   "place_ids": [
+    "plc_7f9cf641-a039-5636-bac3-24f57049b63f",
+    "plc_d323f242-ae15-59d4-a818-b7bfdb28563b"
+   ],
+   "tier": 1,
+   "icon": null,
+   "point": [
+    30.32861111,
+    35.44194444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Petra"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5908",
+   "label": "Aachen Cathedral",
+   "place_ids": [
+    "plc_458961bc-bc48-5114-a44e-8c1725b7c0ec"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    50.77475,
+    6.0839222222222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Aachen_Cathedral"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q5943",
+   "label": "St. Stephen's Cathedral",
+   "place_ids": [
+    "plc_f2589ad6-b4ab-5f4e-aba2-3fd3206a30d5"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    48.208427,
+    16.373256
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/St._Stephen's_Cathedral,_Vienna"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q7343",
+   "label": "Great Barrier Reef",
+   "place_ids": [
+    "plc_2bd41783-faaf-58b7-bc69-a8f3f491add1"
+   ],
+   "tier": 1,
+   "icon": null,
+   "point": [
+    -16.4,
+    145.8
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Great_Barrier_Reef"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q7350",
+   "label": "Panama Canal",
+   "place_ids": [
+    "plc_3aff4949-95ff-5673-989a-913260015f32",
+    "plc_7713f69c-990b-50fc-ba8a-872a67a6283d",
+    "plc_9a19d509-623b-5c19-a04d-e64671faaa0c",
+    "plc_e2d55b41-28fc-5785-bf40-cecc04b80eb0"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    9.12,
+    -79.75
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Panama_Canal"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q15312",
+   "label": "Jungfrau",
+   "place_ids": [
+    "plc_1f8c3f31-95ed-5821-b1a6-088d3612c612"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    46.536944444444,
+    7.9625
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Jungfrau"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q19675",
+   "label": "Louvre Museum",
+   "place_ids": [
+    "plc_af2600ae-916a-5fe3-8a71-69a8acc78767"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    48.861111111111114,
+    2.3358333333333334
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Louvre"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q20892",
+   "label": "Mont-Saint-Michel",
+   "place_ids": [
+    "plc_a0467de7-5dea-5322-86f6-04e0838d7756",
+    "plc_ff307a1d-d9e4-5a25-bf72-0bdcb45d4cef"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    48.636,
+    -1.511
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mont-Saint-Michel"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q26732",
+   "label": "Hampi",
+   "place_ids": [
+    "plc_0962d758-3cfd-5677-b37a-429aa6867d0a"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    15.334547,
+    76.462162
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Hampi"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q29265",
+   "label": "Canterbury Cathedral",
+   "place_ids": [
+    "plc_2f7ac394-7f9b-5a99-85dd-09aa03ccb63a",
+    "plc_6af5e771-771c-53c3-8817-6c1f4266e924",
+    "plc_b780b098-1f59-5882-a17e-4a0233dc781a",
+    "plc_e2e1966b-9e02-575c-b08e-3a817cd7cad0"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    51.279811,
+    1.083001
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Canterbury_Cathedral"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q33200",
+   "label": "Mosque–Cathedral of Córdoba",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    37.87916667,
+    -4.77972222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mosque–Cathedral_of_Córdoba"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q35525",
+   "label": "White House",
+   "place_ids": [
+    "plc_1f51d102-5991-558d-807b-7416b8c27a14",
+    "plc_79f541c6-6d44-5735-84e9-dcddb7d48764",
+    "plc_bc8e8855-eb44-59b7-a529-34c5deac7dec"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    38.897777777777776,
+    -77.03666666666666
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/White_House"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q38095",
+   "label": "Galapagos Islands",
+   "place_ids": [
+    "plc_b32465ad-e86e-5e4b-ba94-00c09bd2f7eb"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    -0.66666666666667,
+    -90.55
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Galápagos_Islands"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q41116",
+   "label": "Red Square",
+   "place_ids": [
+    "plc_96eef95a-962e-54a3-9a58-3748110b26f3",
+    "plc_c2f89670-8bad-5c19-8dd4-2b222288435d"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    55.754166666667,
+    37.62
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Red_Square"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q41346",
+   "label": "Hassan II Mosque",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    33.6085,
+    -7.6327
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Hassan_II_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q42646",
+   "label": "Windsor Castle",
+   "place_ids": [
+    "plc_269b6394-1828-558e-8a65-f149494b137e",
+    "plc_445d957f-5922-59c6-858b-882ed72b4d49",
+    "plc_57c2c193-3514-598d-8fdb-68cddf12e3a2",
+    "plc_a6abff35-4cc2-554c-b6ce-6897f15acae1",
+    "plc_b792b86e-d62b-5f91-be38-327057750a8d"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    51.48388888888889,
+    -0.6044444444444445
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Windsor_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q43105",
+   "label": "Mount Elbrus",
+   "place_ids": [
+    "plc_1976bf19-cb3d-5713-bfa4-b99c5661428b"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    43.35254,
+    42.437875
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Elbrus"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q43277",
+   "label": "Arg-e Bam",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    29.11694444,
+    58.36861111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Arg-e_Bam"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q43278",
+   "label": "Victoria Falls",
+   "place_ids": [
+    "plc_6481fb7e-b5a1-52c0-8b52-60371aa076b1"
+   ],
+   "tier": 1,
+   "icon": null,
+   "point": [
+    -17.92444444,
+    25.85666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Victoria_Falls"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q43286",
+   "label": "Mogao Caves",
+   "place_ids": [
+    "plc_53a02fd2-5cb2-5613-b533-d3ec4a8e5b14"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    40.037222222222,
+    94.804166666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mogao_Caves"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q43512",
+   "label": "K2",
+   "place_ids": [
+    "plc_79f11fb1-3f0a-536a-8e4d-12a6b8971762"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    35.881111111111,
+    76.513333333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/K2"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q47611",
+   "label": "Ephesus",
+   "place_ids": [
+    "plc_01ae8c6d-1f5b-565a-80ce-9c4a7061c962",
+    "plc_298cc234-c018-56ca-bfac-893805a526ca",
+    "plc_389690f6-7c6a-5d64-b86f-5f96460c7fb1",
+    "plc_a029bbb1-fe23-503b-b892-c0b5e7096128",
+    "plc_ee2f020e-c360-59c8-9e25-46550523a094"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    37.94058,
+    27.33939
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ephesus"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q49650",
+   "label": "Loch Ness",
+   "place_ids": [
+    "plc_972123e0-a149-57d1-a61e-27488d9320fc"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    57.3,
+    -4.45
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Loch_Ness"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q54109",
+   "label": "United States Capitol",
+   "place_ids": [
+    "plc_2439ce66-ef75-5583-bc66-062a527a3e0c",
+    "plc_283bd8d2-c5d8-5bc7-a188-f445e704b46b",
+    "plc_a6e7c8a3-cf50-5817-91bf-30faa5961abf",
+    "plc_a72eef43-abdd-5bef-a485-d309872f9408",
+    "plc_c6ef3b99-d75b-5ad3-806f-4ca8f100f539",
+    "plc_e9e4c536-f2aa-5813-b3e3-7a9680bec3e0"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    38.889722222222225,
+    -77.00916666666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/United_States_Capitol"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q54504",
+   "label": "Port Jackson",
+   "place_ids": [
+    "plc_224f1d54-3d35-542e-b959-552a1a58b66c",
+    "plc_9e8479d6-3ea8-5486-8161-8611598e9d38"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    -33.858333333333,
+    151.23333333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Port_Jackson"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q57357",
+   "label": "Hadrian's Wall",
+   "place_ids": [
+    "plc_09314bbb-55e1-5214-8df6-f1a44c97ebaa",
+    "plc_4097d5b9-7e6e-5bf4-89ec-7d1bd307e2e3",
+    "plc_a545f247-0af9-5a95-b7fc-80b572c1796c"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    55.024166666667,
+    -2.2925
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Hadrian's_Wall"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q61750",
+   "label": "Tiwanaku",
+   "place_ids": [
+    "plc_6a34e4bd-2a4f-5d2b-8d2b-ca12b25ab443"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    -16.554722222222,
+    -68.673333333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Tiwanaku"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q62677",
+   "label": "Karakorum",
+   "place_ids": [
+    "plc_d25b787d-dfb8-5c4c-bd08-2f1eb2546a4c",
+    "plc_d7abbefa-6df2-5761-9a77-99aa837d386c"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    47.19753,
+    102.82379
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Karakorum"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q71279",
+   "label": "Malbork Castle",
+   "place_ids": [
+    "plc_09cec262-9339-59e2-a0c6-434c6001d426"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    54.039722222222,
+    19.027777777778
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Malbork_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q75459",
+   "label": "Delphi",
+   "place_ids": [
+    "plc_7edb8a76-e504-5104-8eae-0501b7fdc3f6"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    38.4823,
+    22.5013
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Delphi"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q80344",
+   "label": "Mount Olympus",
+   "place_ids": [
+    "plc_50f1d967-17ff-5244-9976-4b1148ee4044"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    40.083333333333336,
+    22.35
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Olympus"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q82613",
+   "label": "Krakatoa",
+   "place_ids": [
+    "plc_37b84214-6398-5652-90ab-c9c50bb85394",
+    "plc_b1736f7a-ab9c-5043-b973-9e34b4a84597",
+    "plc_eb09d8f1-ff02-51ab-b7cd-c40f3c3bced4"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    -6.102,
+    105.423
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Krakatoa"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q126982",
+   "label": "Sea of Galilee",
+   "place_ids": [
+    "plc_8ac2cedb-5b5b-5f60-bde7-2418686e61d4",
+    "plc_d07eb512-c7aa-5655-9b71-b3d1ae3fa172"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    32.818906,
+    35.590033
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Sea_of_Galilee"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q127091",
+   "label": "Pearl Harbor",
+   "place_ids": [
+    "plc_34d770a0-2db0-5551-ad5c-fa445cf93222"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    21.361944,
+    -157.953611
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Pearl_Harbor"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q130321",
+   "label": "Mount Athos",
+   "place_ids": [
+    "plc_34038235-918d-5764-a262-39543033cd1e",
+    "plc_5e279361-4d5b-52ca-8e80-d94bbe6049c6"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    40.15833333333333,
+    24.327222222222222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Athos"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q131330",
+   "label": "Schönbrunn Palace",
+   "place_ids": [
+    "plc_50599e4b-c1af-5f30-b5d7-6db83cb43f2c",
+    "plc_b1ef398a-419c-543b-b609-477d00c466ba"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    48.18479,
+    16.31227
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Schönbrunn_Palace"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q132564",
+   "label": "Mycenae",
+   "place_ids": [
+    "plc_217b49ba-d9a1-57e4-b557-02caa1860c9a",
+    "plc_47604295-0b33-57d2-9647-5e841f518bfb",
+    "plc_a16594db-5203-5a53-89b7-81aca2bc061c"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    37.730833333333,
+    22.756111111111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mycenae"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q134108",
+   "label": "Merapi",
+   "place_ids": [
+    "plc_64885e95-7179-56b1-a4ee-bdd276922851",
+    "plc_66fcc175-e69d-5bac-bcfe-3bdd9a045a69"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    -7.541388888888889,
+    110.44611111111111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Merapi"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q146219",
+   "label": "Erg Chebbi",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.16666667,
+    -3.98333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Erg_Chebbi"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q156258",
+   "label": "Lake Ohrid",
+   "place_ids": [
+    "plc_60acd650-fe72-51d2-ab93-cb1b31d4c92c"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    41.03333333333333,
+    20.716666666666665
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Lake_Ohrid"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q159762",
+   "label": "Mauna Loa",
+   "place_ids": [
+    "plc_5fa3443a-27d3-5ebc-84d8-a0025f9cbd67"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    19.483333333333,
+    -155.6
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mauna_Loa"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q164055",
+   "label": "Tiananmen Square",
+   "place_ids": [
+    "plc_2b351b85-437e-5779-a71e-8356bc6a3fa6",
+    "plc_6f203ab7-94e3-5819-a31a-f31323ead081"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    39.904567,
+    116.391392
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Tiananmen_Square"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q170495",
+   "label": "Topkapı Palace",
+   "place_ids": [
+    "plc_7e8ca297-9ff8-592a-bbe4-1ca2fd1fb9d1"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    41.013,
+    28.984
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Topkapı_Palace"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q171857",
+   "label": "Agra Fort",
+   "place_ids": [
+    "plc_0a7f83c8-d71a-56a8-8947-190e5bdc89e3"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    27.179583333333,
+    78.021297222222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Agra_Fort"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q172070",
+   "label": "Mount Kenya",
+   "place_ids": [
+    "plc_8a8db3eb-8de5-52a6-aa87-80fd19576696",
+    "plc_d1f1858a-8771-5092-b711-b6d1369485b7"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    -0.1,
+    37.2
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Kenya"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q172077",
+   "label": "Dome of the Rock",
+   "place_ids": [],
+   "tier": 1,
+   "icon": null,
+   "point": [
+    31.778,
+    35.2354
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Dome_of_the_Rock"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q173882",
+   "label": "St Paul's Cathedral",
+   "place_ids": [
+    "plc_200c1729-dfe4-5c2e-a75e-4f322d8bc81a",
+    "plc_3d524333-718f-5fec-a3c0-6603b58f1b89",
+    "plc_3e7ccc13-62b6-5397-a128-1fe6b9e52899",
+    "plc_5a9e4df1-7992-559b-baa9-101fa7f59b5e",
+    "plc_de9aa186-85cb-5982-87c5-822f597186a2"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    51.513777777777776,
+    -0.09830555555555556
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/St_Paul's_Cathedral"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q177549",
+   "label": "Krak des Chevaliers",
+   "place_ids": [
+    "plc_7a97bd4d-f870-5255-8157-f9acd5d8a6db",
+    "plc_deae9d56-d91f-50fd-afe9-970fe374ebad"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    34.75694444444444,
+    36.29472222222222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Krak_des_Chevaliers"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q178114",
+   "label": "Washington Monument",
+   "place_ids": [
+    "plc_083f424e-8441-5436-aab6-7ef88f0a46f1"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    38.889475,
+    -77.035244444444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Washington_Monument"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q178167",
+   "label": "Mount Kosciuszko",
+   "place_ids": [
+    "plc_a97627ad-f689-5785-bec2-97011a5805b8"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    -36.4558303,
+    148.2635105
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Kosciuszko"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q178643",
+   "label": "Süleymaniye Mosque",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    41.01611111,
+    28.96388889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Süleymaniye_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q178813",
+   "label": "Herculaneum",
+   "place_ids": [
+    "plc_df10f2e6-88ec-512e-9405-d57e726d6abb",
+    "plc_f173ac4d-b34b-5109-a89e-44a0993882d4"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    40.806111,
+    14.3475
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Herculaneum"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q179046",
+   "label": "Fatehpur Sikri",
+   "place_ids": [
+    "plc_4afc740b-09f3-5d5c-84a5-d37e47c886a2",
+    "plc_afafe0bb-e941-5fc5-93c8-b01af7fb2d38"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    27.091111111111,
+    77.661111111111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Fatehpur_Sikri"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q180012",
+   "label": "Behistun Inscription",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.39055556,
+    47.43583333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Behistun_Inscription"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q180212",
+   "label": "Roman Forum",
+   "place_ids": [
+    "plc_4fe3ec55-0c99-5a87-93bd-a485526ea360"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    41.8922,
+    12.4852
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Roman_Forum"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q181123",
+   "label": "Sanchi",
+   "place_ids": [
+    "plc_28b02b6a-133f-5878-80d4-2bed9cea0268"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    23.47944444,
+    77.73972222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Sanchi_Stupa"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q181427",
+   "label": "Palenque",
+   "place_ids": [
+    "plc_59200bca-129c-5303-906f-2ca08af7dc40",
+    "plc_72d82fb1-4f0d-5d5d-96f3-f4383e323957",
+    "plc_94a1e81b-4f90-5213-b421-e97c412909af",
+    "plc_a8b35a12-2dc5-5edb-894d-e4688b16ea28",
+    "plc_f4e40f3b-2d33-5327-8309-572c3eab93da"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    17.484166666666667,
+    -92.04638888888888
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Palenque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q181932",
+   "label": "Lake Sevan",
+   "place_ids": [
+    "plc_8e990cb5-3f65-5b57-8ea0-d7ed3b595154"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    40.310555555556,
+    45.349166666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Lake_Sevan"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q182147",
+   "label": "Winter Palace",
+   "place_ids": [
+    "plc_a01b7bcb-089b-579e-8465-d12d00fc6b3d"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    59.940277777778,
+    30.313888888889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Winter_Palace"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q183562",
+   "label": "Umayyad Mosque",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    33.51138889,
+    36.30666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Umayyad_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q185362",
+   "label": "Saint Catherine Monastery",
+   "place_ids": [
+    "plc_474f9ff5-2c6c-5651-9cdc-d6322e659449",
+    "plc_8f37f3e0-241f-5911-abfc-14beccda3e9d"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    28.555830555556,
+    33.975561111111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Saint_Catherine's_Monastery"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q187635",
+   "label": "Qutb Minar",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    28.524355,
+    77.185248
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Qutb_Minar"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q187702",
+   "label": "Church of the Holy Sepulchre",
+   "place_ids": [
+    "plc_958afb4b-ef0e-558d-b426-53e1a061dd3d",
+    "plc_dc1fce5e-2907-5ee2-a2e9-c92cca653d66"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.778444444444,
+    35.22975
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Church_of_the_Holy_Sepulchre"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q188977",
+   "label": "Les Invalides",
+   "place_ids": [
+    "plc_3d42af34-13de-51ce-9037-538f5fb9f495"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    48.855,
+    2.3125
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Les_Invalides"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q188982",
+   "label": "Mount Erebus",
+   "place_ids": [
+    "plc_a1979069-38a6-5841-89a0-19fdcbf16dcb",
+    "plc_ee709bce-c9f1-5ca4-ade1-adfa1a994eb3"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    -77.533333333333,
+    167.28333333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Erebus"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q189113",
+   "label": "L'Anse aux Meadows",
+   "place_ids": [
+    "plc_6eb71e4e-a9d1-53f8-82c9-dd2715e67e14"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    51.595266666667,
+    -55.531222222222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/L'Anse_aux_Meadows"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q189358",
+   "label": "Kronborg Castle",
+   "place_ids": [
+    "plc_ef746a8e-dc46-54c9-bd7e-6db4bf16d52e"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    56.038611111111,
+    12.621944444444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Kronborg"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q189764",
+   "label": "Pont du Gard",
+   "place_ids": [
+    "plc_848f71c6-2be8-5ee7-87d9-799dfc9e6b12"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    43.9473,
+    4.5355
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Pont_du_Gard"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q191504",
+   "label": "Leptis Magna",
+   "place_ids": [
+    "plc_8cf559da-e7e7-59a4-98ed-447702d6dc62",
+    "plc_f706c581-924e-5048-8d15-687b00552bbc"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    32.638331884068016,
+    14.29049645909896
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Leptis_Magna"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q191739",
+   "label": "Florence Cathedral",
+   "place_ids": [
+    "plc_e9b8f061-7e14-55f0-a05d-cce89c0b176f"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    43.77305555555556,
+    11.256944444444445
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Florence_Cathedral"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q192493",
+   "label": "Robben Island",
+   "place_ids": [
+    "plc_4b6eb5a0-1b05-5779-bb83-30527aa7f589"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    -33.805,
+    18.37
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Robben_Island"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q192541",
+   "label": "Ctesiphon",
+   "place_ids": [
+    "plc_3d8beaa6-9037-5fe8-8ffd-31db0b363438",
+    "plc_669afed6-e368-571e-a1a7-4fa8e74392c2",
+    "plc_86bcc58e-ec54-58e2-ad40-6d71bddfb2e8",
+    "plc_8987dfde-5fe8-5aab-a973-1e52561fa406",
+    "plc_9735fcad-cd93-5f10-a3af-d89192a66f79"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    33.093611,
+    44.580833
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ctesiphon"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q192981",
+   "label": "Minaret of Jam",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.39655556,
+    64.51605556
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Minaret_of_Jam"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q193163",
+   "label": "Temple Mount",
+   "place_ids": [
+    "plc_62a4627c-8680-572b-90ce-51dc00699088",
+    "plc_6310be11-6afb-56ce-acc3-3399d9a84502"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.777777777778,
+    35.235555555556
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Temple_Mount"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q193369",
+   "label": "Prague Castle",
+   "place_ids": [
+    "plc_36b13ce9-567f-5527-9d49-81d0b358addb"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    50.09,
+    14.4
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Prague_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q194057",
+   "label": "Mount Rainier",
+   "place_ids": [
+    "plc_1772aa6f-9f55-55c4-8778-9c977a0bce77",
+    "plc_efdebadc-66c8-54fd-9615-18e74f373b29"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    46.85166666666667,
+    -121.76027777777777
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Rainier"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q199903",
+   "label": "Lake Taupō",
+   "place_ids": [
+    "plc_cd234d1e-67d6-51e5-bf7a-835833fbdbb7",
+    "plc_f25a03a0-a0ae-501f-b7ea-7feba060fb28"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    -38.816666666667,
+    175.91666666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Lake_Taupō"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q202927",
+   "label": "Ziggurat of Ur",
+   "place_ids": [
+    "plc_1c91a622-d2b3-5cd5-b73a-33324517e4eb"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    30.96277778,
+    46.10305556
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ziggurat_of_Ur"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q204871",
+   "label": "Charles Bridge",
+   "place_ids": [
+    "plc_ba1ed0bb-41c7-515f-a489-5f51ab7bd9b5"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    50.086388888889,
+    14.411944444444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Charles_Bridge"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q205367",
+   "label": "Château de Chambord",
+   "place_ids": [
+    "plc_649c587b-cc8d-5c14-9448-0e44ff0a3004",
+    "plc_cfbb8490-0d93-5d6c-805c-5438b6dbb58a"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    47.61611111111111,
+    1.5172222222222222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Château_de_Chambord"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q206823",
+   "label": "Reims Cathedral",
+   "place_ids": [
+    "plc_6ed3280e-4957-5c74-8a4e-578170e5edc5",
+    "plc_963639df-8244-57e0-a08f-633726806f66",
+    "plc_ea6930bf-9b5c-5808-9513-9f5f146dd512"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    49.25388888888889,
+    4.034166666666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Reims_Cathedral"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q207808",
+   "label": "Circus Maximus",
+   "place_ids": [
+    "plc_9b3df944-06d4-57d1-8cdf-d22e3ea0d861"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    41.8859,
+    12.4857
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Circus_Maximus"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q207917",
+   "label": "Mount Nemrut",
+   "place_ids": [
+    "plc_72412779-b92f-5d93-ae7c-e69e580034f0"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    37.98073888888889,
+    38.740830555555554
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Nemrut"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q208379",
+   "label": "Tel Megiddo",
+   "place_ids": [
+    "plc_535be3b2-8ee6-5417-8a50-fefc3db9f8d1",
+    "plc_7bd99231-41fb-5822-be7d-77fda57ad91b"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    32.585277777777776,
+    35.184444444444445
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Tel_Megiddo"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q210610",
+   "label": "Golestan Palace",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    35.67972222,
+    51.42027778
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Golestan_Palace"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q213232",
+   "label": "Uxmal",
+   "place_ids": [
+    "plc_4ce49f0d-0154-52d4-98da-03e8d91cd565",
+    "plc_c2c8e8b4-3653-59d7-97c8-07e6aafe14f6",
+    "plc_eec53379-27fd-5228-9c90-e44dd4130586"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    20.359444444444,
+    -89.771388888889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Uxmal"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q213559",
+   "label": "Lincoln Memorial",
+   "place_ids": [
+    "plc_7d6d12a2-41dc-57e0-8a68-b0004d5bb92a",
+    "plc_9b4e3e0e-3377-548a-9fea-983e28a6e218"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    38.889277777778,
+    -77.050138888889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Lincoln_Memorial"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q214827",
+   "label": "Copán",
+   "place_ids": [
+    "plc_96a26a0f-0aaf-5810-9209-c79082acd077",
+    "plc_bfe168e8-0af7-5569-979b-2415df39853c",
+    "plc_e93af6dc-f89d-5f28-b32a-691077e4ec03"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    14.837963888888888,
+    -89.14244166666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Copán"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q216059",
+   "label": "Mount Tai",
+   "place_ids": [
+    "plc_23aab346-10cf-5609-8258-4076ed2254f1"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    36.266666666667,
+    117.1
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Tai"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q216939",
+   "label": "Essaouira",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    31.51305556,
+    -9.76972222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Essaouira"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q219028",
+   "label": "Mausoleum of Mohammed V",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.02261389,
+    -6.82194722
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mausoleum_of_Mohammed_V"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q223665",
+   "label": "Angkor Thom",
+   "place_ids": [
+    "plc_3bd74f00-edc9-5183-bd04-50172bb8f799"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    13.443302,
+    103.859682
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Angkor_Thom"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q230025",
+   "label": "Pasargadae",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    30.2,
+    53.17944444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Pasargadae"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q232771",
+   "label": "Shaolin Monastery",
+   "place_ids": [
+    "plc_18890230-0d6d-5192-af8a-236cbfa39ac2"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.50709,
+    112.93569
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Shaolin_Monastery"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q233576",
+   "label": "Epidaurus",
+   "place_ids": [
+    "plc_669f0410-63ba-5062-9156-e31769c617af",
+    "plc_ac3d6fe8-6652-5f1b-82f7-07ab229b2705",
+    "plc_c99564b1-16a3-5416-8922-bbf708078ff3"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    37.59777777777778,
+    23.074444444444445
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Epidaurus"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q258348",
+   "label": "Jemaa el-Fnaa",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    31.62583333,
+    -7.98944444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Jemaa_el-Fnaa"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q272771",
+   "label": "Calakmul",
+   "place_ids": [
+    "plc_72506507-d578-5362-9252-ffc4e9bcb07d",
+    "plc_b635e232-2786-5357-9222-1369ba3fca2e"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    18.105,
+    -89.81055555555555
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Calakmul"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q272777",
+   "label": "Hadrian's Villa",
+   "place_ids": [
+    "plc_5d23c19c-9079-5a53-9af3-f1ba9b751fc9",
+    "plc_9de59c3c-cda6-52e2-808d-230471d19956"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    41.941944,
+    12.775278
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Hadrian's_Villa"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q309436",
+   "label": "Aït Benhaddou",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.04722222,
+    -7.12888889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Aït_Benhaddou"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q309484",
+   "label": "Al-Askari Shrine",
+   "place_ids": [
+    "plc_f1871092-6f17-5921-b39d-f5feb3b3bfab"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.1989,
+    43.8735
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Al-Askari_Shrine"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q312342",
+   "label": "Al-Azhar Mosque",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    30.045709,
+    31.262683
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Al-Azhar_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q318422",
+   "label": "Quiriguá",
+   "place_ids": [
+    "plc_0b21c453-8e2f-5c20-814c-6e25f43ca9ed",
+    "plc_3a4f88ff-ef30-53b6-ae1a-5422c9751799"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    15.269444444444,
+    -89.040277777778
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Quiriguá"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q321242",
+   "label": "Osaka Castle",
+   "place_ids": [
+    "plc_48ff8fdd-238b-5a6e-87fc-86b6bb25a4e7",
+    "plc_946de084-605c-503c-99b1-7ecf1d08aa57"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.687222222222,
+    135.52583333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Osaka_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q330872",
+   "label": "Badshahi Mosque",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.58805556,
+    74.30944444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Badshahi_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q333661",
+   "label": "Cahokia",
+   "place_ids": [
+    "plc_5c6b7488-4fa4-5b69-9504-8330da2a44cd"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    38.653888888889,
+    -90.064444444444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Cahokia"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q378014",
+   "label": "University of al-Qarawiyyin",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    34.06444444,
+    -4.97333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/University_of_al-Qarawiyyin"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q390275",
+   "label": "Bran Castle",
+   "place_ids": [
+    "plc_fafacfd6-8f3f-5e8e-b17d-6d7c96d4e749"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    45.515,
+    25.3671
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Bran_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q391215",
+   "label": "Volubilis",
+   "place_ids": [
+    "plc_bc41c2f2-c920-569f-b098-2ea503912d9a",
+    "plc_ff08e23d-1de2-5c7e-972b-f3d5fbbd2f4e"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.0399646,
+    -5.5626871
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Volubilis"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q428858",
+   "label": "Great Mosque of Mecca (Masjid al-Haram)",
+   "place_ids": [
+    "plc_0a9e232f-b57e-557c-a22b-73385cf86655",
+    "plc_0ad52c93-1f73-588b-bdff-cc7a163bb180",
+    "plc_3747bab3-8b8b-5a4b-b690-c2771aa3f893",
+    "plc_41a873ce-794a-51a0-b1ef-cc70d8653a22",
+    "plc_44f15b9c-a64a-58b0-949c-322816fcda4b",
+    "plc_49abb680-cacb-5ab2-aaea-cb07d0de79e3",
+    "plc_6986d25a-2f3e-53aa-9217-7d051fb458e8",
+    "plc_72939871-0c30-5c2f-bd70-e6e9bc564e2d",
+    "plc_c22c288b-10c1-5f62-82fe-b780d285bc6d",
+    "plc_f51a77b8-dbd1-5a9c-8b2a-4aa292df4019"
+   ],
+   "tier": 1,
+   "icon": null,
+   "point": [
+    21.4225,
+    39.82611111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Great_Mosque_of_Mecca"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q456575",
+   "label": "Mysore Palace",
+   "place_ids": [
+    "plc_06e6a4ee-91cd-5c51-a925-283f663d8b1b"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    12.303888888889,
+    76.654444444444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mysore_Palace"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q456817",
+   "label": "Amber Fort",
+   "place_ids": [
+    "plc_ee28b6a3-15a9-56f6-a229-92db510664e9"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    26.9859,
+    75.8507
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Amber_Fort"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q482485",
+   "label": "Gyeongbokgung",
+   "place_ids": [
+    "plc_a8b1a4c2-984a-56fd-bff9-a09bca81469e"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    37.5798841,
+    126.9767996
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Gyeongbokgung"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q486080",
+   "label": "Prophet's Mosque",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    24.468333,
+    39.610833
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Prophet's_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q486382",
+   "label": "Castel Sant'Angelo",
+   "place_ids": [
+    "plc_82dc6042-11c3-5850-a17f-8a600ee404dc"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    41.903044,
+    12.466307
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Castel_Sant'Angelo"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q503433",
+   "label": "Toubkal",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.05963,
+    -7.91513
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Toubkal"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q540964",
+   "label": "Harlech Castle",
+   "place_ids": [
+    "plc_6cf91a5a-5302-52bc-b2d9-2e26c7be5f04",
+    "plc_963436ae-65da-5203-a9e7-aa9fea5633ac",
+    "plc_ee3ac104-7357-5b61-9f4d-55391b3c1d5a"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    52.860004,
+    -4.1091644
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Harlech_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q544113",
+   "label": "Glastonbury Abbey",
+   "place_ids": [
+    "plc_12bc9623-dc41-51fb-8d2c-445c5119c812",
+    "plc_28f91507-0118-5c41-8fd3-7f20e9d2fd04"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    51.14611111111111,
+    -2.7152777777777777
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Glastonbury_Abbey"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q579331",
+   "label": "Hassan Tower",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.02416111,
+    -6.822825
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Hassan_Tower"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q593115",
+   "label": "Great Mosque of Samarra",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    34.20583333,
+    43.87972222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Great_Mosque_of_Samarra"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q639208",
+   "label": "Bodiam Castle",
+   "place_ids": [
+    "plc_28b1dfb0-9df3-5730-8ba9-d6b080434b4a"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    51.00226,
+    0.54353
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Bodiam_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q643098",
+   "label": "Shah Mosque (Isfahan)",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    32.65444444,
+    51.6775
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Shah_Mosque_(Isfahan)"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q648705",
+   "label": "Naqsh-e Rostam",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    29.98888889,
+    52.87472222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Naqsh-e_Rostam"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q667674",
+   "label": "Si-o-se-pol",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    32.64487,
+    51.66759
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Si-o-se-pol"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q676778",
+   "label": "Chefchaouen",
+   "place_ids": [
+    "plc_3b685568-1f5d-52b0-8128-73857f72b048"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    35.17138889,
+    -5.26972222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Chefchaouen"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q683632",
+   "label": "Great Mosque of Djenné",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    13.90527778,
+    -4.55555556
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Great_Mosque_of_Djenné"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q687168",
+   "label": "Ise Jingū",
+   "place_ids": [
+    "plc_e5243571-7c38-565b-8b0d-27bde57f4ee1",
+    "plc_ead23760-ce34-5834-9954-230109ad9480"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.455,
+    136.72583333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ise_Shrine"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q695604",
+   "label": "Sheikh Zayed Grand Mosque",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    24.412,
+    54.474
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Sheikh_Zayed_Grand_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q721817",
+   "label": "Basilica of San Vitale",
+   "place_ids": [
+    "plc_0076bc7b-0c9d-5455-9142-c4bd0f50649b"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    44.42055555555555,
+    12.196388888888889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Basilica_of_San_Vitale"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q732463",
+   "label": "Chaco Culture National Historical Park",
+   "place_ids": [
+    "plc_f1695304-bcda-5b54-9a09-eb993a8bf1a6"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    36.06,
+    -107.97
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Chaco_Culture_National_Historical_Park"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q748040",
+   "label": "Mount Hiei",
+   "place_ids": [
+    "plc_140db53f-5533-58e0-824a-a6a5786b5663",
+    "plc_da5855a1-55e5-5c12-b54b-35775a3f9e7e",
+    "plc_fb583cf6-1954-5f47-a96b-636d3279a737"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    35.066666666667,
+    135.83833333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mount_Hiei"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q756268",
+   "label": "Stirling Castle",
+   "place_ids": [
+    "plc_2e090cfd-e4c1-5e60-af80-5e9711a53fdf",
+    "plc_57132cdc-060b-5031-b13c-019e7f3173ec",
+    "plc_6992a7ff-c590-5e62-b13c-7a960b46dca8",
+    "plc_725b0208-c8b5-5f95-9a7c-10cb5320f48e",
+    "plc_fd31ada2-adde-58c9-8c06-b3801eb407d5"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    56.12388888888889,
+    -3.9477777777777776
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Stirling_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q756824",
+   "label": "Temple of Hephaestus",
+   "place_ids": [
+    "plc_47876a5c-4095-5d5d-9522-6c13f8e4aad3"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    37.975616666667,
+    23.721391666667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Temple_of_Hephaestus"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q773704",
+   "label": "Imam Husayn Shrine",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    32.61638889,
+    44.0325
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Imam_Husayn_Shrine"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q838359",
+   "label": "Imam Ali Shrine",
+   "place_ids": [
+    "plc_174a4d65-5a27-5570-b314-ba921fd80b3f"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.9959,
+    44.3146
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Imam_Ali_Shrine"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q873769",
+   "label": "Grand Palace",
+   "place_ids": [
+    "plc_d8f9eade-23ef-5020-a1bd-b10b1fbc6347"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    13.750138888889,
+    100.49202777778
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Grand_Palace"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q881739",
+   "label": "Blarney Castle",
+   "place_ids": [
+    "plc_fb3637f5-7a17-527d-94ae-b65aaa5aee71"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    51.928888888889,
+    -8.5708333333333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Blarney_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q889902",
+   "label": "Boudhanath",
+   "place_ids": [
+    "plc_31fe7fc9-7fd2-5a54-8bbc-8b1fdb5ed4f2"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    27.721389,
+    85.361944
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Boudha_Stupa"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q894682",
+   "label": "Botany Bay",
+   "place_ids": [
+    "plc_2d116029-ec06-5d01-a7c9-74d0d3cfd336",
+    "plc_81736586-2b09-5f43-8ec8-57b1a7c51c63",
+    "plc_a96a284b-15e9-584a-9058-e5bb53311513"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    -33.983333,
+    151.183333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Botany_Bay"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q910180",
+   "label": "Mausoleum of the First Qin Emperor",
+   "place_ids": [
+    "plc_fb5b78d3-81fd-5052-adec-ff51ef743ccd"
+   ],
+   "tier": 1,
+   "icon": null,
+   "point": [
+    34.38166667,
+    109.25388889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mausoleum_of_Qin_Shi_Huang"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q915413",
+   "label": "Mosque of Ibn Tulun",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    30.02888889,
+    31.24944444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Mosque_of_Ibn_Tulun"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q950970",
+   "label": "Dover Castle",
+   "place_ids": [
+    "plc_6ed0f790-392b-5984-8ed0-3364a5cbfa5e",
+    "plc_c9305ea4-e055-5ab7-9dc3-827014917296"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    51.128268,
+    1.3235035
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Dover_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q999109",
+   "label": "Port Arthur",
+   "place_ids": [
+    "plc_27b44896-d85c-5948-beca-1e1b2bb5ba64"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    -43.156388888889,
+    147.84722222222
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Port_Arthur,_Tasmania"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1012797",
+   "label": "Ostia",
+   "place_ids": [
+    "plc_05d9d9f3-1a63-5ad5-a274-041d220a42a5",
+    "plc_3bc68de0-6276-5450-866d-f0cc6cf27a90",
+    "plc_d0c46c9d-20e3-5a0b-8cf0-2f171bbe93cd"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    41.75416666666667,
+    12.2875
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Ostia_Antica"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1045876",
+   "label": "Wat Phra Kaew",
+   "place_ids": [
+    "plc_c1af832a-0e53-5795-8098-6d7ff4f7b0b8"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    13.751388888888888,
+    100.49277777777777
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Wat_Phra_Kaew"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1137533",
+   "label": "Koutoubia Mosque",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.624124,
+    -7.993541
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Koutoubia_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1140026",
+   "label": "Azadi Tower",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    35.69944444,
+    51.33777778
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Azadi_Tower"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1255597",
+   "label": "Rock of Cashel",
+   "place_ids": [
+    "plc_c9447944-868e-551f-916d-c32a92706038"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    52.52,
+    -7.89
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Rock_of_Cashel"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1256223",
+   "label": "Gur-e-Amir",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    39.64833333,
+    66.96888889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Gur-e-Amir"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1256501",
+   "label": "Jameh Mosque of Isfahan",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    32.66972222,
+    51.68527778
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Jameh_Mosque_of_Isfahan"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1373583",
+   "label": "Registan",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    39.65472222,
+    66.97555556
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Registan"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1419157",
+   "label": "Sümela Monastery",
+   "place_ids": [
+    "plc_863ca9d7-87ac-5f32-aa3d-d3e4340136d1"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    40.69,
+    39.65833333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Sumela_Monastery"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1503673",
+   "label": "Philae",
+   "place_ids": [
+    "plc_85e0ca8c-2054-55aa-ba70-0db509f2abc3"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    24.02083333,
+    32.88944444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Philae_temple_complex"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1589289",
+   "label": "Parliament Hill",
+   "place_ids": [
+    "plc_c62b7914-5405-5815-b431-b936dfbf65f0"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    45.42472222222222,
+    -75.69944444444444
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Parliament_Hill"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1791841",
+   "label": "Imam Reza shrine",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    36.288,
+    59.6157
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Imam_Reza_shrine"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q1988240",
+   "label": "Cairo Citadel",
+   "place_ids": [],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    30.02944444,
+    31.26138889
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Cairo_Citadel"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q2152745",
+   "label": "Saadian Tombs",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    31.6173,
+    -7.988702
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Saadian_Tombs"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q2465115",
+   "label": "Bahia Palace",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    31.62159167,
+    -7.98223056
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Bahia_Palace"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q2480949",
+   "label": "Djinguereber Mosque",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    16.77138889,
+    -3.01
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Djinguereber_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q2569036",
+   "label": "Kasbah of the Udayas",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.03055556,
+    -6.83555556
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Kasbah_of_the_Udayas"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q2877688",
+   "label": "Bab Mansour",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    33.89261111,
+    -5.56458333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Bab_Mansour"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q4294007",
+   "label": "Kalyan Minaret",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    39.77583333,
+    64.41416667
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Kalyan_Minaret"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q4706020",
+   "label": "Alamut Castle",
+   "place_ids": [
+    "plc_40ea681d-8a97-5d09-bfe0-2f6d9caff282",
+    "plc_a88983d0-b64c-5035-8a4b-143c8c4c0c7e"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    36.444722222222225,
+    50.58611111111111
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Alamut_Castle"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q12192963",
+   "label": "Al-Aqsa Mosque",
+   "place_ids": [
+    "plc_ec3b629b-532b-5d58-b81b-85a273e65ba9"
+   ],
+   "tier": 2,
+   "icon": null,
+   "point": [
+    31.77611111,
+    35.23583333
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Al-Aqsa_Mosque"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q29080943",
+   "label": "Fes el Bali",
+   "place_ids": [],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    34.0625,
+    -4.9725
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Fes_el_Bali"
+    }
+   ]
+  },
+  {
+   "wikidata_qid": "Q55264655",
+   "label": "Elmina Castle",
+   "place_ids": [
+    "plc_ae73c4b4-31b7-5395-96e9-145516d07bfb"
+   ],
+   "tier": 3,
+   "icon": null,
+   "point": [
+    5.08274,
+    -1.348211
+   ],
+   "links": [
+    {
+     "source": "wikipedia",
+     "url": "https://en.wikipedia.org/wiki/Elmina_Castle"
+    }
+   ]
+  }
+ ]
+}
