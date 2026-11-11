@@ -84,8 +84,18 @@ test('the staging site shows the published release, read-only, with its banner',
     await expect(page.locator('#suggest-event')).toBeHidden();
     // the manifest is revalidated on every visit; the hash-named files are not
     expect(requests.find(r => r.path.endsWith('/manifest.json'))).toBeTruthy();
-    // a release that names no release it was built on offers no new-events filter
-    await expect(banner.locator('.staging-new')).toBeHidden();
+    // a release that names no release it was built on says so and offers no new-events filter
+    await expect(banner.locator('.staging-new')).toHaveText('New events can\'t be shown: this release names no release it was built on.');
+    await expect(banner.locator('.staging-new-toggle')).toBeHidden();
+});
+
+test('the staging banner says when the new events cannot be found, and offers no filter', async ({ page }) => {
+    // the release it was built on isn't served
+    await openStaging(page, { 'manifest-next.json': { ...MANIFEST, previous_manifest: 'b'.repeat(64) } });
+    const line = page.locator('#staging-banner .staging-new');
+    await expect(line).toContainText('New events can\'t be shown: Could not load');
+    await expect(line.getByRole('button')).toBeHidden();
+    await expect(page.locator('#timeline-content .event')).toHaveCount(2);
 });
 
 test('the staging banner shows only the events new against the release it was built on, and all again', async ({ page }) => {

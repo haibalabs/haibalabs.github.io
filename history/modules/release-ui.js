@@ -86,7 +86,9 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
     render();
 
     // The events the previewed release adds to the one it was built on (published-data.js
-    // fetchAddedEventIds). The count is of those the visibility rules show; low-confidence ones stay hidden.
+    // fetchAddedEventIds), found once per page load. The count is of those the visibility rules show;
+    // low-confidence ones stay hidden. Until they are found, or when they can't be, the line says so and
+    // offers no filter, so the page never presents every event as new.
     const newRow = banner.querySelector('.staging-new');
     const newText = banner.querySelector('.staging-new-text');
     const toggle = banner.querySelector('.staging-new-toggle');
@@ -98,11 +100,11 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
             changes = await found;
         } catch (error) {
             console.error('The new events could not be found:', error);
-            newText.textContent = `The new events could not be found: ${error.message}`;
+            newText.textContent = `New events can't be shown: ${error.message}`;
             return;
         }
         if (!changes) {
-            newRow.hidden = true;
+            newText.textContent = 'New events can\'t be shown: this release names no release it was built on.';
             return;
         }
         const { eventManager } = uiManager;
