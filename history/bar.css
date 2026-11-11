@@ -58,12 +58,14 @@
 }
 
 @media (max-width: 760px) {
+    /* the date crumbs share the second row with the chips and span two columns, so long crumbs widen
+       their own row instead of pushing the search box and action buttons past the screen's edge */
     .header {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: auto auto 1fr auto;
         grid-template-areas:
-            "brand search actions"
-            "date  chips  chips";
+            "brand search search actions"
+            "date  date   chips  chips";
         align-items: center;
         gap: 8px 8px;
         padding: 10px 12px;
