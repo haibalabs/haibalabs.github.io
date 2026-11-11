@@ -28,7 +28,7 @@ const FILES = {
     'landmarks/l0.json': TABLE,
 };
 
-async function open(page, query = '') {
+async function open(page) {
     await stubFirebase(page);
     await page.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/, r => r.abort());
     await page.route('**/history/data/**', route => {
@@ -37,7 +37,7 @@ async function open(page, query = '') {
         const body = FILES[path];
         return body === undefined ? route.fulfill({ status: 404 }) : route.fulfill({ contentType: 'application/json', body });
     });
-    await page.goto(`/history/index.html${query}`);
+    await page.goto('/history/index.html');
     await expect(page.locator('#timeline-content .event').first()).toBeVisible();
     await page.locator('#toggle-map').click();
     await expect(page.getByRole('button', { name: 'Landmarks' })).toBeVisible();
@@ -94,10 +94,8 @@ test('a landmark opens its bubble above its icon, titled with its name, whose sc
     expect(context.pages().length).toBe(pages);
 });
 
-test('the lab can make landmark icons see-through, except the one pointed at', async ({ page }) => {
-    // on a wide window the lab opens the map itself, and open() would then close it
-    await page.setViewportSize({ width: 600, height: 800 });
-    await open(page, '?lab=landmark-opacity:70');
+test('landmark icons are see-through, except the one pointed at', async ({ page }) => {
+    await open(page);
     const content = page.locator('.map-landmark[title="Listed Landmark"] .map-landmark-content');
     await expect(content).toHaveCSS('opacity', '0.7');
     // the map can still be settling after the page loads and move the icon from under the pointer, so each
