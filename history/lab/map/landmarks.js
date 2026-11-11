@@ -66,10 +66,18 @@ export class LandmarkLayer {
             content.append(Object.assign(document.createElement('span'), { className: 'map-landmark-placeholder', textContent: landmark.label[0] }));
         }
         if (link) {
-            const info = Object.assign(document.createElement('a'), { className: 'landmark-info', target: '_blank', rel: 'noopener', href: link.url, textContent: 'i' });
-            info.setAttribute('aria-label', `About ${landmark.label} on ${SOURCE_NAMES[link.source] ?? link.source} (opens a new tab)`);
+            const info = Object.assign(document.createElement('a'), { className: 'landmark-info', href: link.url, textContent: 'i' });
+            info.setAttribute('aria-label', `About ${landmark.label} on ${SOURCE_NAMES[link.source] ?? link.source}`);
             info.title = info.getAttribute('aria-label');
-            L.DomEvent.on(info, 'click', L.DomEvent.stopPropagation);
+            L.DomEvent.on(info, 'click', event => {
+                L.DomEvent.stopPropagation(event);
+                // a Wikipedia article opens in the site's own article panel, as a person's name in a card does;
+                // a modified click still opens the link itself
+                if (link.source !== 'wikipedia' || event.metaKey || event.ctrlKey || event.shiftKey || event.button) return;
+                event.preventDefault();
+                if (this.browser.fullWindow.full) this.browser.fullWindow.set(false);
+                this.browser.panels.handleInfoClick(link.url, info);
+            });
             content.append(info);
         }
         const marker = L.marker(landmark.point, {
