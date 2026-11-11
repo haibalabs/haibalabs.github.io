@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { EMULATORS_RUNNING, STORAGE, createAccount, listAsOwner, resetEmulators, signIn, writeAsOwner } from './emulator.js';
+import { keepMapOffline } from './firebase-stub.js';
 
 // Locations and images in event forms (WORLD-EDITS.md, phase 4; Rachid, 2026-10-31): Suggest an edit and
 // the personal Add event form share one place picker and one image link; world images whose license
@@ -72,7 +73,8 @@ async function photoFile(page) {
   return { name: 'photo.jpg', mimeType: 'image/jpeg', buffer: Buffer.from(bytes) };
 }
 
-test.beforeEach(async ({ request }) => {
+test.beforeEach(async ({ page, request }) => {
+  await keepMapOffline(page);
   await resetEmulators(request);
   await createAccount(request, 'editor@example.test', 'editor');
   await createAccount(request, 'admin@example.test', 'admin');
