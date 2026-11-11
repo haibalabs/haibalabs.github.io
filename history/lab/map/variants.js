@@ -56,4 +56,13 @@ export const VARIANTS = [
                 .catch(error => console.error('Map lab: the landmark sample could not load', error));
         },
     },
+    {
+        id: 'label-actions',
+        label: 'Selected event: Show in timeline and ✕',
+        note: 'The selected event\'s label gets "Show in timeline", which closes the map on a phone and lands on the card, and ✕, which clears the selection and brings the bubbles back. Tapping the dot also goes to the card (issue #82).',
+        apply(lab, on) {
+            lab.browser.labelActions = Boolean(on);
+            lab.browser.drawSelection();
+        },
+    },
 ];

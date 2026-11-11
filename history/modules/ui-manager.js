@@ -405,13 +405,16 @@ export class UIManager {
     // After the timeline's width changed (a drawer opened or closed): lays it out again, keeping
     // the card that was at the top of the screen there. A card above it that shows less than a pixel
     // is left over from rounding scrollTop when the last relayout aligned the card, so it is skipped;
-    // otherwise each relayout would move the reading position back one card.
+    // otherwise each relayout would move the reading position back one card. relayoutTarget, set by the map's
+    // "Show in timeline" as it closes the drawer, lands on that card instead, once.
     relayoutKeepingPlace() {
         const top = this.timelineContainer.getBoundingClientRect().top;
         const first = [...document.querySelectorAll('#timeline-content > .event')]
             .find(card => card.getBoundingClientRect().bottom > top + 1);
+        const target = this.relayoutTarget ?? first?.dataset.eventId;
+        this.relayoutTarget = null;
         this.resetLayout();
-        if (first) this.scrollToEventId(first.dataset.eventId);
+        if (target) this.scrollToEventId(target);
     }
 
     resetWindow() {
