@@ -16,7 +16,7 @@ import { EditStore } from './modules/edit-store.js';
 import { EditUploads } from './modules/edit-uploads.js';
 import { PlaceSearch } from './modules/place-search.js';
 import { initThemeChoice } from './modules/theme.js';
-import { fetchLandmarks, fetchPublished, manifestUrlFor, MANIFEST_URL, NEXT_MANIFEST_URL, publishedWorld } from './modules/published-data.js';
+import { fetchAddedEventIds, fetchLandmarks, fetchPublished, manifestUrlFor, MANIFEST_URL, NEXT_MANIFEST_URL, publishedWorld } from './modules/published-data.js';
 import { refuseWrites } from './modules/firebase-writes.js';
 import { clearPlaceLabels, setPlaceLabels } from './modules/world-labels.js';
 import { fetchLiveRelease } from './modules/world-release.js';
@@ -111,6 +111,8 @@ async function initializeApp() {
         const liveRelease = PUBLISHED ? fetchLiveRelease(eventManager.db) : null;
         // the loaded release's manifest, for what loads after the timeline (its landmarks)
         let releaseManifest = null;
+        // on the staging page: the previewed release and its banner, which shows its new events once found
+        let staged = null;
         if (PUBLISHED) {
             const [live, published] = await Promise.all([liveRelease,
                 STAGING ? fetchStagedData() : liveRelease.then(fetchLiveData)]);
@@ -122,8 +124,9 @@ async function initializeApp() {
             clearPlaceLabels();
             setPlaceLabels(world.labels);
             if (STAGING) {
-                showStagingBanner({ live, db: eventManager.db, uiManager, staged: { manifestSha256: published.manifestSha256,
+                const banner = showStagingBanner({ live, db: eventManager.db, uiManager, staged: { manifestSha256: published.manifestSha256,
                     releaseId: published.manifest.release_id ?? published.manifest.snapshot_id ?? 'unnamed' } });
+                staged = { published, banner };
             }
         } else {
             // the released records are kept as loaded, so their checks need no second download
@@ -159,6 +162,8 @@ async function initializeApp() {
                 .then(landmarks => landmarks && uiManager.mapBrowser.showLandmarks(landmarks))
                 .catch(error => console.error('The landmarks could not load:', error));
         }
+        // finding the staged release's new events also waits for the timeline, as it may fetch earlier shards
+        if (staged) staged.banner.showNewEvents(fetchAddedEventIds(staged.published));
         // ?lab opens the map lab (lab/map/), which is loaded only then
         if (params.has('lab') && uiManager.mapBrowser) {
             import('./lab/map/lab.js')

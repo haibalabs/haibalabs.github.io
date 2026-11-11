@@ -1,15 +1,18 @@
 // release-ui.js
 // The staging banner: which release the page previews, which one is live, and, for an admin, "Make this
-// live", which makes the previewed release the one every visitor sees (world-release.js).
+// live", which makes the previewed release the one every visitor sees (world-release.js). It also offers to
+// show only the events new in the previewed release, so a reviewer can check just those.
 
 import { promoteRelease } from './world-release.js';
 
 const short = (sha256) => sha256.slice(0, 12);
+const events = (count) => `${count} event${count === 1 ? '' : 's'}`;
 
 /**
  * Shows the banner at the top of the staging page.
  *
  * @param {{ staged: { manifestSha256: string, releaseId: string }, live: object|null, db: object, uiManager: object }} options
+ * @returns {{ showNewEvents: (found: Promise<{ added: Set<string>, previousReleaseId: string }|null>) => Promise<void> }}
  */
 export function showStagingBanner({ staged, live, db, uiManager }) {
     const banner = document.createElement('div');
@@ -24,6 +27,10 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
                 <button type="button" class="staging-no">Cancel</button>
             </span>
             <span class="staging-status" role="status"></span>
+        </div>
+        <div class="staging-new" hidden>
+            <span class="staging-new-text" aria-live="polite"></span>
+            <button type="button" class="staging-new-toggle" aria-pressed="false" hidden></button>
         </div>`;
     document.body.prepend(banner);
     const summary = banner.querySelector('.staging-summary');
@@ -77,4 +84,53 @@ export function showStagingBanner({ staged, live, db, uiManager }) {
     uiManager.onReleaseAccountChange = onAccount;
     if (uiManager.account) onAccount(uiManager.account.user, uiManager.account.role);
     render();
+
+    // The events the previewed release adds to the one it was built on (published-data.js
+    // fetchAddedEventIds), found once per page load. The count is of those the visibility rules show;
+    // low-confidence ones stay hidden. Until they are found, or when they can't be, the line says so and
+    // offers no filter, so the page never presents every event as new.
+    const newRow = banner.querySelector('.staging-new');
+    const newText = banner.querySelector('.staging-new-text');
+    const toggle = banner.querySelector('.staging-new-toggle');
+    const showNewEvents = async (found) => {
+        newRow.hidden = false;
+        newText.textContent = 'Finding the events new in this release…';
+        let changes;
+        try {
+            changes = await found;
+        } catch (error) {
+            console.error('The new events could not be found:', error);
+            newText.textContent = `New events can't be shown: ${error.message}`;
+            return;
+        }
+        if (!changes) {
+            newText.textContent = 'New events can\'t be shown: this release names no release it was built on.';
+            return;
+        }
+        const { eventManager } = uiManager;
+        const added = eventManager.events.filter(event => !event.personal && changes.added.has(event.event_id));
+        const shown = added.filter(event => eventManager.isVisibleEvent(event)).length;
+        const hidden = added.length - shown;
+        const hiddenText = hidden ? ` (${hidden} more hidden as low confidence)` : '';
+        newRow.title = `Events in release ${staged.releaseId} that are not in release ${changes.previousReleaseId}, the release it was built on.`;
+        let only = false;
+        const renderNew = () => {
+            if (!shown) {
+                newText.textContent = `No events are new in this release${hiddenText}.`;
+                return;
+            }
+            newText.textContent = only ? `Showing only the ${events(shown)} new in this release${hiddenText}.`
+                : `New in this release: ${events(shown)}${hiddenText}.`;
+            toggle.textContent = only ? 'Show all events' : 'Show only these';
+            toggle.setAttribute('aria-pressed', String(only));
+            toggle.hidden = false;
+        };
+        toggle.addEventListener('click', () => {
+            only = !only;
+            uiManager.showOnlyEvents(only ? changes.added : null);
+            renderNew();
+        });
+        renderNew();
+    };
+    return { showNewEvents };
 }

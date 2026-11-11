@@ -1196,6 +1196,12 @@ export class UIManager {
         this.updatePositionsTable(initialEvents);
     }
 
+    // Shows only the world events with these IDs (the staging page's new events), or every event for null.
+    showOnlyEvents(ids) {
+        this.eventManager.setEventIdFilter(ids);
+        this.resetWindow();
+    }
+
     // Shows or hides the filters for personal-timeline categories (People), falling back to All if
     // a hidden one was selected.
     setPersonalFiltersVisible(visible) {
