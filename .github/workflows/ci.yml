@@ -69,12 +69,12 @@ jobs:
         run: npm run test:rules
 
   firebase-flows:
-    name: firebase-flows (${{ matrix.shard }}/12)
+    name: firebase-flows (${{ matrix.shard }}/16)
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -88,13 +88,21 @@ jobs:
         with:
           browsers: 'true'
           firebase: 'true'
+          emulators: 'true'
 
+      # the emulators were started during setup (firebase.json gives their ports)
       - name: Sign-in tests against the emulators
         env:
           PORT: 8181
-          SHARD: ${{ matrix.shard }}/12
+          SHARD: ${{ matrix.shard }}/16
+          FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
+          FIRESTORE_EMULATOR_HOST: 127.0.0.1:8085
+          FIREBASE_STORAGE_EMULATOR_HOST: 127.0.0.1:9199
         working-directory: ./history/firebase
-        run: npm run test:auth-flow
+        run: |
+          timeout 90 bash -c 'until grep -q "All emulators ready" "$RUNNER_TEMP/emulators.log"; do sleep 0.5; done' \
+            || { cat "$RUNNER_TEMP/emulators.log"; exit 1; }
+          npm run test:flows
 
   e2e-tests:
     if: always()
