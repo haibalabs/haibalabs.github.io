@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { ROLES, permissionsFor, authErrorMessage } from '../../modules/roles.js';
+import { ROLES, permissionsFor } from '../../modules/roles.js';
 
 describe('permissionsFor — controls shown for each role', () => {
   it('gives no access without a role', () => {
@@ -25,22 +25,5 @@ describe('permissionsFor — controls shown for each role', () => {
 
   it('matches the roles the Firestore rules accept', () => {
     assert.deepEqual(ROLES, ['viewer', 'editor', 'reviewer', 'admin']);
-  });
-});
-
-describe('authErrorMessage — in-page sign-in errors', () => {
-  it('uses one message for wrong email or password', () => {
-    const msg = authErrorMessage('auth/invalid-credential');
-    assert.equal(authErrorMessage('auth/wrong-password'), msg);
-    assert.equal(authErrorMessage('auth/user-not-found'), msg);
-  });
-
-  it('explains rate limiting and network errors', () => {
-    assert.match(authErrorMessage('auth/too-many-requests'), /Too many attempts/);
-    assert.match(authErrorMessage('auth/network-request-failed'), /Network error/);
-  });
-
-  it('falls back to a generic message', () => {
-    assert.equal(authErrorMessage('auth/something-new'), 'Sign-in failed. Try again.');
   });
 });

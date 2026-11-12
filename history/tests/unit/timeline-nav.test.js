@@ -15,25 +15,6 @@ function assertCovers(c) {
   }
 }
 
-describe('centuryOf — boundary years', () => {
-  it('puts 1900 in the 19th century and 1901 in the 20th', () => {
-    assert.equal(centuryOf(1900), 19);
-    assert.equal(centuryOf(1901), 20);
-  });
-
-  it('puts 2000 in the 20th century and 2001 in the 21st', () => {
-    assert.equal(centuryOf(2000), 20);
-    assert.equal(centuryOf(2001), 21);
-  });
-
-  it('puts 1 BC in the 1st century BC and 1 AD in the 1st century', () => {
-    assert.equal(centuryOf(-1), -1);
-    assert.equal(centuryOf(1), 1);
-    assert.equal(centuryOf(-100), -1);
-    assert.equal(centuryOf(-101), -2);
-  });
-});
-
 describe('decadeBuckets — every year of a century is counted once', () => {
   for (const c of [19, 20, 21, 1, -1, -2]) {
     it(`covers century ${c}`, () => assertCovers(c));

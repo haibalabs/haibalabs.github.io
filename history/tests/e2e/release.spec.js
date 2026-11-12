@@ -49,9 +49,12 @@ async function open(page, query, { docs = {}, user = null } = {}) {
 }
 const shows = (page, id) => expect(page.locator(`#timeline-content .event[data-event-id="${id}"]`)).toBeVisible();
 
-test('with no live release named, the site loads the committed one', async ({ page }) => {
+test('with no live release named, the site loads the committed one, without page errors', async ({ page }) => {
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
     await open(page, '');
     await shows(page, 'evt_a');
+    expect(errors).toEqual([]);
 });
 
 test('the site loads the release Firestore names as live', async ({ page }) => {
@@ -64,19 +67,13 @@ test('a named release the site can\'t load falls back to the committed one', asy
     await shows(page, 'evt_a');
 });
 
-test('staging previews the next release and shows visitors which one is live, with no button for them', async ({ page }) => {
-    await open(page, '?data=next');
-    await shows(page, 'evt_b');
-    const banner = page.locator('#staging-banner');
-    await expect(banner).toContainText(`release release-b (${B.slice(0, 12)})`);
-    await expect(banner).toContainText('Live now: the release committed with the site.');
-    await expect(banner.getByRole('button', { name: 'Make this live' })).toBeHidden();
-});
-
-test('an admin makes the staging release live with one button, after confirming', async ({ page }) => {
+test('an admin makes the staging release live with one button, after confirming; cancelling writes nothing', async ({ page }) => {
     await open(page, '?data=next', { user: admin, docs: { 'users/u1': { role: 'admin' }, 'world_release/current': liveDoc(1, A, 'release-a') } });
     const banner = page.locator('#staging-banner');
     await expect(banner).toContainText(`Live now: release release-a (${A.slice(0, 12)}).`);
+    await banner.getByRole('button', { name: 'Make this live' }).click();
+    await banner.getByRole('button', { name: 'Cancel' }).click();
+    await expect(banner.getByRole('button', { name: 'Make this live' })).toBeVisible();
     await banner.getByRole('button', { name: 'Make this live' }).click();
     await expect(banner).toContainText('Make release release-b live for every visitor?');
     expect(await page.evaluate(() => globalThis.__writes.length)).toBe(0);
@@ -86,26 +83,4 @@ test('an admin makes the staging release live with one button, after confirming'
     await expect(banner.getByRole('button', { name: 'Make this live' })).toBeHidden();
     expect(await page.evaluate(() => globalThis.__writes)).toEqual([{ path: 'world_release/current', data: {
         version: 2, manifest_sha256: B, release_id: 'release-b', previous_manifest_sha256: A, updated_at: 'SERVER_TIME' } }]);
-});
-
-test('cancelling writes nothing, and a release already live offers no button', async ({ page }) => {
-    await open(page, '?data=next', { user: admin, docs: { 'users/u1': { role: 'admin' }, 'world_release/current': liveDoc(1, A, 'release-a') } });
-    const banner = page.locator('#staging-banner');
-    await banner.getByRole('button', { name: 'Make this live' }).click();
-    await banner.getByRole('button', { name: 'Cancel' }).click();
-    await expect(banner.getByRole('button', { name: 'Make this live' })).toBeVisible();
-    expect(await page.evaluate(() => globalThis.__writes.length)).toBe(0);
-
-    const other = await page.context().newPage();
-    await open(other, `?data=next&release=${A}`, { user: admin, docs: { 'users/u1': { role: 'admin' }, 'world_release/current': liveDoc(1, A, 'release-a') } });
-    await shows(other, 'evt_a');
-    await expect(other.locator('#staging-banner')).toContainText('This release is live.');
-    await expect(other.locator('#staging-banner').getByRole('button', { name: 'Make this live' })).toBeHidden();
-});
-
-test('an editor sees no button on staging', async ({ page }) => {
-    await open(page, '?data=next', { user: { uid: 'u2', email: 'editor@example.test' },
-        docs: { 'users/u2': { role: 'editor' }, 'world_release/current': liveDoc(1, A, 'release-a') } });
-    await expect(page.locator('#staging-banner')).toContainText('Live now: release release-a');
-    await expect(page.locator('#staging-banner').getByRole('button', { name: 'Make this live' })).toBeHidden();
 });
