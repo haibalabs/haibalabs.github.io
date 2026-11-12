@@ -437,3 +437,31 @@ test('the selected event\'s label: on a phone, Show in timeline closes the map o
   await expect(card).toBeInViewport();
   expect(errors).toEqual([]);
 });
+
+test('lab borders: the states of the year being read, credited, named on click, and gone when switched off', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await setup(page, '&lab=borders');
+  const borders = page.locator('.leaflet-polities-pane path.map-polity');
+  // the fixture's events aren't in the sample's years, so the year is set here: 117, Hadrian's accession
+  await expect.poll(() => page.evaluate(() => Boolean(window.lab.browser.polities))).toBe(true);
+  await page.evaluate(() => {
+    const layer = window.lab.browser.polities;
+    layer.currentYear = () => 117;
+    layer.update();
+    window.lab.browser.map.setView([40, 20], 3, { animate: false });
+  });
+  await expect(borders).toHaveCount(36);
+  await expect(page.locator('.leaflet-control-attribution')).toContainText('Cliopatria');
+  // clicking a state opens its bubble with its name and the years its borders cover
+  await expect(page.locator('.map-event-popup .map-event-list-title strong')).toHaveCount(0);
+  await page.locator('.leaflet-polities-pane path.map-polity').first().dispatchEvent('click');
+  await expect(page.locator('.map-event-popup .map-event-list-title strong')).not.toHaveText('');
+  await expect(page.locator('.map-event-popup .map-event-list-more')).toHaveText(/^These borders: /);
+  // a year outside the sample draws none; switching off removes them and the credit
+  await page.evaluate(() => { const layer = window.lab.browser.polities; layer.currentYear = () => 1700; layer.update(); });
+  await expect(borders).toHaveCount(0);
+  await page.evaluate(() => window.lab.browser.showPolities(null));
+  await expect(page.locator('.leaflet-control-attribution')).not.toContainText('Cliopatria');
+  expect(errors).toEqual([]);
+});
