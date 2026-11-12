@@ -56,6 +56,8 @@ test('the release\'s landmarks show with a switch that hides them and is remembe
         .toEqual(['Listed Landmark', 'Unlisted Icon']);
     await expect(page.locator('.map-landmark[title="Unlisted Icon"] .map-landmark-placeholder')).toHaveText('U');
     await expect(page.locator('.map-landmark[title="Unlisted Icon"] img')).toHaveCount(0);
+    // icons are see-through until pointed at
+    await expect(page.locator('.map-landmark[title="Listed Landmark"] .map-landmark-content')).toHaveCSS('opacity', '0.7');
     // a world-tier landmark keeps a readable size at world zoom
     expect(Number(await page.locator('.map-landmark[title="Listed Landmark"]').getAttribute('data-size'))).toBeGreaterThanOrEqual(24);
     // and, shrunk below full size, still sits on whole pixels, where it is drawn sharp
