@@ -173,46 +173,9 @@ jobs:
         working-directory: ./history/firebase
         run: node --test --test-concurrency=1 tests/*.test.js
 
-      - name: Sign-in tests against the emulators, first half
+      - name: Sign-in tests against the emulators
         env:
           PORT: 8181
-          SHARD: 1/2
-          FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
-          FIRESTORE_EMULATOR_HOST: 127.0.0.1:8085
-          FIREBASE_STORAGE_EMULATOR_HOST: 127.0.0.1:9199
-        working-directory: ./history/firebase
-        run: npm run test:flows
-
-  # The second half of the sign-in tests, against emulators of its own: the tests share one emulator state, so they
-  # run one at a time within a job.
-  firebase-tests-2:
-    needs: changes
-    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.firebase == 'true') }}
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/history/canonical-t2.json
-            !/history/events.json
-            !/history/data/
-      - uses: ./.github/actions/prepare
-        with:
-          browsers: 'true'
-          firebase: 'true'
-          emulators: 'true'
-
-      - name: Wait for the emulators
-        run: |
-          timeout 90 bash -c 'until grep -q "All emulators ready" "$RUNNER_TEMP/emulators.log"; do sleep 0.5; done' \
-            || { cat "$RUNNER_TEMP/emulators.log"; exit 1; }
-
-      - name: Sign-in tests against the emulators, second half
-        env:
-          PORT: 8181
-          SHARD: 2/2
           FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
           FIRESTORE_EMULATOR_HOST: 127.0.0.1:8085
           FIREBASE_STORAGE_EMULATOR_HOST: 127.0.0.1:9199

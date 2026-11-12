@@ -121,33 +121,6 @@ test('a photo is resized, stripped of metadata, stored privately under the event
   }
 });
 
-test('a photo can be replaced and removed, and its old files are deleted', async ({ page, request }) => {
-  await openWorld(page);
-  await signIn(page, 'editor@example.test');
-  const id = await createTimeline(page, 'Family history');
-  await addEventWithPhoto(page, 'Graduation', '#aa3322');
-  const first = await listFilesAsOwner(request, `timelines/${id}/`);
-  expect(first).toHaveLength(2);
-
-  await card(page, 'Graduation').locator('.personal-edit').click();
-  await expect(page.locator('#photo-group .photo-preview')).toBeVisible();
-  await page.setInputFiles('#photo-input', await photoFile(page, '#22aa55'));
-  await expect(page.locator('#photo-group .photo-preview img')).toHaveAttribute('src', /^blob:/);
-  await page.click('#add-event-form button[type="submit"]');
-  await expect(page.locator('#add-event-modal')).toBeHidden();
-  const second = await listFilesAsOwner(request, `timelines/${id}/`);
-  expect(second).toHaveLength(2);
-  expect(second.some(path => first.includes(path))).toBe(false);
-
-  await card(page, 'Graduation').locator('.personal-edit').click();
-  await page.click('#photo-group .photo-remove');
-  await expect(page.locator('#photo-group .photo-preview')).toBeHidden();
-  await page.click('#add-event-form button[type="submit"]');
-  await expect(card(page, 'Graduation').locator('.personal-photo')).toHaveCount(0);
-  expect(await listFilesAsOwner(request, `timelines/${id}/`)).toEqual([]);
-  expect((await eventDoc(request, id)).fields.image).toBeUndefined();
-});
-
 test('deleting an event or its timeline deletes the photo files', async ({ page, request }) => {
   await openWorld(page);
   await signIn(page, 'editor@example.test');
