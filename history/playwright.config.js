@@ -6,7 +6,7 @@ if (!/^[0-9]+$/.test(process.env.PORT ?? '') || !Number.isInteger(port) || port 
   throw new Error('Set PORT to an unused integer from 1024 to 65535.');
 }
 const baseURL = `http://127.0.0.1:${port}`;
-// CI splits the tests across parallel jobs: SHARD=2/6 runs the second of six parts
+// SHARD=2/6 runs the second of six parts of the tests, to split them across machines
 const shard = /^([1-9][0-9]*)\/([1-9][0-9]*)$/.exec(process.env.SHARD ?? '');
 
 export default defineConfig({
