@@ -22,12 +22,16 @@ const sizeAt = ({ point: [lat], tier }, zoom) => {
     const size = Math.floor(Math.min(SIZE, MAX_GROUND_METRES / metresPerPixel));
     return tier === 1 ? Math.max(size, WORLD_SIZE) : size;
 };
-// sets a shown icon's size, keeping its base on the landmark's point
+// sets a shown icon's size, keeping its base on the landmark's point, on whole pixels: an icon placed between
+// pixels is drawn blurred
 function resize(marker, size) {
     const node = marker.getElement();
     if (!node || node.dataset.size === String(size)) return;
     node.dataset.size = size;
-    Object.assign(node.style, { width: `${size}px`, height: `${size}px`, marginLeft: `${-size / 2}px`, marginTop: `${-size * (SIZE - 4) / SIZE}px` });
+    Object.assign(node.style, {
+        width: `${size}px`, height: `${size}px`,
+        marginLeft: `${-Math.round(size / 2)}px`, marginTop: `${-Math.round(size * (SIZE - 4) / SIZE)}px`,
+    });
 }
 const SOURCE_NAMES = { wikipedia: 'Wikipedia' };
 
