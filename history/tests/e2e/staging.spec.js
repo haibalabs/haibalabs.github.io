@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { firebaseStub } from './firebase-stub.js';
 
 // The staging site (?data=next) loads the published release format and shares the live Firebase project,

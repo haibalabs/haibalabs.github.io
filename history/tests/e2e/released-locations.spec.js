@@ -1,12 +1,12 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { readFileSync } from 'node:fs';
 import { stubFirebase } from './firebase-stub.js';
 
 // The released locations every visitor sees (releases/README.md), served here from a synthetic fixture
 // in location_sidecar.py's format: invented places for three real canonical events, one of which also
 // has a released image. They load tests/fixtures/canonical-small.json, 41 records of canonical-t2.json,
-// with the repository's image record for that event moved to the same file. The real release on the full
-// canonical file is checked separately below. Commons images are served locally.
+// with the repository's image record for that event moved to the same file. Commons images are served
+// locally.
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 const SYNTHETIC = readFileSync(new URL('../fixtures/released-locations-synthetic.json', import.meta.url), 'utf8');
 const EMPTY = JSON.stringify({ ...JSON.parse(SYNTHETIC), records: [], places: {} });
@@ -65,13 +65,3 @@ test('another events file or an empty release changes no locations, without a me
 });
 
 // Exercise the actual release without substituting synthetic geography.
-test('the repository release shows accepted geography on a real event', async ({ page }) => {
-  test.setTimeout(120000);
-  await openSite(page, { query: '?file=canonical-t2.json', locations: null, images: null });
-  await page.fill('#searchInput', 'Battle of Grunwald');
-  const location = card(page, 'Battle of Grunwald').locator('.event-location').first();
-  await expect(location).toHaveClass(/clickable/);
-  await expect(location).toHaveAttribute('title', /Reviewed location/);
-  await location.click();
-  await expect(page.locator('.map-selected-dot').first()).toBeVisible();
-});

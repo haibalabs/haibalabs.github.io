@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { readFileSync } from 'node:fs';
 
 // A minimal real panel, with every browser request fulfilled locally or aborted.

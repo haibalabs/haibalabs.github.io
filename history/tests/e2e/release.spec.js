@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { createHash } from 'node:crypto';
 import { firebaseStub } from './firebase-stub.js';
 

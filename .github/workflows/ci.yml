@@ -2,8 +2,8 @@ name: CI
 
 # CI minutes are billed, so CI runs once a pull request to main is ready for review, and again on each push while
 # it stays ready. Pushes to a draft don't run it; to check a draft, run it by hand: gh workflow run CI --ref <branch>.
-# main isn't tested again after a merge: the ruleset already requires each pull request to be up to date with main
-# and green.
+# main isn't tested again after a merge, since each pull request is tested before it merges. Of the tests, only
+# those the pull request's files can affect run (see the changes job).
 on:
   pull_request:
     branches: [main, master]
@@ -15,14 +15,68 @@ concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# One job for each check main requires. A job's setup (checkout, npm packages, Chromium, the emulators) bills as
-# much as its tests, so the tests are not split across more jobs.
+# Each test job is a check main requires, and each is sized to finish within about a minute, since a job bills
+# whole minutes. A test job the changes leave out is skipped, which costs nothing and counts as passed; if the
+# changes job fails, every test job runs.
 jobs:
-  unit-tests:
+  # Which tests the pull request's files can affect, from GitHub's list of them. Release data under history/data/,
+  # the large data files and documents affect none. A change to CI, the test server, the shared test helpers or the
+  # package files runs every test, and so does a run started by hand. The sign-in flows and rules tests run only for the Firebase rules, the
+  # modules that sign in, edit, review or store, and those tests themselves.
+  changes:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      unit: ${{ steps.scope.outputs.unit }}
+      e2e: ${{ steps.scope.outputs.e2e }}
+      firebase: ${{ steps.scope.outputs.firebase }}
     steps:
+      - id: scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          everything='^(\.github/|history/package(-lock)?\.json$|history/firebase/package(-lock)?\.json$|history/playwright\.config\.js$|history/tests/serve\.py$|history/tests/e2e/(cdn-cache|firebase-stub)\.js$)'
+          untested='^history/data/|^history/(canonical-t2|events)\.json$|\.(md|pdf)$'
+          firebase='^history/firebase/|^history/modules/(auth-manager|config|edit-store|edit-ui|edit-uploads|firebase-image-store|firebase-writes|image-field|image-link|image-resize|image-store|location-picker|personal-images|review-store|review-ui|roles|timeline-store|timeline-ui|wikipedia-lookup|world-edits|world-overlay)\.js$|^history/tests/e2e/(.+-flow\.spec\.js|emulator\.js)$'
+          unit='^history/modules/|^history/tests/unit/'
+          # the site's own pages, styles, modules and browser tests, other than the Firebase-only files
+          e2e='^history/'
+          not_e2e='^history/firebase/|^history/tests/unit/|^history/tests/e2e/(.+-flow\.spec\.js|emulator\.js)$'
+          if [ -z "$PR" ]; then
+            printf 'unit=true\ne2e=true\nfirebase=true\n' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR/files" --jq '.[].filename' > files
+          echo "$(wc -l < files) files changed"
+          # GitHub lists at most 3,000 files; with more, run everything
+          if [ "$(wc -l < files)" -ge 3000 ] || grep -qE "$everything" files; then
+            printf 'unit=true\ne2e=true\nfirebase=true\n' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          grep -vE "$untested" files > tested || true
+          has() { grep -E "$1" tested | grep -qvE "${2:-^$}"; }
+          { has "$unit" && echo unit=true || echo unit=false
+            has "$e2e" "$not_e2e" && echo e2e=true || echo e2e=false
+            has "$firebase" && echo firebase=true || echo firebase=false; } | tee -a "$GITHUB_OUTPUT"
+
+  unit-tests:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.unit == 'true') }}
+    runs-on: ubuntu-24.04
+    steps:
+      # the unit tests read the legacy canonical-t2.json and events.json, not the release's event and place files
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/history/data/events/
+            !/history/data/places/
+            !/Dynamic_Interactive_Narratives.pdf
       - uses: ./.github/actions/prepare
 
       - name: Syntax check
@@ -33,23 +87,64 @@ jobs:
         working-directory: ./history
         run: npm run test:unit
 
+  # The browser tests run as two halves in two jobs, so each finishes within a minute, which bills the same as one
+  # job of about two minutes. Both are checks main requires. They use fixtures, so they skip the release's event and
+  # place files and the large data files.
   e2e-tests:
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.e2e == 'true') }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/history/canonical-t2.json
+            !/history/events.json
+            !/history/data/events/
+            !/history/data/places/
+            !/Dynamic_Interactive_Narratives.pdf
       - uses: ./.github/actions/prepare
         with:
           browsers: 'true'
 
-      - name: Run E2E tests
+      - name: Run E2E tests, first half
         env:
           PORT: 8181
+          SHARD: 1/2
+        working-directory: ./history
+        run: npm run test:e2e -- --workers=2
+
+  e2e-tests-2:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.e2e == 'true') }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/history/canonical-t2.json
+            !/history/events.json
+            !/history/data/events/
+            !/history/data/places/
+            !/Dynamic_Interactive_Narratives.pdf
+      - uses: ./.github/actions/prepare
+        with:
+          browsers: 'true'
+
+      - name: Run E2E tests, second half
+        env:
+          PORT: 8181
+          SHARD: 2/2
         working-directory: ./history
         run: npm run test:e2e -- --workers=2
 
   firebase-tests:
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.firebase == 'true') }}
     runs-on: ubuntu-24.04
     steps:
       # the Firebase tests use small fixtures, so they skip the large data files
@@ -78,9 +173,46 @@ jobs:
         working-directory: ./history/firebase
         run: node --test --test-concurrency=1 tests/*.test.js
 
-      - name: Sign-in tests against the emulators
+      - name: Sign-in tests against the emulators, first half
         env:
           PORT: 8181
+          SHARD: 1/2
+          FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
+          FIRESTORE_EMULATOR_HOST: 127.0.0.1:8085
+          FIREBASE_STORAGE_EMULATOR_HOST: 127.0.0.1:9199
+        working-directory: ./history/firebase
+        run: npm run test:flows
+
+  # The second half of the sign-in tests, against emulators of its own: the tests share one emulator state, so they
+  # run one at a time within a job.
+  firebase-tests-2:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.firebase == 'true') }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/history/canonical-t2.json
+            !/history/events.json
+            !/history/data/
+      - uses: ./.github/actions/prepare
+        with:
+          browsers: 'true'
+          firebase: 'true'
+          emulators: 'true'
+
+      - name: Wait for the emulators
+        run: |
+          timeout 90 bash -c 'until grep -q "All emulators ready" "$RUNNER_TEMP/emulators.log"; do sleep 0.5; done' \
+            || { cat "$RUNNER_TEMP/emulators.log"; exit 1; }
+
+      - name: Sign-in tests against the emulators, second half
+        env:
+          PORT: 8181
+          SHARD: 2/2
           FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
           FIRESTORE_EMULATOR_HOST: 127.0.0.1:8085
           FIREBASE_STORAGE_EMULATOR_HOST: 127.0.0.1:9199

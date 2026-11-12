@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { stubFirebase } from './firebase-stub.js';
 
 // MapLibre and its Leaflet binding are replaced by stubs that keep every style the page hands them and

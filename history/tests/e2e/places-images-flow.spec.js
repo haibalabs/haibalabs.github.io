@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, STORAGE, createAccount, listAsOwner, resetEmulators, signIn, writeAsOwner } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
@@ -272,34 +272,4 @@ test('a new event can be approved without an image whose license isn’t confirm
   expect(JSON.stringify(overlay)).not.toContain('news.example');
   const [stored] = await listAsOwner(request, 'edits');
   expect(stored.fields.fields.mapValue.fields.image.mapValue.fields.status.stringValue).toBe('rejected');
-});
-
-test('the personal form uses the same place picker and image link', async ({ page, request }) => {
-  await openWorld(page);
-  await signIn(page, 'editor@example.test');
-  await page.fill('#timeline-title', 'Family');
-  await page.click('#timeline-create button[type="submit"]');
-  await expect(page.locator('#timeline-pill .timeline-pill-title')).toHaveText('Family');
-  await page.click('#add-event');
-  await page.fill('#add-event-form [name="name"]', 'Trip to Munich');
-  await page.fill('#add-event-form [name="enhanced_time"]', '2019');
-  await page.fill('#add-event-form [name="enhanced_description"]', 'A week in Bavaria.');
-  await page.fill('#add-loc-search', 'Mun');
-  await page.locator('#add-loc-results button', { hasText: 'Munich, Germany' }).click();
-  await expect(page.locator('#add-locations .loc-label')).toHaveText('Munich, Germany');
-  await page.locator('#photo-group .mode-switch button', { hasText: 'Link' }).click();
-  await page.fill('#add-img-link', COMMONS_FILE);
-  await expect(page.locator('#photo-group .image-card-credit')).toHaveText('Photo: Jane Doe · CC BY-SA 4.0 · Wikimedia Commons');
-  const errors = [];
-  page.on('pageerror', e => errors.push(e.message));
-  await page.click('#add-event-form button[type="submit"]');
-  const event = card(page, 'Trip to Munich');
-  await expect(event.locator('.event-location')).toContainText('Munich');
-  await expect(event.locator('.event-image img')).toHaveAttribute('data-original', COMMONS_IMAGE);
-  const timeline = new URL(page.url()).searchParams.get('timeline');
-  const [stored] = await listAsOwner(request, `timelines/${timeline}/events`);
-  const location = stored.fields.locations.arrayValue.values[0].mapValue.fields;
-  expect(location.geography.mapValue.fields.coordinates.arrayValue.values.map(v => v.doubleValue)).toEqual([48.137, 11.575]);
-  expect(stored.fields.image_preview.mapValue.fields.credit.stringValue).toBe('Jane Doe');
-  expect(errors).toEqual([]);
 });

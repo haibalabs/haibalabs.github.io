@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { stubFirebase } from './firebase-stub.js';
 
 // Deep-time records on the normal site: labels the parser can't read are placed by their
