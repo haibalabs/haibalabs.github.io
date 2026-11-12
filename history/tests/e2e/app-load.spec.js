@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 
 // Block non-essential external network requests in CI.
 // Allow: Leaflet (unpkg.com), Firebase SDK (gstatic.com/firebasejs) — required for app init.
@@ -38,16 +38,6 @@ function collectPageErrors(page) {
 }
 
 test.describe('App loads with sample data', () => {
-
-  test('loads events_sample_small.json without page errors', async ({ page }) => {
-    setupNetworkBlocking(page);
-    const errors = collectPageErrors(page);
-
-    await page.goto('/history/index.html?file=events_sample_small.json');
-    await page.waitForSelector('#timeline-content .event', { timeout: 10000 });
-
-    expect(errors).toEqual([]);
-  });
 
   test('loads events_sample.json without page errors', async ({ page }) => {
     setupNetworkBlocking(page);

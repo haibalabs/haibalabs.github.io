@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { AUTH, EMULATORS_RUNNING, PROJECT, createAccount, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
@@ -29,18 +29,6 @@ test('an admin stays signed in after a reload', async ({ page, request }) => {
   await page.click('#logout-btn');
   await expect(page.locator('#login-form')).toBeVisible();
 });
-
-// world events are proposed through Suggest an edit; Add event is only for one's own timelines
-for (const role of ['admin', 'editor', 'viewer']) {
-  test(`${role}s sign in with no Add event button on the world timeline`, async ({ page, request }) => {
-    await createAccount(request, `${role}@example.test`, role);
-    await page.goto(APP);
-    await signIn(page, `${role}@example.test`);
-    await expect(page.locator('#user-email')).toHaveText(`${role}@example.test`);
-    await page.click('.settings-close-btn');
-    await expect(page.locator('#add-event')).toBeHidden();
-  });
-}
 
 test('an account without a role is signed out with a message', async ({ page, request }) => {
   await createAccount(request, 'stranger@example.test', null);

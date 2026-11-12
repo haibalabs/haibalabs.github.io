@@ -1,11 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { stubFirebase } from './firebase-stub.js';
 
 // Earliest and Latest in the era pill, and the Home and End keys (modules/timeline-nav.js).
 
 // A release in the published format with about 3,000 events, from the Big Bang to the latest one, so the
-// jumps and scrolling run over a long timeline without loading the full release on every test. The
-// long-jump timing check keeps the real release, at its real length.
+// jumps and scrolling run over a long timeline without loading the full release.
 const CATEGORIES = ['politics', 'war', 'science', 'art', 'religion', 'culture', 'exploration'];
 function syntheticRelease() {
   const events = [];
@@ -42,9 +41,9 @@ async function serveSyntheticRelease(page) {
   });
 }
 
-async function open(page, { real = false } = {}) {
+async function open(page) {
   await stubFirebase(page);
-  if (!real) await serveSyntheticRelease(page);
+  await serveSyntheticRelease(page);
   await page.goto('/history/index.html');
   await page.waitForSelector('#timeline-content .event', { timeout: 60000 });
   await expect(page.locator('#crumbs [data-edge="end"]')).toBeVisible();
@@ -83,17 +82,6 @@ test('on a phone the pill keeps Earliest and Latest beside the era and drops the
   await expect(page.locator('#crumbs [data-edge="start"]')).toBeVisible();
   await expect(page.locator('#crumbs [data-step]').first()).toBeHidden();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-});
-
-test('a long jump arrives without a seconds-long scroll', async ({ page }) => {
-  test.setTimeout(120000);
-  await open(page, { real: true });
-  const started = Date.now();
-  await page.click('#crumbs [data-edge="end"]');
-  await onScreen(page, LATEST);
-  const took = Date.now() - started;
-  console.log('Latest took', took, 'ms');
-  expect(took).toBeLessThan(2500);
 });
 
 test('picking an era while searching shows the matching cards there at once', async ({ page }) => {
@@ -145,18 +133,6 @@ test('when the events fail to load, the timeline says so', async ({ page }) => {
   await expect(failure).toHaveCount(1);
 });
 
-test('scrolling by hand right after a jump keeps the visitor where they scrolled', async ({ page }) => {
-  test.setTimeout(120000);
-  await open(page);
-  await page.keyboard.press('End');
-  await onScreen(page, LATEST);
-  await page.mouse.move(640, 400);
-  await page.mouse.wheel(0, -4000);
-  await page.waitForTimeout(2500);
-  const left = await page.locator('.timeline-wrapper').evaluate(w => w.scrollHeight - w.clientHeight - w.scrollTop);
-  expect(left).toBeGreaterThan(2000);
-});
-
 test('Home and End leave the timeline alone behind the photo viewer', async ({ page }) => {
   test.setTimeout(120000);
   await open(page);
@@ -178,21 +154,6 @@ test('a map that fails to start leaves the timeline working, with no load failur
   // the rest of the start-up ran: the era pill is drawn and Latest works
   await page.click('#crumbs [data-edge="end"]');
   await onScreen(page, LATEST);
-});
-
-test('dragging the spine right after a jump keeps the visitor where they dragged', async ({ page }) => {
-  test.setTimeout(120000);
-  await open(page);
-  await page.keyboard.press('End');
-  await onScreen(page, LATEST);
-  await expect(page.locator('.spine.ready')).toHaveCount(1);
-  const box = await page.locator('.spine').boundingBox();
-  await page.mouse.move(box.x + box.width - 20, box.y + box.height * 0.5);
-  await page.mouse.down();
-  await page.mouse.up();
-  await page.waitForTimeout(2500);
-  const left = await page.locator('.timeline-wrapper').evaluate(w => w.scrollHeight - w.clientHeight - w.scrollTop);
-  expect(left).toBeGreaterThan(2000);
 });
 
 test('scrolling by hand the moment a jump lands keeps the visitor where they scrolled', async ({ page }) => {

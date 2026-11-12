@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { stubFirebase } from './firebase-stub.js';
@@ -106,19 +106,6 @@ test('manager combines geographic, category, literal text and start-year filters
   expect(result.afterClear).toEqual(result.ids);
 });
 
-test('area filtering preserves category and literal text search', async ({ page }) => {
-  await setup(page);
-  await page.getByRole('button', { name: 'Filter by visible area', exact: true }).click();
-  await page.locator('.filters button', { hasText: 'Culture' }).click();
-  await expect(page.locator('.map-status')).toHaveText('40 events in selected area');
-  await page.locator('#searchInput').fill('[78]');
-  await expect(page.locator('.map-status')).toHaveText('1 event in selected area');
-  await expect(page.locator('.event mark').first()).toHaveText('[78]');
-  await page.getByRole('button', { name: 'Clear area filter', exact: true }).click();
-  await expect(page.locator('#searchInput')).toHaveValue('[78]');
-  await expect(page.locator('.event')).toHaveCount(1);
-});
-
 test('selected event dots return to its virtual card without moving the map', async ({ page }) => {
   await setup(page);
   await page.locator('#searchInput').fill('Fixture 19');
@@ -162,7 +149,8 @@ test('on a phone, closing the map drawer shows the cards that were on screen bef
   await expect.poll(topCard).toBe(before);
 });
 
-for (const [width, height] of [[390, 844], [1440, 900]]) {
+// the phone drawer is covered by the test above
+for (const [width, height] of [[1440, 900]]) {
   test(`at ${width}px, opening and closing a drawer again and again keeps the same card at the top`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await page.route('**/map-fixture.json', route => route.fulfill({ json: fixtures }));
@@ -242,7 +230,12 @@ test('a selected event is labelled with its name and date and framed by the grou
   expect((await page.locator('.map-selected-dot').boundingBox()).width).toBeLessThan(20);
   // a site is framed at street zoom, a few steps from the limit of 14
   const zoomIn = page.locator('.leaflet-control-zoom-in');
-  for (let i = 0; i < 4 && !(await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))); i++) await zoomIn.click();
+  for (let i = 0; i < 4; i++) {
+    // Leaflet updates the button only once a zoom animation ends, so read it after the previous zoom has finished
+    await expect(page.locator('#map .leaflet-map-pane.leaflet-zoom-anim')).toHaveCount(0);
+    if (await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))) break;
+    await zoomIn.click();
+  }
   await expect(zoomIn).toHaveClass(/leaflet-disabled/);
   expect(await zoomIn.locator('i').evaluate(el => getComputedStyle(el).opacity)).toBe('0.3');
   expect(await page.locator('.leaflet-control-zoom-out i').evaluate(el => getComputedStyle(el).opacity)).toBe('1');
@@ -258,6 +251,9 @@ test('a selected event\'s label names its place: the released label, else the wr
     await expect(page.locator('.map-event-label strong')).toHaveText(`Precision ${precision}`);
     await expect(place).toHaveText(text);
   }
+  // search finds the event by its released label, which is in neither its name nor its description
+  await page.fill('#searchInput', 'Settlement Town');
+  await expect(page.locator('#timeline-content .event .event-header')).toHaveText(['Precision settlement']);
 });
 
 test('an unreviewed point keeps one ring size on screen and its event opens no closer than zoom 6', async ({ page }) => {

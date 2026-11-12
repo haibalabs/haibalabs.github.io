@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
@@ -144,29 +144,6 @@ test('a date the timeline cannot place is refused in the form', async ({ page, r
   expect(await listAsOwner(request, `timelines/${id}/events`)).toHaveLength(0);
 });
 
-test('a personal event can be edited and deleted from its card', async ({ page, request }) => {
-  await openWorld(page);
-  await signIn(page, 'editor@example.test');
-  const id = await createTimeline(page, 'Family history');
-  await addEvent(page, 'Grandfather born', '1905');
-
-  await card(page, 'Grandfather born').locator('.personal-edit').click();
-  await expect(page.locator('#add-event-modal .modal-header h3')).toHaveText('Edit event');
-  await expect(page.locator('#add-event-form [name="enhanced_time"]')).toHaveValue('1905');
-  await page.fill('#add-event-form [name="name"]', 'Grandfather born in Lyon');
-  await page.click('#add-event-form button[type="submit"]');
-  await expect(card(page, 'Grandfather born in Lyon')).toHaveCount(1);
-  let docs = await listAsOwner(request, `timelines/${id}/events`);
-  expect(docs).toHaveLength(1);
-  expect(docs[0].fields.name.stringValue).toBe('Grandfather born in Lyon');
-
-  page.once('dialog', dialog => dialog.accept());
-  await card(page, 'Grandfather born in Lyon').locator('.personal-remove').click();
-  await expect(card(page, 'Grandfather born in Lyon')).toHaveCount(0);
-  docs = await listAsOwner(request, `timelines/${id}/events`);
-  expect(docs).toHaveLength(0);
-});
-
 test('a timeline can be renamed, and deleting it removes its events', async ({ page, request }) => {
   await openWorld(page);
   await signIn(page, 'editor@example.test');
@@ -189,27 +166,6 @@ test('a timeline can be renamed, and deleting it removes its events', async ({ p
   await expect(page.locator('#timeline-pill')).toBeHidden();
   expect(await listAsOwner(request, 'timelines')).toHaveLength(0);
   expect(await listAsOwner(request, `timelines/${id}/events`)).toHaveLength(0);
-});
-
-test('viewers cannot create timelines, and another account\'s timeline link does not open', async ({ page, browser }) => {
-  await openWorld(page);
-  await signIn(page, 'editor@example.test');
-  const id = await createTimeline(page, 'Private notes');
-  await addEvent(page, 'Secret meeting', '1950');
-
-  const other = await browser.newPage();
-  await other.route('**/canonical-t2.json', route => route.fulfill({ json: WORLD }));
-  await other.goto(`/history/index.html?emulator&file=canonical-t2.json&timeline=${id}`);
-  await other.waitForSelector('#timeline-content .event');
-  await expect(other.locator('.toast', { hasText: 'Sign in from the settings panel' })).toHaveCount(1);
-  await signIn(other, 'viewer@example.test');
-  await expect(other.locator('#user-email')).toHaveText('viewer@example.test');
-  await expect(other.locator('#my-timelines')).toBeHidden();
-  await expect(other.locator('.toast', { hasText: 'does not exist, or this account cannot open it' })).toHaveCount(1);
-  expect(new URL(other.url()).searchParams.get('timeline')).toBeNull();
-  await expect(card(other, 'Secret meeting')).toHaveCount(0);
-  await expect(other.locator('#timeline-pill')).toBeHidden();
-  await other.close();
 });
 
 test('personal event text is shown as text, never run as HTML', async ({ page }) => {

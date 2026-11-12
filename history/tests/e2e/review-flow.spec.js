@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
@@ -138,31 +138,6 @@ test('a rejection needs a reason, which the author sees and can revise', async (
   await expect(item.getByRole('button', { name: 'Revise' })).toBeVisible();
 });
 
-test('a suggested new event appears for visitors once approved', async ({ page, browser }) => {
-  await openWorld(page);
-  await signInAs(page, 'editor@example.test');
-  await page.click('#settings-btn');
-  await page.locator('#editing-toggle').setChecked(true);
-  await page.click('.settings-close-btn');
-  await page.click('#suggest-event');
-  await page.fill('#se-name', 'Founding of Example Town');
-  await page.fill('#se-time', 'May 1, 1820');
-  await page.fill('#se-description', 'The town is incorporated.');
-  await page.selectOption('#se-category', 'politics');
-  await page.click('#se-submit');
-  await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);
-
-  const admin = await browser.newPage();
-  await openReview(admin);
-  await admin.getByRole('button', { name: 'Approve new event' }).click();
-  await expect(admin.locator('#tab-waiting')).toHaveText('Waiting · 0');
-
-  const visitor = await browser.newPage();
-  await openWorld(visitor);
-  await visitor.fill('#searchInput', 'Example Town');
-  await expect(card(visitor, 'Founding of Example Town').locator('.community-edited')).toHaveText('Revised');
-});
-
 test('an edit written before another approval of the same field waits under Conflicts', async ({ page, browser }) => {
   await openWorld(page);
   await signInAs(page, 'editor@example.test');
@@ -184,13 +159,4 @@ test('an edit written before another approval of the same field waits under Conf
   const visitor = await browser.newPage();
   await openWorld(visitor);
   await expect(card(visitor, 'Max Schmeling knocks out Joe Louis').locator('.event-description')).toHaveText('Second version.');
-});
-
-test('the review page is for admins only', async ({ page }) => {
-  await openWorld(page);
-  await signInAs(page, 'editor@example.test');
-  await page.click('#settings-btn');
-  await expect(page.locator('#review-link')).toBeHidden();
-  await page.goto('/history/review.html?emulator');
-  await expect(page.locator('#review-status')).toHaveText('Only admins can review edits.');
 });

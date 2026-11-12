@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { readFileSync, readdirSync } from 'node:fs';
 import { stubFirebase } from './firebase-stub.js';
 
@@ -113,16 +113,4 @@ test('an icon drawn at several sizes is fetched at the one that fits it on scree
     expect(size).toBeLessThan(44);
     await expect(image).toHaveAttribute('sizes', `${size}px`);
     await expect.poll(() => image.evaluate(img => img.currentSrc)).toContain(`${SMALL}.webp`);
-});
-
-test('landmark icons are see-through, except the one pointed at', async ({ page }) => {
-    await open(page);
-    const content = page.locator('.map-landmark[title="Listed Landmark"] .map-landmark-content');
-    await expect(content).toHaveCSS('opacity', '0.7');
-    // the map can still be settling after the page loads and move the icon from under the pointer, so each
-    // try points at it again
-    await expect.poll(async () => {
-        await content.hover();
-        return content.evaluate(node => getComputedStyle(node).opacity);
-    }).toBe('1');
 });

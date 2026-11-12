@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { firebaseStub, stubFirebase } from './firebase-stub.js';

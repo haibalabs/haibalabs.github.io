@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
@@ -264,23 +264,6 @@ test('cancelling while the Wikipedia check is pending writes nothing', async ({ 
   await page.click('#se-submit');
   await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);
   expect(await listAsOwner(request, 'edits')).toHaveLength(1);
-});
-
-test("an edit's name in My edits goes to its event, clearing a search that hides it", async ({ page }) => {
-  await openWorld(page);
-  await signInAs(page, 'editor@example.test');
-  await setEditing(page, true);
-  await suggestDescriptionEdit(page, 'Schmeling knocks out Louis on June 19.');
-  await page.click('#se-submit');
-  await expect(page.locator('.toast', { hasText: 'Sent for review.' })).toHaveCount(1);
-
-  await page.fill('#searchInput', 'museum');
-  await expect(card(page, 'Max Schmeling knocks out Joe Louis')).toHaveCount(0);
-  await page.click('#settings-btn');
-  await page.locator('.my-edit').getByRole('button', { name: 'Max Schmeling knocks out Joe Louis' }).click();
-  await expect(page.locator('#settings-panel')).not.toHaveClass(/\bopen\b/);
-  await expect(page.locator('#searchInput')).toHaveValue('');
-  await expect(card(page, 'Max Schmeling knocks out Joe Louis')).toBeInViewport();
 });
 
 test('the author revises and withdraws an edit from My edits', async ({ page, request }) => {

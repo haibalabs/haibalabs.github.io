@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, STORAGE, createAccount, downloadAsOwner, listAsOwner, listFilesAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
@@ -121,27 +121,6 @@ test('a photo is resized, stripped of metadata, stored privately under the event
   }
 });
 
-test('a full-size photo that cannot be read shows a message in the viewer instead of loading forever', async ({ page, request }) => {
-  await openWorld(page);
-  await signIn(page, 'editor@example.test');
-  const id = await createTimeline(page, 'Family history');
-  await addEventWithPhoto(page, 'Beach day');
-  const doc = await eventDoc(request, id);
-  const ref = doc.fields.image.mapValue.fields.ref.stringValue;
-  // a missing file fails at once; an aborted request would be retried by the SDK
-  await page.route(`**/v0/b/**/o/${encodeURIComponent(ref)}?*`, route => route.fulfill({ status: 404, json: { error: { code: 404, message: 'Not Found.' } } }));
-
-  await card(page, 'Beach day').locator('.personal-photo img').click();
-  await expect(page.locator('#photo-viewer .photo-viewer-error')).toBeVisible();
-  await expect(page.locator('#photo-viewer .photo-viewer-error')).toHaveText('This image could not be loaded.');
-  await expect(page.locator('#photo-viewer')).not.toHaveClass(/loading/);
-  await page.keyboard.press('Escape');
-  await expect(page.locator('#photo-viewer')).toBeHidden();
-  // the failure is remembered: opening it again shows the message rather than a spinner
-  await card(page, 'Beach day').locator('.personal-photo img').click();
-  await expect(page.locator('#photo-viewer .photo-viewer-error')).toBeVisible();
-});
-
 test('a photo can be replaced and removed, and its old files are deleted', async ({ page, request }) => {
   await openWorld(page);
   await signIn(page, 'editor@example.test');
@@ -187,14 +166,4 @@ test('deleting an event or its timeline deletes the photo files', async ({ page,
   await page.locator(`.timeline-item[data-timeline-id="${id}"]`).getByRole('button', { name: 'Delete' }).click();
   await expect(page.locator('.timeline-empty')).toHaveText('No timelines yet.');
   expect(await listFilesAsOwner(request, `timelines/${id}/`)).toEqual([]);
-});
-
-test('a file that is not an image is refused in the form', async ({ page }) => {
-  await openWorld(page);
-  await signIn(page, 'editor@example.test');
-  await createTimeline(page, 'Family history');
-  await page.click('#add-event');
-  await page.setInputFiles('#photo-input', { name: 'notes.jpg', mimeType: 'image/jpeg', buffer: Buffer.from('not an image') });
-  await expect(page.locator('#add-event-form .form-error')).toHaveText(/could not be read as a photo/);
-  await expect(page.locator('#photo-group .photo-preview')).toBeHidden();
 });

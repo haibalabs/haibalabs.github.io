@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './cdn-cache.js';
 import { stubFirebase } from './firebase-stub.js';
 
 const DARK_BG = 'rgb(14, 14, 16)';
