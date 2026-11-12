@@ -6,6 +6,8 @@
 // Wikipedia, which opens its first link, then its places' events, or a note that it has none yet.
 //
 // iconUrl(sha256) gives an icon's address. A landmark with no icon yet is drawn as a circle with its initial.
+// A landmark whose icon comes drawn at several sizes (icon_sizes) gets them all as the image's srcset, with its
+// size on screen as sizes, so the browser fetches the one that fits the screen instead of scaling one down.
 
 // the zoom each tier first shows at, and the icon's size on screen
 const MIN_ZOOM = { 1: 0, 2: 5, 3: 9 };
@@ -32,6 +34,8 @@ function resize(marker, size) {
         width: `${size}px`, height: `${size}px`,
         marginLeft: `${-Math.round(size / 2)}px`, marginTop: `${-Math.round(size * (SIZE - 4) / SIZE)}px`,
     });
+    const image = node.querySelector('img[srcset]');
+    if (image) image.sizes = `${size}px`;
 }
 const SOURCE_NAMES = { wikipedia: 'Wikipedia' };
 
@@ -50,7 +54,14 @@ export class LandmarkLayer {
         const content = document.createElement('div');
         content.className = 'map-landmark-content';
         if (landmark.icon) {
-            content.append(Object.assign(document.createElement('img'), { src: this.iconUrl(landmark.icon), alt: '', width: SIZE, height: SIZE, draggable: false }));
+            const image = Object.assign(document.createElement('img'), { alt: '', width: SIZE, height: SIZE, draggable: false });
+            const sizes = Object.entries(landmark.icon_sizes ?? {});
+            if (sizes.length) {
+                image.sizes = `${SIZE}px`;
+                image.srcset = sizes.map(([pixels, sha256]) => `${this.iconUrl(sha256)} ${pixels}w`).join(', ');
+            }
+            image.src = this.iconUrl(landmark.icon);
+            content.append(image);
         } else {
             content.append(Object.assign(document.createElement('span'), { className: 'map-landmark-placeholder', textContent: landmark.label[0] }));
         }
