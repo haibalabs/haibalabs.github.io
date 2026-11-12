@@ -36,23 +36,6 @@ export async function signIn(page, email, password = PASSWORD) {
   await page.click('#login-btn');
 }
 
-// Firestore REST value encoding for plain JSON values.
-function toValue(value) {
-  if (value === null || value === undefined) return { nullValue: null };
-  if (Array.isArray(value)) return { arrayValue: { values: value.map(toValue) } };
-  if (value instanceof Date) return { timestampValue: value.toISOString() };
-  if (typeof value === 'object') return { mapValue: { fields: toFields(value) } };
-  if (typeof value === 'number') return Number.isInteger(value) ? { integerValue: String(value) } : { doubleValue: value };
-  if (typeof value === 'boolean') return { booleanValue: value };
-  return { stringValue: String(value) };
-}
-const toFields = (object) => Object.fromEntries(Object.entries(object).map(([k, v]) => [k, toValue(v)]));
-
-// Writes a document as the owner, bypassing the rules (stands in for another editor's change).
-export async function writeAsOwner(request, path, data) {
-  await request.patch(`${DOCUMENTS()}/${path}`, { headers: OWNER, data: { fields: toFields(data) } });
-}
-
 export async function listAsOwner(request, collectionName) {
   const response = await request.get(`${DOCUMENTS()}/${collectionName}`, { headers: OWNER });
   return (await response.json()).documents ?? [];

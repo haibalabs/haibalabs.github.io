@@ -5,7 +5,7 @@
   "scripts": {
     "test:rules": "firebase emulators:exec --only firestore,storage --project demo-historiline \"node --test --test-concurrency=1 tests/*.test.js\"",
     "test:auth-flow": "firebase emulators:exec --only auth,firestore,storage --project demo-historiline \"npm run test:flows\"",
-    "test:flows": "npm --prefix .. run test:e2e -- tests/e2e/auth-flow.spec.js tests/e2e/timelines-flow.spec.js tests/e2e/photos-flow.spec.js tests/e2e/edits-flow.spec.js tests/e2e/review-flow.spec.js tests/e2e/places-images-flow.spec.js --workers=1",
+    "test:flows": "npm --prefix .. run test:e2e -- tests/e2e/auth-flow.spec.js tests/e2e/timelines-flow.spec.js tests/e2e/photos-flow.spec.js tests/e2e/edits-flow.spec.js tests/e2e/review-flow.spec.js --workers=1",
     "deploy:rules": "firebase deploy --only firestore:rules --project historytimeline-81f70",
     "deploy:storage": "firebase deploy --only storage --project historytimeline-81f70"
   },

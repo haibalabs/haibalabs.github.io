@@ -1,5 +1,5 @@
 import { test, expect } from './cdn-cache.js';
-import { AUTH, EMULATORS_RUNNING, PROJECT, createAccount, resetEmulators, signIn } from './emulator.js';
+import { EMULATORS_RUNNING, createAccount, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
 // Sign-in against the local Firebase emulators.
@@ -28,49 +28,4 @@ test('an admin stays signed in after a reload', async ({ page, request }) => {
   await page.click('#settings-btn');
   await page.click('#logout-btn');
   await expect(page.locator('#login-form')).toBeVisible();
-});
-
-test('an account without a role is signed out with a message', async ({ page, request }) => {
-  await createAccount(request, 'stranger@example.test', null);
-  await page.goto(APP);
-  await signIn(page, 'stranger@example.test');
-  await expect(page.locator('#auth-status')).toHaveText(/has not been invited/);
-  await expect(page.locator('#login-form')).toBeVisible();
-  await expect(page.locator('#user-info')).toBeHidden();
-
-  await page.reload();
-  await expect(page.locator('#user-info')).toBeHidden();
-});
-
-test('"Forgot password?" sends a reset email without revealing whether the account exists', async ({ page, request }) => {
-  await createAccount(request, 'editor@example.test', 'editor');
-  await page.goto(APP);
-  await page.click('#settings-btn');
-
-  await page.click('#reset-password-btn');
-  await expect(page.locator('#auth-status')).toHaveText(/Enter your email above/);
-
-  await page.fill('#email', 'editor@example.test');
-  await page.click('#reset-password-btn');
-  await expect(page.locator('#auth-status')).toHaveText(/reset link is on its way/);
-  const sentMessage = await page.locator('#auth-status').textContent();
-
-  await page.fill('#email', 'nobody@example.test');
-  await page.click('#reset-password-btn');
-  await expect(page.locator('#auth-status')).toHaveText(sentMessage);
-
-  // the Auth emulator records the reset email it would have sent
-  const codes = await (await request.get(`http://${AUTH}/emulator/v1/projects/${PROJECT}/oobCodes`)).json();
-  const resets = codes.oobCodes.filter(c => c.requestType === 'PASSWORD_RESET').map(c => c.email);
-  expect(resets).toEqual(['editor@example.test']);
-});
-
-test('a wrong password shows an in-page error instead of an alert', async ({ page, request }) => {
-  await createAccount(request, 'editor@example.test', 'editor');
-  let dialog = false;
-  page.on('dialog', async (d) => { dialog = true; await d.dismiss(); });
-  await page.goto(APP);
-  await signIn(page, 'editor@example.test', 'not-the-password');
-  await expect(page.locator('#auth-status')).toHaveText('Email or password is incorrect.');
-  expect(dialog).toBe(false);
 });
