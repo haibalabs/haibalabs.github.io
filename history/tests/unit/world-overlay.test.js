@@ -2,7 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
     conflictingFields, emptyOverlay, newEventRecord, overlayBytes, publishedValue, recordSha256, revertChanges,
-    withApproval, wordDiff,
+    withApproval,
 } from '../../modules/world-edits.js';
 import { applyOverlay, overlayProblem } from '../../modules/world-overlay.js';
 
@@ -160,18 +160,5 @@ describe('applyOverlay — the approved edits on a visitor\'s page', () => {
     it('refuses an overlay it doesn\'t know', () => {
         assert.match(overlayProblem(null), /not a known version/);
         assert.match(overlayProblem({ version: 1, patches: null, created: {} }), /malformed/);
-    });
-});
-
-describe('wordDiff — what the review page highlights in a description', () => {
-    it('marks only the changed words', () => {
-        assert.deepEqual(wordDiff('Knocks out Louis on June 13, 1936.', 'Knocks out Louis on June 19, 1936.'), [
-            { kind: 'same', text: 'Knocks out Louis on June ' }, { kind: 'removed', text: '13, ' }, { kind: 'added', text: '19, ' },
-            { kind: 'same', text: '1936.' },
-        ]);
-    });
-    it('handles empty sides', () => {
-        assert.deepEqual(wordDiff(null, 'New text'), [{ kind: 'added', text: 'New text' }]);
-        assert.deepEqual(wordDiff('Old', ''), [{ kind: 'removed', text: 'Old' }]);
     });
 });

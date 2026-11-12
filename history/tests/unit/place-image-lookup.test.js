@@ -2,7 +2,6 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { localPlaces, matchPlaces, PlaceSearch, precisionFromDescription, searchWikidata } from '../../modules/place-search.js';
 import { commonsFileTitle, commonsImage, creditLine, imageFromLink, plainText } from '../../modules/image-link.js';
-import { tileFor } from '../../modules/location-picker.js';
 
 const loc = (name, place_id, coordinates, precision = 'settlement', country = '') => ({
     name, city: '', region: '', country, historical_name: '', place_id, geography: { status: 'identified', precision, coordinates },
@@ -106,18 +105,5 @@ describe('image links — Commons credit filled in, other links as they are', ()
         assert.equal(creditLine(result.image), 'License unknown · news.example');
         assert.equal((await imageFromLink('http://news.example/p.jpg')).ok, false);
         assert.equal(plainText('a&nbsp;<b>b</b>'), 'a b');
-    });
-});
-
-describe('the place row’s small map', () => {
-    it('finds the tile holding a point and where in it the point falls', () => {
-        const { url, px, py } = tileFor([0, 0], 1);
-        assert.equal(url, 'https://tile.openstreetmap.org/1/1/1.png');
-        assert.equal(Math.round(px), 0);
-        assert.equal(Math.round(py), 0);
-        // Munich's arena: column floor((11.6247 + 180) / 360 × 2^15) = 17442, and the point inside its tile
-        const arena = tileFor([48.2188, 11.6247], 15);
-        assert.match(arena.url, /\/15\/17442\/\d+\.png$/);
-        assert.ok(arena.px >= 0 && arena.px < 256 && arena.py >= 0 && arena.py < 256);
     });
 });

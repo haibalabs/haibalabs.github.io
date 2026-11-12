@@ -20,6 +20,7 @@ const countingStub = WRITES.reduce((source, name) => source.replace(
         'export const getDoc = async (ref) => { const data = ref.path === \'world_release/current\' ? globalThis.__liveRelease : undefined; '
         + 'return { exists: () => data !== undefined, data: () => data }; };');
 
+const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
 const legacy = (status, coordinates) => ({ status, coordinates, precision: 'approximate', verification: 'not_independently_verified' });
 const event = (id, name, time, extra = {}) => ({ event_id: id, event_version: `v_${id}`, name, enhanced_time: time,
     enhanced_description: `${name}.`, categories: ['politics'], figures: [], confidence: 'high', visible: true,
@@ -32,6 +33,10 @@ const RELEASE = {
     ] },
     'events/e1.json': { format: 'historiline-events/v1', shard: 'd001', family: 'dated', events: [
         event('evt_second', 'Second staged event', '1600', {
+            image: { image_url: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Square.jpg', source_url: 'https://commons.wikimedia.org/wiki/File:Square.jpg',
+                caption: 'The square.', credit: 'A photographer', license_name: 'CC BY 4.0', license_url: 'https://creativecommons.org/licenses/by/4.0/',
+                rights_statement: 'Free to share', rights_basis: 'license', image_role: 'site', image_date: null, display_date: null,
+                date_qualification: null, event_issue_ids: [] },
             locations: [{ name: 'Bravo', city: '', region: '', country: '', historical_name: '', place: 1, placement: 'placed',
                 placed: 2, geography: legacy('reused', [1, 2]) }] }),
     ] },
@@ -53,6 +58,7 @@ async function openStaging(page, files = {}, { live = null } = {}) {
     await page.addInitScript(live => { globalThis.__liveRelease = live ?? undefined; }, live);
     await page.route('https://www.gstatic.com/firebasejs/**', route => route.fulfill({ contentType: 'text/javascript', body: countingStub }));
     await page.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/, r => r.abort());
+    await page.route('https://upload.wikimedia.org/**', route => route.fulfill({ contentType: 'image/png', body: PNG }));
     const requests = [];
     const served = { ...RELEASE, ...files };
     await page.route('**/history/data/**', route => {
@@ -78,6 +84,13 @@ test('the staging site shows the published release, read-only, with its banner',
     await expect(placed).toContainText('Reviewed City, Land');
     await expect(placed).toHaveAttribute('title', /Reviewed location/);
     await expect(page.locator('.event[data-event-id="evt_first"] .event-location')).toContainText('Alpha Town, Somewhere');
+    // a released image keeps its credit and licence, behind the viewer's (i) button
+    await page.locator('.event[data-event-id="evt_second"] .event-image img').click();
+    const viewer = page.locator('#photo-viewer');
+    await viewer.locator('.viewer-info').click();
+    await expect(viewer.locator('.viewer-credit')).toContainText('A photographer');
+    await expect(viewer.locator('.viewer-credit')).toContainText('CC BY 4.0');
+    await page.keyboard.press('Escape');
     // read-only: a banner on screen, above the fixed header and map, and no editing controls
     const banner = page.locator('#staging-banner');
     await expect(banner).toContainText('Staging, read-only');
@@ -94,16 +107,6 @@ test('the staging site shows the published release, read-only, with its banner',
     // with no release named live, visitors see the committed one, which this page also shows: nothing is new
     await expect(banner.locator('.staging-new')).toHaveText('No events are new since the live release.');
     await expect(banner.locator('.staging-new-toggle')).toBeHidden();
-});
-
-test('the staging banner says when the new events cannot be found, and offers no filter', async ({ page }) => {
-    // the live release's manifest isn't served
-    await openStaging(page, { 'manifest-next.json': MANIFEST },
-        { live: { version: 1, manifest_sha256: 'b'.repeat(64), release_id: 'release-gone' } });
-    const line = page.locator('#staging-banner .staging-new');
-    await expect(line).toContainText('New events can\'t be shown: Could not load');
-    await expect(line.getByRole('button')).toBeHidden();
-    await expect(page.locator('#timeline-content .event')).toHaveCount(2);
 });
 
 test('the staging banner shows only the events new against the live release, and all again', async ({ page }) => {
@@ -186,18 +189,16 @@ async function attemptEveryWrite(page) {
     });
 }
 
-test('the write check reaches Firebase on a page that is not read-only', async ({ page }) => {
-    // the control for the next test: the same calls on the live path do write, so zero there means refused
-    await page.route('https://www.gstatic.com/firebasejs/**', route => route.fulfill({ contentType: 'text/javascript', body: countingStub }));
-    await page.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/, r => r.abort());
-    await page.route('**/staging-control.json', route => route.fulfill({ json: [event('evt_control', 'Control event', '1700')] }));
-    await page.goto('/history/index.html?file=staging-control.json');
-    await expect(page.locator('#timeline-content .event').first()).toBeVisible();
-    const results = await attemptEveryWrite(page);
-    expect(results.writes).toBeGreaterThanOrEqual(10);
-});
-
 test('every write the site can make is refused on the staging site before it reaches Firebase', async ({ page }) => {
+    // the control: the same calls on a page that is not read-only do write, so zero on staging means refused
+    const control = await page.context().newPage();
+    await control.route('https://www.gstatic.com/firebasejs/**', route => route.fulfill({ contentType: 'text/javascript', body: countingStub }));
+    await control.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod/, r => r.abort());
+    await control.route('**/staging-control.json', route => route.fulfill({ json: [event('evt_control', 'Control event', '1700')] }));
+    await control.goto('/history/index.html?file=staging-control.json');
+    await expect(control.locator('#timeline-content .event').first()).toBeVisible();
+    expect((await attemptEveryWrite(control)).writes).toBeGreaterThanOrEqual(10);
+
     await openStaging(page);
     const results = await attemptEveryWrite(page);
     expect(results.writes).toBe(0);

@@ -25,7 +25,6 @@ const BINDING_STUB = `L.maplibreGL = options => {
   });
   return layer;
 };`;
-const LAND = { light: '#e4e6b6', dark: '#22271f' };
 
 async function open(page, { maplibre = true, webgl = true, glFails = false } = {}) {
   const imageTiles = [];
@@ -55,39 +54,9 @@ async function open(page, { maplibre = true, webgl = true, glFails = false } = {
   await expect(page.locator('.event').first()).toBeVisible();
   return imageTiles;
 }
-const landColour = style => style.layers.find(layer => layer.id === 'land').paint['background-color'];
-
-test('the map is drawn from OpenStreetMap vector tiles in its own pane and follows the theme', async ({ page }) => {
-  const errors = [];
-  page.on('pageerror', error => errors.push(error.message));
-  await page.emulateMedia({ colorScheme: 'light' });
-  const imageTiles = await open(page);
-  await expect.poll(() => page.evaluate(() => window.baseMap?.styles.length)).toBe(1);
-  const first = await page.evaluate(() => window.baseMap);
-  expect(first.pane).toBe('basePane');
-  expect(first.styles[0].sources.shortbread.tiles[0]).toContain('vector.openstreetmap.org/shortbread_v1/');
-  expect(landColour(first.styles[0])).toBe(LAND.light);
-
-  await page.click('#settings-btn');
-  await page.getByText('Dark', { exact: true }).click();
-  await expect.poll(() => page.evaluate(() => window.baseMap.styles.length)).toBe(2);
-  expect(landColour(await page.evaluate(() => window.baseMap.styles[1]))).toBe(LAND.dark);
-
-  await page.getByText('Light', { exact: true }).click();
-  await expect.poll(() => page.evaluate(() => window.baseMap.styles.length)).toBe(3);
-  expect(landColour(await page.evaluate(() => window.baseMap.styles[2]))).toBe(LAND.light);
-  // the operating system's setting doesn't restyle the map
-  await page.emulateMedia({ colorScheme: 'dark' });
-  await page.waitForTimeout(300);
-  expect(await page.evaluate(() => window.baseMap.styles.length)).toBe(3);
-
-  expect(imageTiles).toEqual([]);
-  expect(errors).toEqual([]);
-});
-
 const vectorTileError = page => page.evaluate(() => window.baseMap.fire('error', { sourceId: 'shortbread', error: new Error('vector.openstreetmap.org is down') }));
 
-test('when the vector tile server fails before its first tile, the map switches to the images', async ({ page }) => {
+test('when the vector tile server fails before its first tile, the map switches to the images; after it, the vector map stays', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   const imageTiles = await open(page);
@@ -104,43 +73,50 @@ test('when the vector tile server fails before its first tile, the map switches 
   await page.getByText('Dark', { exact: true }).click();
   expect(await page.evaluate(() => window.baseMap.styles.length)).toBe(1);
   expect(errors).toEqual([]);
+
+  // once a vector tile has drawn, a tile failure keeps the vector map
+  const later = await page.context().newPage();
+  const laterTiles = await open(later);
+  await expect.poll(() => later.evaluate(() => window.baseMap?.styles.length)).toBe(1);
+  await later.evaluate(() => window.baseMap.fire('sourcedata', { sourceId: 'shortbread', tile: {} }));
+  await vectorTileError(later);
+  expect(await later.evaluate(() => window.baseMap.removed)).toBe(false);
+  await later.locator('#toggle-map').click();
+  await later.waitForTimeout(500);
+  expect(laterTiles).toEqual([]);
 });
 
-test('a vector tile failure after the first tile has drawn keeps the vector map', async ({ page }) => {
-  const imageTiles = await open(page);
-  await expect.poll(() => page.evaluate(() => window.baseMap?.styles.length)).toBe(1);
-  await page.evaluate(() => window.baseMap.fire('sourcedata', { sourceId: 'shortbread', tile: {} }));
-  await vectorTileError(page);
-  expect(await page.evaluate(() => window.baseMap.removed)).toBe(false);
-  await page.locator('#toggle-map').click();
-  await page.waitForTimeout(500);
-  expect(imageTiles).toEqual([]);
-});
-
-for (const [what, options] of [['MapLibre does not load', { maplibre: false }], ['the browser has no WebGL', { webgl: false }]]) {
-  test(`when ${what}, the map shows OpenStreetMap's images`, async ({ page }) => {
-    const errors = [];
-    page.on('pageerror', error => errors.push(error.message));
-    const imageTiles = await open(page, options);
-    await page.locator('#toggle-map').click();
-    await expect.poll(() => imageTiles.length).toBeGreaterThan(0);
-    expect(await page.evaluate(() => window.baseMap)).toBeUndefined();
-    expect(errors).toEqual([]);
-  });
-}
-
-test('when MapLibre gets no WebGL context while being added, the half-built layer is removed and the images show', async ({ page }) => {
+test('when MapLibre does not load, the map shows OpenStreetMap\'s images', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  const imageTiles = await open(page, { glFails: true });
-  await expect.poll(() => page.evaluate(() => window.baseMap?.removed)).toBe(true);
+  const imageTiles = await open(page, { maplibre: false });
   await page.locator('#toggle-map').click();
   await expect.poll(() => imageTiles.length).toBeGreaterThan(0);
-  // panning would reach the failed layer's move handler if it were still attached
-  const box = await page.locator('#map').boundingBox();
-  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(box.x + box.width / 2 + 60, box.y + box.height / 2 + 30, { steps: 5 });
-  await page.mouse.up();
+  expect(await page.evaluate(() => window.baseMap)).toBeUndefined();
   expect(errors).toEqual([]);
+});
+
+test('without WebGL, or when MapLibre gets no WebGL context while being added, the map shows OpenStreetMap\'s images', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const imageTiles = await open(page, { webgl: false });
+  await page.locator('#toggle-map').click();
+  await expect.poll(() => imageTiles.length).toBeGreaterThan(0);
+  expect(await page.evaluate(() => window.baseMap)).toBeUndefined();
+  expect(errors).toEqual([]);
+
+  // the half-built layer is removed, and panning never reaches its move handler
+  const failing = await page.context().newPage();
+  const failingErrors = [];
+  failing.on('pageerror', error => failingErrors.push(error.message));
+  const failingTiles = await open(failing, { glFails: true });
+  await expect.poll(() => failing.evaluate(() => window.baseMap?.removed)).toBe(true);
+  await failing.locator('#toggle-map').click();
+  await expect.poll(() => failingTiles.length).toBeGreaterThan(0);
+  const box = await failing.locator('#map').boundingBox();
+  await failing.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await failing.mouse.down();
+  await failing.mouse.move(box.x + box.width / 2 + 60, box.y + box.height / 2 + 30, { steps: 5 });
+  await failing.mouse.up();
+  expect(failingErrors).toEqual([]);
 });

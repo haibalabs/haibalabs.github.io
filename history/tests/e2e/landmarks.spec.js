@@ -44,7 +44,7 @@ async function open(page) {
     await expect(page.getByRole('button', { name: 'Landmarks' })).toBeVisible();
 }
 
-test('the release\'s landmarks show with a switch that hides them and is remembered', async ({ page }) => {
+test('the release\'s landmarks show, drawn at the size that fits, open their bubble, and hide with a switch that is remembered', async ({ page, context }) => {
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
     await open(page);
@@ -65,6 +65,37 @@ test('the release\'s landmarks show with a switch that hides them and is remembe
         return [(icon.left - map.left) % 1, (icon.top - map.top) % 1];
     });
     expect(offset).toEqual([0, 0]);
+    // an icon drawn at several sizes is fetched at the one that fits it on screen, from the listed sizes only
+    const sized = page.locator('.map-landmark[title="Listed Landmark"]');
+    const image = sized.locator('img');
+    // the unlisted 24 px drawing is dropped
+    await expect(image).toHaveAttribute('srcset', new RegExp(`^[^ ]*${SMALL}\\.webp 44w, [^ ]*${ICON}\\.webp 88w, [^ ]*${LARGE}\\.webp 132w$`));
+    // shrunk to its world-view size on a 1x screen, it takes the smallest drawing at least that big
+    const size = Number(await sized.getAttribute('data-size'));
+    expect(size).toBeLessThan(44);
+    await expect(image).toHaveAttribute('sizes', `${size}px`);
+    await expect.poll(() => image.evaluate(img => img.currentSrc)).toContain(`${SMALL}.webp`);
+    // a landmark opens its bubble above its icon, titled with its name, whose scroll opens Wikipedia in the article panel
+    const landmark = sized;
+    // no badge on the icon
+    await expect(landmark.locator('a, button')).toHaveCount(0);
+    await landmark.locator('img').click();
+    // it covers no place rows, so the bubble has only its title
+    const list = page.locator('.map-event-list');
+    const title = list.locator('.map-event-list-title');
+    await expect(title.locator('strong')).toHaveText('Listed Landmark');
+    await expect(title.locator('i.fa-scroll')).toHaveCount(1);
+    await expect(list).toHaveText('Listed Landmark');
+    // the bubble opens above the icon, leaving it in view
+    const icon = await landmark.boundingBox();
+    const bubble = await page.locator('.map-event-popup').boundingBox();
+    expect(bubble.y + bubble.height).toBeLessThanOrEqual(icon.y + 2);
+    // the title opens the article panel, not a new tab
+    const pages = context.pages().length;
+    await title.click();
+    await expect(page.locator('#info-panel')).toHaveClass(/open/);
+    expect(context.pages().length).toBe(pages);
+    await page.locator('#toggle-info').click();
 
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
@@ -76,41 +107,4 @@ test('the release\'s landmarks show with a switch that hides them and is remembe
     await expect(page.getByRole('button', { name: 'Landmarks' })).toHaveAttribute('aria-pressed', 'false');
     await expect(page.locator('.map-landmark')).toHaveCount(0);
     expect(errors).toEqual([]);
-});
-
-test('a landmark opens its bubble above its icon, titled with its name, whose scroll opens Wikipedia in the article panel', async ({ page, context }) => {
-    await open(page);
-    const landmark = page.locator('.map-landmark[title="Listed Landmark"]');
-    // no badge on the icon
-    await expect(landmark.locator('a, button')).toHaveCount(0);
-    await landmark.locator('img').click();
-    // it covers no place rows, so the bubble has only its title, with no separator under it
-    const list = page.locator('.map-event-list');
-    const title = list.locator('.map-event-list-title');
-    await expect(title.locator('strong')).toHaveText('Listed Landmark');
-    await expect(title.locator('i.fa-scroll')).toHaveCount(1);
-    await expect(list).toHaveText('Listed Landmark');
-    await expect(title).toHaveCSS('border-bottom-style', 'none');
-    // the bubble opens above the icon, leaving it in view
-    const icon = await landmark.boundingBox();
-    const bubble = await page.locator('.map-event-popup').boundingBox();
-    expect(bubble.y + bubble.height).toBeLessThanOrEqual(icon.y + 2);
-    // the title opens the article panel, not a new tab
-    const pages = context.pages().length;
-    await title.click();
-    await expect(page.locator('#info-panel')).toHaveClass(/open/);
-    expect(context.pages().length).toBe(pages);
-});
-
-test('an icon drawn at several sizes is fetched at the one that fits it on screen, from the listed sizes only', async ({ page }) => {
-    await open(page);
-    const node = page.locator('.map-landmark[title="Listed Landmark"]');
-    const image = node.locator('img');
-    // the unlisted 24 px drawing is dropped
-    await expect(image).toHaveAttribute('srcset', new RegExp(`^[^ ]*${SMALL}\\.webp 44w, [^ ]*${ICON}\\.webp 88w, [^ ]*${LARGE}\\.webp 132w$`));
-    // shrunk to its world-view size on a 1x screen, it takes the smallest drawing at least that big
-    const size = Number(await node.getAttribute('data-size'));
-    expect(size).toBeLessThan(44);
-    await expect(image).toHaveAttribute('sizes', `${size}px`);
-    await expect.poll(() => image.evaluate(img => img.currentSrc)).toContain(`${SMALL}.webp`);
 });

@@ -1,0 +1,4 @@
+[
+  {"event_id": "evt_file_1", "name": "First file event", "enhanced_time": "1800", "enhanced_description": "The first event of a file opened with ?file=.", "categories": ["culture"], "figures": [], "locations": [], "confidence": "high"},
+  {"event_id": "evt_file_2", "name": "Second file event", "enhanced_time": "1900", "enhanced_description": "The second event of a file opened with ?file=.", "categories": ["culture"], "figures": [], "locations": [], "confidence": "high"}
+]
