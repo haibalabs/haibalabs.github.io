@@ -94,7 +94,8 @@ export class PolityLayer {
             },
             onEachFeature: (feature, layer) => {
                 const entity = this.entities.get(feature.properties.entity_id);
-                layer.bindTooltip(entity.name, { sticky: true, direction: 'top', className: 'map-polity-name', opacity: 1 });
+                // a text node, since Leaflet renders a string as HTML
+                layer.bindTooltip(document.createTextNode(entity.name), { sticky: true, direction: 'top', className: 'map-polity-name', opacity: 1 });
                 layer.on('click', event => this.open(entity, feature.properties, event.latlng));
             },
         }).addTo(this.layer);
