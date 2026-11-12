@@ -76,6 +76,10 @@ button.map-event-list-title:hover strong { text-decoration: underline; }
 .map-stepper button:disabled { opacity: .3; cursor: default; }
 .map-stepper button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
+/* Historical borders (modules/polity-layer.js): the state's name as you point at it. */
+.leaflet-tooltip.map-polity-name { padding: 2px 7px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); box-shadow: 0 1px 4px rgb(0 0 0 / .12); font: 600 12px/1.3 var(--font-ui); }
+.leaflet-tooltip-top.map-polity-name::before { border-top-color: var(--surface); }
+
 /* Landmarks (modules/landmark-layer.js): the cutout itself, a soft shadow so it reads on light and dark maps, and its i badge. */
 .map-landmark { background: none; border: 0; }
 .map-landmark img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 1px 2px rgb(0 0 0 / .35)); cursor: pointer; transition: transform .12s; }

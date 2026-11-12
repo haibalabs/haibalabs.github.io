@@ -1,0 +1,36 @@
+{
+ "source": "Cliopatria v0.2.1, Seshat Global History Databank",
+ "license": "CC BY 4.0",
+ "credit_url": "https://github.com/Seshat-Global-History-Databank/cliopatria",
+ "period_years": 25,
+ "files": [
+  {
+   "from_year": 100,
+   "to_year": 124,
+   "sha256": "044205da5a126fef7bce53423b3a41660a252e5e1e53a2e384bcfa08b206ea0e",
+   "bytes": 189593,
+   "count": 60
+  },
+  {
+   "from_year": 775,
+   "to_year": 799,
+   "sha256": "e8bb89e54b98c3c1d256e99316f8c264acd5a0247a6c0c7fa8cc7d2e86e8d302",
+   "bytes": 305009,
+   "count": 159
+  },
+  {
+   "from_year": 1250,
+   "to_year": 1274,
+   "sha256": "8e0877bd4144d27953f963bb3a48240771fec26d468c5af7feccd2a58e099a27",
+   "bytes": 370475,
+   "count": 246
+  },
+  {
+   "from_year": 1500,
+   "to_year": 1524,
+   "sha256": "a4c428c9b3353ad342080e2265d737f597c81132fa373721801c3bce116b0ea2",
+   "bytes": 943474,
+   "count": 386
+  }
+ ]
+}

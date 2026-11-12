@@ -31,6 +31,25 @@ export const VARIANTS = [
         },
     },
     {
+        id: 'borders',
+        label: 'Borders by year (sample)',
+        note: 'States and empires as they were in the selected event\'s year, or the year of the cards on screen, from Cliopatria (CC BY 4.0). The sample covers only 100–124, 775–799, 1250–1274 and 1500–1524; other years show none. Point at a state for its name, click it for its article.',
+        apply(lab, on) {
+            if (!on) return lab.browser.showPolities(null);
+            const base = new URL('borders-sample/', import.meta.url);
+            const json = path => fetch(new URL(path, base)).then(response => {
+                if (!response.ok) throw new Error(`Could not load ${response.url} (${response.status})`);
+                return response.json();
+            });
+            Promise.all([json('index.json'), json('entities.json')]).then(([index, table]) => lab.browser.showPolities({
+                files: index.files,
+                sliceUrl: sha256 => new URL(`polity-outlines/${sha256}.json`, base).href,
+                entities: table.entities,
+                credit: `<a href="${index.credit_url}" target="_blank" rel="noopener">${index.source}</a>, ${index.license}`,
+            })).catch(error => console.error('The borders sample could not load:', error));
+        },
+    },
+    {
         id: 'outlines',
         label: 'Outlines (live test)',
         note: 'Looks the selected place up in OpenStreetMap’s place search and draws today’s outline in place of its ring. A test of the look only: Hermes is building the outlines the site will use.',

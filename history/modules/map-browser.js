@@ -1,6 +1,7 @@
 import { eventDateLabel } from './date-handlers.js';
 import { EventClusters } from './event-clusters.js';
 import { LandmarkLayer } from './landmark-layer.js';
+import { PolityLayer } from './polity-layer.js';
 import { placeLabel } from './world-labels.js';
 
 const element = (tag, text, className) => {
@@ -167,6 +168,8 @@ export class MapBrowser {
     refresh(events) {
         // before the early return: a new selection re-renders with the same events, and the bubbles leave it out
         this.clusters.update(events);
+        // the borders follow the cards on screen, once the timeline has laid them out
+        if (this.polities) requestAnimationFrame(() => this.polities?.update());
         const index = this.manager.placeIndex;
         if (events === this.lastEvents && index === this.lastIndex) return;
         const indexChanged = index !== this.lastIndex;
@@ -192,6 +195,7 @@ export class MapBrowser {
         }
     }
     drawSelection() {
+        this.polities?.update();
         this.selection.clearLayers();
         this.rings = [];
         // an outline arriving after a newer selection is dropped
@@ -232,6 +236,13 @@ export class MapBrowser {
             }
         }
         this.resizeRings();
+    }
+    // Historical borders for the year being read (polity-layer.js); null removes them. Only the map lab
+    // passes them until releases carry outlines.
+    showPolities(source) {
+        this.polities?.show(false);
+        this.polities = source ? new PolityLayer(this, source) : null;
+        this.polities?.show(true);
     }
     // The release's landmarks (published-data.js, fetchLandmarks) as a layer with its switch.
     showLandmarks({ landmarks, iconUrl }) {
