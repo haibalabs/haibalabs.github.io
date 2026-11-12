@@ -57,6 +57,13 @@ test('the release\'s landmarks show with a switch that hides them and is remembe
     await expect(page.locator('.map-landmark[title="Unlisted Icon"] img')).toHaveCount(0);
     // a world-tier landmark keeps a readable size at world zoom
     expect(Number(await page.locator('.map-landmark[title="Listed Landmark"]').getAttribute('data-size'))).toBeGreaterThanOrEqual(24);
+    // and, shrunk below full size, still sits on whole pixels, where it is drawn sharp
+    const offset = await page.locator('.map-landmark[title="Listed Landmark"]').evaluate(node => {
+        const icon = node.getBoundingClientRect();
+        const map = node.closest('.leaflet-container').getBoundingClientRect();
+        return [(icon.left - map.left) % 1, (icon.top - map.top) % 1];
+    });
+    expect(offset).toEqual([0, 0]);
 
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
