@@ -7,19 +7,20 @@ import { stubFirebase } from './firebase-stub.js';
 // remembered.
 
 const ICONS = new URL('../../data/landmark-icons/', import.meta.url);
-const ICON = readdirSync(ICONS).find(name => name.endsWith('.webp')).replace('.webp', '');
+// three real icons stand in for one icon drawn at 88, 44 and 132 px
+const [ICON, SMALL, LARGE] = readdirSync(ICONS).filter(name => name.endsWith('.webp')).slice(0, 3).map(name => name.replace('.webp', ''));
 const UNLISTED = 'f'.repeat(64);
-const landmark = (qid, label, point, icon) => ({ wikidata_qid: qid, label, place_ids: [], tier: 1, icon, point,
-    links: [{ source: 'wikipedia', url: `https://en.wikipedia.org/wiki/${label.replace(/ /g, '_')}` }] });
+const landmark = (qid, label, point, icon, extra = {}) => ({ wikidata_qid: qid, label, place_ids: [], tier: 1, icon, point,
+    links: [{ source: 'wikipedia', url: `https://en.wikipedia.org/wiki/${label.replace(/ /g, '_')}` }], ...extra });
 const TABLE = JSON.stringify({ format: 'historiline-landmarks/v1', landmarks: [
-    landmark('Q1', 'Listed Landmark', [41.89, 12.49], ICON),
+    landmark('Q1', 'Listed Landmark', [41.89, 12.49], ICON, { icon_sizes: { 24: UNLISTED, 44: SMALL, 88: ICON, 132: LARGE } }),
     landmark('Q2', 'Unlisted Icon', [48.86, 2.29], UNLISTED),
 ] });
 const event = { event_id: 'evt_a', event_version: 'v_a', name: 'An event', enhanced_time: '1700', enhanced_description: 'An event.',
     categories: ['politics'], figures: [], confidence: 'high', visible: true, wikipedia_url: '', locations: [] };
 const MANIFEST = JSON.stringify({ format: 'historiline-manifest/v1', release_id: 'release-l', created_at: '2026-11-10T12:00:00Z',
     shards: [{ id: 'd000', count: 1, sha256: 'e0' }], places: { buckets: 64, files: [{ bucket: 0, count: 0, sha256: 'p0' }] },
-    corrections: { sha256: 'c0' }, landmarks: { sha256: 'l0', bytes: TABLE.length, count: 2 }, landmark_icons: [{ sha256: ICON, bytes: 1 }] });
+    corrections: { sha256: 'c0' }, landmarks: { sha256: 'l0', bytes: TABLE.length, count: 2 }, landmark_icons: [ICON, SMALL, LARGE].map(sha256 => ({ sha256, bytes: 1 })) });
 const FILES = {
     'manifest.json': MANIFEST,
     'events/e0.json': JSON.stringify({ format: 'historiline-events/v1', shard: 'd000', family: 'dated', events: [event] }),
@@ -99,6 +100,19 @@ test('a landmark opens its bubble above its icon, titled with its name, whose sc
     await title.click();
     await expect(page.locator('#info-panel')).toHaveClass(/open/);
     expect(context.pages().length).toBe(pages);
+});
+
+test('an icon drawn at several sizes is fetched at the one that fits it on screen, from the listed sizes only', async ({ page }) => {
+    await open(page);
+    const node = page.locator('.map-landmark[title="Listed Landmark"]');
+    const image = node.locator('img');
+    // the unlisted 24 px drawing is dropped
+    await expect(image).toHaveAttribute('srcset', new RegExp(`^[^ ]*${SMALL}\\.webp 44w, [^ ]*${ICON}\\.webp 88w, [^ ]*${LARGE}\\.webp 132w$`));
+    // shrunk to its world-view size on a 1x screen, it takes the smallest drawing at least that big
+    const size = Number(await node.getAttribute('data-size'));
+    expect(size).toBeLessThan(44);
+    await expect(image).toHaveAttribute('sizes', `${size}px`);
+    await expect.poll(() => image.evaluate(img => img.currentSrc)).toContain(`${SMALL}.webp`);
 });
 
 test('landmark icons are see-through, except the one pointed at', async ({ page }) => {
