@@ -61,7 +61,7 @@ The console bypasses the rules, so the owner can always repair roles there, incl
 Never edit rules in the console: the next deploy from this directory overwrites console changes.
 
 1. Edit `firestore.rules` or `storage.rules`, and add or update tests in `tests/rules.test.js` or `tests/storage.test.js`.
-2. Run the tests (below). CI runs them on every pull request to `main`.
+2. Run the tests (below). CI runs them once a pull request to `main` is ready for review.
 3. Deploy, once the change is merged. Deploy from an up-to-date `main`, so only reviewed rules go live:
 
    ```

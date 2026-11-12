@@ -1,20 +1,25 @@
 name: CI
 
+# CI minutes are billed, so CI runs once a pull request to main is ready for review, and again on each push while
+# it stays ready. Pushes to a draft don't run it; to check a draft, run it by hand: gh workflow run CI --ref <branch>.
+# main isn't tested again after a merge: the ruleset already requires each pull request to be up to date with main
+# and green.
 on:
-  push:
-    branches: [main, master]
   pull_request:
     branches: [main, master]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
 
-# A newer push to a pull request cancels its older run. Runs on main are keyed by commit, so none is cancelled.
+# A newer push to a pull request cancels its older run.
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.sha }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# The browser tests are split across parallel jobs (SHARD in playwright.config.js). unit-tests, e2e-tests and
-# firebase-tests, the checks main requires, pass only when every part of theirs passed.
+# One job for each check main requires. A job's setup (checkout, npm packages, Chromium, the emulators) bills as
+# much as its tests, so the tests are not split across more jobs.
 jobs:
   unit-tests:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -28,13 +33,9 @@ jobs:
         working-directory: ./history
         run: npm run test:unit
 
-  e2e:
-    name: e2e (${{ matrix.shard }}/6)
+  e2e-tests:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/prepare
@@ -44,38 +45,14 @@ jobs:
       - name: Run E2E tests
         env:
           PORT: 8181
-          SHARD: ${{ matrix.shard }}/6
         working-directory: ./history
         run: npm run test:e2e -- --workers=2
 
-  firebase-rules:
+  firebase-tests:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-24.04
     steps:
       # the Firebase tests use small fixtures, so they skip the large data files
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout-cone-mode: false
-          sparse-checkout: |
-            /*
-            !/history/canonical-t2.json
-            !/history/events.json
-            !/history/data/
-      - uses: ./.github/actions/prepare
-        with:
-          firebase: 'true'
-
-      - name: Firestore rules tests
-        working-directory: ./history/firebase
-        run: npm run test:rules
-
-  firebase-flows:
-    name: firebase-flows (${{ matrix.shard }}/16)
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-    steps:
       - uses: actions/checkout@v4
         with:
           sparse-checkout-cone-mode: false
@@ -91,29 +68,21 @@ jobs:
           emulators: 'true'
 
       # the emulators were started during setup (firebase.json gives their ports)
+      - name: Wait for the emulators
+        run: |
+          timeout 90 bash -c 'until grep -q "All emulators ready" "$RUNNER_TEMP/emulators.log"; do sleep 0.5; done' \
+            || { cat "$RUNNER_TEMP/emulators.log"; exit 1; }
+
+      # the tests of npm run test:rules, against the emulators already running
+      - name: Firestore and Storage rules tests
+        working-directory: ./history/firebase
+        run: node --test --test-concurrency=1 tests/*.test.js
+
       - name: Sign-in tests against the emulators
         env:
           PORT: 8181
-          SHARD: ${{ matrix.shard }}/16
           FIREBASE_AUTH_EMULATOR_HOST: 127.0.0.1:9099
           FIRESTORE_EMULATOR_HOST: 127.0.0.1:8085
           FIREBASE_STORAGE_EMULATOR_HOST: 127.0.0.1:9199
         working-directory: ./history/firebase
-        run: |
-          timeout 90 bash -c 'until grep -q "All emulators ready" "$RUNNER_TEMP/emulators.log"; do sleep 0.5; done' \
-            || { cat "$RUNNER_TEMP/emulators.log"; exit 1; }
-          npm run test:flows
-
-  e2e-tests:
-    if: always()
-    needs: [e2e]
-    runs-on: ubuntu-24.04
-    steps:
-      - run: test "${{ needs.e2e.result }}" = success
-
-  firebase-tests:
-    if: always()
-    needs: [firebase-rules, firebase-flows]
-    runs-on: ubuntu-24.04
-    steps:
-      - run: test "${{ needs.firebase-rules.result }}" = success && test "${{ needs.firebase-flows.result }}" = success
+        run: npm run test:flows
