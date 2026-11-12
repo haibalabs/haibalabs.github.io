@@ -109,7 +109,8 @@ const LANDMARKS_FORMAT = 'historiline-landmarks/v1';
  * The release's landmarks (landmark-layer.js), fetched on their own after the timeline has loaded: the table
  * the manifest lists at landmarks/<sha256>.json, and where each icon is, landmark-icons/<sha256>.webp. Only
  * an icon the manifest lists is used; a landmark whose icon isn't listed is given none, so the layer draws
- * its placeholder. A release with no landmarks gives null.
+ * its placeholder. Of a landmark's icon_sizes ({ "<pixels>": sha256 }, the icon drawn at each size), the
+ * unlisted ones are dropped. A release with no landmarks gives null.
  *
  * @param {object} manifest
  * @returns {Promise<{ landmarks: object[], iconUrl: (sha256: string) => string }|null>}
@@ -122,7 +123,12 @@ export async function fetchLandmarks(manifest) {
         throw new Error('The landmark table is not the one the manifest lists.');
     }
     const icons = new Set((manifest.landmark_icons ?? []).map(entry => entry.sha256));
-    const landmarks = table.landmarks.map(landmark => (landmark.icon && !icons.has(landmark.icon) ? { ...landmark, icon: null } : landmark));
+    const landmarks = table.landmarks.map(landmark => {
+        const kept = { ...landmark };
+        if (kept.icon && !icons.has(kept.icon)) kept.icon = null;
+        if (kept.icon_sizes) kept.icon_sizes = Object.fromEntries(Object.entries(kept.icon_sizes).filter(([, sha256]) => icons.has(sha256)));
+        return kept;
+    });
     return { landmarks, iconUrl: sha256 => new URL(`landmark-icons/${sha256}.webp`, base).href };
 }
 
