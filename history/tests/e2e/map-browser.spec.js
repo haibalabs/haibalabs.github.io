@@ -230,7 +230,12 @@ test('a selected event is labelled with its name and date and framed by the grou
   expect((await page.locator('.map-selected-dot').boundingBox()).width).toBeLessThan(20);
   // a site is framed at street zoom, a few steps from the limit of 14
   const zoomIn = page.locator('.leaflet-control-zoom-in');
-  for (let i = 0; i < 4 && !(await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))); i++) await zoomIn.click();
+  for (let i = 0; i < 4; i++) {
+    // Leaflet updates the button only once a zoom animation ends, so read it after the previous zoom has finished
+    await expect(page.locator('#map .leaflet-map-pane.leaflet-zoom-anim')).toHaveCount(0);
+    if (await zoomIn.evaluate(el => el.classList.contains('leaflet-disabled'))) break;
+    await zoomIn.click();
+  }
   await expect(zoomIn).toHaveClass(/leaflet-disabled/);
   expect(await zoomIn.locator('i').evaluate(el => getComputedStyle(el).opacity)).toBe('0.3');
   expect(await page.locator('.leaflet-control-zoom-out i').evaluate(el => getComputedStyle(el).opacity)).toBe('1');
