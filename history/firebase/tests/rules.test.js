@@ -593,6 +593,75 @@ describe('proposed edits to world events', () => {
   });
 });
 
+describe('quick flags on world events', () => {
+  const FLAG = 'edt_0a1b2c3d-0000-4000-8000-0000000000f1';
+  const WORLD_EVT = 'evt_0a1b2c3d-0000-4000-8000-0000000000aa';
+  const email = (uid) => `${uid}@example.test`;
+  const asUser = (uid) => env.authenticatedContext(uid, { email: email(uid) }).firestore();
+  const flagDoc = (uid, extra = {}) => ({
+    edit_id: FLAG, kind: 'flag', event_id: WORLD_EVT, event_name: 'Max Schmeling knocks out Joe Louis',
+    dataset: { id: 'world-history', sha256: 'a'.repeat(64), locations_release_sha256: null },
+    flag: { parts: ['article'], seen: { article: 'https://en.wikipedia.org/wiki/Joe_Louis' }, note: '' },
+    author: { uid, email: email(uid) }, created_at: serverTimestamp(), revised_at: serverTimestamp(),
+    revision: 1, status: 'open', ...extra,
+  });
+  const flagRef = (db) => doc(db, 'edits', FLAG);
+  const seedFlag = (uid, extra = {}) => env.withSecurityRulesDisabled(async (ctx) => {
+    await setDoc(flagRef(ctx.firestore()), { ...flagDoc(uid), created_at: Timestamp.now(), revised_at: Timestamp.now(), ...extra });
+  });
+  const close = (uid, decision, extra = {}) => ({
+    status: decision, review: { by: { uid, email: email(uid), role: 'admin' }, decision, note: '', at: serverTimestamp(), ...extra },
+  });
+
+  it('editors, reviewers and admins can flag; viewers and strangers cannot', async () => {
+    for (const role of ['editor', 'reviewer', 'admin']) {
+      await env.clearFirestore();
+      await env.withSecurityRulesDisabled(async (ctx) => setDoc(doc(ctx.firestore(), 'users', role), { role }));
+      await assertSucceeds(setDoc(flagRef(asUser(role)), flagDoc(role)));
+    }
+    await env.withSecurityRulesDisabled(async (ctx) => setDoc(doc(ctx.firestore(), 'users', 'viewer'), { role: 'viewer' }));
+    await assertFails(setDoc(flagRef(asUser('viewer')), flagDoc('viewer')));
+    await assertFails(setDoc(flagRef(asUser('stranger')), flagDoc('stranger')));
+  });
+
+  it('a flag names known parts, keeps its note short, changes no field and starts open', async () => {
+    const db = asUser('editor');
+    await assertFails(setDoc(flagRef(db), flagDoc('editor', { flag: { parts: [], seen: {}, note: '' } })));
+    await assertFails(setDoc(flagRef(db), flagDoc('editor', { flag: { parts: ['category'], seen: {}, note: '' } })));
+    await assertFails(setDoc(flagRef(db), flagDoc('editor', { flag: { parts: ['date'], seen: {}, note: 'x'.repeat(281) } })));
+    await assertFails(setDoc(flagRef(db), flagDoc('editor', { changes: { name: { before: 'a', after: 'b' } } })));
+    await assertFails(setDoc(flagRef(db), flagDoc('editor', { status: 'fixed' })));
+    await assertFails(setDoc(flagRef(db), flagDoc('editor', { author: { uid: 'reviewer', email: email('reviewer') } })));
+    await assertSucceeds(setDoc(flagRef(db), flagDoc('editor', {
+      flag: { parts: ['image', 'location', 'entities', 'article', 'date', 'description'], seen: {}, note: 'x'.repeat(280) } })));
+  });
+
+  it('the author can take back an open flag; nobody else can, and it cannot reopen', async () => {
+    await seedFlag('editor');
+    await assertFails(updateDoc(flagRef(asUser('reviewer')), { status: 'withdrawn', revised_at: serverTimestamp() }));
+    await assertFails(updateDoc(flagRef(asUser('editor')), { status: 'withdrawn', revised_at: serverTimestamp(), 'flag.note': 'changed' }));
+    await assertSucceeds(updateDoc(flagRef(asUser('editor')), { status: 'withdrawn', revised_at: serverTimestamp() }));
+    await assertFails(updateDoc(flagRef(asUser('editor')), { status: 'open', revised_at: serverTimestamp() }));
+  });
+
+  it('an admin closes an open flag as fixed or dismissed, signed with their own account and the server time', async () => {
+    await seedFlag('editor');
+    await assertFails(updateDoc(flagRef(asUser('editor')), close('editor', 'fixed')));
+    await assertFails(updateDoc(flagRef(asUser('admin')), close('reviewer', 'fixed')));
+    await assertFails(updateDoc(flagRef(asUser('admin')), close('admin', 'published')));
+    await assertFails(updateDoc(flagRef(asUser('admin')), close('admin', 'fixed', { at: Timestamp.fromMillis(0) })));
+    await assertSucceeds(updateDoc(flagRef(asUser('admin')), close('admin', 'fixed')));
+    await assertFails(updateDoc(flagRef(asUser('admin')), close('admin', 'dismissed')));
+  });
+
+  it('only the author and admins read it', async () => {
+    await seedFlag('editor');
+    await assertSucceeds(getDoc(flagRef(asUser('editor'))));
+    await assertSucceeds(getDoc(flagRef(asUser('admin'))));
+    await assertFails(getDoc(flagRef(asUser('reviewer'))));
+  });
+});
+
 describe('the live release (world_release/current)', () => {
   const releaseRef = (db) => doc(db, 'world_release', 'current');
   const sha = (c) => c.repeat(64);

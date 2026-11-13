@@ -113,3 +113,50 @@ test('an admin approves the ticked fields; visitors see them, marked community e
   await visitor.waitForSelector('#timeline-content .event');
   await expect(card(visitor, 'Max Schmeling knocks out Joe Louis').locator('.event-description')).toHaveText(ORIGINAL);
 });
+
+test('an editor flags a wrong article; the admin sees what was shown and marks it fixed', async ({ page, browser, request }) => {
+  await openWorld(page);
+  await signInAs(page, 'editor@example.test');
+  await page.click('#settings-btn');
+  await page.locator('#editing-toggle').setChecked(true);
+  await page.click('.settings-close-btn');
+  const event = card(page, 'Max Schmeling knocks out Joe Louis');
+  await event.getByRole('button', { name: 'Something is wrong' }).click();
+  const menu = page.getByRole('dialog', { name: /What's wrong with/ });
+  await expect(menu.getByRole('button', { name: 'Send' })).toBeDisabled();
+  await menu.getByRole('button', { name: 'Article' }).click();
+  await menu.getByRole('button', { name: 'Entities' }).click();
+  await menu.getByRole('textbox').fill('Wrong fight: this is the 1938 rematch page');
+  await menu.getByRole('button', { name: 'Send' }).click();
+  await expect(page.locator('.toast', { hasText: 'Sent to the team.' })).toHaveCount(1);
+  await expect(event.locator('.edit-flagged')).toHaveText('Entities, Article flagged · Undo');
+
+  const [stored] = await listAsOwner(request, 'edits');
+  expect(stored.fields.kind.stringValue).toBe('flag');
+  expect(stored.fields.status.stringValue).toBe('open');
+  const flag = stored.fields.flag.mapValue.fields;
+  expect(flag.parts.arrayValue.values.map(v => v.stringValue)).toEqual(['entities', 'article']);
+  expect(flag.seen.mapValue.fields.entities.arrayValue.values.map(v => v.stringValue)).toEqual(['Max Schmeling', 'Joe Louis']);
+
+  const admin = await browser.newPage();
+  await openReview(admin);
+  await expect(admin.locator('#tab-waiting')).toHaveText('Waiting · 0');
+  await expect(admin.locator('#tab-flags')).toHaveText('Flags · 1');
+  await admin.click('#tab-flags');
+  const shown = admin.locator('.review-flag');
+  await expect(shown.locator('.review-chip')).toHaveText(['Entities', 'Article']);
+  await expect(shown.locator('.review-flag-seen dd').first()).toHaveText('Max Schmeling; Joe Louis');
+  await expect(shown.locator('.review-note')).toHaveText('Wrong fight: this is the 1938 rematch page');
+  await expect(shown).toContainText('goes to Atlas');
+  await shown.getByRole('button', { name: 'Mark fixed' }).click();
+  await expect(admin.locator('#tab-flags')).toHaveText('Flags · 0');
+  await expect(shown).toContainText('Fixed by you');
+
+  // the author sees it fixed, and the card no longer shows the open flag
+  await page.reload();
+  await page.waitForSelector('#timeline-content .event');
+  await expect(card(page, 'Max Schmeling knocks out Joe Louis').locator('.edit-flagged')).toHaveCount(0);
+  await page.click('#settings-btn');
+  await expect(page.locator('.my-edit .status-badge')).toHaveText('Fixed');
+  await expect(page.locator('.my-edit .my-edit-fields')).toHaveText('Flagged: Entities, Article');
+});

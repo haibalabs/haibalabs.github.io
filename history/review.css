@@ -119,3 +119,17 @@
 .review-commons-check { margin: 4px 0 0; font-size: .75rem; color: #b54708; }
 .review-commons-check.ok { color: #067647; }
 .review-commons-record { margin: 2px 0 0; font-size: .75rem; color: var(--ink-2); }
+
+/* quick flags (WORLD-EDITS.md, Quick flags) */
+.review-flags-bar { justify-content: space-between; }
+.review-flags-note { margin: 0; font-size: .8125rem; color: var(--ink-2); }
+.review-chip.flag { color: #9a3412; background: #fff7ed; }
+.review-flag .flag-status.fixed { color: #067647; }
+.review-flag.fixed, .review-flag.dismissed { opacity: .75; }
+.review-flag-seen {
+    display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 6px 12px; margin: 0;
+    font-size: .875rem; line-height: 1.5;
+}
+.review-flag-seen dt { font-size: .8125rem; font-weight: 600; color: var(--ink-2); }
+.review-flag-seen dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) { .review-flag-seen { grid-template-columns: 1fr; } }

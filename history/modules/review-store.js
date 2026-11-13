@@ -99,6 +99,14 @@ export class ReviewStore {
         });
     }
 
+    // Closes an open quick flag as fixed or dismissed, signed by the admin (WORLD-EDITS.md, Quick flags).
+    async resolveFlag(flag, decision, note = '') {
+        await updateDoc(doc(this.db, 'edits', flag.edit_id), {
+            status: decision,
+            review: { by: this.admin(), decision, note, at: serverTimestamp() },
+        });
+    }
+
     // Rejects an edit with a reason the author sees; the author can revise it into a new revision.
     async reject(edit, note) {
         await updateDoc(doc(this.db, 'edits', edit.edit_id), {
