@@ -72,7 +72,6 @@
 .character-bar.folded .character-portrait { border-radius: 50%; height: var(--portrait); }
 .character-bar.folded .character-text h2 { font-size: 1.12rem; }
 .character-bar.folded .character-more { grid-template-rows: 0fr; opacity: 0; }
-.character-bar.folded .character-label { display: none; }
 .character-bar.folded .character-text { display: flex; align-items: center; column-gap: 12px; }
 .character-bar.folded .character-more { flex: 0 0 0; }
 .character-bar.folded .character-actions { margin-left: auto; }
@@ -80,8 +79,6 @@
 
 /* a character's name on an event card opens their card: shown in the accent colour, like a link */
 .figure-mention.is-character { color: var(--accent); }
-/* with world history shown, the character's own events stand out */
-.event.character-other { opacity: .55; }
 
 
 @media (max-width: 640px) {

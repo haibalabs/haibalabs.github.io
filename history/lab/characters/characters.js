@@ -1,8 +1,8 @@
 // Character cards (lab prototype, ?lab=characters). A person named on an event card who is one of the profiled
 // characters (characters.json) opens their card, pinned above the timeline with only their events under it. The card
 // folds to one line once the events scroll. Its map button shows those events with the site's own dots and
-// bubbles; the globe button adds the rest of world history; Wikipedia opens in the article panel; Close puts the
-// timeline back where it was. An event belongs to a character when one of its people is written with the character's exact
+// bubbles; the article button opens the person's article in the article panel; Close puts the timeline back where
+// it was. An event belongs to a character when one of its people is written with the character's exact
 // name, as in Ariadne's prototype; none of these links is reviewed.
 
 const FOLD_AT = 60;
@@ -35,7 +35,6 @@ class Characters {
         this.characters = characters;
         this.byName = new Map(characters.flatMap(c => c.names.map(name => [name, c])));
         this.current = null;
-        this.withWorld = false;
         this.css = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: new URL('characters.css', import.meta.url).href });
         document.head.append(this.css);
         this.wrapper = document.getElementById('timeline-wrapper');
@@ -74,9 +73,7 @@ class Characters {
         }
         if (!this.current) return;
         for (const card of this.content.querySelectorAll('.event[data-event-id]')) {
-            const mine = this.cardIds.has(card.dataset.eventId);
-            card.classList.toggle('character-event', mine);
-            card.classList.toggle('character-other', this.withWorld && !mine);
+            card.classList.toggle('character-event', this.cardIds.has(card.dataset.eventId));
         }
     }
 
@@ -97,7 +94,6 @@ class Characters {
         // the timeline's own key for each card (data-event-id), which the map and the marks go by
         const index = this.lab.eventManager.placeIndex;
         this.cardIds = new Set(this.events.map(event => index.idFor(event)));
-        this.withWorld = false;
         this.render();
         // the timeline draws the cards around its scroll position, so it goes to the top before the person's events
         // replace the others; a position deep in the timeline would draw only their last events, out of view
@@ -143,8 +139,7 @@ class Characters {
                 </div></div>
                 <div class="character-actions">
                     <button type="button" class="character-btn" data-action="places" aria-pressed="false" title="Places in these events" aria-label="Places in these events"><i class="fa-light fa-map-location-dot" aria-hidden="true"></i></button>
-                    <button type="button" class="character-btn" data-action="world" aria-pressed="false" title="Show world history around these events" aria-label="Show world history around these events"><i class="fa-light fa-earth-americas" aria-hidden="true"></i></button>
-                    <button type="button" class="character-btn" data-action="article" title="Read about ${escapeHtml(c.name)} on Wikipedia"><i class="fa-light fa-scroll" aria-hidden="true"></i><span class="character-label">Wikipedia</span></button>
+                    <button type="button" class="character-btn" data-action="article" title="Read about ${escapeHtml(c.name)}" aria-label="Read about ${escapeHtml(c.name)}"><i class="fa-light fa-scroll" aria-hidden="true"></i></button>
                 </div>
             </div>
             <button type="button" class="character-close" data-action="close" title="Close" aria-label="Close ${escapeHtml(c.name)}'s card"><i class="fa-light fa-xmark" aria-hidden="true"></i></button>
@@ -193,17 +188,6 @@ class Characters {
             .find(card => card.getBoundingClientRect().width > 0 && card.getBoundingClientRect().bottom > top + 1)?.dataset.eventId ?? null;
     }
 
-    // World history in or out, keeping the card at the top when it stays; otherwise the timeline starts at the top.
-    world(button) {
-        this.withWorld = !this.withWorld;
-        button.setAttribute('aria-pressed', String(this.withWorld));
-        const target = this.topCard();
-        this.wrapper.scrollTop = 0;
-        this.lab.uiManager.showOnlyEvents(this.withWorld ? this.previousFilter : this.ids);
-        if (target) this.lab.uiManager.scrollToEventId(target);
-        this.mark();
-    }
-
     article(button) {
         this.lab.panelManager.handleInfoClick(this.current.wikipedia_url, button);
     }
@@ -219,7 +203,7 @@ class Characters {
         this.bar = null;
         this.wrapper.parentElement.classList.remove('has-character');
         this.wrapper.parentElement.style.removeProperty('--character-height');
-        for (const card of this.content.querySelectorAll('.character-event, .character-other')) card.classList.remove('character-event', 'character-other');
+        for (const card of this.content.querySelectorAll('.character-event')) card.classList.remove('character-event');
         // the timeline as it was: its search, its filter, and the card that was at the top
         const search = document.getElementById('searchInput');
         if (this.previousSearch && search) {

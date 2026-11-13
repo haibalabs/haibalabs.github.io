@@ -56,8 +56,6 @@ test('a character\'s name opens their card with only their events, which folds, 
     // the name opened the card, not the article
     await expect(page.locator('#info-panel')).not.toHaveClass(/open/);
 
-    await card.locator('[data-action="world"]').click();
-    await expect(page.locator('#timeline-content .event.character-other').first()).toBeVisible();
     await page.locator('#timeline-wrapper').evaluate(el => { el.scrollTop = 400; });
     await expect(card).toHaveClass(/folded/);
 
