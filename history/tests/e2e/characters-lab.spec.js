@@ -22,6 +22,7 @@ const EVENTS = [
     at('Napoleon crowned Emperor', '1804-12-02', 1),
     at('Napoleon defeated at Waterloo', '1815-06-18', 2),
     ...Array.from({ length: 40 }, (_, i) => at(`Later event ${i}`, String(1830 + i))),
+    at('Napoleon remembered in a later century', '1849-06-01'),
 ];
 const MANIFEST = { format: 'historiline-manifest/v1', release_id: 'characters', created_at: '2026-11-12T00:00:00Z',
     shards: [{ id: 'd000', count: EVENTS.length, sha256: 'e0' }],
@@ -50,7 +51,7 @@ test('a character\'s name opens their card with only their events, which folds, 
     const card = page.locator('.character-bar');
     await expect(card.locator('h2')).toHaveText('Napoleon Bonaparte');
     await expect(card.locator('.character-life')).toHaveText([/^Born 15 August 1769, Ajaccio/, /^Died 5 May 1821, Longwood/]);
-    await expect(page.locator('#timeline-content .event')).toHaveCount(3);
+    await expect(page.locator('#timeline-content .event')).toHaveCount(4);
     await expect(page.locator('#searchInput')).toHaveValue('');
     // the name opened the card, not the article
     await expect(page.locator('#info-panel')).not.toHaveClass(/open/);
@@ -75,7 +76,7 @@ test('a character\'s name opens their card with only their events, which folds, 
     await expect(page.locator('#timeline-content .event')).toHaveCount(1);
 });
 
-test('closing a character\'s card returns the timeline to the card that was at its top', async ({ page }) => {
+test('a character\'s card opened deep in the timeline shows their first events, and closing returns there', async ({ page }) => {
     await stubFirebase(page);
     await page.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod|upload\.wikimedia|thumb\.wikimedia/, r => r.abort());
     await page.route('**/history/data/**', route => {
@@ -91,11 +92,16 @@ test('closing a character\'s card returns the timeline to the card that was at i
     // the lab opens the map drawer on wide screens, which lays the timeline out again once it has opened
     await expect(page.locator('#map-panel')).toHaveClass(/open/);
     await page.waitForTimeout(500);
-    const crowned = page.locator('#timeline-content .event', { has: page.locator('.event-header', { hasText: 'Napoleon crowned Emperor' }) });
-    await crowned.evaluate(card => { document.getElementById('timeline-wrapper').scrollTop += card.getBoundingClientRect().top - document.getElementById('timeline-wrapper').getBoundingClientRect().top; });
-    await expect.poll(top).toBe('Napoleon crowned Emperor');
-    await crowned.locator('.figure-mention.is-character').click();
+    await page.evaluate(() => {
+        const { eventManager, uiManager } = window.lab;
+        uiManager.scrollToEventId(eventManager.placeIndex.idFor(eventManager.events.find(e => e.name === 'Napoleon remembered in a later century')));
+    });
+    const late = page.locator('#timeline-content .event', { has: page.locator('.event-header', { hasText: 'Napoleon remembered in a later century' }) });
+    await expect.poll(top).toBe('Napoleon remembered in a later century');
+    await late.locator('.figure-mention.is-character').click();
+    // the timeline draws around its scroll position, so a card opened this deep must start the person's events at the top
+    await expect(page.locator('#timeline-content .event', { hasText: 'Napoleon is born in Corsica' })).toBeInViewport();
     await page.locator('#timeline-wrapper').evaluate(el => { el.scrollTop = el.scrollHeight; });
     await page.locator('.character-bar [data-action="close"]').click();
-    await expect.poll(top).toBe('Napoleon crowned Emperor');
+    await expect.poll(top).toBe('Napoleon remembered in a later century');
 });
