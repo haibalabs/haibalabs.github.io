@@ -1,0 +1,26 @@
+/* Map search (lab, ?lab=search): a field at the map's top right, its results under it. The area filter's
+   buttons, centred along the top, keep clear of it. */
+.map-search-on .map-browser { right: 290px; }
+.map-search { width: 260px; font: 13px/1.35 var(--font-ui); color: var(--ink); }
+.map-search-toggle { display: none; }
+.map-search-field { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 6px 0 11px; border-radius: 10px; background: var(--surface); box-shadow: 0 2px 8px rgb(0 0 0 / .12); color: var(--ink-2); cursor: text; }
+.map-search-field:focus-within { outline: 2px solid var(--accent); outline-offset: 0; }
+.map-search-field input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); font: inherit; }
+.map-search-field input::-webkit-search-cancel-button { display: none; }
+.map-search-clear { display: grid; place-items: center; width: 26px; height: 26px; border: 0; border-radius: 50%; background: transparent; color: var(--ink-2); cursor: pointer; }
+.map-search-clear:hover { background: var(--surface-2); }
+.map-search-list { margin: 6px 0 0; padding: 0 0 4px; list-style: none; max-height: min(360px, 55vh); overflow: auto; border-radius: 10px; background: var(--surface); box-shadow: 0 6px 24px rgb(0 0 0 / .18); }
+.map-search-group { padding: 8px 12px 3px; color: var(--ink-2); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+.map-search-item { display: grid; gap: 1px; padding: 6px 12px; cursor: pointer; }
+.map-search-item[aria-selected="true"], .map-search-item:hover { background: var(--accent-soft); }
+.map-search-label { font-weight: 600; }
+.map-search-note { color: var(--ink-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* A phone: a button beside the area filter, which opens the field across the map's top. */
+@media (max-width: 640px) {
+    .map-search-on .map-browser { right: 58px; }
+    .map-search { width: auto; }
+    .map-search:not(.open) .map-search-field, .map-search:not(.open) .map-search-list { display: none; }
+    .map-search:not(.open) .map-search-toggle { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink-2); box-shadow: 0 2px 8px rgb(0 0 0 / .12); font-size: 16px; cursor: pointer; }
+    .map-search.open { position: absolute; right: 0; width: calc(100vw - 80px); max-width: 360px; z-index: 900; }
+}
