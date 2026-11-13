@@ -103,6 +103,46 @@ describe('parseTimeToSortableValue — Ranges', () => {
   it('parses "April 1941 to June 1941"', () => assertSortValue("April 1941 to June 1941", 1941.3361));
 });
 
+// The Battles of Yarmuk and Qadisiyyah were placed in years 15 and 16: the left day of a day-first range in one
+// month was read as the year.
+describe('day-first ranges in one month — the earliest day, in the written year', () => {
+  for (const [time, year, month, day, label] of [
+    ['15–20 August 636', 636, 8, 15, 'August 15th, 636 AD'],
+    ['16–19 November 636', 636, 11, 16, 'November 16th, 636 AD'],
+    ['2–4 March 44 BC', -44, 3, 2, 'March 2nd, 44 BC'],
+  ]) {
+    it(`"${time}" is ${label}, where the card shows it and where the timeline places it`, () => {
+      const parsed = parseTimeToSortableValue(time);
+      assert.deepEqual([parsed.year, parsed.month, parsed.day], [year, month, day]);
+      const event = { enhanced_time: time };
+      assert.equal(eventDateLabel(event), label);
+      assert.equal(eventYear(event), year);
+      assert.equal(extractYear(eventSortableValue(event)), year);
+    });
+  }
+});
+
+// Forms in the live release that also read a day or a month number as the year.
+describe('ranges across two months, and months as numbers, keep the written year', () => {
+  for (const [time, year, month, day, label] of [
+    ['June 22 - July 12, 1148', 1148, 6, 22, 'June 22nd, 1148 AD'],
+    ['September 23 - December 3, 1283', 1283, 9, 23, 'September 23rd, 1283'],
+    ['August 26 - August 29, 1968', 1968, 8, 26, 'August 26th, 1968'],
+    ['30 July – 2 August 1914', 1914, 7, 30, 'July 30th, 1914'],
+    ['05-06 0171', 171, 5, 1, 'May, 171 AD'],
+  ]) {
+    it(`"${time}" is ${label}`, () => {
+      const parsed = parseTimeToSortableValue(time);
+      assert.deepEqual([parsed.year, parsed.month, parsed.day], [year, month, day]);
+      assert.equal(eventDateLabel({ enhanced_time: time }), label);
+    });
+  }
+  it('leaves a season range with its own years alone ("Spring 12 - Summer 14" is spring 12)', () => {
+    const parsed = parseTimeToSortableValue('Spring 12 - Summer 14');
+    assert.deepEqual([parsed.year, parsed.season], [12, 'spring']);
+  });
+});
+
 describe('parseTimeToSortableValue — Special Formats', () => {
   it.todo('parses "September, 2004"'); // expected: 2004.752732 — "Month, Year" with comma not yet supported
   it.todo('parses "1970-05"'); // expected: 1970.419399 — YYYY-MM format not yet supported (ignores month)
