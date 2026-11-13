@@ -169,6 +169,12 @@ async function initializeApp() {
             const liveUrl = staged.live ? manifestUrlFor(staged.live.manifest_sha256) : MANIFEST_URL;
             staged.banner.showNewEvents(fetchAddedEventIds(staged.published, liveUrl));
         }
+        // character cards (characters/): a profiled person's name on an event card opens their card above the timeline
+        if (uiManager.mapBrowser) {
+            import('./characters/characters.js')
+                .then(({ setCharacters }) => setCharacters({ map, eventManager, uiManager, panelManager, browser: uiManager.mapBrowser }, true))
+                .catch(error => console.error('The character cards could not start:', error));
+        }
         // ?lab opens the map lab (lab/map/), which is loaded only then
         if (params.has('lab') && uiManager.mapBrowser) {
             import('./lab/map/lab.js')

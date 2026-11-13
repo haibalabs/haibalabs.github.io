@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { test, expect } from './cdn-cache.js';
 import { stubFirebase } from './firebase-stub.js';
 
-// The character cards lab (lab/characters/, ?lab=characters): a profiled person's name on an event opens their
+// The character cards (characters/), on for every visitor: a profiled person's name on an event opens their
 // card above the timeline with all their events, the card folds as the events scroll, the map shows those events
 // with the site's own dots, and closing it puts the timeline back where it was.
 
@@ -42,7 +42,7 @@ test('a character\'s name opens their card with only their events, which folds, 
         return body ? route.fulfill({ json: body }) : route.fulfill({ status: 404 });
     });
     await page.route('**/unpkg.com/supercluster@8.0.1/**', route => route.fulfill({ contentType: 'text/javascript', headers: { 'Access-Control-Allow-Origin': '*' }, body: SUPERCLUSTER }));
-    await page.goto('/history/index.html?lab=characters');
+    await page.goto('/history/index.html');
     await expect(page.locator('.figure-mention', { hasText: 'Someone Else' }).first()).not.toHaveClass(/is-character/);
     // found through a search, the name opens the card with all of the person's events, the search set aside
     await page.fill('#searchInput', 'Waterloo');
@@ -81,7 +81,8 @@ test('a character\'s card opened deep in the timeline shows their first events, 
         const body = FILES[new URL(route.request().url()).pathname.replace(/^\/history\/data\//, '')];
         return body ? route.fulfill({ json: body }) : route.fulfill({ status: 404 });
     });
-    await page.goto('/history/index.html?lab=characters');
+    // ?lab only for window.lab, to jump deep into the timeline; the cards start on every page
+    await page.goto('/history/index.html?lab');
     const top = () => page.evaluate(() => {
         const wrapper = document.getElementById('timeline-wrapper').getBoundingClientRect().top;
         return [...document.querySelectorAll('#timeline-content > .event')]
