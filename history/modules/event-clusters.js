@@ -56,6 +56,10 @@ export class EventClusters {
         // uses the defaults; the map lab sets the others through configure().
         this.scope = 'results';
         this.click = 'list';
+        // always: show the events without the area filter too; only(event): just the events it accepts. The site
+        // leaves both off; the lab's character cards use them to show one person's events.
+        this.always = false;
+        this.only = null;
         // under the area filter's count: the years in "period" scope, or that the bubbles could not load
         this.note = element('p', 'map-events-note');
         this.note.setAttribute('role', 'status');
@@ -72,9 +76,11 @@ export class EventClusters {
     }
     get index() { return this.browser.manager.placeIndex; }
 
-    configure({ scope = this.scope, click = this.click }) {
+    configure({ scope = this.scope, click = this.click, always = this.always, only = this.only }) {
         this.scope = scope;
         this.click = click;
+        this.always = always;
+        this.only = only;
         this.shown = null;
         this.update(this.events);
     }
@@ -86,7 +92,7 @@ export class EventClusters {
     // Called with the timeline's filtered events on every render, scrolls included.
     update(events) {
         this.events = events;
-        if (!events || !this.browser.manager.geographicFilter.bounds) return this.hide();
+        if (!events || (!this.always && !this.browser.manager.geographicFilter.bounds)) return this.hide();
         if (!window.Supercluster) {
             if (loadFailed) {
                 this.hide();
@@ -98,12 +104,13 @@ export class EventClusters {
             });
             return;
         }
-        if (this.scope !== 'period') return this.build(events, events, '');
+        const shown = this.only ? events.filter(this.only) : events;
+        if (this.scope !== 'period') return this.build(shown, events, '');
         // after the timeline has laid out the cards this render produced
         requestAnimationFrame(() => {
             if (this.events !== events) return;
             const period = this.period();
-            this.build(period ? events.filter(event => {
+            this.build(period ? shown.filter(event => {
                 const year = this.index.years.get(this.index.idFor(event));
                 return year >= period[0] && year <= period[1];
             }) : [], events, period ? periodText(period) : '');
