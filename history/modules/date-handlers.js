@@ -335,8 +335,9 @@ function extractRangeOrDayRange(inputText) {
     }
 
     // A range across two months written with the year only once ("june 22 - july 12, 1148", "30 july - 2 august
-    // 1914"): the left side takes the right side's year, instead of reading its day as a year.
-    const rightYear = rightPart.match(/(?:,\s*|\s+)(\d{1,4})$/);
+    // 1914"): the left side takes the right side's year, instead of reading its day as a year. Only when the right
+    // side has a day as well as the year, so a season range ("spring 12 - summer 14") keeps its years.
+    const rightYear = rightPart.match(/^(?:[a-z]+\s+\d{1,2},?|\d{1,2}\s+[a-z]+,?)\s+(\d{1,4})$/i);
     if (rightYear && (/^[a-z]+\s+\d{1,2}$/i.test(leftPart) || /^\d{1,2}\s+[a-z]+$/i.test(leftPart))) {
       leftPart = /^\d/.test(leftPart) ? `${leftPart} ${rightYear[1]}` : `${leftPart}, ${rightYear[1]}`;
     }

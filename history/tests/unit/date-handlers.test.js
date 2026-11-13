@@ -137,6 +137,10 @@ describe('ranges across two months, and months as numbers, keep the written year
       assert.equal(eventDateLabel({ enhanced_time: time }), label);
     });
   }
+  it('leaves a season range with its own years alone ("Spring 12 - Summer 14" is spring 12)', () => {
+    const parsed = parseTimeToSortableValue('Spring 12 - Summer 14');
+    assert.deepEqual([parsed.year, parsed.season], [12, 'spring']);
+  });
 });
 
 describe('parseTimeToSortableValue — Special Formats', () => {
