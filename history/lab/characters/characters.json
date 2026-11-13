@@ -1,0 +1,308 @@
+{
+ "format": "historiline-characters-lab/v1",
+ "note": "Lab prototype: the ten profiles of Ariadne's character registry seed (history-data, characters/profiles.json), with title and summary from each article's Wikipedia summary. Not release data.",
+ "characters": [
+  {
+   "id": "char_219fcddb-1f9c-4115-858c-bf3ccb067446",
+   "name": "Adolf Hitler",
+   "names": [
+    "Adolf Hitler"
+   ],
+   "title": "Dictator of Germany from 1933 to 1945",
+   "summary": "Adolf Hitler was an Austrian-born German politician who was dictator of Germany in the Nazi era from 1933 until his suicide in 1945. He rose to power as the leader of the Nazi Party, becoming the chancellor of Germany in 1933 and then taking the title of Führer und Reichskanzler in 1934. Germany's invasion of Poland on 1 September 1939 under his leadership marked the outbreak of the Second World War. Throughout the ensuing conflict, Hitler was closely involved in the direction of German military operations and was central to the perpetration of the genocide of about six million Jews in the Holocaust as well as the deaths of millions of other victims.",
+   "birth": {
+    "display": "20 April 1889",
+    "iso": "1889-04-20",
+    "year": 1889,
+    "place": "Braunau am Inn, Austria-Hungary"
+   },
+   "death": {
+    "display": "30 April 1945",
+    "iso": "1945-04-30",
+    "year": 1945,
+    "place": "Berlin, Germany"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Adolf_Hitler",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0c/Hitler_portrait_crop_%28cropped%29%282%29.jpg/330px-Hitler_portrait_crop_%28cropped%29%282%29.jpg",
+    "file": "File:Hitler portrait crop (cropped)(2).jpg",
+    "license": "CC BY-SA 3.0 Germany",
+    "page": "https://commons.wikimedia.org/wiki/File:Hitler_portrait_crop_(cropped)(2).jpg"
+   }
+  },
+  {
+   "id": "char_be1110fb-1edf-49bb-90a5-acb831317b4a",
+   "name": "Napoleon Bonaparte",
+   "names": [
+    "Napoleon Bonaparte"
+   ],
+   "title": "Emperor of the French (1804–1814; 1815)",
+   "summary": "Napoleon Bonaparte was Emperor of the French from 18 May 1804 until his first abdication in 1814, with a brief restoration during the Hundred Days in 1815. He rose to prominence as a general during the French Revolution and led a series of military campaigns across Europe and the Middle East during the French Revolutionary and Napoleonic Wars. As a statesman, he implemented numerous legal and administrative reforms in France and Europe.",
+   "birth": {
+    "display": "15 August 1769",
+    "iso": "1769-08-15",
+    "year": 1769,
+    "place": "Ajaccio, Corsica"
+   },
+   "death": {
+    "display": "5 May 1821",
+    "iso": "1821-05-05",
+    "year": 1821,
+    "place": "Longwood, Saint Helena"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Napoleon",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Jacques-Louis_David_-_The_Emperor_Napoleon_in_His_Study_at_the_Tuileries_-_Google_Art_Project.jpg/330px-Jacques-Louis_David_-_The_Emperor_Napoleon_in_His_Study_at_the_Tuileries_-_Google_Art_Project.jpg",
+    "file": "File:Jacques-Louis David - The Emperor Napoleon in His Study at the Tuileries - Google Art Project.jpg",
+    "license": "Public Domain Mark 1.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Jacques-Louis_David_-_The_Emperor_Napoleon_in_His_Study_at_the_Tuileries_-_Google_Art_Project.jpg"
+   }
+  },
+  {
+   "id": "char_fc2ab0b4-643a-405e-8dda-85ccd77bfa57",
+   "name": "Henry VIII",
+   "names": [
+    "Henry VIII"
+   ],
+   "title": "King of England from 1509 to 1547",
+   "summary": "Henry VIII was King of England from 22 April 1509 until his death in 1547. He is known for his six marriages, his break with the Roman Catholic Church, and his establishment of the Church of England.",
+   "birth": {
+    "display": "28 June 1491",
+    "iso": "1491-06-28",
+    "year": 1491,
+    "place": "Palace of Placentia, Greenwich, England"
+   },
+   "death": {
+    "display": "28 January 1547",
+    "iso": "1547-01-28",
+    "year": 1547,
+    "place": "Palace of Whitehall, Westminster, England"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Henry_VIII",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f9/After_Hans_Holbein_the_Younger_-_Portrait_of_Henry_VIII_-_Google_Art_Project.jpg/330px-After_Hans_Holbein_the_Younger_-_Portrait_of_Henry_VIII_-_Google_Art_Project.jpg",
+    "file": "File:After Hans Holbein the Younger - Portrait of Henry VIII - Google Art Project.jpg",
+    "license": "Public Domain Mark 1.0",
+    "page": "https://commons.wikimedia.org/wiki/File:After_Hans_Holbein_the_Younger_-_Portrait_of_Henry_VIII_-_Google_Art_Project.jpg"
+   }
+  },
+  {
+   "id": "char_9c968281-103d-4fb1-bf8e-2c0a9eb3ad58",
+   "name": "Julius Caesar",
+   "names": [
+    "Julius Caesar"
+   ],
+   "title": "Roman general and dictator (100–44 BC)",
+   "summary": "Gaius Julius Caesar was a Roman general, statesman, and author who was the dictator of the Roman Republic almost continuously from 49 BC until his assassination in 44 BC. A member of the First Triumvirate, he led the Roman armies through the Gallic Wars and defeated his political rival Pompey in Caesar's civil war. He consolidated power and was titled as dictator perpetuo in 44 BC, helping create the political conditions that led to the collapse of the Roman Republic and the emergence of the Roman Empire. For his role in these events, he is regarded as one of history's most influential figures.",
+   "birth": {
+    "display": "12 or 13 July 100 BC",
+    "year": -100,
+    "year_numbering": "BC",
+    "month": 7,
+    "day_options": [
+     12,
+     13
+    ],
+    "place": "Suburra, Rome"
+   },
+   "death": {
+    "display": "15 March 44 BC",
+    "year": -44,
+    "year_numbering": "BC",
+    "month": 3,
+    "day": 15,
+    "place": "Theatre of Pompey, Rome"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Julius_Caesar",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Retrato_de_Julio_C%C3%A9sar_%2826724093101%29_%28cropped%29.jpg/330px-Retrato_de_Julio_C%C3%A9sar_%2826724093101%29_%28cropped%29.jpg",
+    "file": "File:Retrato de Julio César (26724093101) (cropped).jpg",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Retrato_de_Julio_C%C3%A9sar_(26724093101)_(cropped).jpg"
+   }
+  },
+  {
+   "id": "char_ae9ff0ba-c32d-4804-8ebb-13b7a1f9cf77",
+   "name": "Franklin D. Roosevelt",
+   "names": [
+    "Franklin D. Roosevelt"
+   ],
+   "title": "President of the United States from 1933 to 1945",
+   "summary": "Franklin Delano Roosevelt, also known as FDR, was the 32nd president of the United States, serving from 1933 until his death in 1945. He is the longest-serving US president and the only one to have served more than two terms. His first two terms centered on combating the Great Depression, while his third and fourth focused on US involvement in World War II. A member of the Democratic Party, Roosevelt served in the New York State Senate from 1911 to 1913 and as the 44th governor of New York from 1929 to 1932.",
+   "birth": {
+    "display": "30 January 1882",
+    "iso": "1882-01-30",
+    "year": 1882,
+    "place": "Hyde Park, New York, United States"
+   },
+   "death": {
+    "display": "12 April 1945",
+    "iso": "1945-04-12",
+    "year": 1945,
+    "place": "Warm Springs, Georgia, United States"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Franklin_D._Roosevelt",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/FDR-1944-Campaign-Portrait_%283x4_retouched%2C_cropped%29.jpg/330px-FDR-1944-Campaign-Portrait_%283x4_retouched%2C_cropped%29.jpg",
+    "file": "File:FDR-1944-Campaign-Portrait (3x4 retouched, cropped).jpg",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:FDR-1944-Campaign-Portrait_(3x4_retouched,_cropped).jpg"
+   }
+  },
+  {
+   "id": "char_fe36eaa7-38f0-468c-9596-c69f96d25a4e",
+   "name": "Charlemagne",
+   "names": [
+    "Charlemagne"
+   ],
+   "title": "Carolingian emperor from 800 to 814",
+   "summary": "Charlemagne was King of the Franks from 768, King of the Lombards from 774, and Emperor of what is now known as the Carolingian Empire from 800. He united most of Western and Central Europe and was the first recognised emperor to rule from the west after the fall of the Western Roman Empire approximately three centuries earlier. Charlemagne's reign was marked by political and social changes that had lasting influence on Europe throughout the Middle Ages.",
+   "birth": {
+    "display": "2 April 748 (commonly accepted; older estimates differ)",
+    "year": 748,
+    "month": 4,
+    "day": 2,
+    "date_note": "The article discusses older 742/747 estimates; most scholars currently accept April 748. Birthplace is unknown; Francia is the article’s broad location.",
+    "place": "Francia (birthplace unknown)"
+   },
+   "death": {
+    "display": "28 January 814",
+    "year": 814,
+    "month": 1,
+    "day": 28,
+    "place": "Aachen, Carolingian Empire"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Charlemagne",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Charlemagne_denier_Mayence_812_814.jpg/330px-Charlemagne_denier_Mayence_812_814.jpg",
+    "file": "File:Charlemagne denier Mayence 812 814.jpg",
+    "license": "Public domain in France (Commons license statement)",
+    "page": "https://commons.wikimedia.org/wiki/File:Charlemagne_denier_Mayence_812_814.jpg"
+   }
+  },
+  {
+   "id": "char_a0e19375-9cda-424f-afd1-6557198c1679",
+   "name": "George Washington",
+   "names": [
+    "George Washington"
+   ],
+   "title": "Founding Father, U.S. president from 1789 to 1797",
+   "summary": "George Washington was a Founding Father and the first president of the United States, serving from 1789 to 1797. As commander of the Continental Army, Washington led Patriot forces to victory in the American Revolutionary War against the British Empire. He is commonly known as the Father of His Country for his role in bringing about American independence.",
+   "birth": {
+    "display": "22 February 1732 (New Style; 11 February 1731 Old Style)",
+    "iso": "1732-02-22",
+    "year": 1732,
+    "place": "Popes Creek, Virginia, British America",
+    "date_note": "The article uses the New Style date; retain Old Style only as a calendar alias."
+   },
+   "death": {
+    "display": "14 December 1799",
+    "iso": "1799-12-14",
+    "year": 1799,
+    "place": "Mount Vernon, Virginia, United States"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/George_Washington",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg/330px-Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg",
+    "file": "File:Gilbert Stuart Williamstown Portrait of George Washington.jpg",
+    "license": "Public Domain Mark 1.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Gilbert_Stuart_Williamstown_Portrait_of_George_Washington.jpg"
+   }
+  },
+  {
+   "id": "char_a5798dcc-d144-4504-bda7-25af174ba15f",
+   "name": "Winston Churchill",
+   "names": [
+    "Winston Churchill"
+   ],
+   "title": "British statesman and writer (1874–1965)",
+   "summary": "Sir Winston Leonard Spencer Churchill was a British statesman, military officer, and writer who was Prime Minister of the United Kingdom from 1940 to 1945, during the Second World War, and again from 1951 to 1955. For some 62 of the years between 1900 and 1964, he was a member of Parliament (MP) and represented a total of five constituencies over that time. Ideologically an adherent to economic liberalism and imperialism, he was for most of his career a member of the Conservative Party, which he led from 1940 to 1955. He was a member of the Liberal Party from 1904 to 1924.",
+   "birth": {
+    "display": "30 November 1874",
+    "iso": "1874-11-30",
+    "year": 1874,
+    "place": "Blenheim Palace, Oxfordshire, England"
+   },
+   "death": {
+    "display": "24 January 1965",
+    "iso": "1965-01-24",
+    "year": 1965,
+    "place": "Hyde Park Gate, London, England"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Winston_Churchill",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Sir_Winston_Churchill_-_19086236948_%28restored%29.jpg/330px-Sir_Winston_Churchill_-_19086236948_%28restored%29.jpg",
+    "file": "File:Sir Winston Churchill - 19086236948 (restored).jpg",
+    "license": "CC BY 2.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Sir_Winston_Churchill_-_19086236948_(restored).jpg"
+   }
+  },
+  {
+   "id": "char_b448373b-fda7-41d7-a671-e7e03427368f",
+   "name": "Joseph Stalin",
+   "names": [
+    "Joseph Stalin"
+   ],
+   "title": "Leader of the Soviet Union from 1924 to 1953",
+   "summary": "Joseph Vissarionovich Stalin was a Soviet politician and revolutionary who led the Soviet Union from the late 1920s until his death in 1953, holding the title of General Secretary of the Communist Party of the Soviet Union from 1922 to 1952 and serving as the nation's premier from 1941 to 1953. Initially part of a collective leadership within a one-party system, he ultimately consolidated personal power to become the country's de facto dictator by the 1930s. Ideologically committed to the Leninist interpretation of Marxism, Stalin helped to formalise these ideas as Marxism–Leninism, while his own policies became known as Stalinism.",
+   "birth": {
+    "display": "18 December 1878 Old Style 6 December",
+    "iso": "1878-12-18",
+    "year": 1878,
+    "place": "Gori, Russian Empire (now Georgia)",
+    "date_note": "The article cites church and pre-revolution records for 18 December 1878; 21 December 1879 was the later official Soviet celebration date."
+   },
+   "death": {
+    "display": "5 March 1953",
+    "iso": "1953-03-05",
+    "year": 1953,
+    "place": "Moscow, Soviet Union"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Joseph_Stalin",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/StalinCropped1943.jpg/330px-StalinCropped1943.jpg",
+    "file": "File:StalinCropped1943.jpg",
+    "license": "Public domain in the United States (U.S. federal government work)",
+    "page": "https://commons.wikimedia.org/wiki/File:StalinCropped1943.jpg"
+   }
+  },
+  {
+   "id": "char_fc4fa51c-bd63-424e-9f76-1111b8eafd1d",
+   "name": "Alexander the Great",
+   "names": [
+    "Alexander the Great"
+   ],
+   "title": "King of Macedon from 336 to 323 BC",
+   "summary": "Alexander III of Macedon, most commonly known as Alexander the Great, was king of the ancient Greek kingdom of Macedon from 336 BC until his death. He was the son of Philip II and his fourth wife, Olympias, and ascended to the throne at the age of 20 after Philip was assassinated. Alexander spent most of his reign conducting a lengthy military campaign throughout Asia and Egypt, and by the age of 30, he had created one of the largest empires in history, stretching from Greece to Egypt and northwestern India. He was undefeated in battle and is widely considered to be one of history's greatest and most successful military commanders.",
+   "birth": {
+    "display": "20 or 21 July 356 BC",
+    "year": -356,
+    "year_numbering": "BC",
+    "month": 7,
+    "day_options": [
+     20,
+     21
+    ],
+    "place": "Pella, Macedon"
+   },
+   "death": {
+    "display": "10 or 11 June 323 BC",
+    "year": -323,
+    "year_numbering": "BC",
+    "month": 6,
+    "day_options": [
+     10,
+     11
+    ],
+    "place": "Babylon, Macedonian Empire"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Alexander_the_Great",
+   "image": {
+    "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/49/Alexander_Mosaic_detail_of_Alexander_the_Great_%283x4_cropped%29.jpg/330px-Alexander_Mosaic_detail_of_Alexander_the_Great_%283x4_cropped%29.jpg",
+    "file": "File:Alexander Mosaic detail of Alexander the Great (3x4 cropped).jpg",
+    "license": "Public Domain Mark 1.0",
+    "page": "https://commons.wikimedia.org/wiki/File:Alexander_Mosaic_detail_of_Alexander_the_Great_(3x4_cropped).jpg"
+   }
+  }
+ ]
+}

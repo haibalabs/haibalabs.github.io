@@ -1,0 +1,102 @@
+/* Character cards (lab prototype): the card above the timeline, its fold, and the marks on names and events. */
+
+/* the timeline takes the height the card leaves */
+.has-character > #timeline-wrapper { height: calc(100% - var(--character-height, 0px)); }
+
+.character-bar {
+    position: relative;
+    z-index: 4;
+    width: 100%;
+    transition: width .25s var(--ease);
+    background: var(--bg);
+}
+.character-bar.panel-open { width: calc(100% - var(--panel-width)); }
+
+.character-card {
+    --portrait: 104px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 16px;
+    align-items: start;
+    max-width: var(--column);
+    margin: 12px auto 8px;
+    padding: 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: 0 6px 24px rgb(28 25 23 / 0.08);
+    transition: padding .24s var(--ease), margin .24s var(--ease), column-gap .24s var(--ease);
+}
+/* with a panel open the card keeps to the timeline column's left edge, as the column does */
+.character-bar.panel-open .character-card {
+    margin-left: max(16px, (100% - var(--column)) / 2, min(var(--gutter, 200px), 100% - var(--column) - var(--panel-room)));
+}
+
+/* the portrait shrinks and rounds with the rest of the card, on one curve, so nothing jumps */
+.character-portrait {
+    display: block;
+    width: var(--portrait);
+    height: calc(var(--portrait) * 1.25);
+    border-radius: 10px;
+    object-fit: cover;
+    object-position: center 22%;
+    background: var(--surface-2);
+    transition: width .24s var(--ease), height .24s var(--ease), border-radius .24s var(--ease);
+}
+.character-head { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; }
+.character-head h2 { margin: 0; font: 600 1.55rem/1.15 var(--font-title); text-wrap: balance; transition: font-size .24s var(--ease); }
+.character-life { margin: 2px 0 0; font-size: .84rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.character-place { transition: opacity .2s; }
+
+/* title and summary close on a 1fr → 0fr row, which animates their height smoothly */
+.character-more { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .24s var(--ease), opacity .2s; }
+.character-more > div { overflow: hidden; min-height: 0; }
+.character-title { margin: 4px 0 0; color: var(--ink-2); font-size: .9rem; }
+.character-summary { margin: 6px 0 10px; font-size: .9rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.character-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.character-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    border-radius: 8px; padding: 5px 9px; font-size: .84rem;
+}
+.character-btn:hover { background: var(--surface-2); }
+.character-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.character-count { font-size: .8rem; color: var(--ink-3); }
+.character-close { margin-left: auto; border: 0; background: none; color: var(--ink-2); border-radius: 8px; padding: 5px 9px; font-size: 1rem; }
+.character-close:hover { background: var(--surface-2); color: var(--ink); }
+.character-credit { grid-column: 1 / -1; margin: 8px 0 0; font-size: .7rem; color: var(--ink-3); transition: opacity .2s; }
+.character-credit a { color: inherit; }
+
+/* folded: one line with a round portrait, while the events scroll under it */
+.character-bar.folded .character-card { --portrait: 40px; padding: 8px 12px; margin-top: 6px; margin-bottom: 4px; column-gap: 12px; align-items: center; }
+.character-bar.folded .character-portrait { border-radius: 50%; height: var(--portrait); }
+.character-bar.folded .character-head h2 { font-size: 1.12rem; }
+.character-bar.folded .character-place { display: none; }
+.character-bar.folded .character-more { grid-template-rows: 0fr; opacity: 0; }
+.character-bar.folded .character-credit { display: none; }
+.character-bar.folded .character-label, .character-bar.folded .character-count { display: none; }
+.character-bar.folded .character-text { display: flex; flex-wrap: wrap; align-items: center; column-gap: 12px; }
+.character-bar.folded .character-actions { margin-left: auto; }
+
+/* a character's name on an event card opens their card */
+.figure-mention.is-character { color: var(--accent); text-decoration: underline dotted; text-underline-offset: 3px; }
+/* with world history shown, the character's own events stand out */
+.event.character-other { opacity: .55; }
+
+/* the places in the character's events, numbered in date order */
+.character-stop span {
+    display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent); color: #fff; font: 600 11px var(--font-ui); border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / .3);
+}
+.character-route { stroke: var(--accent); stroke-opacity: .45; stroke-width: 2; stroke-dasharray: 4 5; fill: none; }
+
+@media (max-width: 640px) {
+    .character-bar.panel-open { width: 100%; }
+    .character-card { --portrait: 72px; margin: 8px 10px; }
+    .character-head h2 { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .character-card, .character-portrait, .character-more, .character-head h2 { transition: none; }
+}
