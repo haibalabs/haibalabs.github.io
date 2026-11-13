@@ -119,6 +119,28 @@ function parseYear(yearStr) {
     return year >= 1 && monthDays && day >= 1 && day <= monthDays ? { year, month, day } : null;
   }
 
+  /**
+   * The start of an ISO interval written only as precisely as the interval is: its year when the interval
+   * covers whole years (1470-01-01/1700-01-01, 1943-01-01/1943-12-31), its year and month when it covers whole
+   * months (1786-09-01/1786-12-31), otherwise as written. A first-of-month start is not shown as a day then.
+   *
+   * @param {string} start - e.g. "1786-09-01"
+   * @param {string} end - e.g. "1786-12-31"
+   * @returns {string}
+   */
+  function isoIntervalStart(start, end) {
+    // leading zeros are already gone here ("1786-9-1"), so the parts are compared as numbers
+    const [, sign, year, month, day] = start.match(/^(-?)(\d+)-(\d+)(?:-(\d+))?$/).map((part, i) => (i > 1 ? Number(part) : part));
+    const [, endSign, endYear, endMonth, endDay] = end.match(/^(-?)(\d+)-(\d+)(?:-(\d+))?$/).map((part, i) => (i > 1 ? Number(part) : part));
+    if (day !== 1 || !endDay) return start;
+    const leap = (endYear % 4 === 0 && endYear % 100 !== 0) || endYear % 400 === 0;
+    const lastDay = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][endMonth - 1];
+    const laterYear = `${endSign}${endYear}` !== `${sign}${year}`;
+    const endsYear = (endMonth === 12 && endDay === 31) || (endMonth === 1 && endDay === 1 && laterYear);
+    if (month === 1 && endsYear) return `${sign}${year}`;
+    return endDay === lastDay ? `${sign}${year}-${month}` : start;
+  }
+
   function preprocessTimeString(time) {
   
     let cleaned = time.toLowerCase().trim();
@@ -162,6 +184,11 @@ function parseYear(yearStr) {
       cleaned = cleaned.replace(/\blate\b\s*/i, '');
     }
   
+    // an ISO interval, "1757-08-03/1757-08-09" => "1757-08-03 to 1757-08-09", read as a range from its start; the
+    // slash below would otherwise join both dates into one hyphenated string that reads as the year alone
+    cleaned = cleaned.replace(/^(-?\d{1,4}-\d{1,2}(?:-\d{1,2})?)\/(-?\d{1,4}-\d{1,2}(?:-\d{1,2})?)$/,
+        (_, start, end) => `${isoIntervalStart(start, end)} to ${end}`);
+
     // support slashes for dates => convert to hyphens
     cleaned = cleaned.replace(/\//g, '-');
   
@@ -231,7 +258,7 @@ function extractRangeOrDayRange(inputText) {
         rangeEnd: ''
       };
     }
-  
+
     // 2) "8th-9th century" check
     //   const centuryRangeRegex = /(\d+)(st|nd|rd|th)\s*century\s*[–—-]\s*(\d+)(st|nd|rd|th)\s*century/;
     // Capture "8th" as one piece, "9th" as another:

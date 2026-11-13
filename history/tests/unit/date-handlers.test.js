@@ -214,6 +214,23 @@ describe('formatHistoricalDate', () => {
   it.todo('formats "approximate date" as "unknown date"'); // currently returns "0 AD"
 });
 
+describe('ISO intervals ("start/end") read like "start to end", shown as precisely as the interval is', () => {
+  it('shows the first day of a day interval, as the spaced form does', () => {
+    assert.equal(formatHistoricalDate('1757-08-03/1757-08-09'), 'August 3rd, 1757');
+    assert.equal(formatHistoricalDate('1757-08-03/1757-08-09'), formatHistoricalDate('1757-08-03 to 1757-08-09'));
+    assert.equal(formatHistoricalDate('634-08-21/634-09-19'), 'August 21st, 634 AD');
+  });
+  it('shows the month of an interval of whole months, and the year of an interval of whole years', () => {
+    assert.equal(formatHistoricalDate('1786-09-01/1786-12-31'), 'September, 1786');
+    assert.equal(formatHistoricalDate('1470-01-01/1700-01-01'), '1470');
+    assert.equal(formatHistoricalDate('1943-01-01/1943-12-31'), '1943');
+    assert.equal(formatHistoricalDate('-0780-01-01/-0560-01-01'), '780 BC');
+  });
+  it('leaves numeric slash dates alone', () => {
+    assert.equal(formatHistoricalDate('1/25/1976'), 'January 25th, 1976');
+  });
+});
+
 // ---------------------------------------------------------------------------
 // Sort order invariants
 // ---------------------------------------------------------------------------
