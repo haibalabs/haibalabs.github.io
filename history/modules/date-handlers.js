@@ -279,6 +279,18 @@ function extractRangeOrDayRange(inputText) {
       };
     }
 
+    // 3c) Months as numbers before a year ("5-6 171", May to June 171) => the first month of that year, not year 5
+    const monthNumbers = inputText.match(/^(\d{1,2})\s*-\s*(\d{1,2})\s+(\d{3,4})$/);
+    if (monthNumbers && monthNumbers.slice(1, 3).every(m => Number(m) >= 1 && Number(m) <= 12)) {
+      const monthNames = ['january','february','march','april','may','june','july','august','september','october','november','december'];
+      return {
+        isRange: false,
+        isBC: isBC,
+        rangeStart: `${monthNames[Number(monthNumbers[1]) - 1]} ${monthNumbers[3]}`,
+        rangeEnd: ''
+      };
+    }
+
     // 4) Try spaced range: "X to Y", "X - Y", "X – Y"
     let rangeSeparatorRegex = /\s+(?:to|[–—-])\s+/;
     let rangeSplit = inputText.split(rangeSeparatorRegex);
@@ -321,7 +333,14 @@ function extractRangeOrDayRange(inputText) {
         leftPart = `${leftPart} ${year}`;
       }
     }
-  
+
+    // A range across two months written with the year only once ("june 22 - july 12, 1148", "30 july - 2 august
+    // 1914"): the left side takes the right side's year, instead of reading its day as a year.
+    const rightYear = rightPart.match(/(?:,\s*|\s+)(\d{1,4})$/);
+    if (rightYear && (/^[a-z]+\s+\d{1,2}$/i.test(leftPart) || /^\d{1,2}\s+[a-z]+$/i.test(leftPart))) {
+      leftPart = /^\d/.test(leftPart) ? `${leftPart} ${rightYear[1]}` : `${leftPart}, ${rightYear[1]}`;
+    }
+
     return {
       isRange: true,
       isBC: isBC,

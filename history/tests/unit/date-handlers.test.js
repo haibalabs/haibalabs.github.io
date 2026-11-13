@@ -122,6 +122,23 @@ describe('day-first ranges in one month — the earliest day, in the written yea
   }
 });
 
+// Forms in the live release that also read a day or a month number as the year.
+describe('ranges across two months, and months as numbers, keep the written year', () => {
+  for (const [time, year, month, day, label] of [
+    ['June 22 - July 12, 1148', 1148, 6, 22, 'June 22nd, 1148 AD'],
+    ['September 23 - December 3, 1283', 1283, 9, 23, 'September 23rd, 1283'],
+    ['August 26 - August 29, 1968', 1968, 8, 26, 'August 26th, 1968'],
+    ['30 July – 2 August 1914', 1914, 7, 30, 'July 30th, 1914'],
+    ['05-06 0171', 171, 5, 1, 'May, 171 AD'],
+  ]) {
+    it(`"${time}" is ${label}`, () => {
+      const parsed = parseTimeToSortableValue(time);
+      assert.deepEqual([parsed.year, parsed.month, parsed.day], [year, month, day]);
+      assert.equal(eventDateLabel({ enhanced_time: time }), label);
+    });
+  }
+});
+
 describe('parseTimeToSortableValue — Special Formats', () => {
   it.todo('parses "September, 2004"'); // expected: 2004.752732 — "Month, Year" with comma not yet supported
   it.todo('parses "1970-05"'); // expected: 1970.419399 — YYYY-MM format not yet supported (ignores month)
