@@ -69,6 +69,11 @@ test('the site loads the release Firestore names as live, names it in the footer
     await expect(search).toHaveText('Search Wikipedia for “Nobody Such Person”');
     await expect(search).toHaveAttribute('href', /[?&]search=Nobody%20Such%20Person&/);
     await expect(page.frameLocator('#info-frame').locator('body')).not.toContainText('Content unavailable');
+    // offline is not a missing article: the usual error, no search
+    await page.unroute('https://en.wikipedia.org/w/api.php**');
+    await page.route('https://en.wikipedia.org/w/api.php**', route => route.abort());
+    await page.locator('.figure-mention', { hasText: 'Nobody Such Person' }).click();
+    await expect(page.frameLocator('#info-frame').locator('body')).toContainText('Content unavailable');
 });
 
 test('a named release the site can\'t load falls back to the committed one', async ({ page }) => {

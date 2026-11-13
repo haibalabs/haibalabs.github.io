@@ -135,8 +135,9 @@ export class PanelManager {
             this.showInfoPanel(content);
         } catch (error) {
             console.error('Error loading Wikipedia content:', error);
-            // a person's name that isn't an article title: offer a labelled search, and keep the name clickable
-            if (searchName) return this.showInfoPanelSearch(searchName);
+            // a person's name that Wikipedia says is no article title: offer a labelled search, and keep the name
+            // clickable. Any other failure (offline, Wikipedia down) keeps the usual error.
+            if (searchName && error.missingArticle) return this.showInfoPanelSearch(searchName);
             this.showInfoPanelError();
             this.showWikiError(wikiSpan, url, error.message);
         }
@@ -195,6 +196,9 @@ export class PanelManager {
         const data = await response.json();
 
         // Check for error or missing content
+        if (data.error?.code === 'missingtitle') {
+            throw Object.assign(new Error('Wikipedia article not found'), { missingArticle: true });
+        }
         if (data.error || !data.parse || !data.parse.text) {
             throw new Error('Wikipedia content not found');
         }
