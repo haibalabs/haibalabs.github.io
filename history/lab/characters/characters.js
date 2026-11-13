@@ -1,10 +1,9 @@
 // Character cards (lab prototype, ?lab=characters). A person named on an event card who is one of the profiled
 // characters (characters.json) opens their card, pinned above the timeline with only their events under it. The card
-// folds to one line once the events scroll. Its map button shows the places named in those events on the map, in
-// date order; the globe button adds the rest of world history; Wikipedia opens in the article panel; Close puts
-// the timeline back. An event belongs to a character when one of its people is written with the character's exact
+// folds to one line once the events scroll. Its map button shows those events with the site's own dots and
+// bubbles; the globe button adds the rest of world history; Wikipedia opens in the article panel; Close puts the
+// timeline back where it was. An event belongs to a character when one of its people is written with the character's exact
 // name, as in Ariadne's prototype; none of these links is reviewed.
-import { getMapLocation, isValidCoordinates } from '../../modules/map-utils.js';
 
 const FOLD_AT = 60;
 const UNFOLD_AT = 8;
@@ -13,7 +12,10 @@ let active = null;
 const escapeHtml = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const figureName = figure => (typeof figure === 'string' ? figure : figure?.name ?? '');
 
+let wanted = false;
+
 export async function setCharacters(lab, on) {
+    wanted = Boolean(on);
     if (!on) {
         active?.stop();
         active = null;
@@ -22,7 +24,9 @@ export async function setCharacters(lab, on) {
     if (active) return;
     const response = await fetch(new URL('characters.json', import.meta.url));
     if (!response.ok) throw new Error(`Could not load the characters (${response.status})`);
-    active = new Characters(lab, (await response.json()).characters);
+    const { characters } = await response.json();
+    // the switch may have gone off, or on again, while the characters loaded
+    if (wanted && !active) active = new Characters(lab, characters);
 }
 
 class Characters {
@@ -77,6 +81,18 @@ class Characters {
     }
 
     open(character) {
+        if (!this.current) {
+            // what the timeline showed before the first card: its event filter (the staging page's new events) and
+            // its search, which would hide most of the person's events; both come back when the card closes
+            this.previousFilter = this.lab.eventManager.eventIdFilter ?? null;
+            const search = document.getElementById('searchInput');
+            this.previousSearch = search?.value ?? '';
+            // the card at the top of the timeline, to come back to
+            const top = this.wrapper.getBoundingClientRect().top;
+            this.previousTop = [...this.content.querySelectorAll(':scope > .event[data-event-id]')]
+                .find(card => card.getBoundingClientRect().width > 0 && card.getBoundingClientRect().bottom > top + 1)?.dataset.eventId ?? null;
+            if (this.previousSearch) document.getElementById('clearSearch')?.click();
+        }
         this.current = character;
         this.events = this.eventsOf(character);
         this.ids = new Set(this.events.map(event => event.event_id));
@@ -88,13 +104,13 @@ class Characters {
         this.lab.uiManager.showOnlyEvents(this.ids);
         this.wrapper.scrollTop = 0;
         this.fold();
-        if (this.layer) this.showPlaces();
+        if (this.mapOn) this.showEventsOnMap();
         this.mark();
     }
 
     render() {
         const c = this.current;
-        const life = c => (c ? `${escapeHtml(c.display)}${c.place ? `<span class="character-place">, ${escapeHtml(c.place)}</span>` : ''}` : '?');
+        const life = (word, c) => (c ? `<p class="character-life">${word} ${escapeHtml(c.display)}${c.place ? `, ${escapeHtml(c.place)}` : ''}</p>` : '');
         if (!this.bar) {
             this.bar = document.createElement('section');
             this.bar.className = 'character-bar';
@@ -118,11 +134,10 @@ class Characters {
         this.bar.innerHTML = `<div class="character-card">
             ${c.image?.url ? `<img class="character-portrait" src="${escapeHtml(c.image.url)}" alt="">` : '<div class="character-portrait"></div>'}
             <div class="character-text">
-                <div class="character-head">
-                    <h2>${escapeHtml(c.name)}</h2>
-                    <p class="character-life">${life(c.birth)} – ${life(c.death)}</p>
-                </div>
+                <h2>${escapeHtml(c.name)}</h2>
                 <div class="character-more"><div>
+                    ${life('Born', c.birth)}
+                    ${life('Died', c.death)}
                     <p class="character-title">${escapeHtml(c.title)}</p>
                     <p class="character-summary">${escapeHtml(c.summary)}</p>
                 </div></div>
@@ -130,13 +145,11 @@ class Characters {
                     <button type="button" class="character-btn" data-action="places" aria-pressed="false" title="Places in these events" aria-label="Places in these events"><i class="fa-light fa-map-location-dot" aria-hidden="true"></i></button>
                     <button type="button" class="character-btn" data-action="world" aria-pressed="false" title="Show world history around these events" aria-label="Show world history around these events"><i class="fa-light fa-earth-americas" aria-hidden="true"></i></button>
                     <button type="button" class="character-btn" data-action="article" title="Read about ${escapeHtml(c.name)} on Wikipedia"><i class="fa-light fa-scroll" aria-hidden="true"></i><span class="character-label">Wikipedia</span></button>
-                    <span class="character-count">${this.events.length} event${this.events.length === 1 ? '' : 's'}</span>
-                    <button type="button" class="character-close" data-action="close" title="Close" aria-label="Close ${escapeHtml(c.name)}'s card"><i class="fa-light fa-xmark" aria-hidden="true"></i></button>
                 </div>
             </div>
-            ${c.image?.file ? `<p class="character-credit">Portrait: <a href="${escapeHtml(c.image.page)}" target="_blank" rel="noopener">${escapeHtml(c.image.file.replace(/^File:/, ''))}</a>, ${escapeHtml(c.image.license ?? '')}</p>` : ''}
+            <button type="button" class="character-close" data-action="close" title="Close" aria-label="Close ${escapeHtml(c.name)}'s card"><i class="fa-light fa-xmark" aria-hidden="true"></i></button>
         </div>`;
-        this.bar.querySelector('[data-action="places"]').setAttribute('aria-pressed', String(Boolean(this.layer)));
+        this.bar.querySelector('[data-action="places"]').setAttribute('aria-pressed', String(Boolean(this.mapOn)));
         for (const button of this.bar.querySelectorAll('[data-action]')) {
             button.addEventListener('click', () => this[button.dataset.action](button));
         }
@@ -151,49 +164,32 @@ class Characters {
     }
 
     places(button) {
-        if (this.layer) {
-            this.layer.remove();
-            this.layer = null;
-            button.setAttribute('aria-pressed', 'false');
-            return;
-        }
-        button.setAttribute('aria-pressed', 'true');
+        this.mapOn = !this.mapOn;
+        button.setAttribute('aria-pressed', String(this.mapOn));
+        if (!this.mapOn) return this.lab.browser.clusters.configure({ always: false, only: null });
         this.lab.panelManager.openMapPanel();
-        setTimeout(() => {
+        // the events go on once the map panel has opened, unless the card closed in the meantime
+        clearTimeout(this.mapTimer);
+        this.mapTimer = setTimeout(() => {
+            if (!this.current) return;
             this.lab.map.invalidateSize();
-            this.showPlaces();
+            this.showEventsOnMap();
         }, 300);
     }
 
-    // The places named in the character's events, numbered in the order they first appear, joined in that order.
-    showPlaces() {
-        this.layer?.remove();
-        const places = new Map();
-        for (const event of this.events) {
-            const point = getMapLocation(event.locations);
-            if (!isValidCoordinates(point)) continue;
-            const key = point.join(',');
-            if (!places.has(key)) places.set(key, { point, events: [] });
-            places.get(key).events.push(event);
-        }
-        const list = [...places.values()];
-        this.layer = L.layerGroup().addTo(this.lab.map);
-        if (list.length > 1) L.polyline(list.map(p => p.point), { className: 'character-route', interactive: false }).addTo(this.layer);
-        list.forEach((place, i) => {
-            const marker = L.marker(place.point, {
-                icon: L.divIcon({ className: 'character-stop', html: `<span>${i + 1}</span>`, iconSize: [22, 22] }),
-                title: place.events.map(e => e.name).join('\n'),
-                keyboard: true,
-            }).addTo(this.layer);
-            marker.on('click', () => this.lab.uiManager.scrollToEventId(this.lab.eventManager.placeIndex.idFor(place.events[0])));
-        });
-        if (list.length) this.lab.map.fitBounds(L.latLngBounds(list.map(p => p.point)), { padding: [40, 40], maxZoom: 6 });
+    // The person's events on the map with the site's own dots and bubbles (event-clusters.js): close events group,
+    // and a dot or a bubble's list selects its event, as for any event. The map frames them all.
+    showEventsOnMap() {
+        const index = this.lab.eventManager.placeIndex;
+        this.lab.browser.clusters.configure({ always: true, only: event => this.cardIds.has(index.idFor(event)) });
+        const points = [...this.cardIds].flatMap(id => (index.eventPoints.get(id) || []).map(point => point.coordinates));
+        if (points.length) this.lab.map.fitBounds(L.latLngBounds(points), { padding: [40, 40], maxZoom: 6 });
     }
 
     world(button) {
         this.withWorld = !this.withWorld;
         button.setAttribute('aria-pressed', String(this.withWorld));
-        this.lab.uiManager.showOnlyEvents(this.withWorld ? null : this.ids);
+        this.lab.uiManager.showOnlyEvents(this.withWorld ? this.previousFilter : this.ids);
         this.mark();
     }
 
@@ -203,8 +199,9 @@ class Characters {
 
     close() {
         this.current = null;
-        this.layer?.remove();
-        this.layer = null;
+        clearTimeout(this.mapTimer);
+        if (this.mapOn) this.lab.browser.clusters.configure({ always: false, only: null });
+        this.mapOn = false;
         this.resize?.disconnect();
         this.panelWatch?.disconnect();
         this.bar?.remove();
@@ -212,7 +209,22 @@ class Characters {
         this.wrapper.parentElement.classList.remove('has-character');
         this.wrapper.parentElement.style.removeProperty('--character-height');
         for (const card of this.content.querySelectorAll('.character-event, .character-other')) card.classList.remove('character-event', 'character-other');
-        this.lab.uiManager.showOnlyEvents(null);
+        // the timeline as it was: its search, its filter, and the card that was at the top
+        const search = document.getElementById('searchInput');
+        if (this.previousSearch && search) {
+            search.value = this.previousSearch;
+            document.getElementById('clearSearch')?.classList.add('visible');
+            this.lab.uiManager.currentSearch = this.previousSearch.toLowerCase();
+        }
+        this.lab.uiManager.showOnlyEvents(this.previousFilter ?? null);
+        const target = this.previousTop;
+        if (target && this.lab.uiManager.scrollToEventId(target)) {
+            // the timeline measures the cards it has just drawn and moves them, so align the card once more after that
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                const card = this.content.querySelector(`.event[data-event-id="${CSS.escape(target)}"]`);
+                if (card && !this.current) this.wrapper.scrollTop += card.getBoundingClientRect().top - this.wrapper.getBoundingClientRect().top;
+            }));
+        }
     }
 
     stop() {

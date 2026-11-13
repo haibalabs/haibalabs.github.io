@@ -1,13 +1,17 @@
+import { readFileSync } from 'node:fs';
 import { test, expect } from './cdn-cache.js';
 import { stubFirebase } from './firebase-stub.js';
 
 // The character cards lab (lab/characters/, ?lab=characters): a profiled person's name on an event opens their
-// card above the timeline with only their events, the card folds as the events scroll, the map shows the places
-// in those events, and closing it restores the timeline.
+// card above the timeline with all their events, the card folds as the events scroll, the map shows those events
+// with the site's own dots, and closing it puts the timeline back where it was.
+
+// the map's dots and bubbles load Supercluster from unpkg; the test serves the same version from node_modules
+const SUPERCLUSTER = readFileSync(new URL('../../node_modules/supercluster/dist/supercluster.min.js', import.meta.url), 'utf8');
 
 // release place rows: an event's location names one by index, and a placed location takes its point from it
 const PLACES = [['Ajaccio', [41.92, 8.74]], ['Paris', [48.85, 2.35]], ['Waterloo', [50.68, 4.41]]]
-    .map(([name, point], index) => ({ index, name, place_id: `plc_${name}`, point, precision: 'settlement', status: 'reviewed' }));
+    .map(([name, point], index) => ({ index, name, place_id: `plc_${name}`, point, precision: 'settlement', status: 'resolved' }));
 const at = (name, time, place) => ({ event_id: `evt_${name.replace(/\W+/g, '_')}`, event_version: 'v1', name,
     enhanced_time: time, enhanced_description: `${name}.`, categories: ['war'], confidence: 'high', visible: true,
     wikipedia_url: '', figures: name.includes('Napoleon') ? ['Napoleon Bonaparte', 'Someone Else'] : ['Someone Else'],
@@ -36,16 +40,18 @@ test('a character\'s name opens their card with only their events, which folds, 
         const body = FILES[new URL(route.request().url()).pathname.replace(/^\/history\/data\//, '')];
         return body ? route.fulfill({ json: body }) : route.fulfill({ status: 404 });
     });
+    await page.route('**/unpkg.com/supercluster@8.0.1/**', route => route.fulfill({ contentType: 'text/javascript', headers: { 'Access-Control-Allow-Origin': '*' }, body: SUPERCLUSTER }));
     await page.goto('/history/index.html?lab=characters');
-    const name = page.locator('.figure-mention.is-character', { hasText: 'Napoleon Bonaparte' }).first();
-    await expect(name).toBeVisible();
     await expect(page.locator('.figure-mention', { hasText: 'Someone Else' }).first()).not.toHaveClass(/is-character/);
-
-    await name.click();
+    // found through a search, the name opens the card with all of the person's events, the search set aside
+    await page.fill('#searchInput', 'Waterloo');
+    await expect(page.locator('#timeline-content .event')).toHaveCount(1);
+    await page.locator('.figure-mention.is-character', { hasText: 'Napoleon Bonaparte' }).click();
     const card = page.locator('.character-bar');
     await expect(card.locator('h2')).toHaveText('Napoleon Bonaparte');
-    await expect(card.locator('.character-count')).toHaveText('3 events');
+    await expect(card.locator('.character-life')).toHaveText([/^Born 15 August 1769, Ajaccio/, /^Died 5 May 1821, Longwood/]);
     await expect(page.locator('#timeline-content .event')).toHaveCount(3);
+    await expect(page.locator('#searchInput')).toHaveValue('');
     // the name opened the card, not the article
     await expect(page.locator('#info-panel')).not.toHaveClass(/open/);
 
@@ -54,13 +60,42 @@ test('a character\'s name opens their card with only their events, which folds, 
     await page.locator('#timeline-wrapper').evaluate(el => { el.scrollTop = 400; });
     await expect(card).toHaveClass(/folded/);
 
+    // the map shows the person's events as the site's dots, and a dot selects its event
     await card.locator('[data-action="places"]').click();
     await expect(page.locator('#map-panel')).toHaveClass(/open/);
-    await expect(page.locator('.character-stop')).toHaveCount(3);
+    await expect(page.locator('.map-cluster-dot')).toHaveCount(3);
+    await page.locator('.map-cluster-dot[title="Napoleon crowned Emperor"]').click();
+    await expect(page.locator('.map-event-label strong')).toHaveText('Napoleon crowned Emperor');
 
+    // closing puts the timeline back as it was, search included
     await card.locator('[data-action="close"]').click();
     await expect(card).toHaveCount(0);
-    await expect(page.locator('.character-stop')).toHaveCount(0);
-    await expect(page.locator('#timeline-content .event').first()).toBeVisible();
-    expect(await page.locator('#timeline-content .event').count()).toBeGreaterThan(3);
+    await expect(page.locator('.map-cluster-dot')).toHaveCount(0);
+    await expect(page.locator('#searchInput')).toHaveValue('Waterloo');
+    await expect(page.locator('#timeline-content .event')).toHaveCount(1);
+});
+
+test('closing a character\'s card returns the timeline to the card that was at its top', async ({ page }) => {
+    await stubFirebase(page);
+    await page.route(/unpkg\.com\/(maplibre-gl|@maplibre|@mapbox)|vector\.openstreetmap\.org|tiles\.openfreemap\.org|elevation-tiles-prod|upload\.wikimedia|thumb\.wikimedia/, r => r.abort());
+    await page.route('**/history/data/**', route => {
+        const body = FILES[new URL(route.request().url()).pathname.replace(/^\/history\/data\//, '')];
+        return body ? route.fulfill({ json: body }) : route.fulfill({ status: 404 });
+    });
+    await page.goto('/history/index.html?lab=characters');
+    const top = () => page.evaluate(() => {
+        const wrapper = document.getElementById('timeline-wrapper').getBoundingClientRect().top;
+        return [...document.querySelectorAll('#timeline-content > .event')]
+            .find(card => card.getBoundingClientRect().width > 0 && card.getBoundingClientRect().bottom > wrapper + 1)?.querySelector('.event-header').textContent.trim();
+    });
+    // the lab opens the map drawer on wide screens, which lays the timeline out again once it has opened
+    await expect(page.locator('#map-panel')).toHaveClass(/open/);
+    await page.waitForTimeout(500);
+    const crowned = page.locator('#timeline-content .event', { has: page.locator('.event-header', { hasText: 'Napoleon crowned Emperor' }) });
+    await crowned.evaluate(card => { document.getElementById('timeline-wrapper').scrollTop += card.getBoundingClientRect().top - document.getElementById('timeline-wrapper').getBoundingClientRect().top; });
+    await expect.poll(top).toBe('Napoleon crowned Emperor');
+    await crowned.locator('.figure-mention.is-character').click();
+    await page.locator('#timeline-wrapper').evaluate(el => { el.scrollTop = el.scrollHeight; });
+    await page.locator('.character-bar [data-action="close"]').click();
+    await expect.poll(top).toBe('Napoleon crowned Emperor');
 });
