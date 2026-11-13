@@ -7,16 +7,6 @@ import { lookupOutline, outlineQuery } from './outlines.js';
 
 export const VARIANTS = [
     {
-        id: 'characters',
-        label: 'Character cards (prototype)',
-        note: 'A highlighted name on an event card opens that person\'s card above the timeline, with only their events under it, a map of the places in them, and their article. Ten people for now, linked to events by their exact name; none of the links is reviewed.',
-        apply(lab, on) {
-            import('../characters/characters.js')
-                .then(({ setCharacters }) => setCharacters(lab, on))
-                .catch(error => console.error('The character cards could not start:', error));
-        },
-    },
-    {
         id: 'search',
         label: 'Map search (prototype)',
         note: 'A search field at the map\'s top right: landmarks, then the places the events are at, then Wikidata. Picking one flies the map there and opens its events. "/" focuses it.',

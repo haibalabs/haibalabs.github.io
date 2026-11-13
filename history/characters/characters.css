@@ -1,4 +1,4 @@
-/* Character cards (lab prototype): the card above the timeline, its fold, and the marks on names and events. */
+/* Character cards (characters.js): the card above the timeline, its fold, and the marks on names and events. */
 
 /* the timeline takes the height the card leaves */
 .has-character > #timeline-wrapper { height: calc(100% - var(--character-height, 0px)); }
@@ -83,7 +83,8 @@
 
 @media (max-width: 640px) {
     .character-bar.panel-open { width: 100%; }
-    .character-card { --portrait: 72px; margin: 8px 10px; }
+    /* the map tab floats at the screen's right edge here, so the card stops short of it */
+    .character-card { --portrait: 72px; margin: 8px calc(var(--panel-room) - 4px) 8px 10px; }
     .character-head h2 { font-size: 1.25rem; }
 }
 @media (prefers-reduced-motion: reduce) {
