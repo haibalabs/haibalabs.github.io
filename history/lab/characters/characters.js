@@ -88,9 +88,7 @@ class Characters {
             const search = document.getElementById('searchInput');
             this.previousSearch = search?.value ?? '';
             // the card at the top of the timeline, to come back to
-            const top = this.wrapper.getBoundingClientRect().top;
-            this.previousTop = [...this.content.querySelectorAll(':scope > .event[data-event-id]')]
-                .find(card => card.getBoundingClientRect().width > 0 && card.getBoundingClientRect().bottom > top + 1)?.dataset.eventId ?? null;
+            this.previousTop = this.topCard();
             if (this.previousSearch) document.getElementById('clearSearch')?.click();
         }
         this.current = character;
@@ -101,8 +99,10 @@ class Characters {
         this.cardIds = new Set(this.events.map(event => index.idFor(event)));
         this.withWorld = false;
         this.render();
-        this.lab.uiManager.showOnlyEvents(this.ids);
+        // the timeline draws the cards around its scroll position, so it goes to the top before the person's events
+        // replace the others; a position deep in the timeline would draw only their last events, out of view
         this.wrapper.scrollTop = 0;
+        this.lab.uiManager.showOnlyEvents(this.ids);
         this.fold();
         if (this.mapOn) this.showEventsOnMap();
         this.mark();
@@ -186,10 +186,21 @@ class Characters {
         if (points.length) this.lab.map.fitBounds(L.latLngBounds(points), { padding: [40, 40], maxZoom: 6 });
     }
 
+    // The card at the top of the timeline.
+    topCard() {
+        const top = this.wrapper.getBoundingClientRect().top;
+        return [...this.content.querySelectorAll(':scope > .event[data-event-id]')]
+            .find(card => card.getBoundingClientRect().width > 0 && card.getBoundingClientRect().bottom > top + 1)?.dataset.eventId ?? null;
+    }
+
+    // World history in or out, keeping the card at the top when it stays; otherwise the timeline starts at the top.
     world(button) {
         this.withWorld = !this.withWorld;
         button.setAttribute('aria-pressed', String(this.withWorld));
+        const target = this.topCard();
+        this.wrapper.scrollTop = 0;
         this.lab.uiManager.showOnlyEvents(this.withWorld ? this.previousFilter : this.ids);
+        if (target) this.lab.uiManager.scrollToEventId(target);
         this.mark();
     }
 
