@@ -29,7 +29,8 @@ const COMMITTED = manifest('release-a', 'ea'), NEXT = manifest('release-b', 'eb'
 const A = sha256(COMMITTED), B = sha256(NEXT);
 const FILES = Object.fromEntries([
     ['manifest.json', COMMITTED], ['manifest-next.json', NEXT], [`manifests/${A}.json`, COMMITTED], [`manifests/${B}.json`, NEXT],
-    shard('events/ea.json', [event('evt_a', 'Release A event')]), shard('events/eb.json', [event('evt_b', 'Release B event')]),
+    shard('events/ea.json', [event('evt_a', 'Release A event')]),
+    shard('events/eb.json', [{ ...event('evt_b', 'Release B event'), figures: ['Nobody Such Person'] }]),
     ['places/p0.json', JSON.stringify({ format: 'historiline-places/v1', bucket: 0, places: [] })], ['corrections/c0.json', '[]'],
 ]);
 const admin = { uid: 'u1', email: 'admin@example.test' };
@@ -57,9 +58,22 @@ test('with no live release named, the site loads the committed one, without page
     expect(errors).toEqual([]);
 });
 
-test('the site loads the release Firestore names as live', async ({ page }) => {
+test('the site loads the release Firestore names as live, names it in the footer, and offers a search for a person with no article', async ({ page }) => {
     await open(page, '', { docs: { 'world_release/current': liveDoc(1, B, 'release-b') } });
     await shows(page, 'evt_b');
+    await expect(page.locator('#releaseInfo')).toHaveText(` · release release-b (${B.slice(0, 8)})`);
+    // the person's name is only a guess at an article title; Wikipedia has no such page
+    await page.route('https://en.wikipedia.org/w/api.php**', route => route.fulfill({ json: { error: { code: 'missingtitle' } } }));
+    await page.locator('.figure-mention', { hasText: 'Nobody Such Person' }).click();
+    const search = page.frameLocator('#info-frame').locator('a.wiki-search');
+    await expect(search).toHaveText('Search Wikipedia for “Nobody Such Person”');
+    await expect(search).toHaveAttribute('href', /[?&]search=Nobody%20Such%20Person&/);
+    await expect(page.frameLocator('#info-frame').locator('body')).not.toContainText('Content unavailable');
+    // offline is not a missing article: the usual error, no search
+    await page.unroute('https://en.wikipedia.org/w/api.php**');
+    await page.route('https://en.wikipedia.org/w/api.php**', route => route.abort());
+    await page.locator('.figure-mention', { hasText: 'Nobody Such Person' }).click();
+    await expect(page.frameLocator('#info-frame').locator('body')).toContainText('Content unavailable');
 });
 
 test('a named release the site can\'t load falls back to the committed one', async ({ page }) => {

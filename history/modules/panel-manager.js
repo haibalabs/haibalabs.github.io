@@ -121,7 +121,7 @@ export class PanelManager {
         this.mapPanel.classList.remove('top-panel');
     }
 
-    async handleInfoClick(url, wikiSpan) {
+    async handleInfoClick(url, wikiSpan, { searchName } = {}) {
         try {
             if (!this.infoPanel.classList.contains('open')) {
                 this.openInfoPanel();
@@ -135,9 +135,39 @@ export class PanelManager {
             this.showInfoPanel(content);
         } catch (error) {
             console.error('Error loading Wikipedia content:', error);
+            // a person's name that Wikipedia says is no article title: offer a labelled search, and keep the name
+            // clickable. Any other failure (offline, Wikipedia down) keeps the usual error.
+            if (searchName && error.missingArticle) return this.showInfoPanelSearch(searchName);
             this.showInfoPanelError();
             this.showWikiError(wikiSpan, url, error.message);
         }
+    }
+
+    // No article has this person's exact name. The panel says so and links a Wikipedia search for it, labelled as a
+    // search; no other article is picked in its place, since a namesake would be the wrong person.
+    showInfoPanelSearch(name) {
+        const escapeHtml = value => String(value).replace(/[&<>"']/g, char =>
+            ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+        const search = `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(name)}&title=Special%3ASearch&ns0=1`;
+        this.infoFrame.srcdoc = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;
+                        font-family: 'Roboto', Arial, sans-serif; color: #5b5b5b; text-align: center; padding: 0 24px; }
+                    p { font-size: 1.15rem; margin: 0 0 14px; }
+                    a { color: #2563eb; font-size: 1rem; }
+                </style>
+            </head>
+            <body>
+                <div>
+                    <p>No Wikipedia article is titled “${escapeHtml(name)}”.</p>
+                    <a class="wiki-search" href="${escapeHtml(search)}" target="_blank" rel="noopener">Search Wikipedia for “${escapeHtml(name)}”</a>
+                </div>
+            </body>
+            </html>
+        `;
     }
 
     showWikiError(wikiSpan, url, message) {
@@ -166,6 +196,9 @@ export class PanelManager {
         const data = await response.json();
 
         // Check for error or missing content
+        if (data.error?.code === 'missingtitle') {
+            throw Object.assign(new Error('Wikipedia article not found'), { missingArticle: true });
+        }
         if (data.error || !data.parse || !data.parse.text) {
             throw new Error('Wikipedia content not found');
         }

@@ -117,6 +117,9 @@ async function initializeApp() {
             const [live, published] = await Promise.all([liveRelease,
                 STAGING ? fetchStagedData() : liveRelease.then(fetchLiveData)]);
             releaseManifest = published.manifest;
+            // the footer names the release this page serves, so anyone can tell which one is live or staged
+            const releaseName = published.manifest.release_id ?? published.manifest.snapshot_id ?? 'unnamed';
+            document.getElementById('releaseInfo').textContent = ` · release ${releaseName} (${published.manifestSha256.slice(0, 8)})`;
             // images and places come with the release; the corrections apply as each event loads
             await locationVerifier.loadUnverifiedLocations(published.correctionsUrl);
             const world = publishedWorld(published);

@@ -250,7 +250,8 @@ export class UIManager {
                     const url = figureSpan.dataset.url
                         || `https://en.wikipedia.org/wiki/${encodeURIComponent(name.replace(/ /g, '_'))}`;
                     
-                    await this.panelManager.handleInfoClick(url, figureSpan);
+                    // a name is only a guess at an article title: when it has none, the panel offers a search instead
+                    await this.panelManager.handleInfoClick(url, figureSpan, figureSpan.dataset.url ? {} : { searchName: name });
                 } catch (error) {
                     console.error('Error handling figure click:', error);
                     figureSpan.classList.add('disabled');
