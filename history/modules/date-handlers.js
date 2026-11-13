@@ -266,7 +266,19 @@ function extractRangeOrDayRange(inputText) {
         rangeEnd: ''
       };
     }
-  
+
+    // 3b) Day-first range in one month ("15-20 august 636") => the earliest day of that month. Without this the
+    //     split below reads the left day alone as a year (year 15).
+    const dayFirstRange = inputText.match(/^(\d{1,2})\s*-\s*(\d{1,2})\s+(january|february|march|april|may|june|july|august|september|october|november|december),?\s+(\d{1,4})$/);
+    if (dayFirstRange) {
+      return {
+        isRange: false,
+        isBC: isBC,
+        rangeStart: `${dayFirstRange[1]} ${dayFirstRange[3]} ${dayFirstRange[4]}`,
+        rangeEnd: ''
+      };
+    }
+
     // 4) Try spaced range: "X to Y", "X - Y", "X – Y"
     let rangeSeparatorRegex = /\s+(?:to|[–—-])\s+/;
     let rangeSplit = inputText.split(rangeSeparatorRegex);

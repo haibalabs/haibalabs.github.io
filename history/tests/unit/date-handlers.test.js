@@ -103,6 +103,25 @@ describe('parseTimeToSortableValue — Ranges', () => {
   it('parses "April 1941 to June 1941"', () => assertSortValue("April 1941 to June 1941", 1941.3361));
 });
 
+// The Battles of Yarmuk and Qadisiyyah were placed in years 15 and 16: the left day of a day-first range in one
+// month was read as the year.
+describe('day-first ranges in one month — the earliest day, in the written year', () => {
+  for (const [time, year, month, day, label] of [
+    ['15–20 August 636', 636, 8, 15, 'August 15th, 636 AD'],
+    ['16–19 November 636', 636, 11, 16, 'November 16th, 636 AD'],
+    ['2–4 March 44 BC', -44, 3, 2, 'March 2nd, 44 BC'],
+  ]) {
+    it(`"${time}" is ${label}, where the card shows it and where the timeline places it`, () => {
+      const parsed = parseTimeToSortableValue(time);
+      assert.deepEqual([parsed.year, parsed.month, parsed.day], [year, month, day]);
+      const event = { enhanced_time: time };
+      assert.equal(eventDateLabel(event), label);
+      assert.equal(eventYear(event), year);
+      assert.equal(extractYear(eventSortableValue(event)), year);
+    });
+  }
+});
+
 describe('parseTimeToSortableValue — Special Formats', () => {
   it.todo('parses "September, 2004"'); // expected: 2004.752732 — "Month, Year" with comma not yet supported
   it.todo('parses "1970-05"'); // expected: 1970.419399 — YYYY-MM format not yet supported (ignores month)
