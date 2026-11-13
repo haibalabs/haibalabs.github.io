@@ -427,6 +427,8 @@ const EDITOR_STATUS = {
     approved: 'accepted', published: 'accepted',
     merged: 'published',
     withdrawn: 'withdrawn',
+    // quick flags
+    open: 'waiting', fixed: 'accepted', dismissed: 'rejected',
 };
 export const EDITOR_STATUS_LABELS = {
     waiting: 'Waiting for review', rejected: 'Rejected', accepted: 'Accepted', published: 'Published', withdrawn: 'Withdrawn',
@@ -673,5 +675,72 @@ export function toEditDoc({ editId, kind = 'update', event, changes, reason, sou
         content_sha256: contentSha,
         status: 'submitted',
         checks: { browser: browserChecks },
+    };
+}
+
+// --- quick flags (WORLD-EDITS.md, Quick flags) ---
+
+// The parts of an event an editor can flag as wrong, in the order the menu shows them.
+export const FLAG_PARTS = ['image', 'location', 'entities', 'article', 'date', 'description'];
+export const FLAG_PART_LABELS = {
+    image: 'Image', location: 'Location', entities: 'Entities', article: 'Article', date: 'Date', description: 'Description',
+};
+// The team member who looks after each part; the review page shows it and the export carries it.
+export const FLAG_OWNERS = {
+    image: 'Iris', location: 'Hermes', entities: 'Atlas', article: 'Atlas', date: 'Atlas', description: 'Atlas',
+};
+export const FLAG_NOTE_MAX = 280;
+export const FLAG_STATUS_LABELS = { open: 'Sent to the team', fixed: 'Fixed', dismissed: 'Dismissed', withdrawn: 'Taken back' };
+export const isFlag = (edit) => edit?.kind === 'flag';
+
+/**
+ * What the editor was looking at for each flagged part, so the team knows which image, place or link
+ * was meant even after the event changes.
+ *
+ * @param {object} event - the world event as shown
+ * @param {string[]} parts - some of FLAG_PARTS
+ */
+export function flagSeen(event, parts) {
+    const seen = {};
+    for (const part of parts) {
+        if (part === 'image') seen.image = eventImage(event)?.image_url ?? null;
+        if (part === 'location') {
+            seen.location = (event.locations ?? []).slice(0, LOCATION_SLOTS).map(l => locationText(normalizeLocation(l))).filter(Boolean);
+        }
+        if (part === 'entities') seen.entities = normalizeFigures(event.figures).map(person => person.name);
+        if (part === 'article') seen.article = normalizeField('wikipedia_url', event.wikipedia_url);
+        if (part === 'date') seen.date = normalizeField('enhanced_time', event.enhanced_time);
+        if (part === 'description') seen.description = (normalizeField('enhanced_description', event.enhanced_description) ?? '').slice(0, DESCRIPTION_MAX) || null;
+    }
+    return seen;
+}
+
+/** The Firestore document of a quick flag: an edit of kind "flag" that changes no field. */
+export function toFlagDoc({ editId, event, parts, note = '', author, datasetSha256 }) {
+    const chosen = FLAG_PARTS.filter(part => parts.includes(part));
+    return {
+        edit_id: editId,
+        kind: 'flag',
+        event_id: event.event_id,
+        event_name: event.name,
+        dataset: { id: 'world-history', sha256: datasetSha256 ?? null, locations_release_sha256: null },
+        flag: { parts: chosen, seen: flagSeen(event, chosen), note: String(note).trim().slice(0, FLAG_NOTE_MAX) },
+        author,
+        revision: 1,
+        status: 'open',
+    };
+}
+
+/** Open flags as a file for the team: each with what was flagged, what the editor saw and who owns it. */
+export function flagExport(flags, exportedAt) {
+    return {
+        format: 'historiline-flags/v1',
+        exported_at: exportedAt,
+        flags: flags.filter(flag => isFlag(flag) && flag.status === 'open').map(flag => ({
+            edit_id: flag.edit_id, event_id: flag.event_id, event_name: flag.event_name,
+            dataset_sha256: flag.dataset?.sha256 ?? null, parts: flag.flag.parts, seen: flag.flag.seen, note: flag.flag.note,
+            owners: [...new Set(flag.flag.parts.map(part => FLAG_OWNERS[part]))],
+            created_at: flag.created_at?.toDate?.().toISOString?.() ?? null,
+        })),
     };
 }

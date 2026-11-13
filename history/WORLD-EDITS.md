@@ -317,6 +317,34 @@ Mockups: https://claude.ai/artifact/DWUjqw24JJpPnpT7Gn7yau, the "Phase 1" boards
 - **My edits** in the profile drawer (the settings panel where people sign in), and only there: events don't link to it (Rachid, 2026-10-28). Each edit shows its status, the checker's or admin's reason, and **Revise** or **Withdraw** while that's possible.
 - The author sees a small "Edit pending" mark on events they have pending edits for. Nobody else does.
 
+## Quick flags
+
+Decided by Rachid on 2026-11-13 from a mockup. With Editing on, a flag beside the pencil opens a small menu: **What's wrong?**
+- The editor picks one or more parts: Image, Location, Entities, Article, Date or Description.
+- They can add a note of up to 280 characters, then Send.
+
+A flag is quick feedback, not a correction. It changes no field, and nothing about how problems are handled changes. The Suggest an edit form stays for corrections.
+
+**What is saved.** A flag is an edit of kind `flag` in `edits/{editId}`:
+- `flag.parts`: the parts flagged.
+- `flag.seen`: what each part showed when it was flagged (the image URL, the places, the entities' names, the article link, the date or the description), so the team knows what was meant even after the event changes.
+- `flag.note`: the optional note.
+- The author, the dataset hash and the server time, as for every edit.
+
+The same accounts and the same 50-a-day limit apply as for edits. Flags are never shown to visitors, and identities appear only on the review page.
+
+**Statuses.**
+- A flag is `open` until an admin marks it `fixed` or `dismissed`. That decision is signed with the admin's account and the server time.
+- The author can take an open flag back (`withdrawn`): Undo on the card, or Take back in My edits.
+- The card shows the author's open flag ("Article flagged · Undo"), and My edits lists flags with their status.
+
+**Who receives them.** Each part has an owner (`FLAG_OWNERS` in `world-edits.js`):
+- the image goes to Iris;
+- the location to Hermes;
+- entities, article, date and description to Atlas.
+
+The review page's **Flags** tab lists flags with what was shown, the note, the author and the owner, and offers Mark fixed and Dismiss. **Export open flags** saves them as a `historiline-flags/v1` file the team picks up. The agents can't read Firestore until the checker service account exists (phase 3); then they can read open flags directly.
+
 ## Publishing to visitors
 
 Approved values go into a single public document, `world_overlay/current`:

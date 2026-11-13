@@ -107,6 +107,28 @@ service cloud.firestore {
         && data.checks is map && data.checks.keys().hasOnly(['browser']);
     }
 
+    // A quick flag (../WORLD-EDITS.md, Quick flags): an edit of kind "flag" naming the parts of an event
+    // its author found wrong, what they saw of each, and an optional note. It changes no field.
+    function flagPartNames() {
+      return ['image', 'location', 'entities', 'article', 'date', 'description'];
+    }
+
+    function validFlagContent(data) {
+      return data.keys().hasOnly(['edit_id', 'kind', 'event_id', 'event_name', 'dataset', 'flag', 'author',
+          'created_at', 'revised_at', 'revision', 'status', 'review'])
+        && data.kind == 'flag'
+        && data.event_id is string
+        && data.event_id.matches('evt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        && data.event_name is string && data.event_name.size() <= 300
+        && data.dataset is map
+        && data.flag is map && data.flag.keys().hasOnly(['parts', 'seen', 'note'])
+        && data.flag.parts is list && data.flag.parts.size() > 0 && data.flag.parts.size() <= 6
+        && data.flag.parts.hasOnly(flagPartNames())
+        && data.flag.seen is map && data.flag.seen.keys().hasOnly(flagPartNames())
+        && data.flag.note is string && data.flag.note.size() <= 280
+        && data.revision == 1;
+    }
+
     match /edits/{editId} {
       allow read: if signedIn() && (resource.data.author.uid == request.auth.uid || isAdmin());
       allow create: if isEditor()
@@ -121,6 +143,39 @@ service cloud.firestore {
         && request.resource.data.author.email == request.auth.token.email
         && request.resource.data.created_at == request.time
         && request.resource.data.revised_at == request.time;
+      // A quick flag, sent open, under the same accounts as edits.
+      allow create: if isEditor()
+        && editId.matches('edt_[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
+        && request.resource.data.edit_id == editId
+        && validFlagContent(request.resource.data)
+        && !('review' in request.resource.data)
+        && request.resource.data.status == 'open'
+        && request.resource.data.author.keys().hasOnly(['uid', 'email'])
+        && request.resource.data.author.uid == request.auth.uid
+        && request.resource.data.author.email == request.auth.token.email
+        && request.resource.data.created_at == request.time
+        && request.resource.data.revised_at == request.time;
+      // The author takes back an open flag (Undo).
+      allow update: if isEditor()
+        && resource.data.kind == 'flag'
+        && resource.data.author.uid == request.auth.uid
+        && resource.data.status == 'open'
+        && request.resource.data.status == 'withdrawn'
+        && request.resource.data.revised_at == request.time
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'revised_at']);
+      // An admin closes an open flag as fixed or dismissed, signed with their own account and the server time.
+      allow update: if isAdmin()
+        && resource.data.kind == 'flag'
+        && resource.data.status == 'open'
+        && request.resource.data.status in ['fixed', 'dismissed']
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'review'])
+        && request.resource.data.review.keys().hasOnly(['by', 'decision', 'note', 'at'])
+        && request.resource.data.review.by.keys().hasOnly(['uid', 'email', 'role'])
+        && request.resource.data.review.by.uid == request.auth.uid
+        && request.resource.data.review.by.email == request.auth.token.email
+        && request.resource.data.review.decision == request.resource.data.status
+        && request.resource.data.review.note is string && request.resource.data.review.note.size() <= 1000
+        && request.resource.data.review.at == request.time;
       // The author revises (a new revision, back to submitted) or withdraws an edit that is still
       // waiting for review or rejected.
       allow update: if isEditor()

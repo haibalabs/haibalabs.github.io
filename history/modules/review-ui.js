@@ -15,8 +15,9 @@ import { miniMap, pointNote } from './location-picker.js';
 import { ReviewStore } from './review-store.js';
 import { permissionsFor } from './roles.js';
 import {
-    conflictingFields, contentSha256, fieldLabel, imageNeedsConfirmation, locationIndex, locationText, newEditId,
-    normalizeFigures, OVERLAY_MAX_BYTES, overlayBytes, publishedValue, REVIEWABLE_STATUSES, revertChanges, sameValue, wordDiff,
+    conflictingFields, contentSha256, fieldLabel, FLAG_OWNERS, FLAG_PART_LABELS, FLAG_STATUS_LABELS, flagExport,
+    imageNeedsConfirmation, isFlag, locationIndex, locationText, newEditId, normalizeFigures, OVERLAY_MAX_BYTES, overlayBytes,
+    publishedValue, REVIEWABLE_STATUSES, revertChanges, sameValue, wordDiff,
 } from './world-edits.js';
 
 const millis = (timestamp) => timestamp?.toMillis?.() ?? 0;
@@ -107,21 +108,26 @@ class ReviewPage {
     }
 
     queues() {
-        const open = this.edits.filter(edit => REVIEWABLE_STATUSES.includes(edit.status));
+        const edits = this.edits.filter(edit => !isFlag(edit));
+        const open = edits.filter(edit => REVIEWABLE_STATUSES.includes(edit.status));
         const conflicts = open.filter(edit => conflictingFields(edit, this.overlay).length);
-        return { waiting: open.filter(edit => !conflicts.includes(edit)), conflicts, history: this.edits };
+        const flags = this.edits.filter(edit => isFlag(edit) && edit.status !== 'withdrawn');
+        return { waiting: open.filter(edit => !conflicts.includes(edit)), conflicts, flags, history: edits };
     }
 
     render() {
         const queues = this.queues();
-        const counts = { waiting: queues.waiting.length, conflicts: queues.conflicts.length };
+        const counts = { waiting: queues.waiting.length, conflicts: queues.conflicts.length,
+            flags: queues.flags.filter(flag => flag.status === 'open').length };
+        const labels = { waiting: 'Waiting', conflicts: 'Conflicts', flags: 'Flags', history: 'History' };
         for (const button of document.querySelectorAll('.review-tabs button')) {
             const tab = button.dataset.tab;
             button.setAttribute('aria-selected', String(tab === this.tab));
-            button.textContent = `${button.id === 'tab-history' ? 'History' : tab === 'waiting' ? 'Waiting' : 'Conflicts'}${tab in counts ? ` · ${counts[tab]}` : ''}`;
+            button.textContent = `${labels[tab]}${tab in counts ? ` · ${counts[tab]}` : ''}`;
         }
         const share = (overlayBytes(this.overlay ?? {}) / OVERLAY_MAX_BYTES) * 100;
         document.getElementById('review-usage').textContent = `Published changes: ${share > 0 && share < 1 ? 'under 1' : Math.round(share)}% of the limit`;
+        if (this.tab === 'flags') return this.renderFlags(queues.flags);
         const groups = this.byEvent(queues[this.tab]);
         const render = this.tab === 'history' ? (edits) => this.renderHistory(edits) : (edits) => this.renderOpen(edits);
         this.list.replaceChildren(...[...groups.values()].map(render));
@@ -156,6 +162,84 @@ class ReviewPage {
 
     author(edit) {
         return edit.author?.uid === this.user?.uid ? 'you' : edit.author?.email ?? 'unknown';
+    }
+
+    // --- quick flags (WORLD-EDITS.md, Quick flags) ---
+
+    // Open flags first, newest first; then the closed ones. Each says what was flagged, what the editor saw
+    // and who owns it. Export saves the open ones as a file for the team.
+    renderFlags(flags) {
+        const open = flags.filter(flag => flag.status === 'open').sort((a, b) => millis(b.created_at) - millis(a.created_at));
+        const closed = flags.filter(flag => flag.status !== 'open').sort((a, b) => millis(b.review?.at) - millis(a.review?.at));
+        const bar = element('div', 'review-actions review-flags-bar');
+        bar.append(element('p', 'review-flags-note', 'Each flag goes to the team member who owns that part. Export saves the open ones as a file for them.'));
+        const exportButton = element('button', '', 'Export open flags');
+        exportButton.type = 'button';
+        exportButton.disabled = !open.length;
+        exportButton.addEventListener('click', () => this.exportFlags(open));
+        bar.append(exportButton);
+        this.list.replaceChildren(bar, ...[...open, ...closed].map(flag => this.renderFlag(flag)));
+        if (!flags.length) this.list.append(element('p', 'review-empty', 'No flags yet.'));
+    }
+
+    renderFlag(flag) {
+        const article = element('article', `review-event review-flag ${flag.status}`);
+        article.setAttribute('aria-label', `Flag on ${flag.event_name}`);
+        const head = element('div', 'review-event-head');
+        head.append(element('h2', '', flag.event_name));
+        for (const part of flag.flag.parts) head.append(element('span', 'review-chip flag', FLAG_PART_LABELS[part] ?? part));
+        head.append(element('span', `review-count flag-status ${flag.status}`, FLAG_STATUS_LABELS[flag.status] ?? flag.status));
+        article.append(head);
+        const body = element('div', 'review-edit');
+        const seen = element('dl', 'review-flag-seen');
+        for (const part of flag.flag.parts) {
+            const value = flag.flag.seen?.[part];
+            seen.append(element('dt', '', `${FLAG_PART_LABELS[part] ?? part} shown`),
+                element('dd', '', Array.isArray(value) ? value.join('; ') || '(none)' : value ?? '(none)'));
+        }
+        body.append(seen);
+        if (flag.flag.note) body.append(element('p', 'review-note', flag.flag.note));
+        const owners = [...new Set(flag.flag.parts.map(part => FLAG_OWNERS[part]))].join(', ');
+        body.append(element('p', 'review-meta', `From ${this.author(flag)} · ${age(flag.created_at)} · goes to ${owners}`));
+        article.append(body);
+        if (flag.status === 'open') {
+            const actions = element('div', 'review-actions');
+            for (const [label, decision, primary] of [['Mark fixed', 'fixed', true], ['Dismiss', 'dismissed', false]]) {
+                const button = element('button', primary ? 'primary' : '', label);
+                button.type = 'button';
+                button.addEventListener('click', () => this.resolveFlag(flag, decision, button));
+                actions.append(button);
+            }
+            body.append(actions);
+        } else if (flag.review) {
+            body.append(element('p', 'review-meta', `${FLAG_STATUS_LABELS[flag.status]} by ${flag.review.by?.uid === this.user?.uid ? 'you' : flag.review.by?.email ?? 'an admin'} · ${age(flag.review.at)}`));
+        }
+        return article;
+    }
+
+    async resolveFlag(flag, decision, button) {
+        button.disabled = true;
+        try {
+            await this.store.resolveFlag(flag, decision);
+        } catch (error) {
+            console.error('Could not update the flag:', error);
+            this.showStatus('Could not update the flag. Reload to try again.');
+            button.disabled = false;
+            return;
+        }
+        await this.load();
+    }
+
+    exportFlags(open) {
+        const exportedAt = new Date().toISOString();
+        const blob = new Blob([`${JSON.stringify(flagExport(open, exportedAt), null, 2)}\n`], { type: 'application/json' });
+        const link = Object.assign(document.createElement('a'), {
+            href: URL.createObjectURL(blob), download: `historiline-flags-${exportedAt.slice(0, 10)}.json`,
+        });
+        document.body.append(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 0);
     }
 
     // --- open edits ---

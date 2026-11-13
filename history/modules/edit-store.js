@@ -3,7 +3,7 @@
 // enforced by the edits rules in firebase/firestore.rules: authors write and read their own.
 import { collection, doc, getDocs, query, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
 import { setDoc, updateDoc } from './firebase-writes.js';
-import { toEditDoc } from './world-edits.js';
+import { newEditId, toEditDoc, toFlagDoc } from './world-edits.js';
 
 export class EditStore {
     constructor(db, auth) {
@@ -26,6 +26,13 @@ export class EditStore {
         const data = toEditDoc({ ...input, author: this.author() });
         await setDoc(this.ref(data.edit_id), { ...data, created_at: serverTimestamp(), revised_at: serverTimestamp() });
         return data.edit_id;
+    }
+
+    // A quick flag (WORLD-EDITS.md, Quick flags). input: { event, parts, note, datasetSha256 }
+    async submitFlag(input) {
+        const data = toFlagDoc({ ...input, editId: newEditId(), author: this.author() });
+        await setDoc(this.ref(data.edit_id), { ...data, created_at: serverTimestamp(), revised_at: serverTimestamp() });
+        return data;
     }
 
     /**

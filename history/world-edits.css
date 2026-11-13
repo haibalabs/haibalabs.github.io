@@ -21,15 +21,45 @@
 .editing-toggle input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 #suggest-event[hidden] { display: none; }
 
-/* the pencil and the author's pending mark, in the event's date row; the pencil matches .wiki-link */
-.edit-pencil {
+/* the pencil, the flag and the author's pending mark, in the event's date row; both buttons match .wiki-link */
+.edit-pencil, .edit-flag {
     display: inline-flex; align-items: center; border: 0; background: none; font: inherit;
     color: var(--ink-3); border-radius: 6px; padding: 2px 6px; margin: -2px -6px; cursor: pointer;
     transition: background .12s, color .12s;
 }
-.edit-pencil i { font-size: .85em; opacity: .8; }
-.edit-pencil:hover { color: var(--ink); background: var(--surface-2); }
-.edit-pencil:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.edit-pencil i, .edit-flag i { font-size: .85em; opacity: .8; }
+.edit-pencil:hover, .edit-flag:hover, .edit-flag[aria-expanded="true"] { color: var(--ink); background: var(--surface-2); }
+.edit-pencil:focus-visible, .edit-flag:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+/* the quick flag's menu (WORLD-EDITS.md, Quick flags): which parts are wrong, an optional note, Send */
+.edit-flag-wrap { position: relative; display: inline-flex; }
+.flag-menu {
+    position: absolute; top: calc(100% + 6px); left: -8px; z-index: 30; width: min(320px, calc(100vw - 32px));
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px;
+    box-shadow: 0 10px 30px rgb(28 25 23 / .14), 0 1px 3px rgb(28 25 23 / .08);
+    font-size: .8125rem; color: var(--ink); cursor: default;
+}
+.flag-menu-title { margin: 0 0 8px; font-weight: 600; }
+.flag-parts { display: flex; flex-wrap: wrap; gap: 6px; }
+.flag-part {
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px;
+    padding: 3px 10px; font: inherit; font-weight: 500; cursor: pointer;
+}
+.flag-part:hover { background: var(--surface-2); }
+.flag-part[aria-pressed="true"] { border-color: #c2410c; color: #c2410c; background: rgb(194 65 12 / .08); }
+.flag-note {
+    width: 100%; margin-top: 10px; border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px;
+    font: inherit; background: var(--surface); color: var(--ink); resize: none; box-sizing: border-box;
+}
+.flag-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+.flag-hint { color: var(--ink-3); font-size: .75rem; }
+.flag-send { padding: 4px 14px; }
+.flag-send:disabled { opacity: .4; cursor: default; }
+.edit-flagged {
+    font-size: .6875rem; font-weight: 600; border-radius: 999px; padding: 0 .5rem;
+    color: #9a3412; background: #fff7ed; border: 1px solid #fed7aa;
+}
+.edit-flagged .link-btn { font-size: inherit; padding: 0; }
 .edit-pending {
     font-size: .6875rem; font-weight: 600; border-radius: 999px; padding: 0 .5rem;
     color: #93370d; background: #fffaeb; border: 1px solid #fedf89;
@@ -132,7 +162,7 @@ button.my-edit-title:focus-visible { outline: 2px solid var(--accent); outline-o
 /* the staging site (?data=next): read-only, so no editing controls, and a banner naming the previewed and
    live releases, with "Make this live" for an admin (release-ui.js); the page also refuses every other
    write (firebase-writes.js) */
-html.staging .editing-toggle, html.staging #suggest-event, html.staging .edit-pencil, html.staging #review-link { display: none !important; }
+html.staging .editing-toggle, html.staging #suggest-event, html.staging .edit-pencil, html.staging .edit-flag-wrap, html.staging #review-link { display: none !important; }
 /* it floats above the page's fixed header, map and footer, so nothing covers it */
 #staging-banner {
     position: fixed; z-index: 1000; left: 50%; transform: translateX(-50%);

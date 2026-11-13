@@ -11,8 +11,8 @@ import { LocationPicker } from './location-picker.js';
 import { permissionsFor } from './roles.js';
 import {
     changesFor, contentSha256, DAILY_LIMIT, EDIT_FIELDS, editorStatus, EDITOR_STATUS_LABELS, editProblem,
-    eventFieldValue, fieldLabel, isOpen, LOCATION_SLOTS, locationField, newEditId, newEventChanges, normalizeField,
-    normalizeFigures, normalizeWikipediaUrl, sameValue, UPLOAD_LICENSE, UPLOAD_RIGHTS,
+    eventFieldValue, fieldLabel, FLAG_NOTE_MAX, FLAG_PART_LABELS, FLAG_PARTS, FLAG_STATUS_LABELS, isFlag, isOpen, LOCATION_SLOTS, locationField,
+    newEditId, newEventChanges, normalizeField, normalizeFigures, normalizeWikipediaUrl, sameValue, UPLOAD_LICENSE, UPLOAD_RIGHTS,
 } from './world-edits.js';
 import { articleInfo, searchArticles } from './wikipedia-lookup.js';
 
@@ -186,7 +186,12 @@ export class EditUI {
 
     // The author's open edit of a world event, if any, for its pending mark.
     openEditFor(eventId) {
-        return this.edits.find(edit => edit.event_id === eventId && isOpen(edit));
+        return this.edits.find(edit => edit.event_id === eventId && !isFlag(edit) && isOpen(edit));
+    }
+
+    // The author's open quick flag on a world event, if any, for its mark.
+    openFlagFor(eventId) {
+        return this.edits.find(edit => edit.event_id === eventId && isFlag(edit) && edit.status === 'open');
     }
 
     // Called by UIManager for every world event it renders.
@@ -204,7 +209,7 @@ export class EditUI {
             e.stopPropagation();
             this.open(event);
         });
-        row.append(pencil);
+        row.append(pencil, this.flagButton(event));
         const open = this.openEditFor(event.event_id);
         if (open) {
             const mark = document.createElement('span');
@@ -212,6 +217,148 @@ export class EditUI {
             mark.textContent = editorStatus(open) === 'rejected' ? 'Your edit was rejected' : 'Your edit is pending review';
             row.append(mark);
         }
+        const flag = this.openFlagFor(event.event_id);
+        if (flag) {
+            const mark = document.createElement('span');
+            mark.className = 'edit-flagged';
+            mark.textContent = `${flag.flag.parts.map(part => FLAG_PART_LABELS[part]).join(', ')} flagged`;
+            const undo = document.createElement('button');
+            undo.type = 'button';
+            undo.className = 'link-btn';
+            undo.textContent = 'Undo';
+            undo.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.undoFlag(flag);
+            });
+            mark.append(' · ', undo);
+            row.append(mark);
+        }
+    }
+
+    // --- quick flags (WORLD-EDITS.md, Quick flags) ---
+
+    // The flag beside the pencil: a small menu to say which parts of the event are wrong, with an optional note.
+    flagButton(event) {
+        const wrap = document.createElement('span');
+        wrap.className = 'edit-flag-wrap';
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'edit-flag';
+        button.title = 'Something is wrong';
+        button.setAttribute('aria-label', 'Something is wrong');
+        button.setAttribute('aria-haspopup', 'dialog');
+        button.setAttribute('aria-expanded', 'false');
+        button.innerHTML = '<i class="fa-light fa-flag" aria-hidden="true"></i>';
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const wasOpen = this.flagMenu?.wrap === wrap;
+            this.closeFlagMenu();
+            if (!wasOpen) this.openFlagMenu(wrap, button, event);
+        });
+        wrap.append(button);
+        return wrap;
+    }
+
+    openFlagMenu(wrap, button, event) {
+        const menu = document.createElement('div');
+        menu.className = 'flag-menu';
+        menu.setAttribute('role', 'dialog');
+        menu.setAttribute('aria-label', `What's wrong with “${event.name}”?`);
+        menu.addEventListener('click', (e) => e.stopPropagation());
+        const heading = document.createElement('p');
+        heading.className = 'flag-menu-title';
+        heading.textContent = "What's wrong?";
+        const parts = document.createElement('div');
+        parts.className = 'flag-parts';
+        const note = document.createElement('textarea');
+        note.className = 'flag-note';
+        note.rows = 2;
+        note.maxLength = FLAG_NOTE_MAX;
+        note.placeholder = 'Optional: what is wrong, or a better link';
+        note.setAttribute('aria-label', 'Note for the team (optional)');
+        const hint = document.createElement('span');
+        hint.className = 'flag-hint';
+        const send = document.createElement('button');
+        send.type = 'button';
+        send.className = 'btn btn-primary flag-send';
+        send.textContent = 'Send';
+        const chosen = () => [...parts.querySelectorAll('[aria-pressed="true"]')].map(chip => chip.dataset.part);
+        const update = () => {
+            send.disabled = !chosen().length;
+            hint.textContent = chosen().length ? 'Goes to the team and the review page' : 'Pick what is wrong';
+        };
+        for (const part of FLAG_PARTS) {
+            const chip = document.createElement('button');
+            chip.type = 'button';
+            chip.className = 'flag-part';
+            chip.dataset.part = part;
+            chip.textContent = FLAG_PART_LABELS[part];
+            chip.setAttribute('aria-pressed', 'false');
+            chip.addEventListener('click', () => {
+                chip.setAttribute('aria-pressed', String(chip.getAttribute('aria-pressed') !== 'true'));
+                update();
+            });
+            parts.append(chip);
+        }
+        send.addEventListener('click', () => this.sendFlag(event, chosen(), note.value, { send, hint }));
+        const foot = document.createElement('div');
+        foot.className = 'flag-foot';
+        foot.append(hint, send);
+        menu.append(heading, parts, note, foot);
+        menu.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            this.closeFlagMenu();
+            button.focus();
+        });
+        wrap.append(menu);
+        button.setAttribute('aria-expanded', 'true');
+        update();
+        // a click anywhere else closes it
+        const outside = () => this.closeFlagMenu();
+        this.flagMenu = { wrap, button, menu, outside };
+        setTimeout(() => {
+            if (this.flagMenu?.outside === outside) document.addEventListener('click', outside, { once: true });
+        });
+        parts.querySelector('button').focus();
+    }
+
+    closeFlagMenu() {
+        if (!this.flagMenu) return;
+        document.removeEventListener('click', this.flagMenu.outside);
+        this.flagMenu.menu.remove();
+        this.flagMenu.button.setAttribute('aria-expanded', 'false');
+        this.flagMenu = null;
+    }
+
+    async sendFlag(event, parts, note, { send, hint }) {
+        if (!parts.length) return;
+        if (this.edits.filter(edit => isToday(edit.created_at)).length >= DAILY_LIMIT) {
+            hint.textContent = `You've sent ${DAILY_LIMIT} edits today. You can send more tomorrow.`;
+            return;
+        }
+        send.disabled = true;
+        try {
+            await this.store.submitFlag({ event, parts, note, datasetSha256: await this.eventManager.loadedSha256 ?? null });
+        } catch (error) {
+            console.error('Could not send the flag:', error);
+            hint.textContent = 'Could not send. Try again.';
+            send.disabled = false;
+            return;
+        }
+        this.closeFlagMenu();
+        this.uiManager.showToast?.('Sent to the team.');
+        await this.refresh();
+    }
+
+    async undoFlag(flag) {
+        try {
+            await this.store.withdraw(flag);
+        } catch (error) {
+            console.error('Could not take back the flag:', error);
+            this.uiManager.showToast?.('Could not take back the flag. Try again.');
+            return;
+        }
+        await this.refresh();
     }
 
     // --- My edits ---
@@ -241,7 +388,7 @@ export class EditUI {
         head.className = 'my-edit-head';
         const badge = document.createElement('span');
         badge.className = `status-badge ${status}`;
-        badge.textContent = EDITOR_STATUS_LABELS[status];
+        badge.textContent = isFlag(edit) ? FLAG_STATUS_LABELS[edit.status] ?? edit.status : EDITOR_STATUS_LABELS[status];
         head.append(badge);
         // the name opens the event's card once the event is in the timeline (a new one, once approved)
         const event = this.worldEvent(edit.event_id);
@@ -255,19 +402,33 @@ export class EditUI {
         }
         const fields = document.createElement('span');
         fields.className = 'my-edit-fields';
-        fields.textContent = edit.kind === 'create'
+        fields.textContent = isFlag(edit)
+            ? `Flagged: ${edit.flag.parts.map(part => FLAG_PART_LABELS[part]).join(', ')}`
+            : edit.kind === 'create'
             ? 'New event'
             : [...new Set(Object.keys(edit.changes ?? {}).map(f => (f.startsWith('location[') ? 'Location' : fieldLabel(f))))].join(', ');
         item.append(head, title, fields);
 
-        const reason = status === 'rejected' ? (edit.review?.note || this.firstFailure(edit)) : '';
+        const reason = isFlag(edit) ? edit.review?.note ?? '' : status === 'rejected' ? (edit.review?.note || this.firstFailure(edit)) : '';
         if (reason) {
             const p = document.createElement('p');
             p.className = 'my-edit-reason';
             p.textContent = reason;
             item.append(p);
         }
-        if (isOpen(edit)) {
+        if (isFlag(edit)) {
+            if (edit.status === 'open') {
+                const actions = document.createElement('div');
+                actions.className = 'my-edit-actions';
+                const undo = document.createElement('button');
+                undo.type = 'button';
+                undo.className = 'btn btn-secondary';
+                undo.textContent = 'Take back';
+                undo.addEventListener('click', () => this.undoFlag(edit));
+                actions.append(undo);
+                item.append(actions);
+            }
+        } else if (isOpen(edit)) {
             const actions = document.createElement('div');
             actions.className = 'my-edit-actions';
             for (const [label, handler, primary] of [['Withdraw', () => this.withdraw(edit), false], ['Revise', () => this.revise(edit), status === 'rejected']]) {

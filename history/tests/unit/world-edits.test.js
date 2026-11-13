@@ -1,8 +1,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-    canonicalJson, changesFor, contentSha256, editorStatus, editProblem, isOpen, newEditId, newEventChanges,
-    normalizeFigures, normalizeField, normalizeWikipediaUrl, toEditDoc,
+    canonicalJson, changesFor, contentSha256, editorStatus, editProblem, flagExport, isOpen, newEditId, newEventChanges,
+    normalizeFigures, normalizeField, normalizeWikipediaUrl, toEditDoc, toFlagDoc,
 } from '../../modules/world-edits.js';
 
 const EVENT = {
@@ -177,5 +177,41 @@ describe('toEditDoc — the stored edit', () => {
         assert.equal(doc.kind, 'create');
         assert.equal(doc.event_id, 'evt_0a1b2c3d-0000-4000-8000-0000000000cc');
         assert.equal(doc.event_name, 'Founding of Example Town');
+    });
+});
+
+describe('quick flags — what was flagged and what the editor saw', () => {
+    const author = { uid: 'u1', email: 'editor@example.test' };
+    const event = { ...EVENT, image_url: 'https://upload.wikimedia.org/a.jpg', locations: [{ name: 'Yankee Stadium', city: 'New York', country: 'United States' }] };
+
+    it('keeps the chosen parts in menu order with what each showed, and changes no field', () => {
+        const doc = toFlagDoc({ editId: 'edt_x', event, parts: ['article', 'image', 'location', 'entities'], note: '  wrong fight  ', author, datasetSha256: 'a'.repeat(64) });
+        assert.equal(doc.kind, 'flag');
+        assert.equal(doc.status, 'open');
+        assert.equal('changes' in doc, false);
+        assert.deepEqual(doc.flag.parts, ['image', 'location', 'entities', 'article']);
+        assert.deepEqual(doc.flag.seen, {
+            image: 'https://upload.wikimedia.org/a.jpg',
+            location: ['Yankee Stadium, New York, United States'],
+            entities: ['Max Schmeling', 'Joe Louis'],
+            article: 'https://en.wikipedia.org/wiki/Joe_Louis_vs._Max_Schmeling',
+        });
+        assert.equal(doc.flag.note, 'wrong fight');
+        assert.equal(editorStatus(doc), 'waiting');
+    });
+
+    it('records a missing value as null and caps the note', () => {
+        const doc = toFlagDoc({ editId: 'edt_x', event: { ...EVENT, wikipedia_url: undefined }, parts: ['article', 'date'], note: 'x'.repeat(400), author });
+        assert.deepEqual(doc.flag.seen, { article: null, date: '1936-06-19' });
+        assert.equal(doc.flag.note.length, 280);
+    });
+
+    it('exports only open flags, with the owners of their parts', () => {
+        const open = { ...toFlagDoc({ editId: 'edt_a', event, parts: ['image', 'date'], author }), created_at: null };
+        const fixed = { ...toFlagDoc({ editId: 'edt_b', event, parts: ['article'], author }), status: 'fixed' };
+        const edit = toEditDoc({ editId: 'edt_c', event, changes: {}, reason: '', sources: [], sourceConflict: false, author, contentSha: 'b'.repeat(64), browserChecks: [] });
+        const file = flagExport([open, fixed, edit], '2026-11-13T12:00:00.000Z');
+        assert.equal(file.format, 'historiline-flags/v1');
+        assert.deepEqual(file.flags.map(f => [f.edit_id, f.parts, f.owners]), [['edt_a', ['image', 'date'], ['Iris', 'Atlas']]]);
     });
 });
