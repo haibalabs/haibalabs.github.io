@@ -106,7 +106,7 @@ export class LandmarkLayer {
             window.open(link.url, '_blank', 'noopener');
             return;
         }
-        if (this.browser.fullWindow.full) this.browser.fullWindow.set(false);
+        // in full window the article opens over the map (map-browser.css), which stays full
         this.browser.panels.handleInfoClick(link.url, anchor);
     }
     // Its bubble, in the bubbles' list: titled with its name, opened above the icon so the icon stays in view.

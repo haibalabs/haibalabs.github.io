@@ -1,4 +1,4 @@
-/* Map search (lab, ?lab=search): a field at the map's top right, its results under it. The area filter's
+/* Map search (map-search.js): a field at the map's top right, its results under it. The area filter's
    buttons, centred along the top, keep clear of it. */
 .map-search-on .map-browser { right: 290px; }
 .map-search { width: 260px; font: 13px/1.35 var(--font-ui); color: var(--ink); }
@@ -16,10 +16,9 @@
 .map-search-label { font-weight: 600; }
 .map-search-note { color: var(--ink-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* A phone: a button beside the area filter, which opens the field across the map's top. */
+/* A phone: a button under the map drawer's close tab, which opens the field across the map. */
 @media (max-width: 640px) {
-    .map-search-on .map-browser { right: 58px; }
-    .map-search { width: auto; }
+    .leaflet-top.leaflet-right .map-search { width: auto; margin-top: 56px; }
     .map-search:not(.open) .map-search-field, .map-search:not(.open) .map-search-list { display: none; }
     .map-search:not(.open) .map-search-toggle { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 10px; background: var(--surface); color: var(--ink-2); box-shadow: 0 2px 8px rgb(0 0 0 / .12); font-size: 16px; cursor: pointer; }
     .map-search.open { position: absolute; right: 0; width: calc(100vw - 80px); max-width: 360px; z-index: 900; }

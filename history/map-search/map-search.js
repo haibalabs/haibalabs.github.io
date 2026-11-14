@@ -1,9 +1,9 @@
-// Map search (lab prototype, ?lab=search). A field at the map's top right finds what you type among the
+// Map search, started by script.js for every visitor. A field at the map's top right finds what you type among the
 // release's landmarks, then the places the events are at (the event forms' search, place-search.js, by event
 // count), then Wikidata items with coordinates. Picking one flies the map there: a landmark opens its own
 // bubble, a place with events opens the same bubble with its events, and a Wikidata item gets a pin with its
 // name. "/" focuses the field while the map is open; the arrow keys move through the results and Enter picks.
-import { PlaceSearch, fold } from '../../modules/place-search.js';
+import { PlaceSearch, fold } from '../modules/place-search.js';
 
 const element = (tag, text, className) => {
     const node = document.createElement(tag);
@@ -24,22 +24,22 @@ const ZOOM = { site: 15, settlement: 11, approximate: 10, region: 7, country: 5,
 const LANDMARK_ZOOM = 14;
 let active = null;
 
-export function setSearch(lab, on) {
+export function setSearch(app, on) {
     if (!on) {
         active?.stop();
         active = null;
     } else if (!active) {
-        active = new MapSearch(lab);
+        active = new MapSearch(app);
     }
 }
 
 class MapSearch {
-    constructor(lab) {
-        this.lab = lab;
-        this.browser = lab.browser;
-        this.map = lab.map;
-        this.places = new PlaceSearch(() => lab.eventManager.events);
-        this.css = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: new URL('search.css', import.meta.url).href });
+    constructor(app) {
+        this.app = app;
+        this.browser = app.browser;
+        this.map = app.map;
+        this.places = new PlaceSearch(() => app.eventManager.events);
+        this.css = Object.assign(document.createElement('link'), { rel: 'stylesheet', href: new URL('map-search.css', import.meta.url).href });
         document.head.append(this.css);
         this.results = [];
         this.position = -1;
@@ -114,8 +114,8 @@ class MapSearch {
             .slice(0, 3)
             .map(landmark => ({ kind: 'landmark', label: landmark.label, landmark }));
         // the events' places are listed once per load of the events
-        if (this.index !== this.lab.eventManager.placeIndex) {
-            this.index = this.lab.eventManager.placeIndex;
+        if (this.index !== this.app.eventManager.placeIndex) {
+            this.index = this.app.eventManager.placeIndex;
             this.places.reset();
         }
         const local = this.places.local(text);
@@ -142,7 +142,7 @@ class MapSearch {
     }
 
     eventIds(place) {
-        const index = this.lab.eventManager.placeIndex;
+        const index = this.app.eventManager.placeIndex;
         return [...(index.places.get(place.location.place_id) ?? [])].sort((a, b) => (index.years.get(a) ?? 0) - (index.years.get(b) ?? 0));
     }
 
@@ -211,12 +211,15 @@ class MapSearch {
         this.map.closePopup();
         const point = result.kind === 'landmark' ? result.landmark.point : result.place.location.point;
         const zoom = result.kind === 'landmark' ? LANDMARK_ZOOM : ZOOM[result.place.location.precision] ?? ZOOM.settlement;
-        this.map.once('moveend', () => {
+        // a pick made while the map still flies to an earlier one replaces it, so only the last opens
+        if (this.arrive) this.map.off('moveend', this.arrive);
+        this.arrive = () => {
+            this.arrive = null;
             if (result.kind === 'landmark') {
                 const entry = this.browser.landmarks.entries.find(e => e.landmark === result.landmark);
                 this.browser.landmarks.open(result.landmark, entry.marker);
             } else if (result.kind === 'place') {
-                const index = this.lab.eventManager.placeIndex;
+                const index = this.app.eventManager.placeIndex;
                 const ids = [...result.ids].sort((a, b) => (index.years.get(a) ?? 0) - (index.years.get(b) ?? 0));
                 this.browser.clusters.showList(point, ids, null, null,
                     { title: () => listTitle(result.label) });
@@ -225,7 +228,8 @@ class MapSearch {
                     .bindTooltip(result.label, { permanent: true, direction: 'top', offset: [0, -8], className: 'map-event-label' })
                     .addTo(this.map);
             }
-        });
+        };
+        this.map.once('moveend', this.arrive);
         this.map.flyTo(point, Math.max(zoom, Math.min(this.map.getZoom(), zoom + 2)), { duration: 0.8 });
     }
 
@@ -240,6 +244,7 @@ class MapSearch {
 
     stop() {
         clearTimeout(this.wait);
+        if (this.arrive) this.map.off('moveend', this.arrive);
         this.pin?.remove();
         this.control.remove();
         this.css.remove();
