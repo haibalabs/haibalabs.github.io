@@ -6,6 +6,7 @@ import { PanelManager } from './modules/panel-manager.js';
 import { ModalManager } from './modules/modal-manager.js';
 import { initMap, LocationVerifier } from './modules/map-utils.js';
 import { initTimelineNav } from './modules/timeline-nav.js';
+import { keepTimelinePosition } from './modules/timeline-position.js';
 import { startTimeTravel } from './modules/time-travel.js';
 import { TimelineUI }   from './modules/timeline-ui.js';
 import { TimelineStore } from './modules/timeline-store.js';
@@ -159,6 +160,8 @@ async function initializeApp() {
         endTimeTravel();
         initTimelineNav({ eventManager, uiManager });
         uiManager.timelineUI.worldReady();
+        // back from the review page (or a reload) in this tab, the timeline opens where the reader left it
+        keepTimelinePosition(uiManager);
         // the release's landmarks load after the timeline, so they never hold it up; the site works without them
         if (releaseManifest && uiManager.mapBrowser) {
             fetchLandmarks(releaseManifest)

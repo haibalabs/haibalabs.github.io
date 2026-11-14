@@ -79,14 +79,24 @@ class ReviewPage {
             });
         }
         new AuthManager().onChange((user, role) => this.setAccount(user, role));
+        // Coming back to this tab (an edit or flag sent from the timeline meanwhile) reads the edits again, unless
+        // a decision is being typed here.
+        this.reviewing = false;
+        this.typed = false;
+        this.list.addEventListener('input', () => { this.typed = true; });
+        const reread = () => { if (this.reviewing && !this.typed) this.load(); };
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reread(); });
+        addEventListener('pageshow', event => { if (event.persisted) reread(); });
     }
 
     async setAccount(user, role) {
         this.user = user;
         this.edits = [];
+        this.reviewing = false;
         this.list.replaceChildren();
         if (!user) return this.showStatus('Sign in as an admin on the timeline, then reload this page.');
         if (!permissionsFor(role).isAdmin) return this.showStatus('Only admins can review edits.');
+        this.reviewing = true;
         await this.load();
     }
 
@@ -116,6 +126,7 @@ class ReviewPage {
     }
 
     render() {
+        this.typed = false;
         const queues = this.queues();
         const counts = { waiting: queues.waiting.length, conflicts: queues.conflicts.length,
             flags: queues.flags.filter(flag => flag.status === 'open').length };
