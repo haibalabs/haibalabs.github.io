@@ -2,7 +2,7 @@ import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, STORAGE, createAccount, downloadAsOwner, listAsOwner, listFilesAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
-// Photos in personal timelines (PERSONAL-IMAGES.md), against the Auth, Firestore and Storage emulators.
+// Photos in personal timelines (history-dp docs/site/PERSONAL-IMAGES.md), against the Auth, Firestore and Storage emulators.
 test.skip(!EMULATORS_RUNNING || !STORAGE, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
 
 const WORLD = [{

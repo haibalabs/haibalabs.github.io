@@ -4,7 +4,7 @@
 // events' places first, then Wikidata (place-search.js), and picking one gives the event its point.
 // "Enter it by hand" takes the five text fields instead, for a place no source has; such a place
 // stays off the map. Rows keep their positions: a removed place stays listed, struck through, until
-// the form is sent, because world edits change locations per position (WORLD-EDITS.md).
+// the form is sent, because world edits change locations per position (history-dp docs/site/WORLD-EDITS.md).
 import { locationText, normalizeLocation, sameValue } from './world-edits.js';
 
 const SEARCH_DELAY_MS = 250;

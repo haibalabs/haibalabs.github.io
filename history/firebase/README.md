@@ -6,7 +6,7 @@ HistoriLine uses Firebase Authentication (email/password), Cloud Firestore and C
 |---|---|
 | Project ID | `historytimeline-81f70` |
 | Console | https://console.firebase.google.com/project/historytimeline-81f70 |
-| Owner | rachid.el.guerrab@gmail.com (Project settings → Users and permissions) |
+| Owner | The project owner, listed in Project settings → Users and permissions |
 | Rules | [firestore.rules](firestore.rules) and [storage.rules](storage.rules), deployed from this directory only |
 | Storage | `gs://historytimeline-81f70.firebasestorage.app` in `us-east1`, created 2026-10-24 for personal timeline photos; see [Cloud Storage](#cloud-storage-personal-timeline-images) |
 
@@ -21,13 +21,13 @@ Accounts are invite-only. Each invited account has a document `users/{uid}`, whe
 | `reviewer` | Same as editor for now |
 | `admin` | Also delete events and manage other accounts' roles (not their own) |
 
-`events_main` held the old admin Add event and Push tools' events, one document per event keyed by its `event_id` (the rules require the two to match). The app no longer reads or writes it: those tools were removed on 2026-10-28, and changes to world events are proposed as edits (`WORLD-EDITS.md`). Its rules are unchanged until the collection is retired.
+`events_main` held the old admin Add event and Push tools' events, one document per event keyed by its `event_id` (the rules require the two to match). The app no longer reads or writes it: those tools were removed on 2026-10-28, and changes to world events are proposed as edits (`history-dp docs/site/WORLD-EDITS.md`). Its rules are unchanged until the collection is retired.
 
 A signed-in account without a `users` document can read and write nothing. Collections not listed in the rules are denied. The app hides controls by role, but the rules are what enforce access.
 
-Proposed edits to world events live in `edits/{editId}` (see [../WORLD-EDITS.md](../WORLD-EDITS.md)). Editors, reviewers and admins create their own, attributed to their UID and email with the server time; only the author and admins can read one. A suggested new event is a `create` edit: it must carry a name, a date and a description, with no `before` values, and a revision keeps its kind and `event_id`. The author can revise or withdraw an edit that is still waiting for review or was rejected. Authors can't write review results, and nobody deletes an edit. Admins decide an open edit on the review page: a rejection with a reason, or an approval that publishes the approved fields to `world_overlay/current` in the same write. Each decision names the revision it judged and is signed with the admin's account and the server time. Everyone can read the overlay; only admins write it, one version at a time, and it names no one. Deploy the rules (below) after any change to them is merged; until then the deployed rules refuse what the change adds, such as new events.
+Proposed edits to world events live in `edits/{editId}` (see history-dp docs/site/WORLD-EDITS.md). Editors, reviewers and admins create their own, attributed to their UID and email with the server time; only the author and admins can read one. A suggested new event is a `create` edit: it must carry a name, a date and a description, with no `before` values, and a revision keeps its kind and `event_id`. The author can revise or withdraw an edit that is still waiting for review or was rejected. Authors can't write review results, and nobody deletes an edit. Admins decide an open edit on the review page: a rejection with a reason, or an approval that publishes the approved fields to `world_overlay/current` in the same write. Each decision names the revision it judged and is signed with the admin's account and the server time. Everyone can read the overlay; only admins write it, one version at a time, and it names no one. Deploy the rules (below) after any change to them is merged; until then the deployed rules refuse what the change adds, such as new events.
 
-Personal timelines (`timelines/{id}` and their `events` subcollection) are private to their owner and listed members, whatever the role; admins cannot read them through the app. See [../PERSONAL-TIMELINES.md](../PERSONAL-TIMELINES.md).
+Personal timelines (`timelines/{id}` and their `events` subcollection) are private to their owner and listed members, whatever the role; admins cannot read them through the app. See history-dp docs/site/PERSONAL-TIMELINES.md.
 
 ## Invite a user
 
@@ -82,7 +82,7 @@ Publishing the site to GitHub Pages does not deploy rules.
 
 ## Cloud Storage (personal timeline images)
 
-Holds the photos of personal timeline events: one resized photo and a thumbnail per event, readable only by the timeline's owner and members. See [../PERSONAL-IMAGES.md](../PERSONAL-IMAGES.md) for the design and [storage.rules](storage.rules) for access.
+Holds the photos of personal timeline events: one resized photo and a thumbnail per event, readable only by the timeline's owner and members. See history-dp docs/site/PERSONAL-IMAGES.md for the design and [storage.rules](storage.rules) for access.
 
 Storage requires the pay-as-you-go **Blaze** plan (since February 2026). The project's bucket is a `*.firebasestorage.app` bucket, which on Blaze includes at no cost each month 5 GB stored, 100 GB downloaded, 5,000 upload operations and 50,000 download operations, but only for buckets in `us-central1`, `us-east1` or `us-west1`. Check https://firebase.google.com/pricing for current figures.
 

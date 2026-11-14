@@ -716,7 +716,7 @@ export class UIManager {
     }
 
     /**
-     * Applies the approved edits every visitor sees (WORLD-EDITS.md, Publishing to visitors), after
+     * Applies the approved edits every visitor sees (history-dp docs/site/WORLD-EDITS.md, Publishing to visitors), after
      * the released images, locations and labels: published new events are added and approved fields
      * replace the loaded values they were approved from. A field the dataset has since changed keeps
      * its loaded value; the reason goes to the console.
@@ -1069,7 +1069,7 @@ export class UIManager {
             `).join(' ')}
         </div>
         ` : '';
-        // visitors see that an approved edit changed the event, and when, never who made it (WORLD-EDITS.md)
+        // visitors see that an approved edit changed the event, and when, never who made it (history-dp docs/site/WORLD-EDITS.md)
         const revisedOn = event.revised_at ? new Date(event.revised_at) : null;
         const revisedTitle = revisedOn && !Number.isNaN(revisedOn.getTime())
             ? `Changed after review · ${revisedOn.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}`

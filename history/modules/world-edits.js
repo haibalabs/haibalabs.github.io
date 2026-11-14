@@ -1,5 +1,5 @@
 // world-edits.js
-// Proposed edits to world events (WORLD-EDITS.md): the fields an edit may change, how the
+// Proposed edits to world events (history-dp docs/site/WORLD-EDITS.md): the fields an edit may change, how the
 // form's values become field-level changes, the checks run in the browser before an edit is
 // sent, and the four statuses an editor sees. Firestore access is in edit-store.js and the
 // screens in edit-ui.js.
@@ -7,7 +7,7 @@ import { eventProblem, NAME_MAX } from './timeline-model.js';
 import { sha256Hex } from './world-images.js';
 
 // The fields every form has. Locations are edited per position as location[0] … location[4]
-// (WORLD-EDITS.md, Location edits); isEditField() accepts both.
+// (history-dp docs/site/WORLD-EDITS.md, Location edits); isEditField() accepts both.
 export const EDIT_FIELDS = ['name', 'enhanced_time', 'enhanced_description', 'figures', 'categories', 'wikipedia_url', 'image'];
 export const FIELD_LABELS = {
     name: 'Name', enhanced_time: 'Date', enhanced_description: 'Description',
@@ -30,7 +30,7 @@ export function fieldLabel(field) {
     return index === null ? FIELD_LABELS[field] ?? field : `Location ${index + 1}`;
 }
 
-// --- locations (WORLD-EDITS.md, Location edits) ---
+// --- locations (history-dp docs/site/WORLD-EDITS.md, Location edits) ---
 
 export const LOCATION_TEXT_FIELDS = ['name', 'city', 'region', 'country', 'historical_name'];
 export const LOCATION_TEXT_MAX = 200;
@@ -95,7 +95,7 @@ export function toEventLocation(location, verification) {
     return event;
 }
 
-// --- images (WORLD-EDITS.md, The image record) ---
+// --- images (history-dp docs/site/WORLD-EDITS.md, The image record) ---
 
 export const IMAGE_SOURCES = ['commons', 'upload', 'link'];
 const IMAGE_TEXT_FIELDS = ['source', 'image_url', 'source_url', 'caption', 'credit', 'license_name', 'license_url',
@@ -412,7 +412,7 @@ export function imageProblem(image) {
 }
 
 /**
- * The SHA-256 that ties checks and reviews to one revision of an edit (WORLD-EDITS.md,
+ * The SHA-256 that ties checks and reviews to one revision of an edit (history-dp docs/site/WORLD-EDITS.md,
  * "Revisions are immutable once judged").
  */
 export function contentSha256({ changes, reason = '', sources = [], source_conflict = false }) {
@@ -420,7 +420,7 @@ export function contentSha256({ changes, reason = '', sources = [], source_confl
     return sha256Hex(new TextEncoder().encode(text));
 }
 
-// The internal states (WORLD-EDITS.md, Statuses) as the four statuses editors see.
+// The internal states (history-dp docs/site/WORLD-EDITS.md, Statuses) as the four statuses editors see.
 const EDITOR_STATUS = {
     submitted: 'waiting', flagged: 'waiting', ready: 'waiting', conflict: 'waiting',
     auto_rejected: 'rejected', sent_back: 'rejected', rejected: 'rejected',
@@ -439,7 +439,7 @@ export const editorStatus = (edit) => EDITOR_STATUS[edit?.status] ?? 'waiting';
 // Waiting for review and rejected edits can still be revised or withdrawn by their author.
 export const isOpen = (edit) => ['waiting', 'rejected'].includes(editorStatus(edit));
 
-// --- review and publication (WORLD-EDITS.md: Merging several edits on one event, Publishing to visitors) ---
+// --- review and publication (history-dp docs/site/WORLD-EDITS.md: Merging several edits on one event, Publishing to visitors) ---
 
 // Edits an admin can decide. Without the agents' checker (phase 3), new edits stay submitted.
 export const REVIEWABLE_STATUSES = ['submitted', 'flagged', 'ready', 'conflict', 'auto_rejected'];
@@ -481,7 +481,7 @@ export function conflictingFields(edit, overlay) {
         .map(([field]) => field);
 }
 
-// Where an approved location came from, on the event visitors see (WORLD-EDITS.md, Location edits).
+// Where an approved location came from, on the event visitors see (history-dp docs/site/WORLD-EDITS.md, Location edits).
 export const editVerification = (edit) => `community_edit:${edit.edit_id}@r${edit.revision}`;
 
 /**
@@ -523,7 +523,7 @@ export function newEventRecord(edit, fields = Object.keys(edit.changes), values 
     return record;
 }
 
-// Free licenses a Commons image can carry without a reviewer confirming it (WORLD-EDITS.md, checks).
+// Free licenses a Commons image can carry without a reviewer confirming it (history-dp docs/site/WORLD-EDITS.md, checks).
 const FREE_LICENSE = /^(cc0|cc[ -]by(-sa)?( \d(\.\d)?)?|public domain|pd\b)/i;
 
 // The author's browser writes the whole record, so "Commons" counts only for an image served from Commons
@@ -542,7 +542,7 @@ export const imageNeedsConfirmation = (image) => Boolean(image) && !(isCommonsIm
 export const recordSha256 = (record) => sha256Hex(new TextEncoder().encode(canonicalJson(record)));
 
 /**
- * The overlay with an edit's approved fields published (WORLD-EDITS.md, Publishing to visitors).
+ * The overlay with an edit's approved fields published (history-dp docs/site/WORLD-EDITS.md, Publishing to visitors).
  * Every field is judged against the value visitors see now, so successive approvals compose: A→B
  * then B→C leaves one patch from base A to value C, with both receipts in its chain. A new event
  * is published whole. The overlay is public, so receipts name the edit and the time, never a
@@ -631,7 +631,7 @@ export function wordDiff(before, after) {
 export const overlayBytes = (overlay) => new TextEncoder().encode(JSON.stringify(overlay)).length;
 
 /**
- * The edit that reverts an approved edit's fields (WORLD-EDITS.md, Revert): each field goes back
+ * The edit that reverts an approved edit's fields (history-dp docs/site/WORLD-EDITS.md, Revert): each field goes back
  * to the value it had before that approval, starting from the value visitors see now. It is an
  * ordinary edit, approved like any other, so the revert keeps its own receipt.
  *
@@ -678,7 +678,7 @@ export function toEditDoc({ editId, kind = 'update', event, changes, reason, sou
     };
 }
 
-// --- quick flags (WORLD-EDITS.md, Quick flags) ---
+// --- quick flags (history-dp docs/site/WORLD-EDITS.md, Quick flags) ---
 
 // The parts of an event an editor can flag as wrong, in the order the menu shows them.
 export const FLAG_PARTS = ['image', 'location', 'entities', 'article', 'date', 'description'];

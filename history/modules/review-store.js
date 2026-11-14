@@ -1,5 +1,5 @@
 // review-store.js
-// Firestore reads and writes for the admin review page (WORLD-EDITS.md, Admin review page): every
+// Firestore reads and writes for the admin review page (history-dp docs/site/WORLD-EDITS.md, Admin review page): every
 // edit, approvals that publish to world_overlay/current in one transaction, rejections, and the
 // public overlay itself. The rules in firebase/firestore.rules allow these writes to admins only.
 import { collection, doc, getDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
@@ -99,7 +99,7 @@ export class ReviewStore {
         });
     }
 
-    // Closes an open quick flag as fixed or dismissed, signed by the admin (WORLD-EDITS.md, Quick flags).
+    // Closes an open quick flag as fixed or dismissed, signed by the admin (history-dp docs/site/WORLD-EDITS.md, Quick flags).
     async resolveFlag(flag, decision, note = '') {
         await updateDoc(doc(this.db, 'edits', flag.edit_id), {
             status: decision,

@@ -1,4 +1,4 @@
-/* The admin review page (WORLD-EDITS.md, Admin review page), from the signed-off "Phase 2: admin
+/* The admin review page (history-dp docs/site/WORLD-EDITS.md, Admin review page), from the signed-off "Phase 2: admin
    review" mockup, in the site's light and dark tokens. */
 
 .review-page { background: var(--surface-2); min-height: 100vh; }
@@ -120,7 +120,7 @@
 .review-commons-check.ok { color: #067647; }
 .review-commons-record { margin: 2px 0 0; font-size: .75rem; color: var(--ink-2); }
 
-/* quick flags (WORLD-EDITS.md, Quick flags) */
+/* quick flags (history-dp docs/site/WORLD-EDITS.md, Quick flags) */
 .review-flags-bar { justify-content: space-between; }
 .review-flags-note { margin: 0; font-size: .8125rem; color: var(--ink-2); }
 .review-chip.flag { color: #9a3412; background: #fff7ed; }

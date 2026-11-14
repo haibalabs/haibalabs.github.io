@@ -52,7 +52,7 @@ service cloud.firestore {
       allow delete: if collection.matches('events_.+') && isAdmin();
     }
 
-    // Proposed edits to world events (../WORLD-EDITS.md). Editors, reviewers and admins write
+    // Proposed edits to world events (history-dp docs/site/WORLD-EDITS.md). Editors, reviewers and admins write
     // their own; only the author and admins read them. Authors never write review results:
     // checks.automatic comes from the agents' checker (Admin SDK, outside these rules), and review
     // fields, field dispositions and publication come from admins. Nothing is deleted.
@@ -107,7 +107,7 @@ service cloud.firestore {
         && data.checks is map && data.checks.keys().hasOnly(['browser']);
     }
 
-    // A quick flag (../WORLD-EDITS.md, Quick flags): an edit of kind "flag" naming the parts of an event
+    // A quick flag (history-dp docs/site/WORLD-EDITS.md, Quick flags): an edit of kind "flag" naming the parts of an event
     // its author found wrong, what they saw of each, and an optional note. It changes no field.
     function flagPartNames() {
       return ['image', 'location', 'entities', 'article', 'date', 'description'];
@@ -232,7 +232,7 @@ service cloud.firestore {
         && review.at == request.time;
     }
 
-    // Approved edits every visitor sees (../WORLD-EDITS.md, Publishing to visitors). Anyone reads
+    // Approved edits every visitor sees (history-dp docs/site/WORLD-EDITS.md, Publishing to visitors). Anyone reads
     // it; admins write it, each time one version higher. It names edits, never people.
     match /world_overlay/{docId} {
       allow read: if docId == 'current';
@@ -291,7 +291,7 @@ service cloud.firestore {
         && validImage(timelineId);
     }
 
-    // An event's optional photo (see ../PERSONAL-IMAGES.md): both Storage paths must sit under
+    // An event's optional photo (see history-dp docs/site/PERSONAL-IMAGES.md): both Storage paths must sit under
     // this event and the timeline's current generation, as storage.rules requires for the files.
     function validImage(timelineId) {
       let data = request.resource.data;

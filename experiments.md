@@ -14,5 +14,3 @@ Haiba Labs Experiments
 Casual learners, students, or professors, will discover events across eras, locations, and interests, contribute their knowledge, and engage in conversations about the events that shaped our history. 
 
 The **mother of all feeds** will make history accessible, immersive, and fun to everyone.
-
-[Dev Journal](https://haibalabs.github.io/history/dd.html)

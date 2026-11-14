@@ -1,6 +1,6 @@
 // personal-images.js
 // Loads personal photos through the image adapter and caches their object URLs for the open
-// timeline (see PERSONAL-IMAGES.md, "Loading and the image cache"). A load applies only if the
+// timeline (see history-dp docs/site/PERSONAL-IMAGES.md, "Loading and the image cache"). A load applies only if the
 // account, the open timeline and its generation are unchanged when it lands; otherwise its object
 // URL is revoked at once. clear() revokes everything when the timeline closes or the account
 // changes. No browser DOM here: onReady tells the page that a photo arrived.

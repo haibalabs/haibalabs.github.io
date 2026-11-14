@@ -1,7 +1,7 @@
 // event-clusters.js
 // While "Filter by visible area" is on, the filtered events show on the map, grouped by Supercluster:
 // spots close together on screen merge into a numbered bubble that splits as you zoom in. A bubble lists
-// its events; a spot with one event is a dot that selects it. See MAP-BROWSING.md, "Events on the map".
+// its events; a spot with one event is a dot that selects it. See history-dp docs/site/MAP-BROWSING.md, "Events on the map".
 import { eventDateLabel } from './date-handlers.js';
 
 const SUPERCLUSTER = 'https://unpkg.com/supercluster@8.0.1/dist/supercluster.min.js';

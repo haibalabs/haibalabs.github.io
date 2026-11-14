@@ -1,5 +1,5 @@
 // edit-uploads.js
-// Storage for photos uploaded with world edits (WORLD-EDITS.md, Publishing to visitors). The author's
+// Storage for photos uploaded with world edits (history-dp docs/site/WORLD-EDITS.md, Publishing to visitors). The author's
 // file is private and immutable at edit_uploads/{uid}/{editId}/r{revision}-{sha256}.webp; approving
 // it copies the file to world_images/{eventId}/{editId}-r{revision}-{sha256}.webp, which everyone can
 // read, and only then is the overlay written with its URL. storage.rules enforce both paths.

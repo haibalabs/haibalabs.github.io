@@ -40,7 +40,7 @@ jobs:
           PR: ${{ github.event.pull_request.number }}
         run: |
           everything='^(\.github/|history/package(-lock)?\.json$|history/firebase/package(-lock)?\.json$|history/playwright\.config\.js$|history/tests/serve\.py$|history/tests/e2e/(cdn-cache|firebase-stub)\.js$)'
-          untested='^history/data/|^history/(canonical-t2|events)\.json$|\.(md|pdf)$'
+          untested='^history/data/|\.(md|pdf)$'
           firebase='^history/firebase/|^history/modules/(auth-manager|config|edit-store|edit-ui|edit-uploads|firebase-image-store|firebase-writes|image-field|image-link|image-resize|image-store|location-picker|personal-images|review-store|review-ui|roles|timeline-store|timeline-ui|wikipedia-lookup|world-edits|world-overlay)\.js$|^history/tests/e2e/(.+-flow\.spec\.js|emulator\.js)$'
           unit='^history/modules/|^history/tests/unit/'
           # the site's own pages, styles, modules and browser tests, other than the Firebase-only files
@@ -68,7 +68,6 @@ jobs:
     if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.unit == 'true') }}
     runs-on: ubuntu-24.04
     steps:
-      # the unit tests read the legacy canonical-t2.json and events.json, not the release's event and place files
       - uses: actions/checkout@v4
         with:
           sparse-checkout-cone-mode: false
@@ -89,7 +88,7 @@ jobs:
 
   # The browser tests run as two halves in two jobs, so each finishes within a minute, which bills the same as one
   # job of about two minutes. Both are checks main requires. They use fixtures, so they skip the release's event and
-  # place files and the large data files.
+  # place files.
   e2e-tests:
     needs: changes
     if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.e2e == 'true') }}
@@ -100,8 +99,6 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
-            !/history/canonical-t2.json
-            !/history/events.json
             !/history/data/events/
             !/history/data/places/
             !/Dynamic_Interactive_Narratives.pdf
@@ -126,8 +123,6 @@ jobs:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
-            !/history/canonical-t2.json
-            !/history/events.json
             !/history/data/events/
             !/history/data/places/
             !/Dynamic_Interactive_Narratives.pdf
@@ -147,14 +142,12 @@ jobs:
     if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.firebase == 'true') }}
     runs-on: ubuntu-24.04
     steps:
-      # the Firebase tests use small fixtures, so they skip the large data files
+      # the Firebase tests use small fixtures, so they skip the release data
       - uses: actions/checkout@v4
         with:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
             /*
-            !/history/canonical-t2.json
-            !/history/events.json
             !/history/data/
       - uses: ./.github/actions/prepare
         with:

@@ -1,5 +1,5 @@
 // timeline-ui.js
-// Personal timelines in the page (see PERSONAL-TIMELINES.md): "My timelines" in the settings
+// Personal timelines in the page (see history-dp docs/site/PERSONAL-TIMELINES.md): "My timelines" in the settings
 // panel, the open timeline's pill in the top bar, and saving its events as they change. The UI
 // hides what an account cannot use; the Firestore rules decide what it can reach.
 import { PersonalImages } from './personal-images.js';
@@ -261,7 +261,7 @@ export class TimelineUI {
         this.showStatus('');
         const token = this.token();
         try {
-            // photos first, then events and the timeline (see PERSONAL-IMAGES.md, Flows)
+            // photos first, then events and the timeline (see history-dp docs/site/PERSONAL-IMAGES.md, Flows)
             for (const event of await this.store.loadEvents(timeline)) {
                 if (event.image) await this.removePhotoFiles(event.image);
             }
@@ -465,7 +465,7 @@ export class TimelineUI {
         if (!timeline || !confirm(`Delete "${event.name}" from this timeline?`)) return;
         const token = this.token();
         try {
-            // the photo first, then the event (see PERSONAL-IMAGES.md, Flows)
+            // the photo first, then the event (see history-dp docs/site/PERSONAL-IMAGES.md, Flows)
             if (event.image) await this.removePhotoFiles(event.image);
             await this.store.deleteEvent(timeline, event.event_id);
         } catch (error) {

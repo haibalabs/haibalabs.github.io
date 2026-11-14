@@ -1,5 +1,5 @@
 // image-resize.js
-// Turns a chosen photo into the two copies that are stored (see PERSONAL-IMAGES.md): the displayed
+// Turns a chosen photo into the two copies that are stored (see history-dp docs/site/PERSONAL-IMAGES.md): the displayed
 // photo, at most 1600 px on its long edge, and a 400 px thumbnail for cards. Both are re-encoded
 // through a canvas, which applies the camera orientation and drops every piece of metadata,
 // including GPS location. The original is never uploaded.

@@ -1,7 +1,7 @@
 rules_version = '2';
 
 // Photos uploaded with world edits, and their approved public copies, have their own rules below.
-// Photos in personal timelines (see ../PERSONAL-IMAGES.md). A photo is readable and deletable
+// Photos in personal timelines (see history-dp docs/site/PERSONAL-IMAGES.md). A photo is readable and deletable
 // only by the timeline's owner and listed members with an invited role, and only under the
 // timeline's current generation: the seconds and nanoseconds of its createdAt. A timeline
 // recreated under the same ID has a new generation, so files left from an earlier one stay
@@ -56,7 +56,7 @@ service firebase.storage {
       return request.resource.contentType in ['image/webp', 'image/jpeg'] && request.resource.size <= maxBytes;
     }
 
-    // Photos uploaded with world edits (../WORLD-EDITS.md): private to their author and admins,
+    // Photos uploaded with world edits (history-dp docs/site/WORLD-EDITS.md): private to their author and admins,
     // one immutable file per revision, named by its SHA-256.
     match /edit_uploads/{uid}/{editId}/{file} {
       allow get: if request.auth != null && (request.auth.uid == uid || role() == 'admin');

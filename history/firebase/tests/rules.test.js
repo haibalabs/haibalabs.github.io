@@ -504,7 +504,7 @@ describe('proposed edits to world events', () => {
     await assertSucceeds(setDoc(editRef(db), revised));
   });
 
-  // Admin review (WORLD-EDITS.md, Admin review page): a decision names the revision it judged and
+  // Admin review (history-dp docs/site/WORLD-EDITS.md, Admin review page): a decision names the revision it judged and
   // is signed by the admin; an approval publishes to the overlay in the same write.
   const overlayRef = (db) => doc(db, 'world_overlay', 'current');
   const review = (uid, extra = {}) => ({

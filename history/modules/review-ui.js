@@ -1,5 +1,5 @@
 // review-ui.js
-// The admin review page (WORLD-EDITS.md, Admin review page): open edits grouped by event, each
+// The admin review page (history-dp docs/site/WORLD-EDITS.md, Admin review page): open edits grouped by event, each
 // field's before and after, Approve (every field or the ticked ones) and Reject with a reason the
 // author sees; Conflicts, where another approval has changed a field since the edit was written;
 // and History, every edit of each event from its original values on, with Revert. Review is by
@@ -175,7 +175,7 @@ class ReviewPage {
         return edit.author?.uid === this.user?.uid ? 'you' : edit.author?.email ?? 'unknown';
     }
 
-    // --- quick flags (WORLD-EDITS.md, Quick flags) ---
+    // --- quick flags (history-dp docs/site/WORLD-EDITS.md, Quick flags) ---
 
     // Open flags first, newest first; then the closed ones. Each says what was flagged, what the editor saw
     // and who owns it. Export saves the open ones as a file for the team.
@@ -634,7 +634,7 @@ class ReviewPage {
         return block;
     }
 
-    // Reverting is an edit like any other (WORLD-EDITS.md, Revert): proposed by this admin with the
+    // Reverting is an edit like any other (history-dp docs/site/WORLD-EDITS.md, Revert): proposed by this admin with the
     // values from before the approval, then approved, so both steps keep their own records.
     async revert(edit, changes, button, error) {
         if (!confirm(`Revert the approved change to "${edit.event_name}"? Visitors will see the earlier value again.`)) return;
