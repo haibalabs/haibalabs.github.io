@@ -96,6 +96,19 @@ test('the release\'s landmarks show, drawn at the size that fits, open their bub
     await expect(page.locator('#info-panel')).toHaveClass(/open/);
     expect(context.pages().length).toBe(pages);
     await page.locator('#toggle-info').click();
+    // in full window the article opens over the map, which stays full
+    await page.getByRole('button', { name: 'Fill the window' }).click();
+    await landmark.locator('img').click();
+    // the bubble from before fades out while the new one opens
+    await expect(title).toHaveCount(1);
+    await title.click();
+    await expect(page.locator('#info-panel')).toHaveClass(/open/);
+    await expect(page.locator('body')).toHaveClass(/map-full/);
+    const panel = await page.locator('#info-panel').boundingBox();
+    expect(await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest('#info-panel') !== null,
+        [panel.x + panel.width / 2, panel.y + panel.height / 2])).toBe(true);
+    await page.locator('#toggle-info').click();
+    await page.getByRole('button', { name: 'Exit full window' }).click();
 
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');

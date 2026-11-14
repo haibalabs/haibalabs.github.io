@@ -112,10 +112,8 @@ export class PolityLayer {
             const icon = Object.assign(document.createElement('i'), { className: 'fa-light fa-scroll' });
             icon.setAttribute('aria-hidden', 'true');
             title.append(name, icon);
-            title.addEventListener('click', () => {
-                if (this.browser.fullWindow.full) this.browser.fullWindow.set(false);
-                this.browser.panels.handleInfoClick(entity.wikipedia_url, document.createElement('span'));
-            });
+            // in full window the article opens over the map (map-browser.css), which stays full
+            title.addEventListener('click', () => this.browser.panels.handleInfoClick(entity.wikipedia_url, document.createElement('span')));
         } else {
             title = Object.assign(document.createElement('p'), { className: 'map-event-list-title' });
             title.append(name);
