@@ -7,16 +7,6 @@ import { lookupOutline, outlineQuery } from './outlines.js';
 
 export const VARIANTS = [
     {
-        id: 'search',
-        label: 'Map search (prototype)',
-        note: 'A search field at the map\'s top right: landmarks, then the places the events are at, then Wikidata. Picking one flies the map there and opens its events. "/" focuses it.',
-        apply(lab, on) {
-            import('../search/search.js')
-                .then(({ setSearch }) => setSearch(lab, on))
-                .catch(error => console.error('The map search could not start:', error));
-        },
-    },
-    {
         id: 'events',
         label: 'Events on the map',
         note: 'While "Filter by visible area" is on, the map shows the filtered events as numbered bubbles that split into places as you zoom in.',

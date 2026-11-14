@@ -1,7 +1,7 @@
 import { test, expect } from './cdn-cache.js';
 import { stubFirebase } from './firebase-stub.js';
 
-// The map search lab (lab/search/, ?lab=search): typed text finds the events' places, then Wikidata; a place
+// Map search (map-search/), on for every visitor: typed text finds the events' places, then Wikidata; a place
 // opens its events' bubble, and a Wikidata item gets a pin.
 
 const PLACES = [['Paris', [48.85, 2.35]], ['Parma', [44.8, 10.33]]]
@@ -34,7 +34,8 @@ test('the map search finds a place with events and a Wikidata place, and opens o
         return route.fulfill({ json: action === 'wbsearchentities' ? { search: [{ id: 'Q1' }] } : { entities: { Q1: PARADISE } } });
     });
     await page.setViewportSize({ width: 1440, height: 900 });
-    await page.goto('/history/index.html?lab=search');
+    await page.goto('/history/index.html');
+    await page.locator('#toggle-map').click();
     const field = page.getByRole('combobox', { name: 'Search places' });
     await expect(field).toBeVisible();
 

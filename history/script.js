@@ -173,10 +173,15 @@ async function initializeApp() {
             staged.banner.showNewEvents(fetchAddedEventIds(staged.published, liveUrl));
         }
         // character cards (characters/): a profiled person's name on an event card opens their card above the timeline
+        // and map search (map-search/): a field at the map's top right that flies the map to a landmark or place
         if (uiManager.mapBrowser) {
+            const app = { map, eventManager, uiManager, panelManager, browser: uiManager.mapBrowser };
             import('./characters/characters.js')
-                .then(({ setCharacters }) => setCharacters({ map, eventManager, uiManager, panelManager, browser: uiManager.mapBrowser }, true))
+                .then(({ setCharacters }) => setCharacters(app, true))
                 .catch(error => console.error('The character cards could not start:', error));
+            import('./map-search/map-search.js')
+                .then(({ setSearch }) => setSearch(app, true))
+                .catch(error => console.error('The map search could not start:', error));
         }
         // ?lab opens the map lab (lab/map/), which is loaded only then
         if (params.has('lab') && uiManager.mapBrowser) {
