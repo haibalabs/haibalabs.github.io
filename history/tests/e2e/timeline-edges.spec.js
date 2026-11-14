@@ -114,3 +114,30 @@ test('scrolling by hand the moment a jump lands keeps the visitor where they scr
   const left = await page.locator('.timeline-wrapper').evaluate(w => w.scrollHeight - w.clientHeight - w.scrollTop);
   expect(left).toBeGreaterThan(2000);
 });
+
+// The event at the top of the timeline when the page is left (here for the review page), read in the page.
+const topCard = page => page.evaluate(() => {
+  const container = document.getElementById('timeline-wrapper'), top = container.getBoundingClientRect().top;
+  const card = [...container.querySelectorAll('.event[data-event-id]')].find(el => el.getBoundingClientRect().bottom > top + 1);
+  return { id: card.dataset.eventId, offset: Math.round(card.getBoundingClientRect().top - top) };
+});
+
+test('back from the review page in the same tab, the timeline opens where it was left', async ({ page }) => {
+  test.setTimeout(120000);
+  await open(page);
+  // somewhere in the middle, with the top card partly scrolled past
+  await page.locator('#timeline-wrapper').evaluate(el => { el.scrollTop = Math.round(el.scrollHeight / 2) + 37; });
+  await page.waitForTimeout(800);
+  const left = await topCard(page);
+  await page.goto('/history/review.html');
+  // what the page saved as it was left: the reader's card, where it sat then
+  const saved = await page.evaluate(() => JSON.parse(sessionStorage.getItem('historiline:timeline-position')));
+  expect(saved.id).toBe(left.id);
+  await page.goto('/history/index.html');
+  await page.waitForSelector('#timeline-content .event', { timeout: 60000 });
+  await expect.poll(() => topCard(page), { timeout: 15000 }).toEqual({ id: saved.id, offset: Math.round(saved.offset) });
+  // an open personal timeline (?timeline=) keeps its own start
+  await page.goto('/history/index.html?timeline=missing');
+  await page.waitForSelector('#timeline-content .event', { timeout: 60000 });
+  expect((await topCard(page)).id).not.toBe(left.id);
+});
