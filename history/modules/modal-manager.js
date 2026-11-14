@@ -5,7 +5,7 @@ import { LocationPicker } from './location-picker.js';
 import { toEventLocation } from './world-edits.js';
 
 // The event form's photo field, shown only in forms for a personal timeline (one photo per event;
-// see PERSONAL-IMAGES.md). A chosen file is resized right away, so the preview shows what will be
+// see history-dp docs/site/PERSONAL-IMAGES.md). A chosen file is resized right away, so the preview shows what will be
 // stored. choice is what saving does with the photo: keep it, remove it, or add the resized one.
 // Resizing is asynchronous: each reset, removal and new choice takes a new ticket, and a resize
 // result applies only if its ticket is still the latest, so a slow resize never lands in a form

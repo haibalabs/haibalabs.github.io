@@ -2,7 +2,7 @@ import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
-// Suggesting edits to world events (WORLD-EDITS.md, phase 1), against the local Firebase
+// Suggesting edits to world events (history-dp docs/site/WORLD-EDITS.md, phase 1), against the local Firebase
 // emulators, with Wikipedia's API stubbed.
 test.skip(!EMULATORS_RUNNING, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
 

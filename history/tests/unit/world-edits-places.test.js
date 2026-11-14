@@ -6,7 +6,7 @@ import {
 } from '../../modules/world-edits.js';
 import { applyOverlay } from '../../modules/world-overlay.js';
 
-// Location and image edits (WORLD-EDITS.md, Location edits and The image record).
+// Location and image edits (history-dp docs/site/WORLD-EDITS.md, Location edits and The image record).
 const EVT = 'evt_0a1b2c3d-0000-4000-8000-000000000001';
 const AT = '2026-10-31T12:00:00.000Z';
 const ARENA = { name: 'Allianz Arena', city: 'Munich', region: '', country: 'Germany', historical_name: '', point: [48.2188, 11.6247], precision: 'site', wikidata: 'Q131' };

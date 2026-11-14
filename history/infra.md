@@ -16,7 +16,7 @@ HistoriLine is a vanilla JavaScript single-page app with no build step. The repo
 
 `history/index.html` loads `script.js` as a module, which initializes managers in order: LocationVerifier → EventManager → PanelManager → UIManager → ModalManager.
 
-Event data is loaded from a JSON file specified via `?file=` query parameter (defaults to `events.json`).
+Event data comes from the published release. A `?file=` query parameter opens a local JSON file instead, such as one of the test samples below.
 
 ## Running Locally
 
@@ -61,7 +61,7 @@ Use the Node.js built-in `node:test` runner — zero extra test dependencies. Th
 
 Playwright loads the app in headless Chromium and verifies it works end-to-end.
 
-- **`app-load.spec.js`** — Loads `events_sample_small.json` and `events_sample.json`, asserts no page errors and events render.
+- **`app-load.spec.js`** — Loads the sample files, asserts no page errors and events render.
 
 Playwright config (`playwright.config.js`) requires an unused `PORT` from 1024 to 65535 and starts `tests/serve.py` from this checkout. Browser requests and the loopback server use that port. An existing listener makes the run fail, so another checkout cannot supply the test page.
 
@@ -86,8 +86,7 @@ E2E tests block non-essential external requests so tests don't depend on third-p
 | File | Events | Purpose |
 |------|--------|---------|
 | `events_sample_small.json` | 5 | Fast smoke tests |
-| `events_sample.json` | ~100 | Broader coverage |
-| `events_samples.json` | ~250 | Larger sample (not used in CI yet) |
+| `events_samples.json` | ~250 | Larger sample |
 
 ## CI (GitHub Actions)
 

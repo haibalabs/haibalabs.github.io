@@ -1,5 +1,5 @@
 // world-overlay.js
-// Approved edits every visitor sees (WORLD-EDITS.md, Publishing to visitors), read from the public
+// Approved edits every visitor sees (history-dp docs/site/WORLD-EDITS.md, Publishing to visitors), read from the public
 // Firestore document world_overlay/current and applied over the loaded world events after the
 // released images, locations and labels. A patch applies only to an event whose field still holds a
 // value the patch was approved from, so a rebuilt or already folded dataset is never overwritten by

@@ -1,5 +1,5 @@
 // edit-ui.js
-// The screens for suggesting edits to world events (WORLD-EDITS.md, Editor screens): the Editing
+// The screens for suggesting edits to world events (history-dp docs/site/WORLD-EDITS.md, Editor screens): the Editing
 // switch and My edits in the profile drawer, the pencil on each world event and the Suggest a new
 // event button while it is on, the Suggest an edit form (empty for a new event), and the author's
 // "pending" mark on an event. Only signed-in editors, reviewers and admins see any of it; the
@@ -235,7 +235,7 @@ export class EditUI {
         }
     }
 
-    // --- quick flags (WORLD-EDITS.md, Quick flags) ---
+    // --- quick flags (history-dp docs/site/WORLD-EDITS.md, Quick flags) ---
 
     // The flag beside the pencil: a small menu to say which parts of the event are wrong, with an optional note.
     flagButton(event) {
@@ -619,7 +619,7 @@ export class EditUI {
         this.markChanged(field);
     }
 
-    // --- image (WORLD-EDITS.md, The image record) ---
+    // --- image (history-dp docs/site/WORLD-EDITS.md, The image record) ---
 
     buildImageField(root) {
         this.imageCurrent = document.createElement('div');

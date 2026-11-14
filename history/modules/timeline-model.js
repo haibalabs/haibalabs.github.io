@@ -1,5 +1,5 @@
 // timeline-model.js
-// Validation and field mapping for personal timelines (see PERSONAL-TIMELINES.md). No browser or
+// Validation and field mapping for personal timelines (see history-dp docs/site/PERSONAL-TIMELINES.md). No browser or
 // Firebase imports, so the rules here are unit-tested in Node.
 import { numericDateParts, parseTimeToSortableValue } from './date-handlers.js';
 
@@ -12,7 +12,7 @@ const EVENT_FIELDS = ['event_id', 'name', 'enhanced_time', 'enhanced_description
     // an image shown from its link, with its credit (image-link.js), instead of a private photo
     'image_url', 'image_preview'];
 
-// The image role of a photo in a personal timeline (see PERSONAL-IMAGES.md).
+// The image role of a photo in a personal timeline (see history-dp docs/site/PERSONAL-IMAGES.md).
 export const PERSONAL_PHOTO_ROLE = 'personal_photo';
 
 export function newTimelineId() {

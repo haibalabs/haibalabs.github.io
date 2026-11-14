@@ -2,7 +2,7 @@ import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
-// Personal timelines (PERSONAL-TIMELINES.md), against the local Firebase emulators.
+// Personal timelines (history-dp docs/site/PERSONAL-TIMELINES.md), against the local Firebase emulators.
 test.skip(!EMULATORS_RUNNING, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
 
 const WORLD = ['Founding of the archive', 'Opening of the museum', 'First public lecture'].map((name, i) => ({

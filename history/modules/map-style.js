@@ -1,6 +1,6 @@
 // map-style.js
 // The base map: OpenStreetMap's own vector tiles (Shortbread schema) drawn by MapLibre GL under Leaflet,
-// with Mapzen hill shading and Natural Earth relief, all keyless. See MAP-BROWSING.md, "Base map".
+// with Mapzen hill shading and Natural Earth relief, all keyless. See history-dp docs/site/MAP-BROWSING.md, "Base map".
 const MAPLIBRE = 'https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl';
 const BINDING = 'https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.1.4/leaflet-maplibre-gl.js';
 // Joins Arabic letters and lays out right-to-left scripts. Loaded before the map draws: NAME asks

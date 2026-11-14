@@ -1,5 +1,5 @@
 // image-store.js
-// The contract every personal-photo adapter implements (see PERSONAL-IMAGES.md), and an in-memory
+// The contract every personal-photo adapter implements (see history-dp docs/site/PERSONAL-IMAGES.md), and an in-memory
 // adapter for tests. Nothing here knows about a storage service; firebase-image-store.js is the
 // production adapter.
 //

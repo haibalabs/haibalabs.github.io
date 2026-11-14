@@ -2,7 +2,7 @@ import { test, expect } from './cdn-cache.js';
 import { EMULATORS_RUNNING, createAccount, listAsOwner, resetEmulators, signIn } from './emulator.js';
 import { keepMapOffline } from './firebase-stub.js';
 
-// Reviewing edits to world events (WORLD-EDITS.md, phase 2), against the local Firebase emulators:
+// Reviewing edits to world events (history-dp docs/site/WORLD-EDITS.md, phase 2), against the local Firebase emulators:
 // an admin approves or rejects on review.html, and every visitor's page shows the approved values.
 test.skip(!EMULATORS_RUNNING, 'Run under firebase emulators:exec (npm run test:auth-flow in firebase/)');
 

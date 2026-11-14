@@ -1,4 +1,4 @@
-/* Suggesting edits to world events (WORLD-EDITS.md): the Editing switch, the pencil and pending
+/* Suggesting edits to world events (history-dp docs/site/WORLD-EDITS.md): the Editing switch, the pencil and pending
    mark on events, the Suggest an edit form and My edits. */
 
 .visually-hidden {
@@ -31,7 +31,7 @@
 .edit-pencil:hover, .edit-flag:hover, .edit-flag[aria-expanded="true"] { color: var(--ink); background: var(--surface-2); }
 .edit-pencil:focus-visible, .edit-flag:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 
-/* the quick flag's menu (WORLD-EDITS.md, Quick flags): which parts are wrong, an optional note, Send */
+/* the quick flag's menu (history-dp docs/site/WORLD-EDITS.md, Quick flags): which parts are wrong, an optional note, Send */
 .edit-flag-wrap { position: relative; display: inline-flex; }
 .flag-menu {
     position: absolute; top: calc(100% + 6px); left: -8px; z-index: 30; width: min(320px, calc(100vw - 32px));
