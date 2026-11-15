@@ -142,11 +142,11 @@ function releasedPlace(row) {
 /**
  * The fetched release as the event manager loads it (EventManager.loadPublished), plus its place labels.
  *
- * @param {{ manifest: object, manifestUrl: string, shards: object[], buckets: object[] }} published
- * @returns {{ manifestUrl: string, timestamp: number, events: object[], acceptedIds: Set<string>,
+ * @param {{ manifest: object, manifestUrl: string, manifestSha256: string, shards: object[], buckets: object[] }} published
+ * @returns {{ manifestUrl: string, manifestSha256: string, timestamp: number, events: object[], acceptedIds: Set<string>,
  *     placeLocations: (events: object[]) => void, labels: { labels: Object<string, string|null> } }}
  */
-export function publishedWorld({ manifest, manifestUrl, shards, buckets }) {
+export function publishedWorld({ manifest, manifestUrl, manifestSha256, shards, buckets }) {
     const places = new Map();
     for (const bucket of buckets) {
         for (const row of bucket.places) places.set(row.index, row);
@@ -212,5 +212,5 @@ export function publishedWorld({ manifest, manifestUrl, shards, buckets }) {
         });
     };
 
-    return { manifestUrl, timestamp: Date.parse(manifest.created_at), events, acceptedIds, placeLocations, labels: { labels } };
+    return { manifestUrl, manifestSha256, timestamp: Date.parse(manifest.created_at), events, acceptedIds, placeLocations, labels: { labels } };
 }

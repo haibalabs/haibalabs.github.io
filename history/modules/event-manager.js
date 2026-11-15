@@ -79,6 +79,7 @@ export class EventManager {
             // The hash of the exact bytes these events were parsed from, and a count of loads.
             // Previews bound to one reviewed file check both (world-images.js).
             this.loadedSha256 = sha256Hex(bytes);
+            this.releaseManifestSha256 = null;
             this.loadGeneration = (this.loadGeneration ?? 0) + 1;
             const data = JSON.parse(new TextDecoder().decode(bytes));
             let eventsArray;
@@ -120,13 +121,15 @@ export class EventManager {
      * file gives. Each placed location takes its reviewed place after the manual corrections, as a
      * location release does for a data file.
      *
-     * @param {{ manifestUrl: string, timestamp: number, events: object[], acceptedIds: Set<string>,
-     *     placeLocations: (events: object[]) => void }} published
+     * @param {{ manifestUrl: string, manifestSha256: string, timestamp: number, events: object[],
+     *     acceptedIds: Set<string>, placeLocations: (events: object[]) => void }} published
      */
     loadPublished(published) {
         this.currentFile = published.manifestUrl;
         // previews are bound to the bytes of one data file, which a published release doesn't have
         this.loadedSha256 = null;
+        // the release a visitor saw, which edits and flags record
+        this.releaseManifestSha256 = published.manifestSha256 ?? null;
         this.loadGeneration = (this.loadGeneration ?? 0) + 1;
         this.keptRecords = [];
         this.fileTimestamp = published.timestamp;

@@ -652,20 +652,30 @@ export function revertChanges(edit, overlay) {
 }
 
 /**
+ * What an edit or flag was made against: the loaded data file's hash (null on a published release, which
+ * has no single file) and the published release's manifest hash (null on a data file).
+ */
+export function editDataset(datasetSha256, releaseManifestSha256) {
+    return { id: 'world-history', sha256: datasetSha256 ?? null,
+        release_manifest_sha256: releaseManifestSha256 ?? null, locations_release_sha256: null };
+}
+
+/**
  * The document a new edit is stored as, without the server-set times, which edit-store.js adds.
  * For a new event, event is { event_id, name } with the ID assigned at submission.
  *
  * @param {{ editId: string, kind?: 'update'|'create', event: object, changes: object, reason: string,
  *           sources: string[], sourceConflict: boolean, author: { uid: string, email: string },
- *           datasetSha256: string|null, contentSha: string, browserChecks: object[] }} input
+ *           datasetSha256: string|null, releaseManifestSha256?: string|null, contentSha: string,
+ *           browserChecks: object[] }} input
  */
-export function toEditDoc({ editId, kind = 'update', event, changes, reason, sources, sourceConflict, author, datasetSha256, contentSha, browserChecks }) {
+export function toEditDoc({ editId, kind = 'update', event, changes, reason, sources, sourceConflict, author, datasetSha256, releaseManifestSha256, contentSha, browserChecks }) {
     return {
         edit_id: editId,
         kind,
         event_id: event.event_id,
         event_name: event.name,
-        dataset: { id: 'world-history', sha256: datasetSha256 ?? null, locations_release_sha256: null },
+        dataset: editDataset(datasetSha256, releaseManifestSha256),
         changes,
         reason,
         sources,
@@ -716,14 +726,14 @@ export function flagSeen(event, parts) {
 }
 
 /** The Firestore document of a quick flag: an edit of kind "flag" that changes no field. */
-export function toFlagDoc({ editId, event, parts, note = '', author, datasetSha256 }) {
+export function toFlagDoc({ editId, event, parts, note = '', author, datasetSha256, releaseManifestSha256 }) {
     const chosen = FLAG_PARTS.filter(part => parts.includes(part));
     return {
         edit_id: editId,
         kind: 'flag',
         event_id: event.event_id,
         event_name: event.name,
-        dataset: { id: 'world-history', sha256: datasetSha256 ?? null, locations_release_sha256: null },
+        dataset: editDataset(datasetSha256, releaseManifestSha256),
         flag: { parts: chosen, seen: flagSeen(event, chosen), note: String(note).trim().slice(0, FLAG_NOTE_MAX) },
         author,
         revision: 1,
@@ -738,7 +748,8 @@ export function flagExport(flags, exportedAt) {
         exported_at: exportedAt,
         flags: flags.filter(flag => isFlag(flag) && flag.status === 'open').map(flag => ({
             edit_id: flag.edit_id, event_id: flag.event_id, event_name: flag.event_name,
-            dataset_sha256: flag.dataset?.sha256 ?? null, parts: flag.flag.parts, seen: flag.flag.seen, note: flag.flag.note,
+            dataset_sha256: flag.dataset?.sha256 ?? null,
+            release_manifest_sha256: flag.dataset?.release_manifest_sha256 ?? null, parts: flag.flag.parts, seen: flag.flag.seen, note: flag.flag.note,
             owners: [...new Set(flag.flag.parts.map(part => FLAG_OWNERS[part]))],
             created_at: flag.created_at?.toDate?.().toISOString?.() ?? null,
         })),
