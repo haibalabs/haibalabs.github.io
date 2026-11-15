@@ -174,11 +174,14 @@ export function publishedWorld({ manifest, manifestUrl, shards, buckets }) {
             if (accepted === true) acceptedIds.add(event.event_id);
             const placed = [];
             event.locations = (locations ?? []).map((location, index) => {
-                // the placement status and its reason stay in the release; the site shows the location as before
-                const { place, placed: placedIndex, placement, reason: _reason, lookup_cause: _cause, ...fields } = location;
+                // the placement status and its reason stay in the release; the site shows the location as before,
+                // except a continent written on its own, which draws no point (Rachid, 2026-11-14)
+                const { place, placed: placedIndex, placement, reason, lookup_cause: _cause, ...fields } = location;
                 if (placement === 'placed') {
                     const target = placeRow(placedIndex, event.event_id);
                     placed.push({ index, placeId: target.place_id, place: releasedPlace(target) });
+                } else if (placement === 'held' && reason === 'continent_no_point') {
+                    placed.push({ index, noPoint: true });
                 }
                 return { ...fields, place_id: placeRow(place, event.event_id).place_id };
             });
@@ -192,13 +195,18 @@ export function publishedWorld({ manifest, manifestUrl, shards, buckets }) {
     }
 
     // After the location verifier, on the loaded events in the same order: a manual correction that
-    // disagrees with the reviewed place keeps the location as loaded, written place_id and all.
+    // disagrees with the reviewed place keeps the location as loaded, written place_id and all. A continent on its
+    // own loses its point, legacy or corrected, and keeps its name and place.
     const placeLocations = (loaded) => {
         loaded.forEach((event, position) => {
             const placed = placements[position];
             if (!placed) return;
             event.locations = event.locations.map((location, index) => {
                 const change = placed.find(p => p.index === index);
+                if (change?.noPoint) {
+                    const { geography: _geography, corrected: _corrected, ...kept } = location;
+                    return { ...kept, verified: false };
+                }
                 return change ? placeLocation(location, change.placeId, change.place) : location;
             });
         });

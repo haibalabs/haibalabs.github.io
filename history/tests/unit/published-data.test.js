@@ -113,6 +113,26 @@ test('a manual point that agrees with the reviewed place lets the place apply', 
     assert.equal(events.evt_conflict.locations[0].geography.status, 'resolved');
 });
 
+test('a continent written on its own keeps its name and place but draws no point, even with a manual one', () => {
+    const world = release();
+    world.shards[1].events.push({ event_id: 'evt_continent', event_version: 'v5', name: 'Continent', enhanced_time: '1850',
+        confidence: 'high', visible: true, categories: [], figures: [], enhanced_description: 'N.', wikipedia_url: '',
+        locations: [{ name: 'North America', city: '', region: '', country: '', historical_name: '', place: 2,
+            placement: 'held', reason: 'continent_no_point', geography: legacy('reused', [47, -105]) },
+        { name: 'Alpha', city: '', region: '', country: '', historical_name: '', place: 0,
+            placement: 'legacy', geography: legacy('reused', [1, 2]) }] });
+    world.manifest.shards[1].count += 1;
+    const events = load(publishedWorld(world), [{ standardized_location: 'North America', corrected_location: [47, -105] }]);
+    const [continent, alpha] = events.evt_continent.locations;
+    assert.equal(continent.name, 'North America');
+    assert.equal(continent.place_id, 'plc_written');
+    assert.equal('geography' in continent, false);
+    assert.equal('corrected' in continent, false);
+    assert.equal(continent.verified, false);
+    // the event's other places are drawn as before
+    assert.deepEqual(alpha.geography, legacy('reused', [1, 2]));
+});
+
 test('a held location keeps its legacy geography', () => {
     const events = load(publishedWorld(release()));
     assert.deepEqual(events.evt_held.locations[0].geography, legacy('ambiguous', null));
