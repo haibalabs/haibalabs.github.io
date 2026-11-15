@@ -338,7 +338,8 @@ export class EditUI {
         }
         send.disabled = true;
         try {
-            await this.store.submitFlag({ event, parts, note, datasetSha256: await this.eventManager.loadedSha256 ?? null });
+            await this.store.submitFlag({ event, parts, note, datasetSha256: await this.eventManager.loadedSha256 ?? null,
+                releaseManifestSha256: this.eventManager.releaseManifestSha256 ?? null });
         } catch (error) {
             console.error('Could not send the flag:', error);
             hint.textContent = 'Could not send. Try again.';
@@ -968,14 +969,17 @@ export class EditUI {
             }
             const contentSha = await contentSha256({ changes, reason, sources, source_conflict: sourceConflict });
             const datasetSha256 = await this.eventManager.loadedSha256 ?? null;
+            const releaseManifestSha256 = this.eventManager.releaseManifestSha256 ?? null;
             if (!current()) return;
             const eventName = kind === 'create' ? changes.name.after : event.name;
             try {
                 if (revising) {
-                    await this.store.revise(revising, { changes, reason, sources, sourceConflict, contentSha, browserChecks, eventName, datasetSha256 });
+                    await this.store.revise(revising, { changes, reason, sources, sourceConflict, contentSha, browserChecks, eventName,
+                        datasetSha256, releaseManifestSha256 });
                 } else {
                     const target = kind === 'create' ? { event_id: newEventId(), name: eventName } : event;
-                    await this.store.submit({ editId, kind, event: target, changes, reason, sources, sourceConflict, datasetSha256, contentSha, browserChecks });
+                    await this.store.submit({ editId, kind, event: target, changes, reason, sources, sourceConflict, datasetSha256,
+                        releaseManifestSha256, contentSha, browserChecks });
                 }
             } catch (error) {
                 console.error('Could not send the edit:', error);

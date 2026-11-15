@@ -206,6 +206,19 @@ describe('quick flags — what was flagged and what the editor saw', () => {
         assert.equal(doc.flag.note.length, 280);
     });
 
+    it('records the published release it was made on, for flags, edits and the export', () => {
+        const release = 'c'.repeat(64);
+        const flag = toFlagDoc({ editId: 'edt_r', event, parts: ['entities'], author, datasetSha256: null, releaseManifestSha256: release });
+        assert.deepEqual(flag.dataset, { id: 'world-history', sha256: null, release_manifest_sha256: release, locations_release_sha256: null });
+        const edit = toEditDoc({ editId: 'edt_s', event, changes: {}, reason: '', sources: [], sourceConflict: false, author,
+            datasetSha256: null, releaseManifestSha256: release, contentSha: 'b'.repeat(64), browserChecks: [] });
+        assert.equal(edit.dataset.release_manifest_sha256, release);
+        const [exported] = flagExport([{ ...flag, created_at: null }], '2026-11-15T12:00:00.000Z').flags;
+        assert.equal(exported.release_manifest_sha256, release);
+        // a data file opened with ?file= has its own hash and no release
+        assert.equal(toFlagDoc({ editId: 'edt_t', event, parts: ['date'], author, datasetSha256: 'a'.repeat(64) }).dataset.release_manifest_sha256, null);
+    });
+
     it('exports only open flags, with the owners of their parts', () => {
         const open = { ...toFlagDoc({ editId: 'edt_a', event, parts: ['image', 'date'], author }), created_at: null };
         const fixed = { ...toFlagDoc({ editId: 'edt_b', event, parts: ['article'], author }), status: 'fixed' };
