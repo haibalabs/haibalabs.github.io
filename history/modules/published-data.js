@@ -175,14 +175,10 @@ export function publishedWorld({ manifest, manifestUrl, manifestSha256, shards, 
             const placed = [];
             event.locations = (locations ?? []).map((location, index) => {
                 // the placement status and its reason stay in the release; the site shows the location as before
-                const { place, placed: placedIndex, placement, reason, lookup_cause: _cause, ...fields } = location;
+                const { place, placed: placedIndex, placement, reason: _reason, lookup_cause: _cause, ...fields } = location;
                 if (placement === 'placed') {
                     const target = placeRow(placedIndex, event.event_id);
                     placed.push({ index, placeId: target.place_id, place: releasedPlace(target) });
-                }
-                // A continent is too large for a point (Rachid): it keeps its name and place but draws nowhere.
-                if (placement === 'held' && reason === 'continent_no_point' && fields.geography) {
-                    fields.geography = { ...fields.geography, coordinates: null };
                 }
                 return { ...fields, place_id: placeRow(place, event.event_id).place_id };
             });

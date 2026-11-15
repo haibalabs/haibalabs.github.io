@@ -119,28 +119,6 @@ test('a held location keeps its legacy geography', () => {
     assert.equal(events.evt_held.locations[0].place_id, 'plc_none');
 });
 
-test('a continent held for having no point draws nowhere; other held and legacy locations keep their points', () => {
-    const withContinent = release();
-    const shard = withContinent.shards[1];
-    shard.events.push(
-        { event_id: 'evt_continent', event_version: 'v5', name: 'Across Europe', enhanced_time: '1900', confidence: 'high',
-            visible: true, categories: [], figures: [], enhanced_description: 'E.', wikipedia_url: '',
-            locations: [{ name: 'Europe', city: '', region: '', country: '', historical_name: '', place: 2,
-                placement: 'held', reason: 'continent_no_point', geography: legacy('reused', [54, 15], 'region') }] },
-        { event_id: 'evt_held_point', event_version: 'v6', name: 'Held elsewhere', enhanced_time: '1901', confidence: 'high',
-            visible: true, categories: [], figures: [], enhanced_description: 'O.', wikipedia_url: '',
-            locations: [{ name: 'Somewhere', city: '', region: '', country: '', historical_name: '', place: 2,
-                placement: 'held', reason: 'country_mismatch', geography: legacy('reused', [3, 4]) }] });
-    withContinent.manifest.shards[1].count = shard.events.length;
-    const events = load(publishedWorld(withContinent));
-    const continent = events.evt_continent.locations[0];
-    assert.equal(continent.name, 'Europe');
-    assert.equal(continent.place_id, 'plc_written');
-    assert.deepEqual(continent.geography, legacy('reused', null, 'region'));
-    assert.deepEqual(events.evt_held_point.locations[0].geography, legacy('reused', [3, 4]));
-    assert.deepEqual(events.evt_alpha.locations[0].geography, legacy('reused', [1, 2]));
-});
-
 test('labels keep a null label apart from no label', () => {
     const world = publishedWorld(release());
     assert.deepEqual(world.labels.labels, { plc_alpha: 'Alpha City, Country', plc_none: null, plc_merged: 'Merged Place, Land' });
