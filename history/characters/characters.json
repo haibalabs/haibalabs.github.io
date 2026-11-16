@@ -1,6 +1,6 @@
 {
  "format": "historiline-characters-lab/v1",
- "note": "Lab prototype: the ten profiles of Ariadne's character registry seed (history-data, characters/profiles.json), with title and summary from each article's Wikipedia summary. Not release data.",
+ "note": "Character lab profiles: ten starter profiles plus three registry additions sourced from pinned Wikipedia revisions. Names are exact event-figure labels; images are unset for the three new profiles.",
  "characters": [
   {
    "id": "char_219fcddb-1f9c-4115-858c-bf3ccb067446",
@@ -303,6 +303,70 @@
     "license": "Public Domain Mark 1.0",
     "page": "https://commons.wikimedia.org/wiki/File:Alexander_Mosaic_detail_of_Alexander_the_Great_(3x4_cropped).jpg"
    }
+  },
+  {
+   "id": "char_4db427de-4765-5196-96bc-8688c8af2c34",
+   "name": "Inge the Younger",
+   "names": [
+    "Inge the Younger"
+   ],
+   "title": "King of Sweden (1118–1125)",
+   "summary": "Inge the Younger was king of Sweden, ruling alone after 1118. The year and circumstances of his death are uncertain in the historical sources.",
+   "birth": null,
+   "death": {
+    "display": "unknown; no later than c. 1129",
+    "iso": null,
+    "year": null,
+    "place": "Östergötland; later accounts place his death at Vreta Abbey"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Inge_the_Younger",
+   "image": null
+  },
+  {
+   "id": "char_03f33474-c5a2-5487-ade8-c05046b409e3",
+   "name": "Ulvhild Håkansdotter",
+   "names": [
+    "Ulvhild Håkansdotter"
+   ],
+   "title": "Queen consort of Sweden and Denmark (c. 1117–1148)",
+   "summary": "Ulvhild Håkansdotter was a Norwegian-born queen consort of Sweden and Denmark whose successive marriages connected Scandinavian dynasties.",
+   "birth": {
+    "display": "c. 1095",
+    "iso": null,
+    "year": 1095,
+    "place": "Norway"
+   },
+   "death": {
+    "display": "c. 1148 (between 1143 and 1150)",
+    "iso": null,
+    "year": 1148,
+    "place": "Sweden"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Ulvhild_H%C3%A5kansdotter",
+   "image": null
+  },
+  {
+   "id": "char_1d62f471-a1c7-5e0e-b25c-12679a241c0a",
+   "name": "Magnus the Strong",
+   "names": [
+    "Magnus the Strong"
+   ],
+   "title": "Ruler in Götaland (1120s–c. 1132); co-king of Denmark (1134)",
+   "summary": "Magnus the Strong, also known as Magnus Nilsson, was a Danish duke who ruled Götaland in southern Sweden. Whether he was elected king by all Swedes is disputed.",
+   "birth": {
+    "display": "c. 1106",
+    "iso": null,
+    "year": 1106,
+    "place": null
+   },
+   "death": {
+    "display": "4 June 1134",
+    "iso": "1134-06-04",
+    "year": 1134,
+    "place": "Fotevik, Scania"
+   },
+   "wikipedia_url": "https://en.wikipedia.org/wiki/Magnus_the_Strong",
+   "image": null
   }
  ]
 }
