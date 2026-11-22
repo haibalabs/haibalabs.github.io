@@ -966,8 +966,8 @@ export class UIManager {
         return eventDiv;
     }
 
-    // An event from the open personal timeline: an accent line, a "Personal" label, and edit and
-    // delete buttons (see TimelineUI).
+    // An event from the open personal timeline: an accent line, and edit and delete buttons (see
+    // TimelineUI).
     // Clicking a reviewed preview image opens it full size, with its caption, role, credit,
     // license and source, which the card leaves out.
     addPreviewImageHandler(eventDiv, event) {
@@ -991,10 +991,6 @@ export class UIManager {
         eventDiv.style.borderLeft = '3px solid var(--accent)';
         const bar = document.createElement('div');
         bar.className = 'personal-bar';
-        const label = document.createElement('span');
-        label.className = 'personal-label';
-        label.textContent = 'Personal';
-        bar.append(label);
         for (const [action, icon, text] of [['edit', 'fa-pen', 'Edit event'], ['remove', 'fa-trash-can', 'Delete event']]) {
             const button = document.createElement('button');
             button.type = 'button';

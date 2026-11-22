@@ -48,6 +48,9 @@
     background: none; color: var(--ink); font: inherit; cursor: pointer;
 }
 .loc-results button:hover, .loc-results button:focus-visible { background: var(--surface-2); outline: none; }
+/* OpenStreetMap's full addresses run long */
+.loc-results .result-description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.loc-results .loc-osm .result-title { color: var(--accent); }
 .loc-group { padding: .45rem .6rem .15rem; font-size: .66rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
 .loc-group.muted { text-transform: none; letter-spacing: 0; font-weight: 400; font-size: .75rem; }
 .loc-hand-toggle { justify-self: start; }

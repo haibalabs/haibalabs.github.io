@@ -62,7 +62,6 @@ test('an editor creates a timeline, adds an event that saves at once, and finds 
   await addEvent(page, 'Grandmother born', 'March 1901');
   const personal = card(page, 'Grandmother born');
   await expect(personal).toHaveClass(/personal/);
-  await expect(personal.locator('.personal-label')).toHaveText('Personal');
   // interleaved with world events in date order
   const names = await page.locator('#timeline-content .event .event-header').allTextContents();
   expect(names.map(n => n.trim().split('\n')[0])).toEqual(['Founding of the archive', 'Grandmother born', 'Opening of the museum', 'First public lecture']);
