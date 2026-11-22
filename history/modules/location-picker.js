@@ -2,9 +2,12 @@
 // The location field both event forms share (Rachid, 2026-10-31: one design and one code path, so an
 // improvement reaches both). Each place is a row with a small map; a search box finds the loaded
 // events' places first, then Wikidata (place-search.js), and picking one gives the event its point.
-// "Enter it by hand" takes the five text fields instead, for a place no source has; such a place
+// When those miss, the author can search OpenStreetMap, or paste coordinates or a map link: the point
+// opens the hand fields, filled in from the link and OpenStreetMap, so the author names the place.
+// "Enter it by hand" takes the five text fields alone, for a place no source has; such a place
 // stays off the map. Rows keep their positions: a removed place stays listed, struck through, until
 // the form is sent, because world edits change locations per position (history-dp docs/site/WORLD-EDITS.md).
+import { pastedPoint } from './place-search.js';
 import { locationText, normalizeLocation, sameValue } from './world-edits.js';
 
 const SEARCH_DELAY_MS = 250;
@@ -77,6 +80,9 @@ export function pointNote(location) {
     return `On the map · ${PRECISION_TEXT[location.precision] ?? 'approximate point'}`;
 }
 
+const HAND_NOTE = 'A place entered by hand stays off the map until it is identified.';
+const pointText = ([lat, lon]) => `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+
 export class LocationPicker {
     /**
      * @param {HTMLElement} root - an empty container
@@ -91,6 +97,8 @@ export class LocationPicker {
         this.slots = [];
         this.target = null;
         this.ticket = 0;
+        // the point a pasted coordinate or map link gave the hand fields
+        this.handPoint = null;
         root.classList.add('location-picker');
         this.list = element('ul', 'loc-list');
         this.adder = element('div', 'loc-add');
@@ -148,13 +156,15 @@ export class LocationPicker {
         const cancel = element('button', 'link-btn', 'Cancel');
         cancel.type = 'button';
         add.addEventListener('click', () => {
-            const location = normalizeLocation(Object.fromEntries(HAND_FIELDS.map(([key]) => [key, this.handInputs[key].value])));
-            if (!location) return this.handInputs.name.focus();
-            this.pick(location);
+            const fields = Object.fromEntries(HAND_FIELDS.map(([key]) => [key, this.handInputs[key].value]));
+            if (!normalizeLocation(fields)) return this.handInputs.name.focus();
+            // a pasted point stands for the exact spot the author chose
+            this.pick(normalizeLocation(this.handPoint ? { ...fields, point: this.handPoint, precision: 'site' } : fields));
         });
         cancel.addEventListener('click', () => this.closeHand());
         actions.append(add, cancel);
-        box.append(grid, element('p', 'muted', 'A place entered by hand stays off the map until it is identified.'), actions);
+        this.handNote = element('p', 'muted', HAND_NOTE);
+        box.append(grid, this.handNote, actions);
         return box;
     }
 
@@ -194,7 +204,7 @@ export class LocationPicker {
         const full = this.slots.filter(slot => slot.current || slot.original).length >= this.max && this.target === null;
         this.adder.hidden = full;
         const count = this.slots.filter(slot => slot.current).length;
-        this.input.placeholder = this.target !== null ? 'Search the new place…' : count ? 'Add another place…' : 'Search a place…';
+        this.input.placeholder = this.target !== null ? 'Search the new place…' : count ? 'Add another place…' : 'Search a place, or paste a map link…';
         this.targetLine.hidden = this.target === null;
         if (this.target !== null) {
             this.targetLine.replaceChildren(`Replacing “${locationText(this.slots[this.target].current ?? this.slots[this.target].original)}”. `);
@@ -260,19 +270,34 @@ export class LocationPicker {
         this.render();
     }
 
-    openHand() {
+    /**
+     * Opens the hand fields, seeded with the search text, or with a pasted point and the name its link
+     * carries; the city, region and country, and a missing name, come from OpenStreetMap.
+     */
+    openHand(pasted = null) {
         this.hand.hidden = false;
         this.handButton.hidden = true;
         this.hideResults();
-        const seed = this.input.value.trim();
+        const seed = pasted ? pasted.name : this.input.value.trim();
         for (const input of Object.values(this.handInputs)) input.value = '';
         this.handInputs.name.value = seed;
+        this.handPoint = pasted?.point ?? null;
+        this.handNote.textContent = this.handPoint ? `On the map at ${pointText(this.handPoint)}. Name the place, then use it.` : HAND_NOTE;
         this.handInputs.name.focus();
+        if (!this.handPoint) return;
+        const point = this.handPoint;
+        this.search.reverse(point).then(found => {
+            if (!found || this.handPoint !== point) return;
+            for (const key of ['name', 'city', 'region', 'country']) {
+                if (!this.handInputs[key].value) this.handInputs[key].value = found[key] ?? '';
+            }
+        });
     }
 
     closeHand() {
         this.hand.hidden = true;
         this.handButton.hidden = false;
+        this.handPoint = null;
     }
 
     scheduleSearch() {
@@ -280,6 +305,8 @@ export class LocationPicker {
         const text = this.input.value.trim();
         const ticket = ++this.ticket;
         if (text.length < 2) return this.hideResults();
+        const pasted = pastedPoint(text);
+        if (pasted) return this.showPasted(pasted);
         const local = this.search.local(text);
         this.showResults(text, local, null);
         this.timer = setTimeout(async () => {
@@ -288,26 +315,63 @@ export class LocationPicker {
         }, SEARCH_DELAY_MS);
     }
 
-    showResults(text, local, remote) {
+    // A pasted point is offered as one result, which opens the hand fields to name it.
+    showPasted(pasted) {
+        const items = [element('li', 'loc-group', 'Map point')];
+        if (pasted.short) {
+            items.push(element('li', 'loc-group muted', 'A shortened map link can’t be read here. Open it, then copy the full link from the address bar, or copy the coordinates.'));
+        } else {
+            items.push(this.resultItem(pasted.name || pointText(pasted.point), `${pointText(pasted.point)} · name it next`, () => this.openHand(pasted)));
+        }
+        this.setResults(items);
+    }
+
+    resultItem(title, description, onPick) {
+        const li = element('li');
+        li.setAttribute('role', 'option');
+        const b = element('button');
+        b.type = 'button';
+        b.append(element('span', 'result-title', title), element('span', 'result-description', description));
+        b.addEventListener('click', onPick);
+        li.append(b);
+        return li;
+    }
+
+    /**
+     * @param {object[]|null} remote - Wikidata's places, null while it is searched
+     * @param {object[]|null|undefined} osm - OpenStreetMap's places once asked for, null while it is searched
+     */
+    showResults(text, local, remote, osm) {
         const items = [];
         const group = (title, places) => {
             if (!places.length) return;
             items.push(element('li', 'loc-group', title));
-            for (const place of places) {
-                const li = element('li');
-                li.setAttribute('role', 'option');
-                const b = element('button');
-                b.type = 'button';
-                b.append(element('span', 'result-title', place.label), element('span', 'result-description', place.subtitle || pointNote(place.location)));
-                b.addEventListener('click', () => this.pick(place.location));
-                li.append(b);
-                items.push(li);
-            }
+            for (const place of places) items.push(this.resultItem(place.label, place.subtitle || pointNote(place.location), () => this.pick(place.location)));
         };
         group('Our places', local);
         if (remote === null) items.push(element('li', 'loc-group muted', 'Searching Wikidata…'));
         else group('From Wikidata', remote);
-        if (remote !== null && !local.length && !remote.length) items.push(element('li', 'loc-group muted', `No place found for “${text}”. Enter it by hand below.`));
+        if (remote !== null && osm === undefined) {
+            const li = this.resultItem(`Search OpenStreetMap for “${text}”`, 'Streets, buildings and places missing from Wikidata', () => this.searchOsm(text, local, remote));
+            li.classList.add('loc-osm');
+            items.push(li);
+        } else if (osm === null) {
+            items.push(element('li', 'loc-group muted', 'Searching OpenStreetMap…'));
+        } else if (osm) {
+            group('From OpenStreetMap', osm);
+            if (!local.length && !remote.length && !osm.length) items.push(element('li', 'loc-group muted', `No place found for “${text}”. Paste its coordinates or a map link, or enter it by hand below.`));
+        }
+        this.setResults(items);
+    }
+
+    async searchOsm(text, local, remote) {
+        const ticket = ++this.ticket;
+        this.showResults(text, local, remote, null);
+        const osm = await this.search.osm(text, [...local, ...remote]);
+        if (ticket === this.ticket) this.showResults(text, local, remote, osm);
+    }
+
+    setResults(items) {
         this.results.replaceChildren(...items);
         this.results.hidden = !items.length;
         this.input.setAttribute('aria-expanded', String(!this.results.hidden));

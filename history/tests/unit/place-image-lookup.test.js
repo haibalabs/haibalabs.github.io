@@ -1,6 +1,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { localPlaces, matchPlaces, PlaceSearch, precisionFromDescription, searchWikidata } from '../../modules/place-search.js';
+import {
+    localPlaces, matchPlaces, pastedPoint, PlaceSearch, precisionFromDescription, reverseOpenStreetMap, searchOpenStreetMap, searchWikidata,
+} from '../../modules/place-search.js';
 import { commonsFileTitle, commonsImage, creditLine, imageFromLink, plainText } from '../../modules/image-link.js';
 
 const loc = (name, place_id, coordinates, precision = 'settlement', country = '') => ({
@@ -66,6 +68,61 @@ describe('place search — the loaded events’ places first', () => {
         const search = new PlaceSearch(() => EVENTS, { wikidata: async () => [{ label: 'Munich, Germany' }, { label: 'Munich, North Dakota' }] });
         const local = search.local('Munich');
         assert.deepEqual((await search.remote('Munich', local)).map(p => p.label), ['Munich, North Dakota']);
+    });
+});
+
+describe('place search — places missing from Wikidata', () => {
+    // Nominatim's answers for "Lycée Hassan II Marrakech" and "Marrakesh", trimmed
+    const address = { road: 'Boulevard Mohammed VI', suburb: 'Guéliz', city: 'Marrakesh', state: 'Marrakech-Safi', country: 'Morocco' };
+    const NOMINATIM = [
+        { lat: '31.6284835', lon: '-8.0147650', category: 'highway', type: 'bus_stop', addresstype: 'highway', name: 'Lycee Hassan II', display_name: 'Lycee Hassan II, Boulevard Mohammed VI, Marrakesh, Morocco', address },
+        { lat: '31.6284599', lon: '-8.0143315', category: 'amenity', type: 'school', addresstype: 'amenity', name: 'Lycee Hassan II', display_name: 'Lycee Hassan II, Boulevard Mohammed VI, Marrakesh, Morocco', address },
+        { lat: '31.6258', lon: '-7.9891', category: 'boundary', type: 'administrative', addresstype: 'city', name: 'Marrakesh', display_name: 'Marrakesh, Marrakech-Safi, Morocco', address: { city: 'Marrakesh', state: 'Marrakech-Safi', country: 'Morocco' } },
+        { lat: '31.17', lon: '-7.34', category: 'boundary', type: 'administrative', addresstype: 'country', name: 'Morocco', display_name: 'Morocco', address: { country: 'Morocco' } },
+    ];
+
+    it('takes OpenStreetMap places with what they are as precision, skipping a bus stop named after the school', async () => {
+        const results = await searchOpenStreetMap('Lycée Hassan II', async () => ({ json: async () => NOMINATIM }));
+        assert.deepEqual(results.map(r => [r.label, r.location.precision]), [
+            ['Lycee Hassan II, Marrakesh, Morocco', 'site'], ['Marrakesh, Marrakech-Safi, Morocco', 'settlement'], ['Morocco', 'country'],
+        ]);
+        assert.deepEqual(results[0].location.point, [31.6284599, -8.0143315]);
+        assert.equal('wikidata' in results[0].location, false);
+        assert.deepEqual(await searchOpenStreetMap('Lycée Hassan II', async () => { throw new Error('offline'); }), []);
+    });
+
+    it('lists an OpenStreetMap place once, and not when Wikidata or the events already have it', async () => {
+        const search = new PlaceSearch(() => [], { openStreetMap: async () => [{ label: 'Rabat, Morocco' }, { label: 'ENSIAS, Rabat, Morocco' }, { label: 'ENSIAS, Rabat, Morocco' }] });
+        assert.deepEqual((await search.osm('ENSIAS', [{ label: 'Rabat, Morocco' }])).map(p => p.label), ['ENSIAS, Rabat, Morocco']);
+    });
+
+    it('fills a pasted point’s city, region and country from OpenStreetMap', async () => {
+        const fetch = async () => ({ json: async () => ({ name: '', address: { road: 'Avenue Mohammed Ben Abdallah Regragui', city: 'Rabat', state: 'Rabat-Salé-Kénitra', country: 'Morocco' } }) });
+        assert.deepEqual(await reverseOpenStreetMap([33.9843, -6.8676], fetch), { name: '', city: 'Rabat', region: 'Rabat-Salé-Kénitra', country: 'Morocco' });
+        assert.equal(await reverseOpenStreetMap([0, 0], async () => ({ json: async () => ({ error: 'Unable to geocode' }) })), null);
+    });
+
+    it('reads pasted coordinates in decimal and in degrees, minutes and seconds', () => {
+        assert.deepEqual(pastedPoint('31.6296148, -8.0505967'), { point: [31.6296148, -8.0505967], name: '' });
+        assert.deepEqual(pastedPoint('32.7157 -117.1611'), { point: [32.7157, -117.1611], name: '' });
+        assert.deepEqual(pastedPoint('31.6296° N, 8.0506° W'), { point: [31.6296, -8.0506], name: '' });
+        const dms = pastedPoint('31°37\'46.6"N 8°03\'02.2"W').point;
+        assert.ok(Math.abs(dms[0] - 31.62961) < 1e-5 && Math.abs(dms[1] + 8.05061) < 1e-5);
+        // longitude first, when its letter says so
+        assert.deepEqual(pastedPoint('8.0506 W, 31.6296 N').point, [31.6296, -8.0506]);
+        for (const text of ['95.1, 10.2', '10.2, 190.5', 'Rabat', '1 2', 'Route 66', '10.5 N, 20.5 N']) assert.equal(pastedPoint(text), null, text);
+    });
+
+    it('reads the point and place name from a map link, the pin before the view', () => {
+        const google = 'https://www.google.com/maps/place/Cpge+Ibn+Timiya/@31.6295995,-8.0501794,487m/data=!3m1!1e3!4m6!3m5!1s0xdafe94b94ca7077:0x865153e6579cc5bc!8m2!3d31.6296148!4d-8.0505967!16s%2Fg%2F1ptwj7s_g?entry=tts';
+        assert.deepEqual(pastedPoint(google), { point: [31.6296148, -8.0505967], name: 'Cpge Ibn Timiya' });
+        assert.deepEqual(pastedPoint('google.com/maps/@32.7157,-117.1611,15z'), { point: [32.7157, -117.1611], name: '' });
+        assert.deepEqual(pastedPoint('https://www.google.com/maps?q=33.9843,-6.8676'), { point: [33.9843, -6.8676], name: '' });
+        assert.deepEqual(pastedPoint('https://www.openstreetmap.org/?mlat=31.62846&mlon=-8.01433#map=19/31.62846/-8.01433'), { point: [31.62846, -8.01433], name: '' });
+        assert.deepEqual(pastedPoint('https://www.openstreetmap.org/#map=17/31.62846/-8.01433'), { point: [31.62846, -8.01433], name: '' });
+        assert.deepEqual(pastedPoint('https://maps.apple.com/?ll=32.7157,-117.1611&q=Midway'), { point: [32.7157, -117.1611], name: 'Midway' });
+        assert.deepEqual(pastedPoint('https://maps.app.goo.gl/zKbsRWnnHp4yRvMX6'), { short: true });
+        assert.equal(pastedPoint('https://www.google.com/maps/search/ensias'), null);
     });
 });
 
